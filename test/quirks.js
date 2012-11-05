@@ -1,0 +1,2 @@
+
+// quirks.js (empty)

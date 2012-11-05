@@ -1,0 +1,31 @@
+{
+  "options": {
+    "browser": true,
+    "curly": true,
+    "eqnull": true,
+    "evil": true,
+    "expr": true,
+    "maxerr": 100,
+    "newcap": false,
+    "quotmark": "double",
+    "strict": true,
+    "sub": true,
+    "trailing": true,
+    "undef": true,
+    "unused": true,
+    "wsh": true
+  },
+  "globals": {
+    "define": true,
+    "DOMParser": true,
+    "__dirname": true,
+    "jQuery": true,
+    "global": true,
+    "module": true,
+    "exports": true,
+    "require": true,
+    "file": true,
+    "log": true,
+    "console": true
+  }
+}
