@@ -36,8 +36,7 @@ if ( browser.chrome ) {
 
 jQuery.browser = browser;
 
-// On ES5 browsers (non-oldIE) warn if the code tries to get jQuery.browser;
-// allow property to be overwritten in case some other plugin wants it
+// Warn if the code tries to get jQuery.browser
 compatWarnProp( jQuery, "browser", browser, "jQuery.browser is deprecated" );
 
 jQuery.sub = function() {

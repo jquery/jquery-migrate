@@ -6,14 +6,8 @@ ok(false, "add some tests");
 
 });
 
-test( "jQuery.attrFn", function() {
-
-ok(false, "add some tests");
-
-});
-
 test("jQuery.sub() - Static Methods", function(){
-	expect(18);
+	expect( 18 );
 	var Subclass = jQuery.sub();
 	Subclass.extend({
 		"topLevelMethod": function() {return this.debug;},
@@ -62,7 +56,7 @@ test("jQuery.sub() - Static Methods", function(){
 });
 
 test("jQuery.sub() - .fn Methods", function(){
-	expect(378);
+	expect( 378 );
 
 	var Subclass = jQuery.sub(),
 			SubclassSubclass = Subclass.sub(),
