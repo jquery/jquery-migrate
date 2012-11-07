@@ -1,4 +1,17 @@
 
+
+test( "jQuery.browser", function() {
+
+ok(false, "add some tests");
+
+});
+
+test( "jQuery.attrFn", function() {
+
+ok(false, "add some tests");
+
+});
+
 test("jQuery.sub() - Static Methods", function(){
 	expect(18);
 	var Subclass = jQuery.sub();

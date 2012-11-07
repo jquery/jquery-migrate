@@ -15,14 +15,9 @@ module.exports = function(grunt) {
     pkg: '<json:package.json>',
 	files: [
 		"src/intro.js",
-		"src/attrFn.js",
-		"src/browser.js",
-		"src/error-event.js",
-		"src/hover-event.js",
-		"src/livedie.js",
-		"src/quirks.js",
-		"src/sub.js",
-		"src/toggle-event.js",
+		"src/compat.js",
+		"src/core.js",
+		"src/event.js",
 		"src/outro.js"
 	],
     meta: {
