@@ -1,18 +1,17 @@
-
 var warnList = {};
 
 function compatWarn( msg) {
-	// Only warn about a msg once to reduce console clutter
-	if ( window.console && console.warn && !warnList[ msg ] ) {
+	if ( JQCOMPAT_WARN && window.console && console.warn && !warnList[ msg ] ) {
+		// Only warn about a msg once to reduce console clutter
 		warnList[ msg ] = true;
 		console.warn( "JQCOMPAT: " + msg );
 	}
 }
 
 function compatWarnProp( obj, prop, value, msg ) {
-	// On ES5 browsers (non-oldIE), warn if the code tries to get prop;
-	// allow property to be overwritten in case some other plugin wants it
-	if ( Object.defineProperty ) {
+	if ( JQCOMPAT_WARN && Object.defineProperty ) {
+		// On ES5 browsers (non-oldIE), warn if the code tries to get prop;
+		// allow property to be overwritten in case some other plugin wants it
 		try {
 			Object.defineProperty( obj, prop, {
 				configurable: true,
@@ -33,7 +32,7 @@ function compatWarnProp( obj, prop, value, msg ) {
 	obj[ prop ] = value;
 }
 
-// jQuery has never supported or tested Quirks Mode
-if ( document.compatMode === "BackCompat" ) {
+if ( JQCOMPAT_WARN && document.compatMode === "BackCompat" ) {
+	// jQuery has never supported or tested Quirks Mode
 	compatWarn( "jQuery is not compatible with Quirks Mode" );
 }

@@ -1,6 +1,4 @@
-
 // jQuery.browser
-
 var matched, browser;
 
 jQuery.uaMatch = function( ua ) {
@@ -36,8 +34,10 @@ if ( browser.chrome ) {
 
 jQuery.browser = browser;
 
-// Warn if the code tries to get jQuery.browser
-compatWarnProp( jQuery, "browser", browser, "jQuery.browser is deprecated" );
+if ( JQCOMPAT_WARN ) {
+	// Warn if the code tries to get jQuery.browser
+	compatWarnProp( jQuery, "browser", browser, "jQuery.browser is deprecated" );
+}
 
 jQuery.sub = function() {
 	function jQuerySub( selector, context ) {
@@ -57,6 +57,8 @@ jQuery.sub = function() {
 	};
 	jQuerySub.fn.init.prototype = jQuerySub.fn;
 	var rootjQuerySub = jQuerySub(document);
-	compatWarn( "jQuery.sub() is deprecated" );
+	if ( JQCOMPAT_WARN ) {
+		compatWarn( "jQuery.sub() is deprecated" );
+	}
 	return jQuerySub;
 };

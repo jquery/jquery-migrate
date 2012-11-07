@@ -1,4 +1,6 @@
-
-// Warn if the code tries to get jQuery.attrFn
+// jQuery.attrFn
 var attrFn = {};
-compatWarnProp( jQuery, "attrFn", attrFn, "jQuery.attrFn is deprecated" );
+
+if ( JQCOMPAT_WARN ) {
+	compatWarnProp( jQuery, "attrFn", attrFn, "jQuery.attrFn is deprecated" );
+}

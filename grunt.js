@@ -20,22 +20,23 @@ module.exports = function(grunt) {
 		"src/event.js",
 		"src/outro.js"
 	],
-    meta: {
-      banner: '/*! <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
-        '<%= grunt.template.today("yyyy-mm-dd") %>\n' +
-        '<%= pkg.homepage ? "* " + pkg.homepage + "\n" : "" %>' +
-        '* Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
-        ' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> */'
+    banners: {
+		full: '/*!\n * <%= pkg.title || pkg.name %> - v<%= pkg.version %> - ' +
+			'<%= grunt.template.today("yyyy-mm-dd") %>\n' +
+			' * <%= pkg.homepage %>\n' +
+			' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>;' +
+			' Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %>\n */',
+		tiny: '/*! <%= pkg.name %> <%= pkg.version %> - <%= pkg.homepage %> */'
     },
     concat: {
       dist: {
-        src: ['<banner:meta.banner>', '<config:files>' ],
+        src: ['<banner:banners.full>', '<config:files>' ],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
     min: {
       dist: {
-        src: ['<banner:meta.banner>', '<config:concat.dist.dest>'],
+        src: ['<banner:banners.tiny>', '<config:files>'],
         dest: 'dist/<%= pkg.name %>.min.js'
       }
     },
@@ -49,7 +50,7 @@ module.exports = function(grunt) {
 	},
     watch: {
       files: '<config:lint.files>',
-      tasks: 'lint qunit'
+      tasks: 'concat min lint'
     },
     jshint: (function() {
 		function jshintrc( path ) {
@@ -64,6 +65,11 @@ module.exports = function(grunt) {
 	uglify: {
 		codegen: {
 			ascii_only: true
+		},
+		mangle: {
+			defines: {
+				JQCOMPAT_WARN: [ "name", 0 ]
+			}
 		}
 	}
   });
