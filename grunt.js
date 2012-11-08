@@ -16,6 +16,7 @@ module.exports = function(grunt) {
 	files: [
 		"src/intro.js",
 		"src/compat.js",
+		"src/attributes.js",
 		"src/core.js",
 		"src/event.js",
 		"src/outro.js"
