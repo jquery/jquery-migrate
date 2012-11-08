@@ -616,7 +616,7 @@ test("live with special events", function() {
 });
 
 test("toggle(Function, Function, ...)", function() {
-	expect(16);
+	expect( 16 );
 
 	var count = 0,
 		fn1 = function(e) { count++; },
@@ -693,7 +693,7 @@ test("toggle(Function, Function, ...)", function() {
 	$div.remove();
 });
 
-test("error() event method", function() {
+test( "error() event method", function() {
 	expect( 2 );
 
 	jQuery("<img />")
@@ -707,3 +707,31 @@ test("error() event method", function() {
 		.remove();
 });
 
+test( "hover pseudo-event", function() {
+	expect( 2 );
+
+	var balance = 0;
+	jQuery( "#firstp" )
+		.on( "hovercraft", function() {
+			ok( false, "hovercraft is full of ills" );
+		})
+		.on( "click.hover.me.not", function( e ) {
+			equal( e.handleObj.namespace, "hover.me.not", "hover hack doesn't mangle namespaces" );
+		})
+		.bind("hover", function( e ) {
+			if ( e.type === "mouseenter" ) {
+				balance++;
+			} else if ( e.type === "mouseleave" ) {
+				balance--;
+			} else {
+				ok( false, "hover pseudo: unknown event type "+e.type );
+			}
+		})
+		.trigger("click")
+		.trigger("mouseenter")
+		.trigger("mouseleave")
+		.unbind("hover")
+		.trigger("mouseenter");
+
+	equal( balance, 0, "hover pseudo-event" );
+});
