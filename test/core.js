@@ -1,9 +1,18 @@
 
 
 test( "jQuery.browser", function() {
+	expect( 3 );
+	var p, haveBool = false;
 
-ok(false, "add some tests");
-
+	ok( jQuery.browser, "jQuery.browser present" );
+	ok( jQuery.browser.version, "have a browser version" );
+	for ( p in jQuery.browser ) {
+		if ( typeof jQuery.browser[ p ] === "boolean" ) {
+			haveBool = true;
+			break;
+		}
+	}
+	ok( haveBool, "at least 1 Boolean property" );
 });
 
 test("jQuery.sub() - Static Methods", function(){
