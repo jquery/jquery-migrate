@@ -16,10 +16,13 @@ function compatWarnProp( obj, prop, value, msg ) {
 			Object.defineProperty( obj, prop, {
 				configurable: true,
 				enumerable: true,
-				writable: true,
 				get: function() {
 					compatWarn( msg );
 					return value;
+				},
+				set: function( newValue ) {
+					compatWarn( msg );
+					value = newValue;
 				}
 			});
 			return;
@@ -27,7 +30,7 @@ function compatWarnProp( obj, prop, value, msg ) {
 			// IE8 is a dope about Object.defineProperty, can't warn there
 		}
 	}
-	
+
 	// Non-ES5 (or broken) browser; just set the property
 	obj[ prop ] = value;
 }
