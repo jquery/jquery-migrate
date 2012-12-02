@@ -7,8 +7,8 @@ This project includes APIs, features or functionality that have been deprecated 
 * `jQuery.fn.toggle` [docs](http://api.jquery.com/toggle-event/) (event click signature only)
 * `jQuery.fn.data` data events (undocumented)
 * `"hover"` pseudo-event name []()
-* `jQuery.fn.error` [docs]()
-* `ajaxStart, ajaxSend, ajaxSuccess, ajaxError, ajaxComplete, ajaxStop` global events on non-`document` targets [docs]()
+* `jQuery.fn.error` [docs](http://api.jquery.com/error/)
+* `ajaxStart, ajaxSend, ajaxSuccess, ajaxError, ajaxComplete, ajaxStop` global events on non-`document` targets [docs](http://api.jquery.com/category/ajax/global-ajax-event-handlers/)
 * `jQuery.attrFn` object (undocumented)
 
 In your web page, make sure to load this plugin *after* the script for jQuery:
@@ -48,7 +48,7 @@ Latest released development version:
 
 ## Reporting problems
 
-Any bugs should be reported on the [jQuery Core bug tracker](http://bugs.jquery.com) and *must* be accompanied by an executable test case that demonstrates the bug. The easiest way to do this is via an online test tool such as [jsFiddle.net](http://jsFiddle.net) or [jsbin.com](http://jsbin.com).
+Any bugs should be reported on the [jQuery Core bug tracker](http://bugs.jquery.com/) and *must* be accompanied by an executable test case that demonstrates the bug. The easiest way to do this is via an online test tool such as [jsFiddle.net](http://jsFiddle.net/) or [jsbin.com](http://jsbin.com).
 
 
 How to run the tests:
