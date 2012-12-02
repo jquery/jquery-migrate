@@ -1,10 +1,24 @@
-var warnList = {};
+
+var warnedAbout = {};
+
+// List of warnings already given; public read only
+jQuery.compatWarnings = [];
+
+// Forget any warnings we've already given; public
+jQuery.compatReset = function() {
+	warnedAbout = {};
+	jQuery.compatWarnings.length = 0;
+};
 
 function compatWarn( msg) {
-	if ( JQCOMPAT_WARN && window.console && console.warn && !warnList[ msg ] ) {
-		// Only warn about a msg once to reduce console clutter
-		warnList[ msg ] = true;
-		console.warn( "JQCOMPAT: " + msg );
+	if ( JQCOMPAT_WARN ) {
+		if ( !warnedAbout[ msg ] ) {
+			warnedAbout[ msg ] = true;
+			jQuery.compatWarnings.push( msg );
+			if ( window.console && console.warn ) {
+				console.warn( "JQCOMPAT: " + msg );
+			}
+		}
 	}
 }
 
