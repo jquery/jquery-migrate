@@ -1,14 +1,19 @@
 
-test("live with non-null,defined data", function() {
-	expect( 1 );
+module( "event", { setup: jQuery.compatReset });
 
-	var handler = function( event, data ) {
-		equal( data, 0, "non-null, defined data (zero) is correctly passed" );
-	};
+test("live with non-null,defined data", function() {
+	expect( 2 );
+
+	var warnLength = jQuery.compatWarnings.length,
+		handler = function( event, data ) {
+			equal( data, 0, "non-null, defined data (zero) is correctly passed" );
+		};
 
 	jQuery("#foo").live("foo", handler);
 	jQuery("#foo").trigger("foo", 0);
 	jQuery("#foo").die("foo", handler);
+	
+	equal( warnLength + 2, jQuery.compatWarnings.length, "jQuery.fn.live/die warned" );
 });
 
 test("live/die(Object)", function() {
@@ -616,15 +621,17 @@ test("live with special events", function() {
 });
 
 test("toggle(Function, Function, ...)", function() {
-	expect( 16 );
+	expect( 17 );
 
-	var count = 0,
+	var warnlength = jQuery.compatWarnings.length,
+		count = 0,
 		fn1 = function(e) { count++; },
 		fn2 = function(e) { count--; },
 		preventDefault = function(e) { e.preventDefault(); },
 		link = jQuery("#mark");
 	link.click(preventDefault).click().toggle(fn1, fn2).click().click().click().click().click();
 	equal( count, 1, "Check for toggle(fn, fn)" );
+	equal( warnlength + 1, jQuery.compatWarnings.length, "jQuery.fn.toggle warned" );
 
 	jQuery("#firstp").toggle(function () {
 		equal(arguments.length, 4, "toggle correctly passes through additional triggered arguments, see #1701" );
@@ -708,9 +715,11 @@ test( "error() event method", function() {
 });
 
 test( "hover pseudo-event", function() {
-	expect( 2 );
+	expect( 3 );
 
-	var balance = 0;
+	var warnLength = jQuery.compatWarnings.length,
+		balance = 0;
+
 	jQuery( "#firstp" )
 		.on( "hovercraft", function() {
 			ok( false, "hovercraft is full of ills" );
@@ -718,7 +727,7 @@ test( "hover pseudo-event", function() {
 		.on( "click.hover.me.not", function( e ) {
 			equal( e.handleObj.namespace, "hover.me.not", "hover hack doesn't mangle namespaces" );
 		})
-		.bind("hover", function( e ) {
+		.on("hover", function( e ) {
 			if ( e.type === "mouseenter" ) {
 				balance++;
 			} else if ( e.type === "mouseleave" ) {
@@ -734,12 +743,14 @@ test( "hover pseudo-event", function() {
 		.trigger("mouseenter");
 
 	equal( balance, 0, "hover pseudo-event" );
+	equal( warnLength + 1, jQuery.compatWarnings.length, "hover event warned" );
 });
 
 test( "global events not on document", function() {
-	expect( 15 );
+	expect( 16 );
 	
-	var events = "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess";
+	var warnLength = jQuery.compatWarnings.length,
+		events = "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess";
 
 	// Attach to random element, just like old times
 	jQuery("#first").on( events, function( e ) {
@@ -758,7 +769,10 @@ test( "global events not on document", function() {
 				jQuery("#first").off( events );
 				jQuery.ajax({
 					url: "not_found_404.html",
-					complete: start
+					complete: function() {
+						ok ( jQuery.compatWarnings.length > warnLength, "global events warned" );
+						setTimeout( start, 1 );
+					}
 				});
 			}, 1);
 		}

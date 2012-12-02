@@ -18,7 +18,6 @@ module.exports = function(grunt) {
 		"src/compat.js",
 		"src/attributes.js",
 		"src/core.js",
-		"src/attributes.js",
 		"src/event.js",
 		"src/outro.js"
 	],

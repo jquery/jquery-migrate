@@ -1,23 +1,26 @@
 
+module( "core", { setup: jQuery.compatReset });
 
 test( "jQuery.browser", function() {
 	expect( 3 );
-	var p, haveBool = false;
+
+	var warnLength = jQuery.compatWarnings.length,
+		haveBool = false;
 
 	ok( jQuery.browser, "jQuery.browser present" );
 	ok( jQuery.browser.version, "have a browser version" );
-	for ( p in jQuery.browser ) {
-		if ( typeof jQuery.browser[ p ] === "boolean" ) {
-			haveBool = true;
-			break;
-		}
-	}
-	ok( haveBool, "at least 1 Boolean property" );
+	equal( warnLength + 1, jQuery.compatWarnings.length, "jQuery.browser warned" );
 });
 
 test("jQuery.sub() - Static Methods", function(){
-	expect( 18 );
-	var Subclass = jQuery.sub();
+	expect( 19 );
+
+	var warnLength = jQuery.compatWarnings.length,
+		Subclass = jQuery.sub();
+
+	// Multiple warnings may be fired when props are copied
+	ok( jQuery.compatWarnings.length > warnLength, "jQuery.sub warned" );
+
 	Subclass.extend({
 		"topLevelMethod": function() {return this.debug;},
 		"debug": false,
@@ -68,9 +71,10 @@ test("jQuery.sub() - .fn Methods", function(){
 	expect( 378 );
 
 	var Subclass = jQuery.sub(),
-			SubclassSubclass = Subclass.sub(),
-			jQueryDocument = jQuery(document),
-			selectors, contexts, methods, method, arg, description;
+		SubclassSubclass = Subclass.sub(),
+		jQueryDocument = jQuery(document),
+		selectors, contexts, methods, method, arg, description,
+		warnLength = jQuery.compatWarnings.length;
 
 	jQueryDocument.toString = function(){ return "jQueryDocument"; };
 
@@ -129,5 +133,4 @@ test("jQuery.sub() - .fn Methods", function(){
 			});
 		});
 	});
-
 });

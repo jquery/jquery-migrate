@@ -1,12 +1,23 @@
+
+module( "attributes", { setup: jQuery.compatReset });
+
+
 test("attrFn test", function() {
-	expect( 1 );
+	expect( 4 );
+	
+	var warnLength = jQuery.compatWarnings.length;
 
 	ok( !!jQuery.attrFn, "attrFn present" );
+	equal( jQuery.attrFn.quack, undefined, "can read values from attrFn" );
+	jQuery.attrFn.quack = true;
+	equal( jQuery.attrFn.quack, true, "can assign new values to attrFn" );
+	equal( jQuery.compatWarnings.length, warnLength + 1, "jQuery.attrFn warned" );
 });
 
 test( "attr(jquery_method)", function() {
-	expect( 10 );
-	var $elem = jQuery("<div />"),
+	expect( 11 );
+	var warnLength = jQuery.compatWarnings.length,
+		$elem = jQuery("<div />"),
 		elem = $elem[ 0 ],
 		attrObj = {
 			id: "attrs",
@@ -51,4 +62,6 @@ test( "attr(jquery_method)", function() {
 		ok( true, "no jQuery.css" );
 		ok( true, "no jQuery.css" );
 	}
+
+	equal( jQuery.compatWarnings.length, warnLength + 1, ".attr(props, true) warned" );
 });
