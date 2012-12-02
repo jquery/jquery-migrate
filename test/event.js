@@ -735,3 +735,32 @@ test( "hover pseudo-event", function() {
 
 	equal( balance, 0, "hover pseudo-event" );
 });
+
+test( "global events not on document", function() {
+	expect( 15 );
+	
+	var events = "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess";
+
+	// Attach to random element, just like old times
+	jQuery("#first").on( events, function( e ) {
+		ok( true, e.type + " on #first" );
+	});
+	// Ensure attach to document still fires
+	jQuery( document ).on( events, function( e ) {
+		ok( true, e.type + " on document" );
+	});
+	stop();
+	jQuery.ajax({
+		url: "index.html",
+		complete: function() {
+			// Give events a chance to fire before we remove them
+			setTimeout(function() {
+				jQuery("#first").off( events );
+				jQuery.ajax({
+					url: "not_found_404.html",
+					complete: start
+				});
+			}, 1);
+		}
+	});
+});

@@ -1,9 +1,11 @@
 
 # jQuery Compat Plugin - Warning Messages
 
-To allow developers to identify and fix compatibility issues, the development (uncompressed) version of the plugin generates console warning messages whenever any of its functionality is used. The messages only appear once on the console for each unique message. In most cases they are simply _warnings_ and the code should continue to work properly when the jQuery Compat plugin is used.
+To allow developers to identify and fix compatibility issues, the development (uncompressed) version of the plugin generates console warning messages whenever any of its functionality is called. The messages only appear once on the console for each unique message. 
 
-**The production (compressed) version of the plugin does not generate these warnings.** To continue using jQuery code that has compatibility issues without making any changes, simply use the production version. See the [README](README.md) for download instructions.
+**In most cases these messages are simply _warnings_; the code should continue to work properly with later versions of jQuery as long as the jQuery Compat plugin is used, but we recommmend changing the code where possible. The production (compressed) version of the plugin does not generate these warnings.**
+
+To continue using jQuery code that has compatibility issues without making any changes, simply use the production version. See the [README](README.md) for download instructions.
 
 The warnings, causes, and remediation instructions are listed below.
 
@@ -17,7 +19,7 @@ The warnings, causes, and remediation instructions are listed below.
 
 **Cause:** A browser runs in "quirks mode" when the HTML document does not have a `<!doctype ...>` as its first non-blank line, or when the doctype in the file is invalid. This mode causes the browser to emulate 1990s-era (HTML3) behavior. In Internet Explorer, it also causes many high-performance APIs to be hidden in order to better emulate ancient browsers. jQuery has never been compatible with, or tested in, quirks mode.
 
-**Solution:** Put a [valid doctype](http://www.w3.org/QA/2002/04/valid-dtd-list.html) in the document and ensure that the document is rendering in standards mode. The simplest valid doctype is the HTML5 one, which we highly recommend: `<!doctype html>` .
+**Solution:** Put a [valid doctype](http://www.w3.org/QA/2002/04/valid-dtd-list.html) in the document and ensure that the document is rendering in standards mode. The simplest valid doctype is the HTML5 one, which we highly recommend: `<!doctype html>` . The jQuery Compat plugin does not attempt to fix issues related to quirks mode.
 
 ### JQCOMPAT: jQuery.browser is deprecated
 
@@ -55,6 +57,18 @@ The warnings, causes, and remediation instructions are listed below.
 
 **Solution:** Rewrite calls to `.live()` using `.on()` or `.delegate()`. 
 
+### JQCOMPAT: Global events should be attached to document
+
+**Cause:** As of jQuery 1.9, the global ajax events (ajaxStart, ajaxStop, ajaxSend, ajaxComplete, ajaxError, and ajaxSuccess) are only triggered on the `document` element. 
+
+**Solution:** Change the program to listen for the ajax events on the document. For example, if the code currently looks like this:
+```javascript
+$("#status").ajaxStart(function(){ $(this).text("Ajax started"); });
+```
+Change it to this:
+```javascript
+$(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
+```
 
 
 
