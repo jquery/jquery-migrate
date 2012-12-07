@@ -2,14 +2,16 @@
 module( "core", { setup: jQuery.compatReset });
 
 test( "jQuery.browser", function() {
-	expect( 3 );
+	expect( jQuery._definePropertyBroken ? 2 : 3 );
 
 	var warnLength = jQuery.compatWarnings.length,
 		haveBool = false;
 
 	ok( jQuery.browser, "jQuery.browser present" );
 	ok( jQuery.browser.version, "have a browser version" );
-	equal( warnLength + 1, jQuery.compatWarnings.length, "jQuery.browser warned" );
+	if ( !jQuery._definePropertyBroken ) {
+		equal( warnLength + 1, jQuery.compatWarnings.length, "jQuery.browser warned" );
+	}
 });
 
 test("jQuery.sub() - Static Methods", function(){

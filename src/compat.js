@@ -46,6 +46,7 @@ function compatWarnProp( obj, prop, value, msg ) {
 	}
 
 	// Non-ES5 (or broken) browser; just set the property
+	jQuery._definePropertyBroken = true;
 	obj[ prop ] = value;
 }
 

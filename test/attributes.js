@@ -3,7 +3,7 @@ module( "attributes", { setup: jQuery.compatReset });
 
 
 test("attrFn test", function() {
-	expect( 4 );
+	expect( jQuery._definePropertyBroken ? 3 : 4 );
 	
 	var warnLength = jQuery.compatWarnings.length;
 
@@ -11,7 +11,9 @@ test("attrFn test", function() {
 	equal( jQuery.attrFn.quack, undefined, "can read values from attrFn" );
 	jQuery.attrFn.quack = true;
 	equal( jQuery.attrFn.quack, true, "can assign new values to attrFn" );
-	equal( jQuery.compatWarnings.length, warnLength + 1, "jQuery.attrFn warned" );
+	if ( !jQuery._definePropertyBroken ) {
+		equal( jQuery.compatWarnings.length, warnLength + 1, "jQuery.attrFn warned" );
+	}
 });
 
 test( "attr(jquery_method)", function() {
