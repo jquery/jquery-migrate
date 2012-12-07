@@ -2,9 +2,10 @@
 module( "manipulation", { setup: jQuery.compatReset });
 
 test( "buildFragment", function() {
-	expect( 6 );
+	expect( 7 );
 
-	var frag, div, html;
+	var frag, div, html,
+		warnLength = jQuery.compatWarnings.length;
 
 	frag = jQuery.buildFragment( [], document );
 	equal( frag.childNodes.length, 0, "empty frag is empty" );
@@ -20,4 +21,6 @@ test( "buildFragment", function() {
 	div = document.createElement( "div" );
 	div.appendChild( frag );
 	equal( div.innerHTML.toLowerCase().replace( /[\s\n]+/, "" ), html, "frag html" );
+	
+	equal( warnLength + 1, jQuery.compatWarnings.length, "jQuery.buildFragment warned" );
 });
