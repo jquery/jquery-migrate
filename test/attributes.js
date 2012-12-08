@@ -67,3 +67,21 @@ test( "attr(jquery_method)", function() {
 
 	equal( jQuery.compatWarnings.length, warnLength + 1, ".attr(props, true) warned" );
 });
+
+test( "attrHooks[\"value\"]", function() {
+	expect( 6 );
+	var warnLength = jQuery.compatWarnings.length;
+
+	equal( jQuery("<input/>").attr("value"), "", "input.attr('value') returns value property." );
+	equal( jQuery("#area1").attr("value"), "foobar", "textarea.attr('value') returns value property." );
+
+	equal( jQuery.compatWarnings.length, warnLength + 1, ".attr('value') warned" );
+
+	jQuery.compatReset();
+
+	jQuery("#text1").attr( "value", "foo" );
+	equal( jQuery("#text1")[0].getAttributeNode("value").value, "foo", ".attr( 'value', val ) sets value attribute." );
+	equal( jQuery("#text1")[0].value, "foo", ".attr( 'value', val ) sets value property." );
+
+	equal( jQuery.compatWarnings.length, 1, ".attr( 'value', val ) warned" );
+});
