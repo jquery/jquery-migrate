@@ -82,4 +82,9 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution**: Rewrite any code that makes use of this method or other undocumented methods. For example the `jQuery.parseHTML()` method, introduced in jQuery 1.8, can convert HTML to an array of DOM elements that you can append to a document fragment.
 
+### JQCOMPAT: Use of jQuery.fn.data('events') is deprecated
+
+**Cause**: Prior to 1.9, `.data("events")` could be used to retrieve jQuery's undocumented internal event data structure for an element if no other code had defined a data element with the name "events". This special case has been removed in 1.9. 
+
+**Solution**: There is no public interface to retrieve this internal data structure, and it remains undocumented. The only useful applications might be for debugging. The data is available via `jQuery._data("events")` but this is not a documented interface.
 
