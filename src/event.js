@@ -13,6 +13,11 @@ var eventAdd = jQuery.event.add,
 		return events && events.replace( rhoverHack, "mouseenter$1 mouseleave$1" );
 	};
 
+// Event props removed in 1.9, put them back if needed; no practical way to warn them
+if ( jQuery.event.props[ 0 ] !== "attrChange" ) {
+	jQuery.event.props.unshift( "attrChange", "attrName", "relatedNode", "srcElement" );
+}
+
 // Support for 'hover' pseudo-event
 jQuery.event.add = function( elem, types, handler, data, selector ){
 	eventAdd.call( this, elem, hoverHack( types || "" ), handler, data, selector );

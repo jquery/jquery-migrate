@@ -8,6 +8,7 @@ This project includes APIs, features or functionality that have been deprecated 
 * `"hover"` pseudo-event name [docs](http://api.jquery.com/on/)
 * `jQuery.fn.error()` [docs](http://api.jquery.com/error/)
 * `ajaxStart, ajaxSend, ajaxSuccess, ajaxError, ajaxComplete, ajaxStop` global events on non-`document` targets [docs](http://api.jquery.com/category/ajax/global-ajax-event-handlers/)
+* Use of `attrChange`, `attrName`, `relatedNode`, `srcElement` on the `Event` object (use `Event.originalEvent.attrChange` etc. instead)
 * `jQuery.fn.attr()` using the `pass` argument (undocumented)
 * `jQuery.attrFn` object (undocumented)
 * `jQuery.fn.data()` data events (undocumented)
