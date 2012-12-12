@@ -16,6 +16,34 @@ test("attrFn test", function() {
 	}
 });
 
+test("warn if changing an input or button", function() {
+	expect( 3 );
+	
+	var $div = jQuery("<div />"),
+		$input = jQuery("<input type=text />"),
+		$button = jQuery("<button type=button>click</button>"),
+		warnLength = jQuery.compatWarnings.length;
+
+	$div.appendTo("#qunit-fixture").attr( "type", "fancy" );
+	equal( jQuery.compatWarnings.length, warnLength, "no warning on a div" );
+
+	jQuery.compatReset();
+	try {
+		$input.appendTo("#qunit-fixture").attr( "type", "checkbox" );
+		equal( jQuery.compatWarnings.length, 1, "warning on an input" );
+	} catch ( e ) {
+		ok( true, "error thrown on an input" );
+	}
+
+	jQuery.compatReset();
+	try {
+		$button.appendTo("#qunit-fixture").attr( "type", "submit" );
+		equal( jQuery.compatWarnings.length, 1, "warning on a button" );
+	} catch ( e ) {
+		ok( true, "error thrown on an input" );
+	}
+});
+
 test( "attr(jquery_method)", function() {
 	expect( 11 );
 	var warnLength = jQuery.compatWarnings.length,
