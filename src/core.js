@@ -1,6 +1,33 @@
-// jQuery.browser
+
 var matched, browser,
-	access = jQuery.access;
+	oldAccess = jQuery.access,
+	oldInit = jQuery.fn.init,
+	// Note this does NOT include the # XSS fix from 1.7!
+	rquickExpr = /^(?:.*(<[\w\W]+>)[^>]*|#([\w-]*))$/;
+
+// $(html) "looks like html" rule change
+jQuery.fn.init = function( selector, context, rootjQuery ) {
+	var match;
+
+	if ( selector && typeof selector === "string" && !jQuery.isPlainObject( context ) &&
+			(match = rquickExpr.exec( selector )) && match[1] ) {
+		// This is an HTML string according to the "old" rules; is it still?
+		if ( selector.charAt( 0 ) !== "<" ) {
+			compatWarn("$(html) HTML strings must start with '<' character");
+		}
+		// Now process using loose rules; let pre-1.8 play too
+		if ( context && context.context ) {
+			// jQuery object as context; parseHTML expects a DOM object
+			context = context.context;
+		}
+		if ( jQuery.parseHTML ) {
+			return oldInit.call( this, jQuery.parseHTML( jQuery.trim(selector), context, true ),
+					context, rootjQuery );
+		}
+	}
+	return oldInit.apply( this, arguments );
+};
+jQuery.fn.init.prototype = jQuery.fn;
 
 // jQuery.access( ..., pass )
 jQuery.access = function( elems, fn, key, value, chainable, emptyGet, pass ) {
@@ -18,7 +45,7 @@ jQuery.access = function( elems, fn, key, value, chainable, emptyGet, pass ) {
 		}
 		return elems;
 	}
-	return access.call( jQuery, elems, fn, key, value, chainable, emptyGet );
+	return oldAccess.call( jQuery, elems, fn, key, value, chainable, emptyGet );
 };
 
 jQuery.uaMatch = function( ua ) {

@@ -1,6 +1,40 @@
 
 module("core");
 
+test( "jQuery(html) loose rules", function() {
+	expect( 12 );
+
+	var nowarns = {
+			"simple tag": "<div />",
+			"single tag with properties": "<input type=text name=easy />",
+			"complex html": "<div id='good'><p id='guy'> hello !</p></div>"
+		},
+		warns = {
+			"leading space": "  <div />",
+			"leading text": "don't<div>try this</div>",
+			"leading hash": "#yeah<p>RIGHT</p>"
+		},
+		makeFn = function( html ) {
+			return function() {
+				// Bad HTML will throw but not on all versions
+				try {
+					jQuery( html );
+					ok( true, html + " succeeded" );
+				} catch ( e ) {
+					ok( true, html + " got exception" );
+				}
+			};
+		},
+		w;
+
+	for ( w in nowarns ) {
+		expectNoWarning( w, makeFn( nowarns[ w ] ) );
+	}
+	for ( w in warns ) {
+		expectWarning( w, makeFn( warns[ w ] ) );
+	}
+});
+
 test( "jQuery.browser", function() {
 	expect( 3 );
 
