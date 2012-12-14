@@ -1,22 +1,23 @@
 
-module( "event", { setup: jQuery.compatReset });
+module("event");
 
-test("live with non-null,defined data", function() {
-	expect( 2 );
+test( "live with non-null,defined data", function() {
+	expect( 3 );
 
-	var warnLength = jQuery.compatWarnings.length,
-		handler = function( event, data ) {
+	var handler = function( event, data ) {
 			equal( data, 0, "non-null, defined data (zero) is correctly passed" );
 		};
 
-	jQuery("#foo").live("foo", handler);
-	jQuery("#foo").trigger("foo", 0);
-	jQuery("#foo").die("foo", handler);
-	
-	equal( warnLength + 2, jQuery.compatWarnings.length, "jQuery.fn.live/die warned" );
+	expectWarning( "live", function() {
+		jQuery("#foo").live("foo", handler);
+		jQuery("#foo").trigger("foo", 0);
+	});
+	expectWarning( "die", function() {
+		jQuery("#foo").die("foo", handler);
+	});
 });
 
-test("live/die(Object)", function() {
+test( "live/die(Object)", function() {
 	expect( 4 );
 
 	var clickCounter = 0,
@@ -49,7 +50,7 @@ test("live/die(Object)", function() {
 	equal( mouseoverCounter, 2, "mouseover after die" );
 });
 
-test("live immediate propagation", function() {
+test( "live immediate propagation", function() {
 	expect( 1 );
 
 	var lastClick,
@@ -69,7 +70,7 @@ test("live immediate propagation", function() {
 	$a.die( "click" );
 });
 
-test("live(name, false), die(name, false)", function() {
+test( "live(name, false), die(name, false)", function() {
 	expect(3);
 
 	var main = 0;
@@ -89,7 +90,7 @@ test("live(name, false), die(name, false)", function() {
 	jQuery("#qunit-fixture").die("click");
 });
 
-test(".live()/.die()", function() {
+test( ".live()/.die()", function() {
 	expect(66);
 
 	var submit = 0, div = 0, livea = 0, liveb = 0;
@@ -369,7 +370,7 @@ test(".live()/.die()", function() {
 		.die("blur");
 });
 
-test("die all bound events", function(){
+test( "die all bound events", function(){
 	expect(1);
 
 	var count = 0;
@@ -384,7 +385,7 @@ test("die all bound events", function(){
 	equal( count, 0, "Make sure no events were triggered." );
 });
 
-test("live with multiple events", function(){
+test( "live with multiple events", function(){
 	expect(1);
 
 	var count = 0;
@@ -401,7 +402,7 @@ test("live with multiple events", function(){
 	div.die();
 });
 
-test("live with namespaces", function(){
+test( "live with namespaces", function(){
 	expect(15);
 
 	var count1 = 0, count2 = 0;
@@ -455,7 +456,7 @@ test("live with namespaces", function(){
 	equal( count2, 0, "Did not trigger foo.zed again" );
 });
 
-test("live with change", function(){
+test( "live with change", function(){
 	expect(8);
 
 	var selectChange = 0, checkboxChange = 0;
@@ -535,7 +536,7 @@ test("live with change", function(){
 	equal( checkboxChange, 1, "Die on checkbox." );
 });
 
-test("live with submit", function() {
+test( "live with submit", function() {
 	expect(7);
 
 	var count1 = 0, count2 = 0;
@@ -571,7 +572,7 @@ test("live with submit", function() {
 	jQuery("body").die("submit");
 });
 
-test("live with special events", function() {
+test( "live with special events", function() {
 	expect(13);
 
 	jQuery.event.special["foo"] = {
@@ -620,18 +621,19 @@ test("live with special events", function() {
 	delete jQuery.event.special["foo"];
 });
 
-test("toggle(Function, Function, ...)", function() {
+test( "toggle(Function, Function, ...)", function() {
 	expect( 17 );
 
-	var warnlength = jQuery.compatWarnings.length,
-		count = 0,
+	var count = 0,
 		fn1 = function(e) { count++; },
 		fn2 = function(e) { count--; },
 		preventDefault = function(e) { e.preventDefault(); },
 		link = jQuery("#mark");
-	link.click(preventDefault).click().toggle(fn1, fn2).click().click().click().click().click();
-	equal( count, 1, "Check for toggle(fn, fn)" );
-	equal( warnlength + 1, jQuery.compatWarnings.length, "jQuery.fn.toggle warned" );
+
+	expectWarning( "jQuery.fn.toggle", function() {
+		link.click(preventDefault).click().toggle(fn1, fn2).click().click().click().click().click();
+		equal( count, 1, "Check for toggle(fn, fn)" );
+	});
 
 	jQuery("#firstp").toggle(function () {
 		equal(arguments.length, 4, "toggle correctly passes through additional triggered arguments, see #1701" );
@@ -701,80 +703,83 @@ test("toggle(Function, Function, ...)", function() {
 });
 
 test( "error() event method", function() {
-	expect( 2 );
+	expect( 3 );
 
-	jQuery("<img />")
-		.error(function(){
-			ok( true, "Triggered error event" );
-		})
-		.error()
-		.trigger("error")
-		.off("error")
-		.error()
-		.remove();
+	expectWarning( "jQuery.fn.error()", function() {
+		jQuery("<img />")
+			.error(function(){
+				ok( true, "Triggered error event" );
+			})
+			.error()
+			.trigger("error")
+			.off("error")
+			.error()
+			.remove();
+	});
 });
 
 test( "hover pseudo-event", function() {
 	expect( 3 );
 
-	var warnLength = jQuery.compatWarnings.length,
-		balance = 0;
+	expectWarning( "'hover' event", function() {
+		var balance = 0;
 
-	jQuery( "#firstp" )
-		.on( "hovercraft", function() {
-			ok( false, "hovercraft is full of ills" );
-		})
-		.on( "click.hover.me.not", function( e ) {
-			equal( e.handleObj.namespace, "hover.me.not", "hover hack doesn't mangle namespaces" );
-		})
-		.on("hover", function( e ) {
-			if ( e.type === "mouseenter" ) {
-				balance++;
-			} else if ( e.type === "mouseleave" ) {
-				balance--;
-			} else {
-				ok( false, "hover pseudo: unknown event type "+e.type );
-			}
-		})
-		.trigger("click")
-		.trigger("mouseenter")
-		.trigger("mouseleave")
-		.unbind("hover")
-		.trigger("mouseenter");
+		jQuery( "#firstp" )
+			.on( "hovercraft", function() {
+				ok( false, "hovercraft is full of ills" );
+			})
+			.on( "click.hover.me.not", function( e ) {
+				equal( e.handleObj.namespace, "hover.me.not", "hover hack doesn't mangle namespaces" );
+			})
+			.on("hover", function( e ) {
+				if ( e.type === "mouseenter" ) {
+					balance++;
+				} else if ( e.type === "mouseleave" ) {
+					balance--;
+				} else {
+					ok( false, "hover pseudo: unknown event type "+e.type );
+				}
+			})
+			.trigger("click")
+			.trigger("mouseenter")
+			.trigger("mouseleave")
+			.unbind("hover")
+			.trigger("mouseenter");
 
-	equal( balance, 0, "hover pseudo-event" );
-	equal( warnLength + 1, jQuery.compatWarnings.length, "hover event warned" );
+		equal( balance, 0, "hover pseudo-event" );
+	});
 });
 
 test( "global events not on document", function() {
 	expect( 16 );
 	
-	var warnLength = jQuery.compatWarnings.length,
-		events = "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess";
+	expectWarning( "Global ajax events", function() {
+		var events = "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess";
 
-	// Attach to random element, just like old times
-	jQuery("#first").on( events, function( e ) {
-		ok( true, e.type + " on #first" );
-	});
-	// Ensure attach to document still fires
-	jQuery( document ).on( events, function( e ) {
-		ok( true, e.type + " on document" );
-	});
-	stop();
-	jQuery.ajax({
-		url: "index.html",
-		complete: function() {
-			// Give events a chance to fire before we remove them
-			setTimeout(function() {
-				jQuery("#first").off( events );
-				jQuery.ajax({
-					url: "not_found_404.html",
-					complete: function() {
-						ok ( jQuery.compatWarnings.length > warnLength, "global events warned" );
-						setTimeout( start, 1 );
-					}
-				});
-			}, 1);
-		}
+		// Attach to random element, just like old times
+		jQuery("#first").on( events, function( e ) {
+			ok( true, e.type + " on #first" );
+		});
+		// Ensure attach to document still fires
+		jQuery( document ).on( events, function( e ) {
+			ok( true, e.type + " on document" );
+		});
+		stop();
+
+		jQuery.ajax({
+			url: "index.html",
+			complete: function() {
+				// Give events a chance to fire before we remove them
+				setTimeout(function() {
+					jQuery("#first").off( events );
+					jQuery.ajax({
+						url: "not_found_404.html",
+						complete: function() {
+							setTimeout( start, 10 );
+						}
+					});
+				}, 1);
+			}
+		});
 	});
 });

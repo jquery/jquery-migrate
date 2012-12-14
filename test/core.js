@@ -1,27 +1,24 @@
 
-module( "core", { setup: jQuery.compatReset });
+module("core");
 
 test( "jQuery.browser", function() {
-	expect( jQuery._definePropertyBroken ? 2 : 3 );
+	expect( 3 );
 
-	var warnLength = jQuery.compatWarnings.length,
-		haveBool = false;
-
-	ok( jQuery.browser, "jQuery.browser present" );
-	ok( jQuery.browser.version, "have a browser version" );
-	if ( !jQuery._definePropertyBroken ) {
-		equal( warnLength + 1, jQuery.compatWarnings.length, "jQuery.browser warned" );
-	}
+	( jQuery._definePropertyBroken ? expectNoWarning : expectWarning )( "browser", function() {
+		ok( jQuery.browser, "jQuery.browser present" );
+		ok( jQuery.browser.version, "have a browser version" );
+	});
 });
 
-test("jQuery.sub() - Static Methods", function(){
+test( "jQuery.sub() - Static Methods", function(){
 	expect( 19 );
 
-	var warnLength = jQuery.compatWarnings.length,
-		Subclass = jQuery.sub();
+	var Subclass;
 
-	// Multiple warnings may be fired when props are copied
-	ok( jQuery.compatWarnings.length > warnLength, "jQuery.sub warned" );
+	// Other warnings may be fired when props are copied
+	expectWarning( "jQuery.sub", function() {
+		Subclass = jQuery.sub();
+	});
 
 	Subclass.extend({
 		"topLevelMethod": function() {return this.debug;},
@@ -69,7 +66,7 @@ test("jQuery.sub() - Static Methods", function(){
 	equal(jQuery.ajax, Subclass.ajax, "The subclass failed to get all top level methods");
 });
 
-test("jQuery.sub() - .fn Methods", function(){
+test( "jQuery.sub() - .fn Methods", function(){
 	expect( 378 );
 
 	var Subclass = jQuery.sub(),

@@ -1,53 +1,44 @@
 
-module( "attributes", { setup: jQuery.compatReset });
+module("attributes");
 
-
-test("attrFn test", function() {
-	expect( jQuery._definePropertyBroken ? 3 : 4 );
+test( "attrFn test", function() {
+	expect( 4 );
 	
-	var warnLength = jQuery.compatWarnings.length;
-
-	ok( !!jQuery.attrFn, "attrFn present" );
-	equal( jQuery.attrFn.quack, undefined, "can read values from attrFn" );
-	jQuery.attrFn.quack = true;
-	equal( jQuery.attrFn.quack, true, "can assign new values to attrFn" );
-	if ( !jQuery._definePropertyBroken ) {
-		equal( jQuery.compatWarnings.length, warnLength + 1, "jQuery.attrFn warned" );
-	}
+	( jQuery._definePropertyBroken ? expectNoWarning : expectWarning )( "attrFn", function() {
+		ok( !!jQuery.attrFn, "attrFn present" );
+		equal( jQuery.attrFn.quack, undefined, "can read values from attrFn" );
+		jQuery.attrFn.quack = true;
+		equal( jQuery.attrFn.quack, true, "can assign new values to attrFn" );
+	});
 });
 
-test("warn if changing an input or button", function() {
+test( "warn if changing an input or button", function() {
 	expect( 3 );
-	
+
 	var $div = jQuery("<div />"),
 		$input = jQuery("<input type=text />"),
-		$button = jQuery("<button type=button>click</button>"),
-		warnLength = jQuery.compatWarnings.length;
+		$button = jQuery("<button type=button>click</button>");
 
-	$div.appendTo("#qunit-fixture").attr( "type", "fancy" );
-	equal( jQuery.compatWarnings.length, warnLength, "no warning on a div" );
+	expectNoWarning( "input type change", function() {
+		$div.appendTo("#qunit-fixture").attr( "type", "fancy" );
+	});
 
-	jQuery.compatReset();
-	try {
-		$input.appendTo("#qunit-fixture").attr( "type", "checkbox" );
-		equal( jQuery.compatWarnings.length, 1, "warning on an input" );
-	} catch ( e ) {
-		ok( true, "error thrown on an input" );
-	}
+	expectWarning( "input type change", function() {
+		try {
+			$input.appendTo("#qunit-fixture").attr( "type", "checkbox" );
+		} catch ( e ) { }
+	});
 
-	jQuery.compatReset();
-	try {
-		$button.appendTo("#qunit-fixture").attr( "type", "submit" );
-		equal( jQuery.compatWarnings.length, 1, "warning on a button" );
-	} catch ( e ) {
-		ok( true, "error thrown on an input" );
-	}
+	expectWarning( "button type change", function() {
+		try {
+			$button.appendTo("#qunit-fixture").attr( "type", "submit" );
+		} catch ( e ) { }
+	});
 });
 
 test( "attr(jquery_method)", function() {
 	expect( 11 );
-	var warnLength = jQuery.compatWarnings.length,
-		$elem = jQuery("<div />"),
+	var $elem = jQuery("<div />"),
 		elem = $elem[ 0 ],
 		attrObj = {
 			id: "attrs",
@@ -58,8 +49,10 @@ test( "attr(jquery_method)", function() {
 		};
 
 	// one at a time
-	$elem.attr({ html: "foo" }, true );
-	equal( elem.innerHTML, "foo", "html" );
+	expectWarning( ".attr(props, true)", function() {
+		$elem.attr({ html: "foo" }, true );
+		equal( elem.innerHTML, "foo", "html" );
+	});
 
 	$elem.attr({ text: "bar" }, true );
 	equal( elem.innerHTML, "bar", "text" );
@@ -92,6 +85,4 @@ test( "attr(jquery_method)", function() {
 		ok( true, "no jQuery.css" );
 		ok( true, "no jQuery.css" );
 	}
-
-	equal( jQuery.compatWarnings.length, warnLength + 1, ".attr(props, true) warned" );
 });

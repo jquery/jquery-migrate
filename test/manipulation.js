@@ -1,14 +1,13 @@
 
-module( "manipulation", { setup: jQuery.compatReset });
+module( "manipulation" );
 
 test( "andSelf", function() {
 	expect( 2 );
 
-	var warnLength = jQuery.compatWarnings.length,
-		$test = jQuery("<div>Beautiful<p>World</p></div>").find("p").andSelf();
-	
-	equal( $test.length, 2, "correct element count" );
-	equal( warnLength + 1, jQuery.compatWarnings.length, "jQuery.fn.andSelf warned" );
+	expectWarning( "andSelf", function() {
+		var $test = jQuery("<div>Beautiful<p>World</p></div>").find("p").andSelf();
+		equal( $test.length, 2, "correct element count" );
+	});
 });
 
 test( "buildFragment", function() {
