@@ -106,8 +106,7 @@ test( "jQuery.sub() - .fn Methods", function(){
 	var Subclass = jQuery.sub(),
 		SubclassSubclass = Subclass.sub(),
 		jQueryDocument = jQuery(document),
-		selectors, contexts, methods, method, arg, description,
-		warnLength = jQuery.compatWarnings.length;
+		selectors, contexts, methods, method, arg, description;
 
 	jQueryDocument.toString = function(){ return "jQueryDocument"; };
 
