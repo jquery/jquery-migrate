@@ -86,3 +86,38 @@ test( "attr(jquery_method)", function() {
 		ok( true, "no jQuery.css" );
 	}
 });
+
+test( "attrHooks[\"value\"]", function() {
+	expect( 16 );
+
+	expectWarning( "input.attr('value')", 1, function() {
+		var input = jQuery("<input/>");
+		equal( input.attr("value"), "", "input.attr('value') returns initially empty property." );
+		input[0].value = "foo";
+		equal( input.attr("value"), "foo", "input.attr('value') returns property." );
+	});
+
+	expectWarning( "textarea.attr('value')", 1, function() {
+		equal( jQuery("#area1").attr("value"), "foobar", "textarea.attr('value') returns property." );
+	});
+
+	expectWarning( ".attr('value', val)", 1, function() {
+		var input = jQuery("#text1").attr( "value", "foo" );
+		equal( input[0].getAttributeNode("value").value, "foo", ".attr('value', val) sets attribute." );
+		equal( input[0].value, "foo", ".attr('value', val) sets property." );
+	});
+
+	expectNoWarning( "button.attr(...)", function() {
+		var button = jQuery("#button");
+		equal( button.attr("value"), undefined, "button.attr('value') returns attribute." );
+		equal( button.attr( "value", "foo" ).attr("value"), "foo", "button.attr('value', val) sets attribute." );
+		equal( button.html(), "Button", "button.attr('value') doesn't affect contents" );
+	});
+
+	expectWarning( "div.attr(...)", 2, function() {
+		var div = jQuery("#foo");
+		equal( div.attr("value"), undefined, "div.attr('value') returns attribute." );
+		equal( div.attr( "value", "bar" ).attr("value"), "bar", "div.attr('value', val) sets attribute." );
+		equal( div[0].value, "bar", "div.attr('value', val) sets property." );
+	});
+});

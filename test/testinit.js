@@ -14,9 +14,9 @@
 	function include( project, version ) {
 		var file = version;
 		if ( version === "dev" ) {
-			file = "../../" + project +"/dist/" + project + ".js";
+			file = "../dist/" + project + ".js";
 		} else if ( version === "min" ) {
-			file = "../../" + project +"/dist/" + project + ".min.js";
+			file = "../dist/" + project + ".min.js";
 		} else if ( /^[\w\.]+$/.test( version ) ) {
 			file = "http://code.jquery.com/" + project + "-" + version + ".js";
 		}

@@ -1,6 +1,10 @@
 
 var attrFn = {},
 	attr = jQuery.attr,
+	valueAttrGet = jQuery.attrHooks.value && jQuery.attrHooks.value.get ||
+		function() { return null; },
+	valueAttrSet = jQuery.attrHooks.value && jQuery.attrHooks.value.set ||
+		function() { return undefined; },
 	rnoType = /^(?:input|button)$/i,
 	rnoAttrNodeType = /^[238]$/;
 
@@ -25,4 +29,29 @@ jQuery.attr = function( elem, name, value, pass ) {
 	}
 
 	return attr.call( jQuery, elem, name, value );
+};
+
+// attrHooks: value
+jQuery.attrHooks.value = {
+	get: function( elem, name ) {
+		if ( jQuery.nodeName( elem, "button" ) ) {
+			return valueAttrGet.apply( this, arguments );
+		}
+		if ( JQCOMPAT_WARN ) {
+			compatWarn("property-based jQuery.fn.attr('value') is deprecated");
+		}
+		return name in elem ?
+			elem.value :
+			null;
+	},
+	set: function( elem, value, name ) {
+		if ( jQuery.nodeName( elem, "button" ) ) {
+			return valueAttrSet.apply( this, arguments );
+		}
+		if ( JQCOMPAT_WARN ) {
+			compatWarn("property-based jQuery.fn.attr('value', val) is deprecated");
+		}
+		// Does not return so that setAttribute is also used
+		elem.value = value;
+	}
 };
