@@ -29,24 +29,26 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 };
 jQuery.fn.init.prototype = jQuery.fn;
 
-// jQuery.access( ..., pass )
-jQuery.access = function( elems, fn, key, value, chainable, emptyGet, pass ) {
-	var i = 0,
-		length = elems.length;
+if ( jQuery.fn.jquery >= "1.9" ) {
+	// jQuery.access( ..., pass )
+	jQuery.access = function( elems, fn, key, value, chainable, emptyGet, pass ) {
+		var i = 0,
+			length = elems.length;
 
-	if ( key && typeof key === "object" && value ) {
-		for ( i in key ) {
-			jQuery.access( elems, fn, i, key[i], true, emptyGet, value );
+		if ( key && typeof key === "object" && value ) {
+			for ( i in key ) {
+				jQuery.access( elems, fn, i, key[i], true, emptyGet, value );
+			}
+			return elems;
+		} else if ( pass && key != null && value !== undefined ) {
+			for ( ; i < length; i++ ) {
+				fn( elems[i], key, value, true );
+			}
+			return elems;
 		}
-		return elems;
-	} else if ( pass && key != null && value !== undefined ) {
-		for ( ; i < length; i++ ) {
-			fn( elems[i], key, value, true );
-		}
-		return elems;
-	}
-	return oldAccess.call( jQuery, elems, fn, key, value, chainable, emptyGet );
-};
+		return oldAccess.call( jQuery, elems, fn, key, value, chainable, emptyGet );
+	};
+}
 
 jQuery.uaMatch = function( ua ) {
 	ua = ua.toLowerCase();

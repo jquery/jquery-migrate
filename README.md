@@ -1,8 +1,9 @@
 # jquery-compat: Restore deprecated features for jQuery 1.9+
 
-This project includes APIs, features or functionality that have been deprecated in jQuery and removed as of version 1.9. They include:
+This project can be used to detect and restore APIs, features or functionality that have been deprecated in jQuery and removed as of version 1.9. They include:
 
 * `jQuery.browser` [docs](http://api.jquery.com/jquery.browser)
+* `jQuery.fn.andSelf()` [docs](http://api.jquery.com/andSelf)
 * `jQuery.sub()` [docs](http://api.jquery.com/jquery.sub)
 * `jQuery.fn.toggle()` [docs](http://api.jquery.com/toggle-event/) (_event click signature only_)
 * `"hover"` pseudo-event name [docs](http://api.jquery.com/on/)
@@ -19,11 +20,11 @@ See the [warnings](warnings.md) page for more information regarding messages the
 In your web page, make sure to load this plugin *after* the script for jQuery:
 
 ```html
-<script src="jquery.js"></script>
-<script src="jquery-compat.js"></script>
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/jquery-compat-0.0.0.js"></script>
 ```
 
-The plugin can be included in versions of jQuery as old as 1.7.2 as a migration tool to identify potential upgrade issues. However, the plugin is only required for version 1.9 or higher to restore deprecated and removed functionality.
+The plugin can be included with versions of jQuery as old as 1.6.4 as a migration tool to identify potential upgrade issues. However, the plugin is only required for version 1.9 or higher to restore deprecated and removed functionality.
 
 ## Development vs. Production versions
 

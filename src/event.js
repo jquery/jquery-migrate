@@ -2,9 +2,13 @@ var eventAdd = jQuery.event.add,
 	eventRemove = jQuery.event.remove,
 	eventTrigger = jQuery.event.trigger,
 	oldToggle = jQuery.event.toggle,
+	oldLive = jQuery.fn.live,
+	oldDie = jQuery.fn.die,
+	ajaxEvents = "ajaxStart|ajaxStop|ajaxSend|ajaxComplete|ajaxError|ajaxSuccess",
+	rajaxEvent = new RegExp( "\\b(?:" + ajaxEvents + ")\\b" ),
 	rhoverHack = /(?:^|\s)hover(\.\S+|)\b/,
 	hoverHack = function( events ) {
-		if ( jQuery.event.special.hover ) {
+		if ( typeof( events ) != "string" || jQuery.event.special.hover ) {
 			return events;
 		}
 		if ( JQCOMPAT_WARN && rhoverHack.test( events ) ) {
@@ -14,12 +18,15 @@ var eventAdd = jQuery.event.add,
 	};
 
 // Event props removed in 1.9, put them back if needed; no practical way to warn them
-if ( jQuery.event.props[ 0 ] !== "attrChange" ) {
+if ( jQuery.event.props && jQuery.event.props[ 0 ] !== "attrChange" ) {
 	jQuery.event.props.unshift( "attrChange", "attrName", "relatedNode", "srcElement" );
 }
 
-// Support for 'hover' pseudo-event
+// Support for 'hover' pseudo-event and ajax event warnings
 jQuery.event.add = function( elem, types, handler, data, selector ){
+	if ( JQCOMPAT_WARN && elem !== document && rajaxEvent.test( types ) ) {
+		compatWarn( "AJAX events should be attached to document: " + types );
+	}
 	eventAdd.call( this, elem, hoverHack( types || "" ), handler, data, selector );
 };
 jQuery.event.remove = function( elem, types, handler, selector, mappedTypes ){
@@ -27,10 +34,17 @@ jQuery.event.remove = function( elem, types, handler, selector, mappedTypes ){
 };
 
 jQuery.fn.error = function( data, fn ) {
+	var args = Array.prototype.slice.call( arguments, 0);
 	if ( JQCOMPAT_WARN ) {
 		compatWarn("jQuery.fn.error() is deprecated");
 	}
-	return arguments.length ? this.bind( "error", data, fn ) : this.trigger("error");
+	args.splice( 0, 0, "error" );
+	if ( arguments.length ) {
+		return this.bind.apply( this, args );
+	}
+	// error event should not bubble to window, although it does pre-1.7
+	this.triggerHandler.apply( this, args );
+	return this;
 };
 
 jQuery.fn.toggle = function( fn, fn2 ) {
@@ -72,6 +86,9 @@ jQuery.fn.live = function( types, data, fn ) {
 	if ( JQCOMPAT_WARN ) {
 		compatWarn("jQuery.fn.live() is deprecated");
 	}
+	if ( oldLive ) {
+		return oldLive.apply( this, arguments );
+	}
 	jQuery( this.context ).on( types, this.selector, data, fn );
 	return this;
 };
@@ -80,16 +97,21 @@ jQuery.fn.die = function( types, fn ) {
 	if ( JQCOMPAT_WARN ) {
 		compatWarn("jQuery.fn.die() is deprecated");
 	}
+	if ( oldDie ) {
+		return oldDie.apply( this, arguments );
+	}
 	jQuery( this.context ).off( types, this.selector || "**", fn );
 	return this;
 };
 
-// Global event behavior
+// Turn global events into document-triggered events
 jQuery.event.trigger = function( event, data, elem, onlyHandlers  ){
-	// Turn global events into document-triggered events on pre-1.9 jQuery
+	if ( JQCOMPAT_WARN && !elem & !rajaxEvent.test( event ) ) {
+		compatWarn( "Global events are undocumented and deprecated" );
+	}
 	return eventTrigger.call( this,  event, data, elem || document, onlyHandlers  );
 };
-$.each( "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess".split(" "),
+$.each( ajaxEvents.split("|"),
 	function( _, name ) {
 		jQuery.event.special[ name ] = {
 			setup: function( data ) {
@@ -97,7 +119,6 @@ $.each( "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess".split("
 
 				// The document needs no shimming; must be !== for oldIE
 				if ( elem !== document ) {
-					compatWarn( "Global events should be attached to document: " + name );
 					jQuery.event.add( document, name + "." + jQuery.guid, function( event ) {
 						jQuery.event.trigger( name, null, elem, true );
 					});
@@ -114,4 +135,3 @@ $.each( "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess".split("
 		}
 	}
 );
-
