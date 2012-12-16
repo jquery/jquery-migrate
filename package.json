@@ -2,7 +2,7 @@
 	"name": "jquery-compat",
 	"title": "jQuery Compat",
 	"description": "APIs and features removed from jQuery core",
-	"version": "0.1.0",
+	"version": "0.1.1b1",
 	"homepage": "https://github.com/jquery/jquery-compat",
 	"author": {
 		"name": "jQuery Foundation and other contributors",
@@ -15,14 +15,16 @@
 	"bugs": {
 		"url": "http://bugs.jquery.com/"
 	},
-	"licenses": [{
-		"type": "MIT",
-		"url": "https://github.com/jquery/jquery-compat/blob/master/LICENSE-MIT"
-	}],
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "https://github.com/jquery/jquery-compat/blob/master/LICENSE-MIT"
+		}
+	],
 	"dependencies": {
 		"jquery": "~1.7.2"
 	},
- 	"devDependencies": {
+	"devDependencies": {
 		"grunt": "~0.3.17"
 	},
 	"keywords": []
