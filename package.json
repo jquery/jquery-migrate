@@ -2,7 +2,7 @@
 	"name": "jquery-compat",
 	"title": "jQuery Compat",
 	"description": "APIs and features removed from jQuery core",
-	"version": "0.1.1b1",
+	"version": "0.1.1pre",
 	"homepage": "https://github.com/jquery/jquery-compat",
 	"author": {
 		"name": "jQuery Foundation and other contributors",
