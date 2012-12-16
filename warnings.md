@@ -1,4 +1,3 @@
-
 # jQuery Compat Plugin - Warning Messages
 
 To allow developers to identify and fix compatibility issues, the development (uncompressed) version of the plugin generates console warning messages whenever any of its functionality is called. The messages only appear once on the console for each unique message. 
@@ -87,6 +86,18 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 **Cause**: Prior to jQuery 1.9, `$().attr()` supported an undocumented `pass` argument that was primarily used with the `$(html, props)` signature. This undocumented argument has been removed and `$(html, props)` is now implemented differently.
 
 **Solution:** Update any code that makes use of the `pass` argument. Older versions of jQuery UI used this argument but they should be updated to version 1.8.24 at minimum for use with jQuery 1.8 or later.
+
+### JQCOMPAT: property-based jQuery.fn.attr('value') is deprecated
+
+**Cause**: Prior to jQuery 1.9, `$().attr("value")` retrieved the value *property* instead of the value *attribute* (which generally reflects the value that was read from HTML markup). This caused inconsistent behavior with selectors referencing the value attribute.
+
+**Solution**: Use `$().val()` (for form controls) or `$().prop("value")` (for other elements) to get the *current* value.
+
+### JQCOMPAT: property-based jQuery.fn.attr('value', val) is deprecated
+
+**Cause**: Prior to jQuery 1.9, `$().attr( "value", val )` set the value *property* instead of the value *attribute*. This caused inconsistent behavior with selectors referencing the value attribute.
+
+**Solution**: Use `$().val( val )` (for form controls) or `$().prop( "value", val )` (for other elements) to set the *current* value.
 
 ### JQCOMPAT: jQuery.buildFragment() is deprecated
 
