@@ -5,14 +5,18 @@
 	<title>jQuery Migrate Test Suite</title>
 	<!-- Ensure IE doesn't fall back into oldIE modes -->
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+
 	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
 	<script src="testinit.js"></script>
+	<script>loadVersion( "jquery", "jquery", "git" );</script>
 	<script>
 		if ( !window.jQuery ) {
-			alert( "jQuery is not defined" );
+			alert("jQuery is not defined");
 		}
 		jQuery.noConflict();
 	</script>
+	<script>loadVersion( "jquery-migrate", "plugin", "dev" );</script>
+
 	<!-- QUnit -->
 	<link rel="stylesheet" href="../libs/qunit/qunit.css" media="screen">
 	<script src="../libs/qunit/qunit.js"></script>

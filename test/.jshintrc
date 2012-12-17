@@ -16,6 +16,7 @@
   },
   "globals": {
     "jQuery": true,
+	"loadVersion": true,
 	"expectNoWarning": true,
 	"expectWarning": true,
 	"deepEqual": true,
