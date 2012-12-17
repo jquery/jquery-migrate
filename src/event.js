@@ -111,7 +111,7 @@ jQuery.event.trigger = function( event, data, elem, onlyHandlers  ){
 	}
 	return eventTrigger.call( this,  event, data, elem || document, onlyHandlers  );
 };
-$.each( ajaxEvents.split("|"),
+jQuery.each( ajaxEvents.split("|"),
 	function( _, name ) {
 		jQuery.event.special[ name ] = {
 			setup: function( data ) {
