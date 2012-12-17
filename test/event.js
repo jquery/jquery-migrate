@@ -626,13 +626,18 @@ test( "live with special events", function() {
 });
 
 test( "toggle(Function, Function, ...)", function() {
-	expect( 17 );
+	expect( 19 );
 
 	var count = 0,
 		fn1 = function(e) { count++; },
 		fn2 = function(e) { count--; },
 		preventDefault = function(e) { e.preventDefault(); },
 		link = jQuery("#mark");
+
+	expectNoWarning( "jQuery.fn.toggle visibility unaffected", function() {
+		jQuery("#foo").toggle( false );
+		ok( jQuery("#foo").is(":hidden"), ".toggle(Boolean) unaffected" );
+	});
 
 	expectWarning( "jQuery.fn.toggle", function() {
 		link.click(preventDefault).click().toggle(fn1, fn2).click().click().click().click().click();
