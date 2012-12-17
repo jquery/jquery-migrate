@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * jQuery Compat Plugin Release Management
+ * jQuery Migrate Plugin Release Management
  */
 
 // Debugging variables
@@ -19,7 +19,7 @@ var releaseVersion,
 
 	scpURL = "jqadmin@code.origin.jquery.com:/var/www/html/code.jquery.com/",
 	cdnURL = "http://code.origin.jquery.com/",
-	repoURL = "git://github.com/jquery/jquery-compat.git",
+	repoURL = "git://github.com/jquery/jquery-migrate.git",
 	branch = "master",
 
 	// Windows needs the .cmd version but will find the non-.cmd
@@ -27,12 +27,12 @@ var releaseVersion,
 	gruntCmd = process.platform === "win32" ? "grunt.cmd" : "grunt",
 
 	readmeFile = "README.md",
-	devFile = "dist/jquery-compat.js",
-	minFile = "dist/jquery-compat.min.js",
+	devFile = "dist/jquery-migrate.js",
+	minFile = "dist/jquery-migrate.min.js",
 
 	releaseFiles = {
-		"jquery-compat-VER.js": devFile,
-		"jquery-compat-VER.min.js": minFile
+		"jquery-migrate-VER.js": devFile,
+		"jquery-migrate-VER.min.js": minFile
 	};
 
 steps(
@@ -117,9 +117,9 @@ function updateReadme( next ) {
 	log("Updating " + readmeFile );
 	if ( !debug ) {
 		// Change version references from the old version to the new one
-		// TODO: make this smarter?
+		// Be sure to allow 1.0.0b2 and such
 		readme = readme
-			.replace( /jquery-compat-\d+\.\d+\.\d+/g, "jquery-compat-" + releaseVersion );
+			.replace( /jquery-migrate-\d+\.\d+\.\w+/g, "jquery-migrate-" + releaseVersion );
 		fs.writeFileSync( readmeFile, readme );
 	}
 	next();

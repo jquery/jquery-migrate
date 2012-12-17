@@ -3,7 +3,7 @@ var oldSelf = jQuery.fn.andSelf || jQuery.fn.addBack,
 	oldFragment = jQuery.buildFragment;
 
 jQuery.fn.andSelf = function() {
-	compatWarn("jQuery.fn.andSelf() replaced by jQuery.fn.addBack()");
+	migrateWarn("jQuery.fn.andSelf() replaced by jQuery.fn.addBack()");
 	return oldSelf.apply( this, arguments );
 };
 
@@ -21,7 +21,7 @@ jQuery.buildFragment = function( args, context, scripts ) {
 		fragment = context.createDocumentFragment();
 		jQuery.clean( args, context, fragment, scripts );
 
-		compatWarn("jQuery.buildFragment() is deprecated");
+		migrateWarn("jQuery.buildFragment() is deprecated");
 		return { fragment: fragment, cacheable: false };
 	}
 	// Don't warn if we are in a version where buildFragment is used internally

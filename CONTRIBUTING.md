@@ -76,7 +76,7 @@ To test the plugin you will need:
 
 ### Build a Local Copy of the plugin
 
-Create a fork of the plugin repo on github at http://github.com/jquery/jquery-compat
+Create a fork of the plugin repo on github at http://github.com/jquery/jquery-migrate
 
 Change directory to your web root directory, whatever that might be:
 
@@ -87,19 +87,19 @@ $ cd /path/to/your/www/root/
 Clone your plugin fork to work locally
 
 ```bash
-$ git clone git@github.com:username/jquery-compat.git
+$ git clone git@github.com:username/jquery-migrate.git
 ```
 
-Change directory to the newly created dir jquery-compat/
+Change directory to the newly created dir jquery-migrate/
 
 ```bash
-$ cd jquery-compat
+$ cd jquery-migrate
 ```
 
-Add the jquery-compat master as a remote. I label mine "upstream"
+Add the jquery-migrate master as a remote. I label mine "upstream"
 
 ```bash
-$ git remote add upstream git://github.com/jquery/jquery-compat.git
+$ git remote add upstream git://github.com/jquery/jquery-migrate.git
 ```
 
 Get in the habit of pulling in the "upstream" master to stay up to date as jQuery receives new commits
@@ -192,7 +192,7 @@ By default the plugin runs against the current (jquery-git WIP) version of jQuer
 
 Example:
 
-http://localhost/jquery-compat/test/?jquery=1.7.2
+http://localhost/jquery-migrate/test/?jquery=1.7.2
 
 This will run the plugin with version 1.7.2 of jQuery, taken from http://code.jquery.com/jquery-1.7.2.js.
 

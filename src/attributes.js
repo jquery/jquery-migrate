@@ -9,14 +9,14 @@ var attrFn = {},
 	rnoAttrNodeType = /^[238]$/;
 
 // jQuery.attrFn
-if ( JQCOMPAT_WARN ) {
-	compatWarnProp( jQuery, "attrFn", attrFn, "jQuery.attrFn is deprecated" );
+if ( JQMIGRATE_WARN ) {
+	migrateWarnProp( jQuery, "attrFn", attrFn, "jQuery.attrFn is deprecated" );
 }
 
 jQuery.attr = function( elem, name, value, pass ) {
 	if ( pass ) {
-		if ( JQCOMPAT_WARN ) {
-			compatWarn("jQuery.fn.attr( props, pass ) is deprecated");
+		if ( JQMIGRATE_WARN ) {
+			migrateWarn("jQuery.fn.attr( props, pass ) is deprecated");
 		}
 		if ( elem && !rnoAttrNodeType.test( elem.nodeType ) && jQuery.isFunction( jQuery.fn[ name ] ) ) {
 			return jQuery( elem )[ name ]( value );
@@ -24,8 +24,8 @@ jQuery.attr = function( elem, name, value, pass ) {
 	}
 
 	// Warn if user tries to set `type` since it breaks on IE 6/7/8
-	if ( JQCOMPAT_WARN && name === "type" && value !== undefined && rnoType.test( elem.nodeName ) ) {
-		compatWarn("Can't change the 'type' of an input or button in IE 6/7/8");
+	if ( JQMIGRATE_WARN && name === "type" && value !== undefined && rnoType.test( elem.nodeName ) ) {
+		migrateWarn("Can't change the 'type' of an input or button in IE 6/7/8");
 	}
 
 	return attr.call( jQuery, elem, name, value );
@@ -37,8 +37,8 @@ jQuery.attrHooks.value = {
 		if ( jQuery.nodeName( elem, "button" ) ) {
 			return valueAttrGet.apply( this, arguments );
 		}
-		if ( JQCOMPAT_WARN ) {
-			compatWarn("property-based jQuery.fn.attr('value') is deprecated");
+		if ( JQMIGRATE_WARN ) {
+			migrateWarn("property-based jQuery.fn.attr('value') is deprecated");
 		}
 		return name in elem ?
 			elem.value :
@@ -48,8 +48,8 @@ jQuery.attrHooks.value = {
 		if ( jQuery.nodeName( elem, "button" ) ) {
 			return valueAttrSet.apply( this, arguments );
 		}
-		if ( JQCOMPAT_WARN ) {
-			compatWarn("property-based jQuery.fn.attr('value', val) is deprecated");
+		if ( JQMIGRATE_WARN ) {
+			migrateWarn("property-based jQuery.fn.attr('value', val) is deprecated");
 		}
 		// Does not return so that setAttribute is also used
 		elem.value = value;

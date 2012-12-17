@@ -26,4 +26,4 @@
 	include( "jquery", jquery );
 	include( name, plugin );
 
-}("jquery-compat"));
+}("jquery-migrate"));

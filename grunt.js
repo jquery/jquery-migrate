@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     pkg: '<json:package.json>',
 	files: [
 		"src/intro.js",
-		"src/compat.js",
+		"src/migrate.js",
 		"src/attributes.js",
 		"src/core.js",
 		"src/data.js",
@@ -71,7 +71,7 @@ module.exports = function(grunt) {
 		},
 		mangle: {
 			defines: {
-				JQCOMPAT_WARN: [ "name", 0 ]
+				JQMIGRATE_WARN: [ "name", 0 ]
 			}
 		}
 	}

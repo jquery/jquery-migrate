@@ -13,7 +13,7 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 			(match = rquickExpr.exec( selector )) && match[1] ) {
 		// This is an HTML string according to the "old" rules; is it still?
 		if ( selector.charAt( 0 ) !== "<" ) {
-			compatWarn("$(html) HTML strings must start with '<' character");
+			migrateWarn("$(html) HTML strings must start with '<' character");
 		}
 		// Now process using loose rules; let pre-1.8 play too
 		if ( context && context.context ) {
@@ -83,9 +83,9 @@ if ( browser.chrome ) {
 
 jQuery.browser = browser;
 
-if ( JQCOMPAT_WARN ) {
+if ( JQMIGRATE_WARN ) {
 	// Warn if the code tries to get jQuery.browser
-	compatWarnProp( jQuery, "browser", browser, "jQuery.browser is deprecated" );
+	migrateWarnProp( jQuery, "browser", browser, "jQuery.browser is deprecated" );
 }
 
 jQuery.sub = function() {
@@ -106,8 +106,8 @@ jQuery.sub = function() {
 	};
 	jQuerySub.fn.init.prototype = jQuerySub.fn;
 	var rootjQuerySub = jQuerySub(document);
-	if ( JQCOMPAT_WARN ) {
-		compatWarn( "jQuery.sub() is deprecated" );
+	if ( JQMIGRATE_WARN ) {
+		migrateWarn( "jQuery.sub() is deprecated" );
 	}
 	return jQuerySub;
 };

@@ -11,8 +11,8 @@ var eventAdd = jQuery.event.add,
 		if ( typeof( events ) != "string" || jQuery.event.special.hover ) {
 			return events;
 		}
-		if ( JQCOMPAT_WARN && rhoverHack.test( events ) ) {
-			compatWarn("'hover' pseudo-event is deprecated, use 'mouseenter mouseleave'");
+		if ( JQMIGRATE_WARN && rhoverHack.test( events ) ) {
+			migrateWarn("'hover' pseudo-event is deprecated, use 'mouseenter mouseleave'");
 		}
 		return events && events.replace( rhoverHack, "mouseenter$1 mouseleave$1" );
 	};
@@ -24,8 +24,8 @@ if ( jQuery.event.props && jQuery.event.props[ 0 ] !== "attrChange" ) {
 
 // Support for 'hover' pseudo-event and ajax event warnings
 jQuery.event.add = function( elem, types, handler, data, selector ){
-	if ( JQCOMPAT_WARN && elem !== document && rajaxEvent.test( types ) ) {
-		compatWarn( "AJAX events should be attached to document: " + types );
+	if ( JQMIGRATE_WARN && elem !== document && rajaxEvent.test( types ) ) {
+		migrateWarn( "AJAX events should be attached to document: " + types );
 	}
 	eventAdd.call( this, elem, hoverHack( types || "" ), handler, data, selector );
 };
@@ -35,8 +35,8 @@ jQuery.event.remove = function( elem, types, handler, selector, mappedTypes ){
 
 jQuery.fn.error = function( data, fn ) {
 	var args = Array.prototype.slice.call( arguments, 0);
-	if ( JQCOMPAT_WARN ) {
-		compatWarn("jQuery.fn.error() is deprecated");
+	if ( JQMIGRATE_WARN ) {
+		migrateWarn("jQuery.fn.error() is deprecated");
 	}
 	args.splice( 0, 0, "error" );
 	if ( arguments.length ) {
@@ -53,8 +53,8 @@ jQuery.fn.toggle = function( fn, fn2 ) {
 	if ( !jQuery.isFunction( fn ) || !jQuery.isFunction( fn2 ) ) {
 		return oldToggle.apply( this, arguments );
 	}
-	if ( JQCOMPAT_WARN ) {
-		compatWarn("jQuery.fn.toggle(handler, handler...) is deprecated");
+	if ( JQMIGRATE_WARN ) {
+		migrateWarn("jQuery.fn.toggle(handler, handler...) is deprecated");
 	}
 
 	// Save reference to arguments for access in closure
@@ -83,8 +83,8 @@ jQuery.fn.toggle = function( fn, fn2 ) {
 };
 
 jQuery.fn.live = function( types, data, fn ) {
-	if ( JQCOMPAT_WARN ) {
-		compatWarn("jQuery.fn.live() is deprecated");
+	if ( JQMIGRATE_WARN ) {
+		migrateWarn("jQuery.fn.live() is deprecated");
 	}
 	if ( oldLive ) {
 		return oldLive.apply( this, arguments );
@@ -94,8 +94,8 @@ jQuery.fn.live = function( types, data, fn ) {
 };
 
 jQuery.fn.die = function( types, fn ) {
-	if ( JQCOMPAT_WARN ) {
-		compatWarn("jQuery.fn.die() is deprecated");
+	if ( JQMIGRATE_WARN ) {
+		migrateWarn("jQuery.fn.die() is deprecated");
 	}
 	if ( oldDie ) {
 		return oldDie.apply( this, arguments );
@@ -106,8 +106,8 @@ jQuery.fn.die = function( types, fn ) {
 
 // Turn global events into document-triggered events
 jQuery.event.trigger = function( event, data, elem, onlyHandlers  ){
-	if ( JQCOMPAT_WARN && !elem & !rajaxEvent.test( event ) ) {
-		compatWarn( "Global events are undocumented and deprecated" );
+	if ( JQMIGRATE_WARN && !elem & !rajaxEvent.test( event ) ) {
+		migrateWarn( "Global events are undocumented and deprecated" );
 	}
 	return eventTrigger.call( this,  event, data, elem || document, onlyHandlers  );
 };
