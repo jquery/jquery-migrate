@@ -63,7 +63,7 @@ This plugin adds two properties to the `jQuery` object that can be used programm
 
 ## Reporting problems
 
-Any bugs should be reported on the [jQuery Core bug tracker](http://bugs.jquery.com/) and *must* be accompanied by an executable test case that demonstrates the bug. The easiest way to do this is via an online test tool such as [jsFiddle.net](http://jsFiddle.net/) or [jsbin.com](http://jsbin.com). You can this [this jsFiddle template](http://jsfiddle.net/DUwny/) or [this jsbin template](http://jsbin.com/emuwuy/1/) as a starting point; they already contain links to the work-in-progress versions of both jQuery and the jQuery Migrate plugin. Add your code there and post a link to it with your bug report.
+Any bugs should be reported on the [jQuery Core bug tracker](http://bugs.jquery.com/) and *must* be accompanied by an executable test case that demonstrates the bug. The easiest way to do this is via an online test tool such as [jsFiddle.net](http://jsFiddle.net/) or [jsbin.com](http://jsbin.com). You can this [this jsFiddle template](http://jsfiddle.net/4ZwWv/) or [this jsbin template](http://jsbin.com/emuwuy/4/show) as a starting point; they already contain links to the work-in-progress versions of both jQuery and the jQuery Migrate plugin. Add your code there and post a link to it with your bug report.
 
 
 How to run the tests:
