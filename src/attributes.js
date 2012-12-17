@@ -9,22 +9,18 @@ var attrFn = {},
 	rnoAttrNodeType = /^[238]$/;
 
 // jQuery.attrFn
-if ( JQMIGRATE_WARN ) {
-	migrateWarnProp( jQuery, "attrFn", attrFn, "jQuery.attrFn is deprecated" );
-}
+migrateWarnProp( jQuery, "attrFn", attrFn, "jQuery.attrFn is deprecated" );
 
 jQuery.attr = function( elem, name, value, pass ) {
 	if ( pass ) {
-		if ( JQMIGRATE_WARN ) {
-			migrateWarn("jQuery.fn.attr( props, pass ) is deprecated");
-		}
+		migrateWarn("jQuery.fn.attr( props, pass ) is deprecated");
 		if ( elem && !rnoAttrNodeType.test( elem.nodeType ) && jQuery.isFunction( jQuery.fn[ name ] ) ) {
 			return jQuery( elem )[ name ]( value );
 		}
 	}
 
 	// Warn if user tries to set `type` since it breaks on IE 6/7/8
-	if ( JQMIGRATE_WARN && name === "type" && value !== undefined && rnoType.test( elem.nodeName ) ) {
+	if ( name === "type" && value !== undefined && rnoType.test( elem.nodeName ) ) {
 		migrateWarn("Can't change the 'type' of an input or button in IE 6/7/8");
 	}
 
@@ -37,9 +33,7 @@ jQuery.attrHooks.value = {
 		if ( jQuery.nodeName( elem, "button" ) ) {
 			return valueAttrGet.apply( this, arguments );
 		}
-		if ( JQMIGRATE_WARN ) {
-			migrateWarn("property-based jQuery.fn.attr('value') is deprecated");
-		}
+		migrateWarn("property-based jQuery.fn.attr('value') is deprecated");
 		return name in elem ?
 			elem.value :
 			null;
@@ -48,9 +42,7 @@ jQuery.attrHooks.value = {
 		if ( jQuery.nodeName( elem, "button" ) ) {
 			return valueAttrSet.apply( this, arguments );
 		}
-		if ( JQMIGRATE_WARN ) {
-			migrateWarn("property-based jQuery.fn.attr('value', val) is deprecated");
-		}
+		migrateWarn("property-based jQuery.fn.attr('value', val) is deprecated");
 		// Does not return so that setAttribute is also used
 		elem.value = value;
 	}

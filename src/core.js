@@ -83,10 +83,8 @@ if ( browser.chrome ) {
 
 jQuery.browser = browser;
 
-if ( JQMIGRATE_WARN ) {
-	// Warn if the code tries to get jQuery.browser
-	migrateWarnProp( jQuery, "browser", browser, "jQuery.browser is deprecated" );
-}
+// Warn if the code tries to get jQuery.browser
+migrateWarnProp( jQuery, "browser", browser, "jQuery.browser is deprecated" );
 
 jQuery.sub = function() {
 	function jQuerySub( selector, context ) {
@@ -106,8 +104,6 @@ jQuery.sub = function() {
 	};
 	jQuerySub.fn.init.prototype = jQuerySub.fn;
 	var rootjQuerySub = jQuerySub(document);
-	if ( JQMIGRATE_WARN ) {
-		migrateWarn( "jQuery.sub() is deprecated" );
-	}
+	migrateWarn( "jQuery.sub() is deprecated" );
 	return jQuerySub;
 };

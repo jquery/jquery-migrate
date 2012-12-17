@@ -11,7 +11,7 @@ jQuery.migrateReset = function() {
 };
 
 function migrateWarn( msg) {
-	if ( JQMIGRATE_WARN ) {
+	if ( window.JQMIGRATE_WARN ) {
 		if ( !warnedAbout[ msg ] ) {
 			warnedAbout[ msg ] = true;
 			jQuery.migrateWarnings.push( msg );
@@ -23,7 +23,7 @@ function migrateWarn( msg) {
 }
 
 function migrateWarnProp( obj, prop, value, msg ) {
-	if ( JQMIGRATE_WARN && Object.defineProperty ) {
+	if ( window.JQMIGRATE_WARN && Object.defineProperty ) {
 		// On ES5 browsers (non-oldIE), warn if the code tries to get prop;
 		// allow property to be overwritten in case some other plugin wants it
 		try {
@@ -50,7 +50,7 @@ function migrateWarnProp( obj, prop, value, msg ) {
 	obj[ prop ] = value;
 }
 
-if ( JQMIGRATE_WARN && document.compatMode === "BackCompat" ) {
+if ( window.JQMIGRATE_WARN && document.compatMode === "BackCompat" ) {
 	// jQuery has never supported or tested Quirks Mode
 	migrateWarn( "jQuery is not compatible with Quirks Mode" );
 }

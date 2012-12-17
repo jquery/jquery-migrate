@@ -10,9 +10,7 @@ jQuery.fn.data = function( name ) {
 		ret = jQuery.data( elem, name );
 		evt = jQuery._data( elem, name );
 		if ( ( ret === undefined || ret === evt ) && evt !== undefined ) {
-			if ( JQMIGRATE_WARN ) {
-				migrateWarn("Use of jQuery.fn.data('events') is deprecated");
-			}
+			migrateWarn("Use of jQuery.fn.data('events') is deprecated");
 			return evt;
 		}
 	}
