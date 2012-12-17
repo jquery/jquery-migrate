@@ -19,7 +19,7 @@ var releaseVersion,
 
 	scpURL = "jqadmin@code.origin.jquery.com:/var/www/html/code.jquery.com/",
 	cdnURL = "http://code.origin.jquery.com/",
-	repoURL = "git://github.com/jquery/jquery-migrate.git",
+	repoURL = "git@github.com:jquery/jquery-migrate.git",
 	branch = "master",
 
 	// Windows needs the .cmd version but will find the non-.cmd
