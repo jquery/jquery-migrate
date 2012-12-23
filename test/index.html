@@ -6,20 +6,34 @@
 	<!-- Ensure IE doesn't fall back into oldIE modes -->
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 
+	<!-- QUnit -->
+	<link rel="stylesheet" href="../libs/qunit/qunit.css" media="screen">
+	<script src="../libs/qunit/qunit.js"></script>
+
 	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
 	<script src="testinit.js"></script>
-	<script>loadVersion( "jquery", "jquery", "git" );</script>
+	<script>
+		TestManager.init({
+			"jquery": {
+				urlTag: "jquery",
+				choices: "dev,min,git,1.8.3,1.7.2,1.6.4"
+			},
+			"jquery-migrate": {
+				urlTag: "plugin",
+				choices: "dev,min,git"
+			}
+		});
+		TestManager.loadProject( "jquery", "git" );
+		// Close this script tag so file will load
+	</script>
 	<script>
 		if ( !window.jQuery ) {
 			alert("jQuery is not defined");
 		}
 		jQuery.noConflict();
+		TestManager.loadProject( "jquery-migrate", "dev" );
 	</script>
-	<script>loadVersion( "jquery-migrate", "plugin", "dev" );</script>
 
-	<!-- QUnit -->
-	<link rel="stylesheet" href="../libs/qunit/qunit.css" media="screen">
-	<script src="../libs/qunit/qunit.js"></script>
 	<!-- Unit test files -->
 	<script src="migrate.js"></script>
 	<script src="core.js"></script>

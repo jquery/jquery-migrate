@@ -16,9 +16,10 @@
   },
   "globals": {
     "jQuery": true,
-	"loadVersion": true,
+	"TestManager": true,
 	"expectNoWarning": true,
 	"expectWarning": true,
+	"QUnit": true,
 	"deepEqual": true,
 	"equal": true,
 	"expect": true,
