@@ -4,6 +4,10 @@ var warnedAbout = {};
 // List of warnings already given; public read only
 jQuery.migrateWarnings = [];
 
+// Set to true to prevent console output; migrateWarnings still maintained
+// Leave as undefined so that it can be set before plugin is loaded
+//jQuery.migrateMute = false;
+
 // Forget any warnings we've already given; public
 jQuery.migrateReset = function() {
 	warnedAbout = {};
@@ -15,7 +19,7 @@ function migrateWarn( msg) {
 		if ( !warnedAbout[ msg ] ) {
 			warnedAbout[ msg ] = true;
 			jQuery.migrateWarnings.push( msg );
-			if ( window.console && console.warn ) {
+			if ( window.console && console.warn && !jQuery.migrateMute ) {
 				console.warn( "JQMIGRATE: " + msg );
 			}
 		}
