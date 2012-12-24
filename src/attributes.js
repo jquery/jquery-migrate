@@ -30,19 +30,25 @@ jQuery.attr = function( elem, name, value, pass ) {
 // attrHooks: value
 jQuery.attrHooks.value = {
 	get: function( elem, name ) {
-		if ( jQuery.nodeName( elem, "button" ) ) {
+		var nodeName = ( elem.nodeName || "" ).toLowerCase();
+		if ( nodeName === "button" ) {
 			return valueAttrGet.apply( this, arguments );
 		}
-		migrateWarn("property-based jQuery.fn.attr('value') is deprecated");
+		if ( nodeName === "input" || nodeName === "textarea" ) {
+			migrateWarn("property-based jQuery.fn.attr('value', val) is deprecated");
+		}
 		return name in elem ?
 			elem.value :
 			null;
 	},
 	set: function( elem, value, name ) {
-		if ( jQuery.nodeName( elem, "button" ) ) {
+		var nodeName = ( elem.nodeName || "" ).toLowerCase();
+		if ( nodeName === "button" ) {
 			return valueAttrSet.apply( this, arguments );
 		}
-		migrateWarn("property-based jQuery.fn.attr('value', val) is deprecated");
+		if ( nodeName === "input" || nodeName === "textarea" ) {
+			migrateWarn("property-based jQuery.fn.attr('value', val) is deprecated");
+		}
 		// Does not return so that setAttribute is also used
 		elem.value = value;
 	}

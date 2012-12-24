@@ -118,7 +118,7 @@ test( "attrHooks[\"value\"]", function() {
 		equal( button.html(), "Button", "button.attr('value') doesn't affect contents" );
 	});
 
-	expectWarning( "div.attr(...)", 2, function() {
+	expectNoWarning( "div.attr(...)", function() {
 		var div = jQuery("#foo");
 		equal( div.attr("value"), undefined, "div.attr('value') returns attribute." );
 		equal( div.attr( "value", "bar" ).attr("value"), "bar", "div.attr('value', val) sets attribute." );
