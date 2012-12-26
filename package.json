@@ -21,11 +21,19 @@
 			"url": "https://github.com/jquery/jquery-migrate/blob/master/LICENSE-MIT"
 		}
 	],
+	"scripts": {
+		"test" : "./node_modules/.bin/grunt"
+	},
 	"dependencies": {
-		"jquery": "~1.7.2"
+		"jquery": ">=1.6.4"
 	},
 	"devDependencies": {
-		"grunt": "~0.3.17"
+		"grunt-git-authors": "~1.1.0",
+		"grunt-contrib-watch": "~0.1.0",
+		"grunt-contrib-jshint": "~0.1.0",
+		"grunt-contrib-uglify": "~0.1.0",
+		"grunt-contrib-qunit": "~0.1.0",
+		"grunt": "~0.4.0"
 	},
 	"keywords": []
 }

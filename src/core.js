@@ -3,7 +3,7 @@ var matched, browser,
 	oldAccess = jQuery.access,
 	oldInit = jQuery.fn.init,
 	// Note this does NOT include the # XSS fix from 1.7!
-	rquickExpr = /^(?:.*(<[\w\W]+>)[^>]*|#([\w-]*))$/;
+	rquickExpr = /^(?:.*(<[\w\W]+>)[^>]*|#([\w\-]*))$/;
 
 // $(html) "looks like html" rule change
 jQuery.fn.init = function( selector, context, rootjQuery ) {

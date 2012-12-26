@@ -41,7 +41,7 @@ jQuery.attrHooks.value = {
 			elem.value :
 			null;
 	},
-	set: function( elem, value, name ) {
+	set: function( elem, value ) {
 		var nodeName = ( elem.nodeName || "" ).toLowerCase();
 		if ( nodeName === "button" ) {
 			return valueAttrSet.apply( this, arguments );

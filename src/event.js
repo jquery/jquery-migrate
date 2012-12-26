@@ -33,7 +33,7 @@ jQuery.event.remove = function( elem, types, handler, selector, mappedTypes ){
 	eventRemove.call( this, elem, hoverHack( types ) || "", handler, selector, mappedTypes );
 };
 
-jQuery.fn.error = function( data, fn ) {
+jQuery.fn.error = function() {
 	var args = Array.prototype.slice.call( arguments, 0);
 	migrateWarn("jQuery.fn.error() is deprecated");
 	args.splice( 0, 0, "error" );
@@ -106,24 +106,24 @@ jQuery.event.trigger = function( event, data, elem, onlyHandlers  ){
 jQuery.each( ajaxEvents.split("|"),
 	function( _, name ) {
 		jQuery.event.special[ name ] = {
-			setup: function( data ) {
+			setup: function() {
 				var elem = this;
 
 				// The document needs no shimming; must be !== for oldIE
 				if ( elem !== document ) {
-					jQuery.event.add( document, name + "." + jQuery.guid, function( event ) {
+					jQuery.event.add( document, name + "." + jQuery.guid, function() {
 						jQuery.event.trigger( name, null, elem, true );
 					});
 					jQuery._data( this, name, jQuery.guid++ );
 				}
 				return false;
 			},
-			teardown: function( data, handleObj ) {
+			teardown: function() {
 				if ( this !== document ) {
 					jQuery.event.remove( document, name + "." + jQuery._data( this, name ) );
 				}
 				return false;
 			}
-		}
+		};
 	}
 );
