@@ -88,9 +88,9 @@ test( "attr(jquery_method)", function() {
 });
 
 test( "attrHooks[\"value\"]", function() {
-	expect( 16 );
+	expect( 20 );
 
-	expectWarning( "input.attr('value')", 1, function() {
+	expectWarning( "input.attr('value')", 0, function() {
 		var input = jQuery("<input/>");
 		equal( input.attr("value"), "", "input.attr('value') returns initially empty property." );
 		input[0].value = "foo";
@@ -101,13 +101,23 @@ test( "attrHooks[\"value\"]", function() {
 		equal( jQuery("#area1").attr("value"), "foobar", "textarea.attr('value') returns property." );
 	});
 
-	expectWarning( ".attr('value', val)", 1, function() {
-		var input = jQuery("#text1").attr( "value", "foo" );
-		equal( input[0].getAttributeNode("value").value, "foo", ".attr('value', val) sets attribute." );
-		equal( input[0].value, "foo", ".attr('value', val) sets property." );
+	expectWarning( "input.attr('value', val)", 0, function() {
+		var el = jQuery("#text1").attr( "value", "foo" );
+		equal( el[0].getAttributeNode("value").value, "foo", "input.attr('value', val) sets attribute." );
+		equal( el[0].value, "foo", "input.attr('value', val) sets property." );
 	});
 
-	expectNoWarning( "button.attr(...)", function() {
+	expectWarning( "textarea.attr('value', val)", 1, function() {
+		var el = jQuery("#area1").attr( "value", "foo" );
+		equal( el[0].value, "foo", "textarea.attr('value', val) sets property." );
+	});
+
+	expectWarning( "select.attr('value', val)", 1, function() {
+		var el = jQuery("#select1").attr( "value", "2" );
+		equal( el[0].value, "2", "select.attr('value', val) sets property." );
+	});
+
+	expectWarning( "button.attr(...)", 0, function() {
 		var button = jQuery("#button");
 		if ( jQuery.fn.jquery >= "1.9" ) {
 			equal( button.attr("value"), undefined, "button.attr('value') returns attribute." );
@@ -118,7 +128,7 @@ test( "attrHooks[\"value\"]", function() {
 		equal( button.html(), "Button", "button.attr('value') doesn't affect contents" );
 	});
 
-	expectNoWarning( "div.attr(...)", function() {
+	expectWarning( "div.attr(...)", 2, function() {
 		var div = jQuery("#foo");
 		equal( div.attr("value"), undefined, "div.attr('value') returns attribute." );
 		equal( div.attr( "value", "bar" ).attr("value"), "bar", "div.attr('value', val) sets attribute." );
