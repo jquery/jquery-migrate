@@ -12,21 +12,25 @@ function expectWarning( name, expected, fn ) {
 	jQuery.migrateReset();
 	fn();
 
-	if ( expected && jQuery.migrateWarnings.length === expected ) {
+	// Special-case for 0 warnings expected
+	if ( expected === 0 ) {
+		deepEqual( jQuery.migrateWarnings, [], name + ": did not warn" );
+
+	// Simple numeric equality assertion for warnings matching an explicit count
+	} else if ( expected && jQuery.migrateWarnings.length === expected ) {
 		equal( jQuery.migrateWarnings.length, expected, name + ": warned" );
 
-	// falsy `expected` passes whenever at least one warning was generated
+	// Simple ok assertion when we saw at least one warning and weren't looking for an explict count
 	} else if ( !expected && jQuery.migrateWarnings.length ) {
 		ok( true, name + ": warned" );
+
+	// Failure; use deepEqual to show the warnings that *were* generated and the expectation
 	} else {
-		deepEqual( jQuery.migrateWarnings, "<warnings: " + expected + ">", name + ": warned" );
+		deepEqual( jQuery.migrateWarnings, "<warnings: " + ( expected || "1+" ) + ">", name + ": warned" );
 	}
 }
 
 function expectNoWarning( name, expected, fn ) {
-	// expected is present only for signature compatibility with expectWarning
-	fn = fn || expected;
-	jQuery.migrateReset();
-	fn();
-	deepEqual( jQuery.migrateWarnings, [], name + ": did not warn" );
+	// Expected is present only for signature compatibility with expectWarning
+	return expectWarning( name, 0, fn || expected );
 }
