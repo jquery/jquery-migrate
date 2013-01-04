@@ -99,6 +99,14 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution**: Use `$().val( val )` (for form controls) or `$().prop( "value", val )` (for other elements) to set the *current* value.
 
+### JQMIGRATE: jQuery.fn.attr(checked) may use property instead of attribute
+
+### JQMIGRATE: jQuery.fn.attr(selected) may use property instead of attribute
+
+**Cause**: Prior to jQuery 1.9, `$().attr("checked")` etc. would sometimes use the checked|selected *property* instead of the *attribute* when interacting with non-XML elements, despite the fact that browsers and the HTML specifications allow the properties (current state) to differ from the attributes (initial/default state). This was a holdover from earlier versions of jQuery that did not offer `$().prop`.
+
+**Solution**: Boolean properties should generally not be passed to `$().attr` at all; replace with `$().prop` unless you truly intend to update the underlying HTML *attribute*.
+
 ### JQMIGRATE: jQuery.buildFragment() is deprecated
 
 **Cause**: The `jQuery.buildFragment()` method was an undocumented internal method removed in jQuery 1.9. However, we are aware of some plugins or other code that may be using it.

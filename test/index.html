@@ -202,8 +202,24 @@ Z</textarea>
 				<option value="option"></option>
 			</datalist>
 		</form>
-
-
+		<div id="moretests">
+			<form>
+				<div id="checkedtest" style="display:none;">
+					<input type="radio" name="checkedtestradios" checked="checked"/>
+					<input type="radio" name="checkedtestradios" value="on"/>
+					<input type="checkbox" name="checkedtestcheckboxes" checked="checked"/>
+					<input type="checkbox" name="checkedtestcheckboxes" />
+				</div>
+			</form>
+			<div id="nonnodes"><span>hi</span> there <!-- mon ami --></div>
+			<div id="t2037">
+				<div><div class="hidden">hidden</div></div>
+			</div>
+			<div id="t6652">
+				<div></div>
+			</div>
+			<div id="no-clone-exception"><object><embed></embed></object></div>
+		</div>
 	</div>
 </body>
 </html>

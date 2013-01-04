@@ -125,3 +125,79 @@ test( "attrHooks[\"value\"]", function() {
 		equal( div[0].value, "bar", "div.attr('value', val) sets property." );
 	});
 });
+
+test( "boolean attributes (boolHook)", function() {
+	expect( 42 );
+
+	expectWarning( ".attr(checked)", 1, function() {
+		jQuery("#check2").prop( "checked", true ).prop( "checked", false ).attr( "checked", true );
+		equal( document.getElementById("check2").checked, true, "Set checked attribute" );
+		equal( jQuery("#check2").prop("checked"), true, "Set checked attribute" );
+		equal( jQuery("#check2").attr("checked"), "checked", "Set checked attribute" );
+		jQuery("#check2").attr( "checked", false );
+		equal( document.getElementById("check2").checked, false, "Set checked attribute" );
+		equal( jQuery("#check2").prop("checked"), false, "Set checked attribute" );
+		equal( jQuery("#check2").attr("checked"), undefined, "Set checked attribute" );
+	});
+	expectWarning( ".attr(selected)", 1, function() {
+		jQuery("#option3d").prop( "selected", true ).prop( "selected", false ).attr( "selected", true );
+		equal( document.getElementById("option3d").selected, true, "Set selected attribute" );
+		equal( jQuery("#option3d").prop("selected"), true, "Set selected attribute" );
+		equal( jQuery("#option3d").attr("selected"), "selected", "Set selected attribute" );
+		jQuery("#option3d").attr( "selected", false );
+		equal( document.getElementById("option3d").selected, false, "Set selected attribute" );
+		equal( jQuery("#option3d").prop("selected"), false, "Set selected attribute" );
+		equal( jQuery("#option3d").attr("selected"), undefined, "Set selected attribute" );
+	});
+	expectWarning( ".attr(readonly)", 0, function() {
+		jQuery("#text1").attr( "readonly", true );
+		equal( document.getElementById("text1").readOnly, true, "Set readonly attribute" );
+		equal( jQuery("#text1").prop("readOnly"), true, "Set readonly attribute" );
+		equal( jQuery("#text1").attr("readonly"), "readonly", "Set readonly attribute" );
+		jQuery("#text1").attr( "readonly", false );
+		equal( document.getElementById("text1").readOnly, false, "Set readonly attribute" );
+		equal( jQuery("#text1").prop("readOnly"), false, "Set readonly attribute" );
+		equal( jQuery("#text1").attr("readonly"), undefined, "Set readonly attribute" );
+	});
+
+	jQuery("#check2").prop( "checked", true );
+	equal( document.getElementById("check2").checked, true, "Set checked attribute" );
+	equal( jQuery("#check2").prop("checked"), true, "Set checked attribute" );
+	equal( jQuery("#check2").attr("checked"), "checked", "Set checked attribute" );
+	jQuery("#check2").prop( "checked", false );
+	equal( document.getElementById("check2").checked, false, "Set checked attribute" );
+	equal( jQuery("#check2").prop("checked"), false, "Set checked attribute" );
+	equal( jQuery("#check2").attr("checked"), undefined, "Set checked attribute" );
+
+	jQuery("#check2").attr("checked", "checked");
+	equal( document.getElementById("check2").checked, true, "Set checked attribute with 'checked'" );
+	equal( jQuery("#check2").prop("checked"), true, "Set checked attribute" );
+	equal( jQuery("#check2").attr("checked"), "checked", "Set checked attribute" );
+
+
+	var $radios = jQuery("#checkedtest").find("input[type='radio']");
+	$radios.eq( 1 ).click();
+	equal( $radios.eq( 1 ).prop("checked"), true, "Second radio was checked when clicked" );
+	equal( $radios.attr("checked"), $radios[ 0 ].checked ? "checked" : undefined, "Known booleans do not fall back to attribute presence (#10278)" );
+
+	jQuery("#text1").prop( "readOnly", true );
+	equal( document.getElementById("text1").readOnly, true, "Set readonly attribute" );
+	equal( jQuery("#text1").prop("readOnly"), true, "Set readonly attribute" );
+	equal( jQuery("#text1").attr("readonly"), "readonly", "Set readonly attribute" );
+	jQuery("#text1").prop( "readOnly", false );
+	equal( document.getElementById("text1").readOnly, false, "Set readonly attribute" );
+	equal( jQuery("#text1").prop("readOnly"), false, "Set readonly attribute" );
+	equal( jQuery("#text1").attr("readonly"), undefined, "Set readonly attribute" );
+
+
+	// HTML5 boolean attributes
+	expectWarning( ".attr(HTML5)", 0, function() {
+		var $text = jQuery("#text1").attr({
+			"autofocus": true,
+			"required": true
+		});
+		equal( $text.attr("autofocus"), "autofocus", "Set boolean attributes to the same name" );
+		equal( $text.attr( "autofocus", false ).attr("autofocus"), undefined, "Setting autofocus attribute to false removes it" );
+		equal( $text.attr("required"), "required", "Set boolean attributes to the same name" );
+	});
+});
