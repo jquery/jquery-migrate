@@ -2,7 +2,5 @@
 "use strict";
 
 // Use Uglify to do conditional compilation of warning messages;
-// the minified version will set this to false and remove dead code.
-if ( typeof window.JQMIGRATE_WARN === "undefined" ) {
-	window.JQMIGRATE_WARN = true;
-}
+// the minified version will set this to false during compilation.
+window.JQMIGRATE_WARN = typeof JQMIGRATE_WARN === "undefined";

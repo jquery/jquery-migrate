@@ -81,12 +81,6 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution:** Change the program to avoid the use of global events. The jQuery Migrate plugin warns about this case but does _not_ restore the previous behavior since it was undocumented. 
 
-### JQMIGRATE: jQuery.fn.attr( props, pass ) is deprecated
-
-**Cause**: Prior to jQuery 1.9, `$().attr()` supported an undocumented `pass` argument that was primarily used with the `$(html, props)` signature. This undocumented argument has been removed and `$(html, props)` is now implemented differently.
-
-**Solution:** Update any code that makes use of the `pass` argument. Older versions of jQuery UI used this argument but they should be updated to version 1.8.24 at minimum for use with jQuery 1.8 or later.
-
 ### JQMIGRATE: property-based jQuery.fn.attr('value') is deprecated
 
 **Cause**: Prior to jQuery 1.9, `$().attr("value")` retrieved the value *property* instead of the value *attribute* (which generally reflects the value that was read from HTML markup). This caused inconsistent behavior with selectors referencing the value attribute.

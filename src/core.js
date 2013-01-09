@@ -1,6 +1,5 @@
 
 var matched, browser,
-	oldAccess = jQuery.access,
 	oldInit = jQuery.fn.init,
 	// Note this does NOT include the # XSS fix from 1.7!
 	rquickExpr = /^(?:.*(<[\w\W]+>)[^>]*|#([\w\-]*))$/;
@@ -28,27 +27,6 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 	return oldInit.apply( this, arguments );
 };
 jQuery.fn.init.prototype = jQuery.fn;
-
-if ( jQuery.fn.jquery >= "1.9" ) {
-	// jQuery.access( ..., pass )
-	jQuery.access = function( elems, fn, key, value, chainable, emptyGet, pass ) {
-		var i = 0,
-			length = elems.length;
-
-		if ( key && typeof key === "object" && value ) {
-			for ( i in key ) {
-				jQuery.access( elems, fn, i, key[i], true, emptyGet, value );
-			}
-			return elems;
-		} else if ( pass && key != null && value !== undefined ) {
-			for ( ; i < length; i++ ) {
-				fn( elems[i], key, value, true );
-			}
-			return elems;
-		}
-		return oldAccess.call( jQuery, elems, fn, key, value, chainable, emptyGet );
-	};
-}
 
 jQuery.uaMatch = function( ua ) {
 	ua = ua.toLowerCase();
