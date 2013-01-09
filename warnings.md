@@ -107,11 +107,11 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution**: Boolean properties should generally not be passed to `$().attr` at all; replace with `$().prop` unless you truly intend to update the underlying HTML *attribute*.
 
-### JQMIGRATE: jQuery.buildFragment() is deprecated
+### JQMIGRATE: jQuery.clean() is deprecated
 
-**Cause**: The `jQuery.buildFragment()` method was an undocumented internal method removed in jQuery 1.9. However, we are aware of some plugins or other code that may be using it.
+**Cause**: The `jQuery.clean()` method was an undocumented internal method removed in jQuery 1.9. However, we are aware of some plugins or other code that may be using it.
 
-**Solution**: Rewrite any code that makes use of this method or other undocumented methods. For example the `jQuery.parseHTML()` method, introduced in jQuery 1.8, can convert HTML to an array of DOM elements that you can append to a document fragment.
+**Solution**: Rewrite any code that makes use of this method or other undocumented methods. For example the `jQuery.parseHTML()` method, introduced in jQuery 1.8, can convert HTML to an array of DOM elements. The jQuery Migrate plugin will restore this method if it is absolutely needed.
 
 ### JQMIGRATE: Use of jQuery.fn.data('events') is deprecated
 

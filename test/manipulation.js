@@ -10,24 +10,15 @@ test( "andSelf", function() {
 	});
 });
 
-test( "buildFragment", function() {
-	expect( 6 );
+test( "jQuery.clean, #12392", function() {
 
-	var frag, div, html;
+	expect( 3 );
 
-	frag = jQuery.buildFragment( [], [ document ] ).fragment;
-	equal( frag.childNodes.length, 0, "empty frag is empty" );
-	
-	frag = jQuery.buildFragment( [ document.createElement( "b" ) ], [ document ] ).fragment;
-	equal( frag.childNodes.length, 1, "frag from DOM element" );
-	equal( frag.firstChild.nodeName.toLowerCase(), "b", "frag node is correct" );
+	var elems = jQuery.clean( [ "<div>test div</div>", "<p>test p</p>" ] );
 
-	html = "<p>sue<em>bawls</em></p><div>cheese<em>balls</em></div>";
-	frag = jQuery.buildFragment( [ html ], [ document ] ).fragment;
-	equal( frag.childNodes.length, 2, "frag from HTML" );
-	equal( frag.lastChild.nodeName.toLowerCase(), "div", "frag last node is correct" );
-	div = document.createElement( "div" );
-	div.appendChild( frag );
-	equal( div.innerHTML.toLowerCase().replace( /[\s\n]+/, "" ), html, "frag html" );
-	// Not checking for a warning, it won't occur when e.g. 1.7.2 is used
+	equal( elems[ 0 ].innerHTML, "test div", "Content should be preserved" );
+	equal( elems[ 1 ].innerHTML, "test p", "Content should be preserved" );
+
+	equal( jQuery.clean([ "<span><span>" ]).length, 1, "Incorrect html-strings should not break anything" );
+
 });

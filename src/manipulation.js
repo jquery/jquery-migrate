@@ -1,29 +1,24 @@
 
-var oldSelf = jQuery.fn.andSelf || jQuery.fn.addBack,
-	oldFragment = jQuery.buildFragment;
+var oldSelf = jQuery.fn.andSelf || jQuery.fn.addBack;
 
 jQuery.fn.andSelf = function() {
 	migrateWarn("jQuery.fn.andSelf() replaced by jQuery.fn.addBack()");
 	return oldSelf.apply( this, arguments );
 };
 
-jQuery.buildFragment = function( args, context, scripts ) {
-	var fragment;
+// Since jQuery.clean is used internally on older versions, we only shim if it's missing
+if ( !jQuery.clean ) {
+	jQuery.clean = function( elems, context, fragment, scripts, selection ) {
+		var newFragment = jQuery.buildFragment( elems, context || document, scripts, selection );
 
-	if ( !oldFragment ) {
-		// Set context from what may come in as undefined or a jQuery collection or a node
-		// Updated to fix #12266 where accessing context[0] could throw an exception in IE9/10 &
-		// also doubles as fix for #8950 where plain objects caused createDocumentFragment exception
-		context = context || document;
-		context = !context.nodeType && context[0] || context;
-		context = context.ownerDocument || context;
+		migrateWarn("jQuery.clean() is deprecated");
+		if ( fragment ) {
+			fragment.appendChild( newFragment );
 
-		fragment = context.createDocumentFragment();
-		jQuery.clean( args, context, fragment, scripts );
+		} else {
+			fragment = newFragment;
+		}
 
-		migrateWarn("jQuery.buildFragment() is deprecated");
-		return { fragment: fragment, cacheable: false };
-	}
-	// Don't warn if we are in a version where buildFragment is used internally
-	return oldFragment.apply( this, arguments );
-};
+		return jQuery.merge( [], fragment.childNodes );
+	};
+}
