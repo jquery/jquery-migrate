@@ -2,7 +2,7 @@
 	"name": "jquery-migrate",
 	"title": "jQuery Migrate",
 	"description": "Migrate older jQuery code to jQuery 1.9+",
-	"version": "1.0.0rc1",
+	"version": "1.0.0pre",
 	"homepage": "https://github.com/jquery/jquery-migrate",
 	"author": {
 		"name": "jQuery Foundation and other contributors",
