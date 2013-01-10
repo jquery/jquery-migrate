@@ -103,9 +103,11 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 ### JQMIGRATE: jQuery.clean() is deprecated
 
-**Cause**: The `jQuery.clean()` method was an undocumented internal method removed in jQuery 1.9. However, we are aware of some plugins or other code that may be using it.
+### JQMIGRATE: jQuery.clean() is deprecated
 
-**Solution**: Rewrite any code that makes use of this method or other undocumented methods. For example the `jQuery.parseHTML()` method, introduced in jQuery 1.8, can convert HTML to an array of DOM elements. The jQuery Migrate plugin will restore this method if it is absolutely needed.
+**Cause**: `jQuery.buildFragment()` and `jQuery.clean()` are undocumented internal methods. The signature of `jQuery.buildFragment()` was changed in jQuery 1.8 and 1.9, and `jQuery.clean()` was removed in 1.9. However, we are aware of some plugins or other code that may be using them.
+
+**Solution**: Rewrite any code that makes use of these or any other undocumented methods. For example the `jQuery.parseHTML()` method, introduced in jQuery 1.8, can convert HTML to an array of DOM elements that you can append to a document fragment.
 
 ### JQMIGRATE: Use of jQuery.fn.data('events') is deprecated
 

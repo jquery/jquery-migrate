@@ -25,6 +25,7 @@
 		"notEqual": true,
 		"ok": true,
 		"start": true,
+		"strictEqual": true,
 		"stop": true,
 		"test": true
 	}
