@@ -5,7 +5,7 @@
 	"version": "1.0.0pre",
 	"homepage": "https://github.com/jquery/jquery-migrate",
 	"author": {
-		"name": "jQuery Foundation and other contributors",
+		"name": "jQuery Foundation, Inc. and other contributors",
 		"url": "https://github.com/jquery/jquery-migrate/blob/master/AUTHORS.txt"
 	},
 	"repository": {

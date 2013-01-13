@@ -24,7 +24,7 @@ module.exports = function(grunt) {
 			banner: "/*!\n * <%= pkg.title || pkg.name %> - v<%= pkg.version %> - " +
 				"<%= grunt.template.today('yyyy-mm-dd') %>\n" +
 				" * <%= pkg.homepage %>\n" +
-				" * Copyright <%= grunt.template.today('yyyy') %> <%= pkg.author.name %>;" +
+				" * Copyright 2005, <%= grunt.template.today('yyyy') %> <%= pkg.author.name %>;" +
 				" Licensed <%= _.pluck(pkg.licenses, 'type').join(', ') %>\n */\n"
 		},
 		dist: {
@@ -62,7 +62,7 @@ module.exports = function(grunt) {
 			}
 		},
 		options: {
-			banner: "/*! jQuery v<%= pkg.version %> jquery.com | jquery.org/license */",
+			banner: "/*! jQuery Migrate v<%= pkg.version %> | (c) 2005, <%= grunt.template.today('yyyy') %> <%= pkg.author.name %> | jquery.org/license */\n",
 			sourceMap: "dist/jquery-migrate.min.map",
 			beautify: {
 				ascii_only: true
