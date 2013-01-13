@@ -58,7 +58,7 @@ module.exports = function(grunt) {
 	uglify: {
 		all: {
 			files: {
-				"dist/jquery-migrate.min.js": [ "dist/jquery-migrate.js" ]
+				"dist/jquery-migrate.min.js": [ "src/migratemute.js", "dist/jquery-migrate.js" ]
 			}
 		},
 		options: {
@@ -66,9 +66,6 @@ module.exports = function(grunt) {
 			sourceMap: "dist/jquery-migrate.min.map",
 			beautify: {
 				ascii_only: true
-			},
-			defines: {
-				JQMIGRATE_WARN: [ "name", 0 ]
 			}
 		}
 

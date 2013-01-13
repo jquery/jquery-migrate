@@ -16,7 +16,6 @@
 	"globals": {
 		"define": true,
 		"DOMParser": true,
-		"__dirname": true,
 		"jQuery": true,
 		"global": true,
 		"module": true,

@@ -5,8 +5,7 @@ var warnedAbout = {};
 jQuery.migrateWarnings = [];
 
 // Set to true to prevent console output; migrateWarnings still maintained
-// Leave as undefined so that it can be set before plugin is loaded
-//jQuery.migrateMute = false;
+// jQuery.migrateMute = false;
 
 // Forget any warnings we've already given; public
 jQuery.migrateReset = function() {
@@ -15,19 +14,17 @@ jQuery.migrateReset = function() {
 };
 
 function migrateWarn( msg) {
-	if ( window.JQMIGRATE_WARN ) {
-		if ( !warnedAbout[ msg ] ) {
-			warnedAbout[ msg ] = true;
-			jQuery.migrateWarnings.push( msg );
-			if ( window.console && console.warn && !jQuery.migrateMute ) {
-				console.warn( "JQMIGRATE: " + msg );
-			}
+	if ( !warnedAbout[ msg ] ) {
+		warnedAbout[ msg ] = true;
+		jQuery.migrateWarnings.push( msg );
+		if ( window.console && console.warn && !jQuery.migrateMute ) {
+			console.warn( "JQMIGRATE: " + msg );
 		}
 	}
 }
 
 function migrateWarnProp( obj, prop, value, msg ) {
-	if ( window.JQMIGRATE_WARN && Object.defineProperty ) {
+	if ( Object.defineProperty ) {
 		// On ES5 browsers (non-oldIE), warn if the code tries to get prop;
 		// allow property to be overwritten in case some other plugin wants it
 		try {
@@ -54,7 +51,7 @@ function migrateWarnProp( obj, prop, value, msg ) {
 	obj[ prop ] = value;
 }
 
-if ( window.JQMIGRATE_WARN && document.compatMode === "BackCompat" ) {
+if ( document.compatMode === "BackCompat" ) {
 	// jQuery has never supported or tested Quirks Mode
 	migrateWarn( "jQuery is not compatible with Quirks Mode" );
 }
