@@ -81,6 +81,12 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution:** Change the program to avoid the use of global events. The jQuery Migrate plugin warns about this case but does _not_ restore the previous behavior since it was undocumented. 
 
+### JQMIGRATE: jQuery.event.handle is undocumented and deprecated
+
+**Cause:** `jQuery.event.handle` was never documented, and deprecated with jQuery 1.7 (see http://forum.jquery.com/topic/deprecated-event-properties-used-in-jquery). As of jQuery 1.9, it has been removed.
+
+**Solution:** Use documented jQuery APIs, such as [`.trigger`](http://api.jquery.com/trigger/).
+
 ### JQMIGRATE: property-based jQuery.fn.attr('value') is deprecated
 
 **Cause**: Prior to jQuery 1.9, `$().attr("value")` retrieved the value *property* instead of the value *attribute* (which generally reflects the value that was read from HTML markup). This caused inconsistent behavior with selectors referencing the value attribute.

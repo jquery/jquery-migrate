@@ -791,3 +791,24 @@ test( "global events not on document", function() {
 		});
 	});
 });
+
+test( "jQuery.event.handle", function() {
+	expect( 2 );
+
+	var matched = 0,
+		container = document.getElementById("foo"),
+		target = document.getElementById("anchor2");
+
+	jQuery("#foo").on( "click", function() {
+		matched++;
+	});
+
+	expectWarning( "jQuery.event.handle", function() {
+		jQuery.event.handle.call(
+			container,
+			new jQuery.Event( "click", { target: target })
+		);
+	});
+
+	equal( matched, 1, "Event dispatched" );
+});
