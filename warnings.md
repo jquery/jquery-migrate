@@ -91,7 +91,7 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Cause**: Prior to jQuery 1.9, `$().attr("value")` retrieved the value *property* instead of the value *attribute* (which generally reflects the value that was read from HTML markup). This caused inconsistent behavior with selectors referencing the value attribute.
 
-**Solution**: Use `$().val()` (for form controls) or `$().prop("value")` (for other elements) to get the *current* value.
+**Solution**: Use `$().val()` (for form controls) or `$().prop("value")` (for other elements) to get the *current* value, and try to explicitly limit the use of `[value=…]` in selectors to `input` and/or `option` elements wherever possible.
 
 ### JQMIGRATE: property-based jQuery.fn.attr('value', val) is deprecated
 
