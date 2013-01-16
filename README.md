@@ -26,7 +26,9 @@ In your web page, make sure to load this plugin *after* the script for jQuery:
 
 The plugin can be included with versions of jQuery as old as 1.6.4 as a migration tool to identify potential upgrade issues. However, the plugin is only required for version 1.9 or higher to restore deprecated and removed functionality.
 
-## Development vs. Production versions
+## Download
+
+### Development vs. Production versions
 
 To make it easier for jQuery developers to find and remove deprecated functionality, the development version of the plugin displays warnings on the browser's console. In browsers that don't support the console interface such as IE7, no messages are generated unless you include a debugging library such as [Firebug Lite](https://getfirebug.com/firebuglite) before including the jQuery Migrate plugin. Developers can also inspect the `jQuery.migrateWarnings` array to see what error messages have been generated.
 

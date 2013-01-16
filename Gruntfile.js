@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 
 	// Project configuration.
 	grunt.initConfig({
-    pkg: grunt.file.readJSON("package.json"),
+		pkg: grunt.file.readJSON("package.json"),
 	files: [
 		"src/intro.js",
 		"src/migrate.js",
@@ -16,10 +16,10 @@ module.exports = function(grunt) {
 		"src/event.js",
 		"src/outro.js"
 	],
-    banners: {
+		banners: {
 		tiny: "/*! <%= pkg.name %> <%= pkg.version %> - <%= pkg.homepage %> */"
-    },
-    concat: {
+		},
+		concat: {
 		options: {
 			banner: "/*!\n * <%= pkg.title || pkg.name %> - v<%= pkg.version %> - " +
 				"<%= grunt.template.today('yyyy-mm-dd') %>\n" +
@@ -31,11 +31,11 @@ module.exports = function(grunt) {
 			src: "<%= files %>",
 			dest: "dist/<%= pkg.name %>.js"
 		}
-    },
-    qunit: {
-      files: [ "test/**/*.html" ]
-    },
-    jshint: {
+		},
+		qunit: {
+			files: [ "test/**/*.html" ]
+		},
+		jshint: {
 		dist: {
 			src: [ "dist/jquery-migrate.js" ],
 			options: {
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
 		}
 
 	}
-  });
+	});
 
 	// Load grunt tasks from NPM packages
 	grunt.loadNpmTasks("grunt-git-authors");
@@ -83,4 +83,30 @@ module.exports = function(grunt) {
 	// Default task.
 	grunt.registerTask( "default", [ "concat", "uglify", "jshint", "qunit" ] );
 
+	grunt.registerTask( "manifest", function() {
+		var pkg = grunt.config( "pkg" );
+		grunt.file.write( "migrate.jquery.json", JSON.stringify({
+			name: "migrate",
+			title: pkg.title,
+			description: pkg.description,
+			keywords: pkg.keywords,
+			version: pkg.version,
+			author: {
+				name: pkg.author.name,
+				url: pkg.author.url.replace( "master", pkg.version )
+			},
+			maintainers: pkg.maintainers,
+			licenses: pkg.licenses.map(function( license ) {
+				license.url = license.url.replace( "master", pkg.version );
+				return license;
+			}),
+			bugs: pkg.bugs,
+			homepage: pkg.homepage,
+			docs: pkg.homepage,
+			download: "https://github.com/jquery/jquery-migrate/blob/" + pkg.version + "/README.md#download",
+			dependencies: {
+				jquery: ">=1.6.4"
+			}
+		}, null, "\t" ) );
+	});
 };
