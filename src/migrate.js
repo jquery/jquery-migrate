@@ -7,6 +7,9 @@ jQuery.migrateWarnings = [];
 // Set to true to prevent console output; migrateWarnings still maintained
 // jQuery.migrateMute = false;
 
+// Set to true to enable warnings traces
+// jQuery.migrateWarningsTrace = false;
+
 // Forget any warnings we've already given; public
 jQuery.migrateReset = function() {
 	warnedAbout = {};
@@ -19,6 +22,7 @@ function migrateWarn( msg) {
 		jQuery.migrateWarnings.push( msg );
 		if ( window.console && console.warn && !jQuery.migrateMute ) {
 			console.warn( "JQMIGRATE: " + msg );
+			jQuery.migrateWarningsTrace && console.trace && console.trace();
 		}
 	}
 }

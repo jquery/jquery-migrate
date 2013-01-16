@@ -63,6 +63,8 @@ This plugin adds three properties to the `jQuery` object that can be used progra
 
 `jQuery.migrateMute`: Set this property to `true` to prevent console warnings from being generated in the debugging version. The `jQuery.migrateWarnings` array is still maintained when this property is set, which allows programmatic inspection without console output.
 
+`jQuery.migrateWarningsTrace`: Set this property to `true` to enable console traces.
+
 `jQuery.migrateReset()`: This method clears the `jQuery.migrateWarnings` array and "forgets" the list of messages that have been seen already.
 
 ## Reporting problems
