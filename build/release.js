@@ -27,6 +27,8 @@ var releaseVersion,
 	gruntCmd = process.platform === "win32" ? "grunt.cmd" : "grunt",
 
 	readmeFile = "README.md",
+	packageFile = "package.json",
+	pluginFile = "migrate.jquery.json",
 	devFile = "dist/jquery-migrate.js",
 	minFile = "dist/jquery-migrate.min.js",
 
@@ -78,7 +80,7 @@ function initialize( next ) {
 	if ( !(fs.existsSync || path.existsSync)( "package.json" ) ) {
 		die( "No package.json in this directory" );
 	}
-	pkg = JSON.parse( fs.readFileSync( "package.json" ) );
+	pkg = JSON.parse( fs.readFileSync( packageFile ) );
 
 	log( "Current version is " + pkg.version + "; generating release " + releaseVersion );
 	version = pkg.version.match( rversion );
@@ -106,6 +108,7 @@ function checkGitStatus( next ) {
 
 function tagReleaseVersion( next ) {
 	updatePackageVersion( releaseVersion );
+	updatePluginVersion( releaseVersion );
 	git( [ "commit", "-a", "-m", "Tagging the " + releaseVersion + " release." ], function(){
 		git( [ "tag", releaseVersion ], next);
 	});
@@ -186,10 +189,27 @@ function steps() {
 }
 
 function updatePackageVersion( ver ) {
-	log( "Updating package.json version to " + ver );
+	log( "Updating " + packageFile + " version to " + ver );
 	pkg.version = ver;
 	if ( !debug ) {
-		fs.writeFileSync( "package.json", JSON.stringify( pkg, null, "\t" ) + "\n" );
+		fs.writeFileSync( packageFile, JSON.stringify( pkg, null, "\t" ) + "\n" );
+	}
+}
+
+function updatePluginVersion( ver ) {
+	var setVersion = function( s, v ) {
+			return s.replace( /\/blob\/\d+\.\d+[^\/]+/, "/blob/" + v );
+		},
+		plug;
+
+	log( "Updating " + pluginFile + " version to " + ver );
+	plug = JSON.parse( fs.readFileSync( pluginFile ) );
+	plug.version = ver;
+	plug.author.url = setVersion( plug.author.url, ver );
+	plug.licenses[0].url = setVersion( plug.licenses[0].url, ver );
+	plug.download = setVersion( plug.download, ver );
+	if ( !debug ) {
+		fs.writeFileSync( pluginFile, JSON.stringify( plug, null, "\t" ) + "\n" );
 	}
 }
 
