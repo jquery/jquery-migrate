@@ -21,6 +21,6 @@
 	"docs": "https://github.com/jquery/jquery-migrate",
 	"download": "https://github.com/jquery/jquery-migrate/blob/1.0.0/README.md#download",
 	"dependencies": {
-		"jquery": ">=1.8"
+		"jquery": ">=1.6.4"
 	}
 }
