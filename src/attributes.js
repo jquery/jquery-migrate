@@ -24,8 +24,9 @@ jQuery.attr = function( elem, name, value, pass ) {
 		}
 	}
 
-	// Warn if user tries to set `type` since it breaks on IE 6/7/8
-	if ( name === "type" && value !== undefined && rnoType.test( elem.nodeName ) ) {
+	// Warn if user tries to set `type`, since it breaks on IE 6/7/8; by checking
+	// for disconnected elements we don't warn on $( "<button>", { type: "button" } ).
+	if ( name === "type" && value !== undefined && rnoType.test( elem.nodeName ) && elem.parentNode ) {
 		migrateWarn("Can't change the 'type' of an input or button in IE 6/7/8");
 	}
 

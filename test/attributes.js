@@ -13,7 +13,7 @@ test( "attrFn test", function() {
 });
 
 test( "warn if changing an input or button", function() {
-	expect( 3 );
+	expect( 4 );
 
 	var $div = jQuery("<div />"),
 		$input = jQuery("<input type=text />"),
@@ -21,6 +21,10 @@ test( "warn if changing an input or button", function() {
 
 	expectNoWarning( "input type change", function() {
 		$div.appendTo("#qunit-fixture").attr( "type", "fancy" );
+	});
+
+	expectNoWarning( "$(html, props) signature", function() {
+		jQuery( "<button>", { type: "button" } );
 	});
 
 	expectWarning( "input type change", function() {
