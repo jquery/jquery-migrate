@@ -2,5 +2,5 @@ Authors ordered by first contribution.
 
 Dave Methvin <dave.methvin@gmail.com>
 Richard Gibson <richard.gibson@gmail.com>
-Kalashnikov Igor <igor.kalashnikov@me.com>
+Igor Kalashnikov <igor.kalashnikov@me.com>
  
