@@ -8,7 +8,7 @@ jQuery.migrateWarnings = [];
 // jQuery.migrateMute = false;
 
 // Set to false to disable traces that appear with warnings
-if ( typeof jQuery.migrateTrace === "undefined" ) {
+if ( jQuery.migrateTrace === undefined ) {
 	jQuery.migrateTrace = true;
 }
 
