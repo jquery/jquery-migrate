@@ -46,7 +46,7 @@ steps(
 	makeReleaseCopies,
 	setNextVersion,
 	uploadToCDN,
-	pushToGithub,
+	pushToRepo,
 	exit
 );
 
@@ -58,10 +58,12 @@ function initialize( next ) {
 		console.warn("=== DEBUG MODE ===" );
 	}
 
-	// First arg should be the version number being released
+	// First arg should be the version number being released; this is a proper subset
+	// of a full semver, see https://github.com/mojombo/semver/issues/32
+	// Examples: 1.0.1, 1.0.1-pre, 1.0.1-rc1, 1.0.1-rc1.1
 	var newver, oldver,
-		rversion = /^(\d)\.(\d+)\.(\d)((?:a|b|rc)\d|pre)?$/,
-		version = ( process.argv[2] || "" ).toLowerCase().match( rversion ) || {},
+		rsemver = /^(\d+)\.(\d+)\.(\d+)(?:-([\dA-Za-z\-]+(?:\.[\dA-Za-z\-]+)*))?$/,
+		version = rsemver.exec( process.argv[2] || "" ) || [],
 		major = version[1],
 		minor = version[2],
 		patch = version[3],
@@ -71,26 +73,29 @@ function initialize( next ) {
 	releaseVersion = process.argv[2];
 	isBeta = !!xbeta;
 
-	if ( !major || !minor || !patch ) {
-		die( "Usage: " + process.argv[1] + " releaseVersion" );
+	if ( !releaseVersion ) {
+		die( "Usage: release [ -d ] releaseVersion" );
+	}
+	if ( !version.length ) {
+		die( "'" + releaseVersion + "' is not a valid semver!" );
 	}
 	if ( xbeta === "pre" ) {
 		die( "Cannot release a 'pre' version!" );
 	}
-	if ( !(fs.existsSync || path.existsSync)( "package.json" ) ) {
-		die( "No package.json in this directory" );
+	if ( !(fs.existsSync || path.existsSync)( packageFile ) ) {
+		die( "No " + packageFile + " in this directory" );
 	}
 	pkg = JSON.parse( fs.readFileSync( packageFile ) );
 
 	log( "Current version is " + pkg.version + "; generating release " + releaseVersion );
-	version = pkg.version.match( rversion );
+	version = rsemver.exec( pkg.version );
 	oldver = ( +version[1] ) * 10000 + ( +version[2] * 100 ) + ( +version[3] )
 	newver = ( +major ) * 10000 + ( +minor * 100 ) + ( +patch );
 	if ( newver < oldver ) {
 		die( "Next version is older than current version!" );
 	}
 
-	nextVersion = major + "." + minor + "." + ( isBeta ? patch : +patch + 1 ) + "pre";
+	nextVersion = major + "." + minor + "." + ( isBeta ? patch : +patch + 1 ) + "-pre";
 	next();
 }
 
@@ -117,13 +122,17 @@ function tagReleaseVersion( next ) {
 function updateReadme( next ) {
 	var readme = fs.readFileSync( readmeFile, "utf8" );
 
-	log("Updating " + readmeFile );
-	if ( !debug ) {
-		// Change version references from the old version to the new one
-		// Be sure to allow 1.0.0b2 and such
+	// Change version references from the old version to the new one;
+	// Only release versions should be updated which simplifies the regex
+	if ( isBeta ) {
+		log( "Skipping " + readmeFile + " update (beta release)" );
+	} else { 
+		log( "Updating " + readmeFile );
 		readme = readme
-			.replace( /jquery-migrate-\d+\.\d+\.\w+/g, "jquery-migrate-" + releaseVersion );
-		fs.writeFileSync( readmeFile, readme );
+			.replace( /jquery-migrate-\d+\.\d+\.\d+/g, "jquery-migrate-" + releaseVersion );
+		if ( !debug ) {
+			fs.writeFileSync( readmeFile, readme );
+		}
 	}
 	next();
 }
@@ -133,7 +142,7 @@ function gruntBuild( next ) {
 		if ( error ) {
 			die( error + stderr );
 		}
-		log( stdout );
+		log( stdout || "(no output)" );
 		next();
 	});
 }
@@ -173,7 +182,7 @@ function uploadToCDN( next ) {
 	steps.apply( this, cmds );
 }
 
-function pushToGithub( next ) {
+function pushToRepo( next ) {
 	git( [ "push", "--tags", repoURL, branch ], next, skipRemote );
 }
 
@@ -183,24 +192,23 @@ function steps() {
 	var cur = 0,
 		steps = arguments;
 	(function next(){
-		var step = steps[ cur++ ];
-		step( next );
+		process.nextTick(function(){
+			steps[ cur++ ]( next );
+		});
 	})();
 }
 
 function updatePackageVersion( ver ) {
 	log( "Updating " + packageFile + " version to " + ver );
 	pkg.version = ver;
-	if ( !debug ) {
-		fs.writeFileSync( packageFile, JSON.stringify( pkg, null, "\t" ) + "\n" );
-	}
+	writeJsonSync( packageFile, pkg );
 }
 
 function updatePluginVersion( ver ) {
-	var setVersion = function( s, v ) {
+	var plug,
+		setVersion = function( s, v ) {
 			return s.replace( /\/blob\/\d+\.\d+[^\/]+/, "/blob/" + v );
-		},
-		plug;
+		};
 
 	log( "Updating " + pluginFile + " version to " + ver );
 	plug = JSON.parse( fs.readFileSync( pluginFile ) );
@@ -208,8 +216,14 @@ function updatePluginVersion( ver ) {
 	plug.author.url = setVersion( plug.author.url, ver );
 	plug.licenses[0].url = setVersion( plug.licenses[0].url, ver );
 	plug.download = setVersion( plug.download, ver );
-	if ( !debug ) {
-		fs.writeFileSync( pluginFile, JSON.stringify( plug, null, "\t" ) + "\n" );
+	writeJsonSync( pluginFile, plug );
+}
+
+function writeJsonSync( fname, json ) {
+	if ( debug ) {
+		console.log( JSON.stringify( json ) );
+	} else {
+		fs.writeFileSync( fname, JSON.stringify( json, null, "\t" ) + "\n" );
 	}
 }
 
