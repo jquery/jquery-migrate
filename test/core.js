@@ -2,37 +2,41 @@
 module("core");
 
 test( "jQuery(html) loose rules", function() {
-	expect( 12 );
+	expect( 19 );
 
-	var nowarns = {
+	var w,
+		nowarns = {
 			"simple tag": "<div />",
 			"single tag with properties": "<input type=text name=easy />",
 			"complex html": "<div id='good'><p id='guy'> hello !</p></div>"
 		},
 		warns = {
 			"leading space": "  <div />",
-			"leading text": "don't<div>try this</div>",
-			"leading hash": "#yeah<p>RIGHT</p>"
+			"leading newline": "\n<div />",
+			"leading text": "don't<div>try this</div>"
 		},
-		makeFn = function( html ) {
+		generate = function( html ) {
 			return function() {
-				// Bad HTML will throw but not on all versions
-				try {
-					jQuery( html );
-					ok( true, html + " succeeded" );
-				} catch ( e ) {
-					ok( true, html + " got exception" );
-				}
+				var el = jQuery( html ).last();
+
+				equal( el.length, 1, html + " succeeded" );
+				equal( el.parent().length, 0, html + " generated new content" );
 			};
-		},
-		w;
+		};
 
 	for ( w in nowarns ) {
-		expectNoWarning( w, makeFn( nowarns[ w ] ) );
+		expectNoWarning( w, generate( nowarns[w] ) );
 	}
 	for ( w in warns ) {
-		expectWarning( w, makeFn( warns[ w ] ) );
+		expectWarning( w, generate( warns[w] ) );
 	}
+
+	// Bad HTML will throw on some supported versions
+	expectWarning( "leading hash", function() {
+		try {
+			jQuery("#yeah<p>RIGHT</p>");
+		} catch ( e ) {}
+	});
 });
 
 test( "jQuery.browser", function() {
