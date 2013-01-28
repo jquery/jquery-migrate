@@ -6,70 +6,76 @@ module.exports = function(grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
-	files: [
-		"src/intro.js",
-		"src/migrate.js",
-		"src/attributes.js",
-		"src/core.js",
-		"src/data.js",
-		"src/manipulation.js",
-		"src/event.js",
-		"src/outro.js"
-	],
+		files: [
+			"src/intro.js",
+			"src/migrate.js",
+			"src/attributes.js",
+			"src/core.js",
+			"src/data.js",
+			"src/manipulation.js",
+			"src/event.js",
+			"src/outro.js"
+		],
+		tests: [
+			"dev,git.min",
+			"dev,git2.min",
+			"min,git.min",
+			"min,git2.min"
+		],
 		banners: {
-		tiny: "/*! <%= pkg.name %> <%= pkg.version %> - <%= pkg.homepage %> */"
+			tiny: "/*! <%= pkg.name %> <%= pkg.version %> - <%= pkg.homepage %> */"
 		},
 		concat: {
-		options: {
-			banner: "/*!\n * <%= pkg.title || pkg.name %> - v<%= pkg.version %> - " +
-				"<%= grunt.template.today('yyyy-mm-dd') %>\n" +
-				" * <%= pkg.homepage %>\n" +
-				" * Copyright 2005, <%= grunt.template.today('yyyy') %> <%= pkg.author.name %>;" +
-				" Licensed <%= _.pluck(pkg.licenses, 'type').join(', ') %>\n */\n"
-		},
-		dist: {
-			src: "<%= files %>",
-			dest: "dist/<%= pkg.name %>.js"
-		}
+			options: {
+				banner: "/*!\n * <%= pkg.title || pkg.name %> - v<%= pkg.version %> - " +
+					"<%= grunt.template.today('yyyy-mm-dd') %>\n" +
+					" * <%= pkg.homepage %>\n" +
+					" * Copyright 2005, <%= grunt.template.today('yyyy') %> <%= pkg.author.name %>;" +
+					" Licensed <%= _.pluck(pkg.licenses, 'type').join(', ') %>\n */\n"
+			},
+			dist: {
+				src: "<%= files %>",
+				dest: "dist/<%= pkg.name %>.js"
+			}
 		},
 		qunit: {
 			files: [ "test/**/*.html" ]
 		},
 		jshint: {
-		dist: {
-			src: [ "dist/jquery-migrate.js" ],
-			options: {
-				jshintrc: "src/.jshintrc"
+			dist: {
+				src: [ "dist/jquery-migrate.js" ],
+				options: {
+					jshintrc: "src/.jshintrc"
+				}
+			},
+			tests: {
+				src: [ "test/**/*.js" ],
+				options: {
+					jshintrc: "test/.jshintrc"
+				}
+			},
+			grunt: {
+				src: [ "Gruntfile.js" ],
+				options: {
+					jshintrc: ".jshintrc"
+				}
 			}
 		},
-		tests: {
-			src: [ "test/**/*.js" ],
+		uglify: {
+			all: {
+				files: {
+					"dist/jquery-migrate.min.js": [ "src/migratemute.js", "dist/jquery-migrate.js" ]
+				}
+			},
 			options: {
-				jshintrc: "test/.jshintrc"
+				banner: "/*! jQuery Migrate v<%= pkg.version %> | (c) 2005, <%= grunt.template.today('yyyy') %> <%= pkg.author.name %> | jquery.org/license */\n",
+				sourceMap: "dist/jquery-migrate.min.map",
+				beautify: {
+					ascii_only: true
+				}
 			}
-		},
-		grunt: {
-			src: [ "Gruntfile.js" ],
-			options: {
-				jshintrc: ".jshintrc"
-			}
-		}
-	},
-	uglify: {
-		all: {
-			files: {
-				"dist/jquery-migrate.min.js": [ "src/migratemute.js", "dist/jquery-migrate.js" ]
-			}
-		},
-		options: {
-			banner: "/*! jQuery Migrate v<%= pkg.version %> | (c) 2005, <%= grunt.template.today('yyyy') %> <%= pkg.author.name %> | jquery.org/license */\n",
-			sourceMap: "dist/jquery-migrate.min.map",
-			beautify: {
-				ascii_only: true
-			}
-		}
 
-	}
+		}
 	});
 
 	// Load grunt tasks from NPM packages
@@ -83,6 +89,47 @@ module.exports = function(grunt) {
 	// Default task.
 	grunt.registerTask( "default", [ "concat", "uglify", "jshint", "qunit" ] );
 
+	// Testswarm
+	grunt.registerTask( "testswarm", function( commit, configFile ) {
+		var jobName,
+			testswarm = require( "testswarm" ),
+			testUrls = [],
+			pull = /PR-(\d+)/.exec( commit ),
+			config = grunt.file.readJSON( configFile ).jquerymigrate,
+			tests = grunt.config("tests");
+
+		if ( pull ) {
+			jobName = "jQuery Migrate pull <a href='https://github.com/jquery/jquery-migrate/pull/" +
+				pull[ 1 ] + "'>#" + pull[ 1 ] + "</a>";
+		} else {
+			jobName = "jQuery Migrate commit #<a href='https://github.com/jquery/jquery-migrate/commit/" +
+				commit + "'>" + commit.substr( 0, 10 ) + "</a>";
+		}
+
+		tests.forEach(function( test ) {
+			var plugin_jquery = test.split(",");
+			testUrls.push( config.testUrl + commit + "/test/index.html?plugin=" +
+				plugin_jquery[0] + "&jquery=" + plugin_jquery[1]);
+		});
+
+		// TODO: create separate job for git/git2 so we can do different browsersets
+		testswarm({
+			url: config.swarmUrl,
+			pollInterval: 10000,
+			timeout: 1000 * 60 * 30,
+			done: this.async()
+		}, {
+			authUsername: config.authUsername,
+			authToken: config.authToken,
+			jobName: jobName,
+			runMax: config.runMax,
+			"runNames[]": tests,
+			"runUrls[]": testUrls,
+			"browserSets[]": "popular-no-old-ie"
+		});
+	});
+
+	// Update manifest for jQuery plugin registry
 	grunt.registerTask( "manifest", function() {
 		var pkg = grunt.config( "pkg" );
 		grunt.file.write( "migrate.jquery.json", JSON.stringify({
