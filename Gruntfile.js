@@ -17,10 +17,8 @@ module.exports = function(grunt) {
 			"src/outro.js"
 		],
 		tests: [
-			"dev,git",
-			"dev,git2",
-			"min,git",
-			"min,git2"
+			"git,git",
+			"git,git2"
 		],
 		banners: {
 			tiny: "/*! <%= pkg.name %> <%= pkg.version %> - <%= pkg.homepage %> */"
