@@ -39,6 +39,29 @@ test( "jQuery(html) loose rules", function() {
 	});
 });
 
+test( "jQuery.parseJSON() falsy values", function() {
+	expect(6);
+
+	expectNoWarning( "valid JSON", function() {
+		jQuery.parseJSON("{\"a\":1}");
+	});
+	expectNoWarning( "actual null", function() {
+		jQuery.parseJSON(null);
+	});
+	expectNoWarning( "string null", function() {
+		jQuery.parseJSON("null");
+	});
+	expectWarning( "empty string", function() {
+		jQuery.parseJSON("");
+	});
+	expectWarning( "Boolean false", function() {
+		jQuery.parseJSON(false);
+	});
+	expectWarning( "undefined", function() {
+		jQuery.parseJSON(undefined);
+	});
+});
+
 test( "jQuery.browser", function() {
 	expect( 3 );
 

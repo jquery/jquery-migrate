@@ -1,6 +1,7 @@
 
 var matched, browser,
 	oldInit = jQuery.fn.init,
+	oldParseJSON = jQuery.parseJSON,
 	// Note this does NOT include the #9521 XSS fix from 1.7!
 	rquickExpr = /^(?:[^<]*(<[\w\W]+>)[^>]*|#([\w\-]*))$/;
 
@@ -27,6 +28,15 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 	return oldInit.apply( this, arguments );
 };
 jQuery.fn.init.prototype = jQuery.fn;
+
+// Let $.parseJSON(falsy_value) return null
+jQuery.parseJSON = function( json ) {
+	if ( !json && json !== null ) {
+		migrateWarn("jQuery.parseJSON requires a valid JSON string");
+		return null;
+	}
+	return oldParseJSON.apply( this, arguments );
+};
 
 jQuery.uaMatch = function( ua ) {
 	ua = ua.toLowerCase();

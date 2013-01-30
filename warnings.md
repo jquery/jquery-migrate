@@ -30,6 +30,26 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Put a [valid doctype](http://www.w3.org/QA/2002/04/valid-dtd-list.html) in the document and ensure that the document is rendering in standards mode. The simplest valid doctype is the HTML5 one, which we highly recommend: `<!doctype html>` . The jQuery Migrate plugin does not attempt to fix issues related to quirks mode.
 
+### JQMIGRATE: jQuery.parseJSON requires a valid JSON string
+
+**Cause**: Before jQuery 1.9.0, the `$.parseJSON()` method allowed some invalid JSON strings and returned `null` as a result without throwing an error. This put it at odds with the `JSON.parse()` method. The two methods are aligned as of 1.9.0 and values such as an empty string are properly not considered valid by `$.parseJSON()`. 
+
+**Solution:** If you want to consider values such as `""` or `false` successful and treat them as `null`, check for them before calling `$.parseJSON()`. Since falsy values such as an empty string were previously returned as a `null` without complaint, this code will suffice in most cases:
+```js
+var json = $.parseJSON(jsonString || "null");
+```
+If your own code is not calling `$.parseJSON()` directly, it is probably using AJAX to retrieve a JSON value from a server that is returning an empty string in the content body rather than a valid JSON response such as `null` or `{}`. If it isn't possible to correct the invalid JSON in the server response, you can retrieve the response as text:
+```js
+$.ajax({
+    url: "...",
+    dataType: "text",
+    success: function( text ) {
+        var json = text? $.parseJSON(text) : null;
+        ...
+    }
+});
+```
+
 ### JQMIGRATE: jQuery.browser is deprecated
 
 **Cause:** `jQuery.browser` was deprecated in version 1.3, and finally removed in 1.9. Browser sniffing is notoriously unreliable as means of detecting whether to implement particular features. 
@@ -103,15 +123,11 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution**: Use `$().val( val )` (for form controls) or `$().prop( "value", val )` (for other elements) to set the *current* value.
 
-### JQMIGRATE: jQuery.fn.attr(checked) may use property instead of attribute
-
 ### JQMIGRATE: jQuery.fn.attr(selected) may use property instead of attribute
 
 **Cause**: Prior to jQuery 1.9, `$().attr("checked")` etc. would sometimes use the checked|selected *property* instead of the *attribute* when interacting with non-XML elements, despite the fact that browsers and the HTML specifications allow the properties (current state) to differ from the attributes (initial/default state). This was a holdover from earlier versions of jQuery that did not offer `$().prop`.
 
 **Solution**: Boolean properties should generally not be passed to `$().attr` at all; replace with `$().prop` unless you truly intend to update the underlying HTML *attribute*.
-
-### JQMIGRATE: jQuery.clean() is deprecated
 
 ### JQMIGRATE: jQuery.clean() is deprecated
 
