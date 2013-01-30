@@ -17,10 +17,10 @@ module.exports = function(grunt) {
 			"src/outro.js"
 		],
 		tests: [
-			"dev,git.min",
-			"dev,git2.min",
-			"min,git.min",
-			"min,git2.min"
+			"dev,git",
+			"dev,git2",
+			"min,git",
+			"min,git2"
 		],
 		banners: {
 			tiny: "/*! <%= pkg.name %> <%= pkg.version %> - <%= pkg.homepage %> */"
@@ -88,6 +88,9 @@ module.exports = function(grunt) {
 
 	// Default task.
 	grunt.registerTask( "default", [ "concat", "uglify", "jshint", "qunit" ] );
+
+	// Skip unit tests, used by testswarm
+	grunt.registerTask( "buildnounit", [ "concat", "uglify", "jshint" ] );
 
 	// Testswarm
 	grunt.registerTask( "testswarm", function( commit, configFile ) {
