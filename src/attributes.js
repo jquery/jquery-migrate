@@ -68,7 +68,7 @@ jQuery.attr = function( elem, name, value, pass ) {
 
 		// Warn only for attributes that can remain distinct from their properties post-1.9
 		if ( ruseDefault.test( lowerName ) ) {
-			migrateWarn( "jQuery.fn.attr(" + lowerName + ") may use property instead of attribute" );
+			migrateWarn( "jQuery.fn.attr('" + lowerName + "') may use property instead of attribute" );
 		}
 	}
 
@@ -83,7 +83,7 @@ jQuery.attrHooks.value = {
 			return valueAttrGet.apply( this, arguments );
 		}
 		if ( nodeName !== "input" && nodeName !== "option" ) {
-			migrateWarn("property-based jQuery.fn.attr('value') is deprecated");
+			migrateWarn("jQuery.fn.attr('value') no longer gets properties");
 		}
 		return name in elem ?
 			elem.value :
@@ -95,7 +95,7 @@ jQuery.attrHooks.value = {
 			return valueAttrSet.apply( this, arguments );
 		}
 		if ( nodeName !== "input" && nodeName !== "option" ) {
-			migrateWarn("property-based jQuery.fn.attr('value', val) is deprecated");
+			migrateWarn("jQuery.fn.attr('value', val) no longer sets properties");
 		}
 		// Does not return so that setAttribute is also used
 		elem.value = value;

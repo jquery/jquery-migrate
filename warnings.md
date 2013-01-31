@@ -111,19 +111,19 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution:** Use documented jQuery APIs, such as [`.trigger`](http://api.jquery.com/trigger/).
 
-### JQMIGRATE: property-based jQuery.fn.attr('value') is deprecated
+### JQMIGRATE: jQuery.fn.attr('value') no longer gets properties
 
 **Cause**: Prior to jQuery 1.9, `$().attr("value")` retrieved the value *property* instead of the value *attribute* (which generally reflects the value that was read from HTML markup). This caused inconsistent behavior with selectors referencing the value attribute.
 
 **Solution**: Use `$().val()` (for form controls) or `$().prop("value")` (for other elements) to get the *current* value, and try to explicitly limit the use of `[value=…]` in selectors to `input` and/or `option` elements wherever possible.
 
-### JQMIGRATE: property-based jQuery.fn.attr('value', val) is deprecated
+### JQMIGRATE: jQuery.fn.attr('value', val) no longer sets properties
 
 **Cause**: Prior to jQuery 1.9, `$().attr( "value", val )` set the value *property* instead of the value *attribute*. This caused inconsistent behavior with selectors referencing the value attribute.
 
 **Solution**: Use `$().val( val )` (for form controls) or `$().prop( "value", val )` (for other elements) to set the *current* value.
 
-### JQMIGRATE: jQuery.fn.attr(selected) may use property instead of attribute
+### JQMIGRATE: jQuery.fn.attr('selected') may use property instead of attribute
 
 **Cause**: Prior to jQuery 1.9, `$().attr("checked")` etc. would sometimes use the checked|selected *property* instead of the *attribute* when interacting with non-XML elements, despite the fact that browsers and the HTML specifications allow the properties (current state) to differ from the attributes (initial/default state). This was a holdover from earlier versions of jQuery that did not offer `$().prop`.
 
