@@ -1,6 +1,6 @@
 
 var attrFn = {},
-	attr = jQuery.attr,
+	oldAttr = jQuery.attr,
 	valueAttrGet = jQuery.attrHooks.value && jQuery.attrHooks.value.get ||
 		function() { return null; },
 	valueAttrSet = jQuery.attrHooks.value && jQuery.attrHooks.value.set ||
@@ -17,7 +17,9 @@ jQuery.attr = function( elem, name, value, pass ) {
 	var lowerName = name.toLowerCase(),
 		nType = elem && elem.nodeType;
 
-	if ( pass ) {
+	// Since pass is used internally, we only warn and shim for new jQuery
+	// versions where there isn't a pass arg in the formal params
+	if ( pass && oldAttr.length < 4 ) {
 		migrateWarn("jQuery.fn.attr( props, pass ) is deprecated");
 		if ( elem && !rnoAttrNodeType.test( nType ) && jQuery.isFunction( jQuery.fn[ name ] ) ) {
 			return jQuery( elem )[ name ]( value );
@@ -70,7 +72,7 @@ jQuery.attr = function( elem, name, value, pass ) {
 		}
 	}
 
-	return attr.call( jQuery, elem, name, value );
+	return oldAttr.call( jQuery, elem, name, value );
 };
 
 // attrHooks: value
