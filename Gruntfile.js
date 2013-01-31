@@ -17,8 +17,14 @@ module.exports = function(grunt) {
 			"src/outro.js"
 		],
 		tests: [
-			"dev,git",
-			"dev,git2"
+			"dev+git",
+			"dev+git2",
+			"min+git",
+			"min+git2",
+			"dev+1.9.0",
+			"dev+1.8.3",
+			"dev+1.7.2",
+			"dev+1.6.4"
 		],
 		banners: {
 			tiny: "/*! <%= pkg.name %> <%= pkg.version %> - <%= pkg.homepage %> */"
@@ -108,7 +114,7 @@ module.exports = function(grunt) {
 		}
 
 		tests.forEach(function( test ) {
-			var plugin_jquery = test.split(",");
+			var plugin_jquery = test.split("+");
 			testUrls.push( config.testUrl + commit + "/test/index.html?plugin=" +
 				plugin_jquery[0] + "&jquery=" + plugin_jquery[1]);
 		});
