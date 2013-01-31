@@ -27,9 +27,6 @@
 		// Close this script tag so file will load
 	</script>
 	<script>
-		if ( !window.jQuery && window.location.search.indexOf("swarmURL") < 0 ) {
-			alert("jQuery is not defined");
-		}
 		jQuery.noConflict();
 		TestManager.loadProject( "jquery-migrate", "dev", true );
 	</script>
