@@ -46,7 +46,7 @@ steps(
 	makeReleaseCopies,
 	setNextVersion,
 	uploadToCDN,
-	pushToRepo,
+	pushToRemote,
 	exit
 );
 
@@ -99,8 +99,17 @@ function initialize( next ) {
 	next();
 }
 
+//TODO: Check that remote doesn't have newer commits:
+// git fetch repoURL
+// git remote show repoURL
+// (look for " BRANCH     pushes to BRANCH     (up to date)")
+
 function checkGitStatus( next ) {
 	git( [ "status" ], function( error, stdout, stderr ) {
+		var onBranch = ((stdout||"").match( /On branch (\S+)/ ) || [])[1];
+		if ( onBranch !== branch ) {
+			die( "Branches don't match: Wanted " + branch + ", got " + onBranch );
+		}
 		if ( /Changes to be committed/i.test( stdout ) ) {
 			die("Please commit changed files before attemping to push a release.");
 		}
@@ -182,7 +191,7 @@ function uploadToCDN( next ) {
 	steps.apply( this, cmds );
 }
 
-function pushToRepo( next ) {
+function pushToRemote( next ) {
 	git( [ "push", "--tags", repoURL, branch ], next, skipRemote );
 }
 
