@@ -1,7 +1,6 @@
 
 var rscriptType = /\/(java|ecma)script/i,
-	oldSelf = jQuery.fn.andSelf || jQuery.fn.addBack,
-	oldFragment = jQuery.buildFragment;
+	oldSelf = jQuery.fn.andSelf || jQuery.fn.addBack;
 
 jQuery.fn.andSelf = function() {
 	migrateWarn("jQuery.fn.andSelf() replaced by jQuery.fn.addBack()");
@@ -57,32 +56,3 @@ if ( !jQuery.clean ) {
 		return ret;
 	};
 }
-
-jQuery.buildFragment = function( elems, context, scripts, selection ) {
-	var ret,
-		warning = "jQuery.buildFragment() is deprecated";
-
-	// Set context per 1.8 logic
-	context = context || document;
-	context = !context.nodeType && context[0] || context;
-	context = context.ownerDocument || context;
-
-	try {
-		ret = oldFragment.call( jQuery, elems, context, scripts, selection );
-
-	// jQuery < 1.8 required arrayish context; jQuery 1.9 fails on it
-	} catch( x ) {
-		ret = oldFragment.call( jQuery, elems, context.nodeType ? [ context ] : context[ 0 ], scripts, selection );
-
-		// Success from tweaking context means buildFragment was called by the user
-		migrateWarn( warning );
-	}
-
-	// jQuery < 1.9 returned an object instead of the fragment itself
-	if ( !ret.fragment ) {
-		migrateWarnProp( ret, "fragment", ret, warning );
-		migrateWarnProp( ret, "cacheable", false, warning );
-	}
-
-	return ret;
-};
