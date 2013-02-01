@@ -1,30 +1,18 @@
 # jquery-migrate: Migrate older jQuery code to jQuery 1.9+
 
-This project can be used to detect and restore APIs, features or functionality that have been deprecated in jQuery and removed as of version 1.9. They include:
+This plugin can be used to detect and restore APIs or features that have been deprecated in jQuery and removed as of version 1.9.
+See the [warnings page](https://github.com/jquery/jquery-migrate/blob/master/warnings.md) for more information regarding messages the plugin generates. 
+For more information about the changes made in jQuery 1.9, see the [upgrade guide](http://jquery.com/upgrade-guide/1.9/) and [blog post](http://blog.jquery.com/2013/01/15/jquery-1-9-final-jquery-2-0-beta-migrate-final-released/).
 
-* `jQuery.browser` [docs](http://api.jquery.com/jquery.browser)
-* `jQuery.fn.andSelf()` [docs](http://api.jquery.com/andSelf)
-* `jQuery.sub()` [docs](http://api.jquery.com/jquery.sub)
-* `jQuery.fn.toggle()` [docs](http://api.jquery.com/toggle-event/) (_event click signature only_)
-* `"hover"` pseudo-event name [docs](http://api.jquery.com/on/)
-* `jQuery.fn.error()` [docs](http://api.jquery.com/error/)
-* `ajaxStart, ajaxSend, ajaxSuccess, ajaxError, ajaxComplete, ajaxStop` global events on non-`document` targets [docs](http://api.jquery.com/category/ajax/global-ajax-event-handlers/)
-* Use of `attrChange`, `attrName`, `relatedNode`, `srcElement` on the `Event` object (use `Event.originalEvent.attrChange` etc. instead)
-* `jQuery.fn.attr()` using the `pass` argument (undocumented)
-* `jQuery.attrFn` object (undocumented)
-* `jQuery.fn.data()` data events (undocumented)
-* `jQuery.fn.data("events")` to retrieve event-related data (undocumented)
-
-See the [warnings](https://github.com/jquery/jquery-migrate/blob/master/warnings.md) page for more information regarding messages the plugin generates.
-
-In your web page, make sure to load this plugin *after* the script for jQuery:
+In your web page, load this plugin *after* the script for jQuery:
 
 ```html
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.0.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
 ```
 
-The plugin can be included with versions of jQuery as old as 1.6.4 as a migration tool to identify potential upgrade issues. However, the plugin is only required for version 1.9 or higher to restore deprecated and removed functionality.
+The plugin can be included with versions of jQuery as old as 1.6.4 to identify potential upgrade issues via its JQMIGRATE console warnings.
+However, the plugin is only required for version 1.9.0 or higher to restore deprecated and removed functionality.
 
 ## Download
 
