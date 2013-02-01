@@ -105,7 +105,7 @@ function initialize( next ) {
 // (look for " BRANCH     pushes to BRANCH     (up to date)")
 
 function checkGitStatus( next ) {
-	git( [ "status" ], function( error, stdout, stderr ) {
+	child.execFile( "git", [ "status" ], function( error, stdout, stderr ) {
 		var onBranch = ((stdout||"").match( /On branch (\S+)/ ) || [])[1];
 		if ( onBranch !== branch ) {
 			die( "Branches don't match: Wanted " + branch + ", got " + onBranch );
@@ -169,7 +169,7 @@ function makeReleaseCopies( next ) {
 }
 
 function setNextVersion( next ) {
-	updatePackageVersion( nextVersion );
+	updatePackageVersion( nextVersion, "master" );
 	git( [ "commit", "-a", "-m", "Updating the source version to " + nextVersion ], next );
 }
 
@@ -207,30 +207,34 @@ function steps() {
 	})();
 }
 
-function updatePackageVersion( ver ) {
+function updatePackageVersion( ver, blobVer ) {
 	log( "Updating " + packageFile + " version to " + ver );
+	blobVer = blobVer || ver;
 	pkg.version = ver;
+	pkg.author.url = setBlobVersion( pkg.author.url, blobVer );
+	pkg.licenses[0].url = setBlobVersion( pkg.licenses[0].url, blobVer );
 	writeJsonSync( packageFile, pkg );
 }
 
 function updatePluginVersion( ver ) {
-	var plug,
-		setVersion = function( s, v ) {
-			return s.replace( /\/blob\/\d+\.\d+[^\/]+/, "/blob/" + v );
-		};
+	var plug;
 
 	log( "Updating " + pluginFile + " version to " + ver );
 	plug = JSON.parse( fs.readFileSync( pluginFile ) );
 	plug.version = ver;
-	plug.author.url = setVersion( plug.author.url, ver );
-	plug.licenses[0].url = setVersion( plug.licenses[0].url, ver );
-	plug.download = setVersion( plug.download, ver );
+	plug.author.url = setBlobVersion( plug.author.url, ver );
+	plug.licenses[0].url = setBlobVersion( plug.licenses[0].url, ver );
+	plug.download = setBlobVersion( plug.download, ver );
 	writeJsonSync( pluginFile, plug );
+}
+
+function setBlobVersion( s, v ) {
+	return s.replace( /\/blob\/(?:(\d+\.\d+[^\/]+)|master)/, "/blob/" + v );
 }
 
 function writeJsonSync( fname, json ) {
 	if ( debug ) {
-		console.log( JSON.stringify( json ) );
+		console.log( JSON.stringify( json, null, "  " ) );
 	} else {
 		fs.writeFileSync( fname, JSON.stringify( json, null, "\t" ) + "\n" );
 	}
