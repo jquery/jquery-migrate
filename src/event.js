@@ -8,7 +8,7 @@ var eventAdd = jQuery.event.add,
 	rajaxEvent = new RegExp( "\\b(?:" + ajaxEvents + ")\\b" ),
 	rhoverHack = /(?:^|\s)hover(\.\S+|)\b/,
 	hoverHack = function( events ) {
-		if ( typeof( events ) != "string" || jQuery.event.special.hover ) {
+		if ( typeof( events ) !== "string" || jQuery.event.special.hover ) {
 			return events;
 		}
 		if ( rhoverHack.test( events ) ) {
@@ -103,7 +103,7 @@ jQuery.fn.die = function( types, fn ) {
 
 // Turn global events into document-triggered events
 jQuery.event.trigger = function( event, data, elem, onlyHandlers  ){
-	if ( !elem & !rajaxEvent.test( event ) ) {
+	if ( !elem && !rajaxEvent.test( event ) ) {
 		migrateWarn( "Global events are undocumented and deprecated" );
 	}
 	return eventTrigger.call( this,  event, data, elem || document, onlyHandlers  );
