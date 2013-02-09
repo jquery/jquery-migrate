@@ -1,5 +1,5 @@
 
-var attrFn = {},
+var attrFn = jQuery( "<input/>", { size: 1 } ).attr("size") && jQuery.attrFn,
 	oldAttr = jQuery.attr,
 	valueAttrGet = jQuery.attrHooks.value && jQuery.attrHooks.value.get ||
 		function() { return null; },
@@ -11,7 +11,7 @@ var attrFn = {},
 	ruseDefault = /^(?:checked|selected)$/i;
 
 // jQuery.attrFn
-migrateWarnProp( jQuery, "attrFn", attrFn, "jQuery.attrFn is deprecated" );
+migrateWarnProp( jQuery, "attrFn", attrFn || {}, "jQuery.attrFn is deprecated" );
 
 jQuery.attr = function( elem, name, value, pass ) {
 	var lowerName = name.toLowerCase(),
@@ -23,7 +23,8 @@ jQuery.attr = function( elem, name, value, pass ) {
 		if ( oldAttr.length < 4 ) {
 			migrateWarn("jQuery.fn.attr( props, pass ) is deprecated");
 		}
-		if ( elem && !rnoAttrNodeType.test( nType ) && jQuery.isFunction( jQuery.fn[ name ] ) ) {
+		if ( elem && !rnoAttrNodeType.test( nType ) &&
+			(attrFn ? name in attrFn : jQuery.isFunction(jQuery.fn[name])) ) {
 			return jQuery( elem )[ name ]( value );
 		}
 	}

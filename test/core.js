@@ -6,8 +6,8 @@ test( "jQuery(html, props)", function() {
 
 	var $el = jQuery( "<input/>", { name: "name", val: "value", size: 42 } );
 
-	equal( $el.attr("name"), "name", "Set attribute" );
-	equal( $el.attr("size"), undefined, "Don't set size attribute" );
+	equal( $el.attr("name"), "name", "Name attribute" );
+	equal( $el.attr("size"), jQuery.isEmptyObject(jQuery.attrFn) ? undefined : "42", "Size attribute" );
 	equal( $el.val(), "value", "Call setter method" );
 });
 
