@@ -17,10 +17,12 @@ jQuery.attr = function( elem, name, value, pass ) {
 	var lowerName = name.toLowerCase(),
 		nType = elem && elem.nodeType;
 
-	// Since pass is used internally, we only warn and shim for new jQuery
-	// versions where there isn't a pass arg in the formal params
-	if ( pass && oldAttr.length < 4 ) {
-		migrateWarn("jQuery.fn.attr( props, pass ) is deprecated");
+	if ( pass ) {
+		// Since pass is used internally, we only warn for new jQuery
+		// versions where there isn't a pass arg in the formal params
+		if ( oldAttr.length < 4 ) {
+			migrateWarn("jQuery.fn.attr( props, pass ) is deprecated");
+		}
 		if ( elem && !rnoAttrNodeType.test( nType ) && jQuery.isFunction( jQuery.fn[ name ] ) ) {
 			return jQuery( elem )[ name ]( value );
 		}

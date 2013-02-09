@@ -1,6 +1,16 @@
 
 module("core");
 
+test( "jQuery(html, props)", function() {
+	expect( 3 );
+
+	var $el = jQuery( "<input/>", { name: "name", val: "value", size: 42 } );
+
+	equal( $el.attr("name"), "name", "Set attribute" );
+	equal( $el.attr("size"), undefined, "Don't set size attribute" );
+	equal( $el.val(), "value", "Call setter method" );
+});
+
 test( "jQuery(html) loose rules", function() {
 	expect( 19 );
 
