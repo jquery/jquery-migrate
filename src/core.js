@@ -54,25 +54,28 @@ jQuery.uaMatch = function( ua ) {
 	};
 };
 
-matched = jQuery.uaMatch( navigator.userAgent );
-browser = {};
+// Don't clobber any existing jQuery.browser in case it's different
+if ( !jQuery.browser ) {
+	matched = jQuery.uaMatch( navigator.userAgent );
+	browser = {};
 
-if ( matched.browser ) {
-	browser[ matched.browser ] = true;
-	browser.version = matched.version;
+	if ( matched.browser ) {
+		browser[ matched.browser ] = true;
+		browser.version = matched.version;
+	}
+
+	// Chrome is Webkit, but Webkit is also Safari.
+	if ( browser.chrome ) {
+		browser.webkit = true;
+	} else if ( browser.webkit ) {
+		browser.safari = true;
+	}
+
+	jQuery.browser = browser;
 }
-
-// Chrome is Webkit, but Webkit is also Safari.
-if ( browser.chrome ) {
-	browser.webkit = true;
-} else if ( browser.webkit ) {
-	browser.safari = true;
-}
-
-jQuery.browser = browser;
 
 // Warn if the code tries to get jQuery.browser
-migrateWarnProp( jQuery, "browser", browser, "jQuery.browser is deprecated" );
+migrateWarnProp( jQuery, "browser", jQuery.browser, "jQuery.browser is deprecated" );
 
 jQuery.sub = function() {
 	function jQuerySub( selector, context ) {
