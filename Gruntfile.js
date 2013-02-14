@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 			"dev+git2",
 			"min+git",
 			"min+git2",
-			"dev+1.9.0",
+			"dev+1.9.1",
 			"dev+1.8.3",
 			"dev+1.7.2",
 			"dev+1.6.4"
