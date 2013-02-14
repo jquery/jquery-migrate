@@ -11,6 +11,7 @@ module.exports = function(grunt) {
 			"src/migrate.js",
 			"src/attributes.js",
 			"src/core.js",
+			"src/ajax.js",
 			"src/data.js",
 			"src/manipulation.js",
 			"src/event.js",
@@ -53,7 +54,7 @@ module.exports = function(grunt) {
 				}
 			},
 			tests: {
-				src: [ "test/**/*.js" ],
+				src: [ "test/*.js" ],
 				options: {
 					jshintrc: "test/.jshintrc"
 				}
