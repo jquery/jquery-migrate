@@ -18,6 +18,12 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Ensure that you are using the latest version of jQuery UI (1.8.21 or later) and jQuery Mobile (1.2.1 or later); they no longer use `jQuery.attrFn`. Examine any third-party plugins for the string `attrFn` and report its use to the plugin authors (not to jQuery team).
 
+### JQMIGRATE: $(html) HTML strings must start with '<' character
+
+**Cause:** In jQuery 1.9, HTML strings passed to `$()` must start with a tag; in other words the first character of the string must be a `<` character. There _cannot_ be any preceding characters, including whitespace. This is done to reduce the chances of inadvertent execution of scripts that may be present in HTML that is obtained from the URL, AJAX, or other sources. Use of simple literal HTML strings like `$("<div />")` or `$("<p>hello</p>")` are unaffected since they should not have leading spaces or text.
+
+**Solution**: Use the `$.parseHTML()` method to parse arbitrary HTML, especially HTML from external sources. To obtain a jQuery object that has the parsed HTML without running scripts, use `$($.parseHTML("string"))`. To run scripts in the HTML as well, use `$($.parseHTML("string", document, true))` instead. We do not recommend running `$.trim()` on the string to circumvent this check.
+
 ### JQMIGRATE: Can't change the 'type' of an input or button in IE 6/7/8
 
 **Cause:** IE 6, 7, and 8 throw an error if you attempt to change the type attribute of an input or button element, for example to change a radio button to a checkbox. Prior to 1.9, jQuery threw an error for every browser to create consistent behavior. As of jQuery 1.9 setting the type is allowed, but will still throw an error in oldIE. 
