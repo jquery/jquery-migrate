@@ -1,2 +1,3 @@
 (function( jQuery, window, undefined ) {
-"use strict";
+// See http://bugs.jquery.com/ticket/13335
+// "use strict";
