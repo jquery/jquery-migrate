@@ -3,15 +3,15 @@
 	"title": "jQuery Migrate",
 	"description": "Migrate older jQuery code to jQuery 1.9+",
 	"keywords": [],
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"author": {
 		"name": "jQuery Foundation, Inc. and other contributors",
-		"url": "https://github.com/jquery/jquery-migrate/blob/1.1.0/AUTHORS.txt"
+		"url": "https://github.com/jquery/jquery-migrate/blob/1.1.1/AUTHORS.txt"
 	},
 	"licenses": [
 		{
 			"type": "MIT",
-			"url": "https://github.com/jquery/jquery-migrate/blob/1.1.0/LICENSE-MIT"
+			"url": "https://github.com/jquery/jquery-migrate/blob/1.1.1/LICENSE-MIT"
 		}
 	],
 	"bugs": {
@@ -19,7 +19,7 @@
 	},
 	"homepage": "https://github.com/jquery/jquery-migrate",
 	"docs": "https://github.com/jquery/jquery-migrate",
-	"download": "https://github.com/jquery/jquery-migrate/blob/1.1.0/README.md#download",
+	"download": "https://github.com/jquery/jquery-migrate/blob/1.1.1/README.md#download",
 	"dependencies": {
 		"jquery": ">=1.6.4"
 	}
