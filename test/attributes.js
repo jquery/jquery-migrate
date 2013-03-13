@@ -3,7 +3,7 @@ module("attributes");
 
 test( "attrFn test", function() {
 	expect( 4 );
-	
+
 	( jQuery._definePropertyBroken ? expectNoWarning : expectWarning )( "attrFn", function() {
 		ok( !!jQuery.attrFn, "attrFn present" );
 		equal( jQuery.attrFn.quack, undefined, "can read values from attrFn" );
