@@ -1,7 +1,7 @@
 # jquery-migrate: Migrate older jQuery code to jQuery 1.9+
 
 This plugin can be used to detect and restore APIs or features that have been deprecated in jQuery and removed as of version 1.9.
-See the [warnings page](https://github.com/jquery/jquery-migrate/blob/master/warnings.md) for more information regarding messages the plugin generates. 
+See the [warnings page](https://github.com/jquery/jquery-migrate/blob/master/warnings.md) for more information regarding messages the plugin generates.
 For more information about the changes made in jQuery 1.9, see the [upgrade guide](http://jquery.com/upgrade-guide/1.9/) and [blog post](http://blog.jquery.com/2013/01/15/jquery-1-9-final-jquery-2-0-beta-migrate-final-released/).
 
 In your web page, load this plugin *after* the script for jQuery:
@@ -70,12 +70,12 @@ Clone this repo, install `grunt`:
 ```sh
 git clone git://github.com/jquery/jquery-migrate.git
 cd jquery-migrate
-npm install -g grunt
+npm install
+npm install -g grunt-cli
 ```
 
-Run `grunt` to `lint`, `test` and `min` release.
+Run `grunt` to `jshint`, `qunit` and `uglify` release.
 
 ```sh
 grunt
 ```
-
