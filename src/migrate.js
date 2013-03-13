@@ -4,6 +4,9 @@ var warnedAbout = {};
 // List of warnings already given; public read only
 jQuery.migrateWarnings = [];
 
+// Default migrateWarn callback is undefined
+jQuery.migrateWarnCallback = undefined;
+
 // Set to true to prevent console output; migrateWarnings still maintained
 // jQuery.migrateMute = false;
 
@@ -32,6 +35,10 @@ function migrateWarn( msg) {
 			if ( jQuery.migrateTrace && console.trace ) {
 				console.trace();
 			}
+		}
+		// Call the callback passing the message
+		if ( !jQuery.migrateMute && typeof(jQuery.migrateWarnCallback) === "function" ) {
+			jQuery.migrateWarnCallback(msg);
 		}
 	}
 }
