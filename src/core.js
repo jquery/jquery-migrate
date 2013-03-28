@@ -17,7 +17,7 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 			migrateWarn("$(html) HTML strings must start with '<' character");
 		}
 		if ( selector.charAt( selector.length -1 ) !== ">" ) {
-			migrateWarn("$(html) HTML string has stray text after last tag");
+			migrateWarn("$(html) HTML text after last tag is ignored");
 		}
 		// Now process using loose rules; let pre-1.8 play too
 		if ( context && context.context ) {
