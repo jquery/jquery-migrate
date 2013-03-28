@@ -74,7 +74,6 @@ module.exports = function(grunt) {
 			},
 			options: {
 				banner: "/*! jQuery Migrate v<%= pkg.version %> | (c) 2005, <%= grunt.template.today('yyyy') %> <%= pkg.author.name %> | jquery.org/license */\n",
-				sourceMap: "dist/jquery-migrate.min.map",
 				beautify: {
 					ascii_only: true
 				}
