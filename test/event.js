@@ -760,7 +760,7 @@ test( "hover pseudo-event", function() {
 
 test( "global events not on document", function() {
 	expect( 16 );
-	
+
 	expectWarning( "Global ajax events", 1, function() {
 		var events = "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess";
 
