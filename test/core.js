@@ -12,7 +12,7 @@ test( "jQuery(html, props)", function() {
 });
 
 test( "jQuery(html) loose rules", function() {
-	expect( 19 );
+	expect( 25 );
 
 	var w,
 		nowarns = {
@@ -23,11 +23,13 @@ test( "jQuery(html) loose rules", function() {
 		warns = {
 			"leading space": "  <div />",
 			"leading newline": "\n<div />",
-			"leading text": "don't<div>try this</div>"
+			"leading text": "don't<div>try this</div>",
+			"trailing text": "<div>try this</div>junk",
+			"both text": "don't<div>try this</div>either"
 		},
 		generate = function( html ) {
 			return function() {
-				var el = jQuery( html ).last();
+				var el = jQuery( html );
 
 				equal( el.length, 1, html + " succeeded" );
 				equal( el.parent().length, 0, html + " generated new content" );

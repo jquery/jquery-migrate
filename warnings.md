@@ -24,6 +24,12 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: Use the `$.parseHTML()` method to parse arbitrary HTML, especially HTML from external sources. To obtain a jQuery object that has the parsed HTML without running scripts, use `$($.parseHTML("string"))`. To run scripts in the HTML as well, use `$($.parseHTML("string", document, true))` instead. We do not recommend running `$.trim()` on the string to circumvent this check.
 
+### JQMIGRATE: $(html) text after last tag is ignored
+
+**Cause:** HTML strings passed to `$()` should begin and end with tags. Any text following the last tag is ignored. When upgrading to jQuery 1.9 and using `$.parseHTML()`, note that leading or trailing text is _not_ ignored, and those text nodes will be part of the data returned.
+
+**Solution**: Usually this warning is due to an error in the HTML string, where text is present when it should not be there. Remove the leading or trailing text before passing the string to `$.parseHTML()` if it should not be part of the collection. Alternatively you can use `$($.parseHTML(html)).filter("*")` to remove all top-level text nodes from the set and leave only elements.
+
 ### JQMIGRATE: Can't change the 'type' of an input or button in IE 6/7/8
 
 **Cause:** IE 6, 7, and 8 throw an error if you attempt to change the type attribute of an input or button element, for example to change a radio button to a checkbox. Prior to 1.9, jQuery threw an error for every browser to create consistent behavior. As of jQuery 1.9 setting the type is allowed, but will still throw an error in oldIE. 

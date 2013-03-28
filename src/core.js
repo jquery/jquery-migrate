@@ -2,6 +2,7 @@
 var matched, browser,
 	oldInit = jQuery.fn.init,
 	oldParseJSON = jQuery.parseJSON,
+	rignoreText = /^[^<]*(.*?)[^>]*$/,
 	// Note this does NOT include the #9521 XSS fix from 1.7!
 	rquickExpr = /^(?:[^<]*(<[\w\W]+>)[^>]*|#([\w\-]*))$/;
 
@@ -15,13 +16,17 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 		if ( selector.charAt( 0 ) !== "<" ) {
 			migrateWarn("$(html) HTML strings must start with '<' character");
 		}
+		if ( selector.charAt( selector.length -1 ) !== ">" ) {
+			migrateWarn("$(html) HTML string has stray text after last tag");
+		}
 		// Now process using loose rules; let pre-1.8 play too
 		if ( context && context.context ) {
 			// jQuery object as context; parseHTML expects a DOM object
 			context = context.context;
 		}
 		if ( jQuery.parseHTML ) {
-			return oldInit.call( this, jQuery.parseHTML( jQuery.trim(selector), context, true ),
+			match = rignoreText.exec( selector );
+			return oldInit.call( this, jQuery.parseHTML( match[1] || selector, context, true ),
 					context, rootjQuery );
 		}
 	}
