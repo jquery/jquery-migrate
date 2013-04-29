@@ -153,3 +153,9 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution**: There is no public interface to retrieve this internal data structure, and it remains undocumented. The only useful applications might be for debugging. The data is available via `jQuery._data("events")` but this is not a documented interface.
 
+### JQMIGRATE: HTML string cannot start with a '#' character
+
+**Cause**: Some pages unwisely use code similar to `$(location.hash)` in order to select what they think is going to be an ID value encoded on the page. However, an attacker can create a cross-site scripting (XSS) injection by using a string similar to `#<script>...</script>` and run code to steal user data. The Migrate plugin does not allow a string of this form to be used.
+
+**Solution**: If you are creating HTML that absolutely requires leading text, use `$.parseHTML` and pass the results to `$()`.
+
