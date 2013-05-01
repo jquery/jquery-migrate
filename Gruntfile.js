@@ -3,6 +3,17 @@ module.exports = function(grunt) {
 
 	"use strict";
 
+	// The concatenated file won't pass onevar but our modules can
+	var readOptionalJSON = function( filepath ) {
+			var data = {};
+			try {
+				data = grunt.file.readJSON( filepath );
+			} catch(e) {}
+			return data;
+		},
+		srcHintOptions = readOptionalJSON("src/.jshintrc");
+	delete srcHintOptions.onevar;
+
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
@@ -50,9 +61,7 @@ module.exports = function(grunt) {
 		jshint: {
 			dist: {
 				src: [ "dist/jquery-migrate.js" ],
-				options: {
-					jshintrc: "src/.jshintrc"
-				}
+				options: srcHintOptions
 			},
 			tests: {
 				src: [ "test/*.js" ],

@@ -93,7 +93,9 @@ test( "live(name, false), die(name, false)", function() {
 test( ".live()/.die()", function() {
 	expect(66);
 
-	var submit = 0, div = 0, livea = 0, liveb = 0;
+	var submit = 0, div = 0, livea = 0, liveb = 0,
+		livec, lived, livee, elemDiv,
+		hash, event, clicked, container, called;
 
 	jQuery("div").live("submit", function(){ submit++; return false; });
 	jQuery("div").live("click", function(){ div++; });
@@ -167,7 +169,7 @@ test( ".live()/.die()", function() {
 
 	// Make sure click events only fire with primary click
 	submit = 0; div = 0; livea = 0; liveb = 0;
-	var event = jQuery.Event("click");
+	event = jQuery.Event("click");
 	event.button = 1;
 	jQuery("div#nothiddendiv").trigger(event);
 
@@ -179,7 +181,7 @@ test( ".live()/.die()", function() {
 	jQuery("div").die("submit");
 
 	// Test binding with a different context
-	var clicked = 0, container = jQuery("#qunit-fixture")[0];
+	clicked = 0, container = jQuery("#qunit-fixture")[0];
 	jQuery("#foo", container).live("click", function(e){ clicked++; });
 	jQuery("div").trigger("click");
 	jQuery("#foo").trigger("click");
@@ -214,7 +216,7 @@ test( ".live()/.die()", function() {
 
 	// Verify that return false prevents default action
 	jQuery("#anchor2").live("click", function(){ return false; });
-	var hash = window.location.hash;
+	hash = window.location.hash;
 	jQuery("#anchor2").trigger("click");
 	equal( window.location.hash, hash, "return false worked" );
 	jQuery("#anchor2").die("click");
@@ -227,7 +229,7 @@ test( ".live()/.die()", function() {
 	jQuery("#anchor2").die("click");
 
 	// Test binding the same handler to multiple points
-	var called = 0;
+	called = 0;
 	function callback(){ called++; return false; }
 
 	jQuery("#nothiddendiv").live("click", callback);
@@ -271,7 +273,7 @@ test( ".live()/.die()", function() {
 
 	// Make sure we don't loose the target by DOM modifications
 	// after the bubble already reached the liveHandler
-	var livec = 0, elemDiv = jQuery("#nothiddendivchild").html("<span></span>").get(0);
+	livec = 0, elemDiv = jQuery("#nothiddendivchild").html("<span></span>").get(0);
 
 	jQuery("#nothiddendivchild").live("click", function(e){ jQuery("#nothiddendivchild").html(""); });
 	jQuery("#nothiddendivchild").live("click", function(e){ if(e.target) {livec++;} });
@@ -285,7 +287,7 @@ test( ".live()/.die()", function() {
 
 	// Verify that .live() ocurs and cancel buble in the same order as
 	// we would expect .bind() and .click() without delegation
-	var lived = 0, livee = 0;
+	lived = 0, livee = 0;
 
 	// bind one pair in one order
 	jQuery("span#liveSpan1 a").live("click", function(){ lived++; return false; });
@@ -377,8 +379,7 @@ test( ".live()/.die()", function() {
 test( "die all bound events", function(){
 	expect(1);
 
-	var count = 0;
-	var div = jQuery("div#nothiddendivchild");
+	var count = 0, div = jQuery("div#nothiddendivchild");
 
 	div.live("click submit", function(){ count++; });
 	div.die();
@@ -392,8 +393,7 @@ test( "die all bound events", function(){
 test( "live with multiple events", function(){
 	expect(1);
 
-	var count = 0;
-	var div = jQuery("div#nothiddendivchild");
+	var count = 0, div = jQuery("div#nothiddendivchild");
 
 	div.live("click submit", function(){ count++; });
 
@@ -463,17 +463,19 @@ test( "live with namespaces", function(){
 test( "live with change", function(){
 	expect(8);
 
-	var selectChange = 0, checkboxChange = 0;
-
-	var select = jQuery("select[name='S1']");
-	select.live("change", function() {
-		selectChange++;
-	});
-
-	var checkbox = jQuery("#check2"),
+	var text, textChange, oldTextVal,
+		password, passwordChange, oldPasswordVal,
+		selectChange = 0,
+		checkboxChange = 0,
+		select = jQuery("select[name='S1']"),
+		checkbox = jQuery("#check2"),
 		checkboxFunction = function(){
 			checkboxChange++;
 		};
+
+	select.live("change", function() {
+		selectChange++;
+	});
 	checkbox.live("change", checkboxFunction);
 
 	// test click on select
@@ -495,7 +497,9 @@ test( "live with change", function(){
 	equal( checkboxChange, 1, "Change on checkbox." );
 
 	// test blur/focus on text
-	var text = jQuery("#name"), textChange = 0, oldTextVal = text.val();
+	text = jQuery("#name");
+	textChange = 0;
+	oldTextVal = text.val();
 	text.live("change", function() {
 		textChange++;
 	});
@@ -508,7 +512,9 @@ test( "live with change", function(){
 	text.die("change");
 
 	// test blur/focus on password
-	var password = jQuery("#name"), passwordChange = 0, oldPasswordVal = password.val();
+	password = jQuery("#name");
+	passwordChange = 0;
+	oldPasswordVal = password.val();
 	password.live("change", function() {
 		passwordChange++;
 	});
@@ -628,7 +634,10 @@ test( "live with special events", function() {
 test( "toggle(Function, Function, ...)", function() {
 	expect( 19 );
 
-	var count = 0,
+	var fns, data, $div, a, b,
+		count = 0,
+		first = 0,
+		turn = 0,
 		fn1 = function(e) { count++; },
 		fn2 = function(e) { count--; },
 		preventDefault = function(e) { e.preventDefault(); },
@@ -648,7 +657,6 @@ test( "toggle(Function, Function, ...)", function() {
 		equal(arguments.length, 4, "toggle correctly passes through additional triggered arguments, see #1701" );
 	}, function() {}).trigger("click", [ 1, 2, 3 ]);
 
-	var first = 0;
 	jQuery("#simon1").one("click", function() {
 		ok( true, "Execute event only once" );
 		jQuery(this).toggle(function() {
@@ -659,8 +667,7 @@ test( "toggle(Function, Function, ...)", function() {
 		return false;
 	}).click().click().click();
 
-	var turn = 0;
-	var fns = [
+	fns = [
 		function(){
 			turn = 1;
 		},
@@ -672,7 +679,7 @@ test( "toggle(Function, Function, ...)", function() {
 		}
 	];
 
-	var $div = jQuery("<div>&nbsp;</div>").toggle( fns[0], fns[1], fns[2] );
+	$div = jQuery("<div>&nbsp;</div>").toggle( fns[0], fns[1], fns[2] );
 	$div.click();
 	equal( turn, 1, "Trying toggle with 3 functions, attempt 1 yields 1");
 	$div.click();
@@ -685,14 +692,14 @@ test( "toggle(Function, Function, ...)", function() {
 	equal( turn, 2, "Trying toggle with 3 functions, attempt 5 yields 2");
 
 	$div.unbind("click",fns[0]);
-	var data = jQuery._data( $div[0], "events" );
+	data = jQuery._data( $div[0], "events" );
 	ok( !data, "Unbinding one function from toggle unbinds them all");
 
 	// manually clean up detached elements
 	$div.remove();
 
 	// Test Multi-Toggles
-	var a = [], b = [];
+	a = [], b = [];
 	$div = jQuery("<div/>");
 	$div.toggle(function(){ a.push(1); }, function(){ a.push(2); });
 	$div.click();

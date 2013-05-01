@@ -1,32 +1,42 @@
 {
-	"browser": true,
+	"boss": true,
 	"curly": true,
-	"devel": true,
+	"eqeqeq": true,
 	"eqnull": true,
-	"evil": true,
 	"expr": true,
-	"maxerr": 100,
+	"immed": true,
+	"noarg": true,
+	"onevar": true,
 	"quotmark": "double",
 	"smarttabs": true,
-	"sub": true,
 	"trailing": true,
 	"undef": true,
+
+	"evil": true,
+	"sub": true,
+
+	"browser": true,
+	"devel": true,
 	"wsh": true,
+
 	"globals": {
-		"jQuery": true,
-		"TestManager": true,
-		"expectNoWarning": true,
 		"expectWarning": true,
+		"expectNoWarning": true,
+		"TestManager": true,
+
+		"jQuery": true,
 		"QUnit": true,
-		"deepEqual": true,
-		"equal": true,
-		"expect": true,
 		"module": true,
-		"notEqual": true,
 		"ok": true,
-		"start": true,
+		"equal": true,
+		"test": true,
+		"asyncTest": true,
+		"notEqual": true,
+		"deepEqual": true,
 		"strictEqual": true,
+		"notStrictEqual": true,
+		"start": true,
 		"stop": true,
-		"test": true
+		"expect": true
 	}
 }

@@ -1,29 +1,26 @@
 {
-	"bitwise": true,
-	"browser": true,
+	"boss": true,
 	"curly": true,
 	"eqeqeq": true,
 	"eqnull": true,
-	"evil": true,
 	"expr": true,
-	"maxerr": 100,
-	"newcap": false,
+	"immed": true,
+	"noarg": true,
+	"onevar": true,
 	"quotmark": "double",
-	"sub": true,
+	"smarttabs": true,
 	"trailing": true,
 	"undef": true,
 	"unused": true,
-	"wsh": true,
+
+	"sub": true,
+
+	"browser": true,
+	"es5": true,
+
 	"globals": {
-		"define": true,
-		"DOMParser": true,
 		"jQuery": true,
-		"global": true,
-		"module": true,
-		"exports": true,
-		"require": true,
-		"file": true,
-		"log": true,
-		"console": true
+		"define": true,
+		"module": true
 	}
 }
