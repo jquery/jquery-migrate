@@ -12,7 +12,7 @@ test( "jQuery(html, props)", function() {
 });
 
 test( "jQuery(html) loose rules", function() {
-	expect( 28 );
+	expect( 24 );
 
 	var w,
 		nowarns = {
@@ -42,6 +42,10 @@ test( "jQuery(html) loose rules", function() {
 	for ( w in warns ) {
 		expectWarning( w, generate( warns[w] ) );
 	}
+});
+
+test( "XSS injection", function() {
+	expect( 7 );
 
 	// Bad HTML will throw on some supported versions
 	expectWarning( "leading hash", function() {
@@ -52,7 +56,20 @@ test( "jQuery(html) loose rules", function() {
 
 	// Don't expect HTML if there's a leading hash char; this is
 	// more strict than the 1.7 version but closes an XSS hole.
-	expectWarning( "XSS check", function() {
+
+	expectWarning( "XSS via script tag", function() {
+		var threw = false;
+		window.XSS = false;
+		try {
+			jQuery( "#<script>window.XSS=true<" + "/script>" );
+		} catch ( e ) {
+			threw = true;
+		}
+		equal( threw, true, "Throw on leading-hash HTML (treated as selector)" );
+		equal( window.XSS, false, "XSS" );
+	});
+
+	expectWarning( "XSS via onerror inline handler", function() {
 		var threw = false;
 		window.XSS = false;
 		try {
