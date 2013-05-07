@@ -12,17 +12,20 @@ test( "jQuery(html, props)", function() {
 });
 
 test( "jQuery(html) loose rules", function() {
-	expect( 24 );
+	expect( 33 );
 
 	var w,
 		nowarns = {
 			"simple tag": "<div />",
 			"single tag with properties": "<input type=text name=easy />",
+			"embedded newlines": "<div>very\nspacey\n<div>like\n</div> text </div></div>",
+			"embedded hash": "<p>love potion <strong bgcolor='#bad'>#9</strong></p>",
 			"complex html": "<div id='good'><p id='guy'> hello !</p></div>"
 		},
 		warns = {
 			"leading space": "  <div />",
 			"leading newline": "\n<div />",
+			"lots of space/newline": "  <em>  spaces \n and \n newlines </em> \n ",
 			"leading text": "don't<div>try this</div>",
 			"trailing text": "<div>try this</div>junk",
 			"both text": "don't<div>try this</div>either"
@@ -45,7 +48,7 @@ test( "jQuery(html) loose rules", function() {
 });
 
 test( "XSS injection", function() {
-	expect( 7 );
+	expect( 10 );
 
 	// Bad HTML will throw on some supported versions
 	expectWarning( "leading hash", function() {
@@ -66,6 +69,18 @@ test( "XSS injection", function() {
 			threw = true;
 		}
 		equal( threw, true, "Throw on leading-hash HTML (treated as selector)" );
+		equal( window.XSS, false, "XSS" );
+	});
+
+	expectWarning( "XSS with hash and leading space", function() {
+		var threw = false;
+		window.XSS = false;
+		try {
+			jQuery( " \n#<script>window.XSS=true<" + "/script>" );
+		} catch ( e ) {
+			threw = true;
+		}
+		equal( threw, true, "Throw on leading-hash HTML and space (treated as selector)" );
 		equal( window.XSS, false, "XSS" );
 	});
 
