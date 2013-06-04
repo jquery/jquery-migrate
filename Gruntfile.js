@@ -134,13 +134,13 @@ module.exports = function(grunt) {
 		testswarm.createClient( {
 			url: config.swarmUrl,
 			pollInterval: 10000,
-			timeout: 1000 * 60 * 30,
+			timeout: 1000 * 60 * 30
 		} )
 		.addReporter( testswarm.reporters.cli )
 		.auth( {
 			id: config.authUsername,
 			token: config.authToken
-		} )
+		})
 		.addjob(
 			{
 				name: jobName,
@@ -153,7 +153,7 @@ module.exports = function(grunt) {
 				}
 				done( passed );
 			}
-		)
+		);
 	});
 
 	// Update manifest for jQuery plugin registry
