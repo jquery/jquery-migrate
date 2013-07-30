@@ -71,8 +71,13 @@ test( "attrHooks[\"value\"]", function() {
 	});
 
 	expectWarning( "button.attr(...)", 0, function() {
-		var button = jQuery("#button");
-		if ( jQuery.fn.jquery >= "1.9" ) {
+		var nrs,
+			button = jQuery("#button");
+		// Numbers are IEEE doubles in javascript (1.10 === 1.1 && 1.1000 === 1.1).
+		// So compare parts separate. Also "10" < "9" (alphabetically). Convert to numbers first.
+		nrs = jQuery.map( jQuery.fn.jquery.split("."), Number );
+		if ( nrs[0] > 1 || ( nrs[0] === 1 && nrs[1] >= 9 ) ) {
+			// jQuery 1.9.0+
 			equal( button.attr("value"), undefined, "button.attr('value') returns attribute." );
 		} else {
 			equal( button.attr("value"), "", "button.attr('value') returns empty string." );
