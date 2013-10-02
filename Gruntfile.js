@@ -117,10 +117,10 @@ module.exports = function(grunt) {
 			tests = grunt.config("tests");
 
 		if ( pull ) {
-			jobName = "jQuery Migrate pull <a href='https://github.com/jquery/jquery-migrate/pull/" +
+			jobName = "Pull <a href='https://github.com/jquery/jquery-migrate/pull/" +
 				pull[ 1 ] + "'>#" + pull[ 1 ] + "</a>";
 		} else {
-			jobName = "jQuery Migrate commit #<a href='https://github.com/jquery/jquery-migrate/commit/" +
+			jobName = "Commit <a href='https://github.com/jquery/jquery-migrate/commit/" +
 				commit + "'>" + commit.substr( 0, 10 ) + "</a>";
 		}
 
