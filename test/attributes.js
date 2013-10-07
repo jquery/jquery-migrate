@@ -71,8 +71,11 @@ test( "attrHooks[\"value\"]", function() {
 	});
 
 	expectWarning( "button.attr(...)", 0, function() {
-		var button = jQuery("#button");
-		if ( jQuery.fn.jquery >= "1.9" ) {
+		var button = jQuery("#button"),
+			majorMinorPatch = jQuery.fn.jquery.split(".");
+
+		// Respect the jQuery 1.9.0+ behavior change
+		if ( majorMinorPatch[0] > 1 || ( majorMinorPatch[0] === "1" && majorMinorPatch[1] >= 9 ) ) {
 			equal( button.attr("value"), undefined, "button.attr('value') returns attribute." );
 		} else {
 			equal( button.attr("value"), "", "button.attr('value') returns empty string." );
