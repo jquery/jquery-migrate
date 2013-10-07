@@ -96,11 +96,10 @@ jQuery.sub = function() {
 	jQuerySub.fn.constructor = jQuerySub;
 	jQuerySub.sub = this.sub;
 	jQuerySub.fn.init = function init( selector, context ) {
-		if ( context && context instanceof jQuery && !(context instanceof jQuerySub) ) {
-			context = jQuerySub( context );
-		}
-
-		return jQuery.fn.init.call( this, selector, context, rootjQuerySub );
+		var instance = jQuery.fn.init.call( this, selector, context, rootjQuerySub );
+		return instance instanceof jQuerySub ?
+			instance :
+			jQuerySub( instance );
 	};
 	jQuerySub.fn.init.prototype = jQuerySub.fn;
 	var rootjQuerySub = jQuerySub(document);
