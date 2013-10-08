@@ -57,7 +57,7 @@ This plugin adds three properties to the `jQuery` object that can be used progra
 
 ## Reporting problems
 
-Bugs that only occur when the jQuery Migrate plugin is used should be reported in the [jQuery Migrate Issue Tracker](https://github.com/jquery/jquery-migrate/issues) and *must* be accompanied by an executable test case that demonstrates the bug. The easiest way to do this is via an online test tool such as [jsFiddle.net](http://jsFiddle.net/) or [jsbin.com](http://jsbin.com). You can this [this jsFiddle template](http://jsfiddle.net/4ZwWv/) or [this jsbin template](http://jsbin.com/emuwuy/4/show) as a starting point; they already contain links to the work-in-progress versions of both jQuery and the jQuery Migrate plugin. Add your code there and post a link to it with your bug report.
+Bugs that only occur when the jQuery Migrate plugin is used should be reported in the [jQuery Migrate Issue Tracker](https://github.com/jquery/jquery-migrate/issues) and *must* be accompanied by an executable test case that demonstrates the bug. The easiest way to do this is via an online test tool such as [jsFiddle.net](http://jsFiddle.net/) or [jsbin.com](http://jsbin.com). You can use [this jsFiddle template](http://jsfiddle.net/4ZwWv/) or [this jsbin template](http://jsbin.com/emuwuy/4/show) as a starting point; they already contain links to the work-in-progress versions of both jQuery and the jQuery Migrate plugin. Add your code there and post a link to it with your bug report.
 
 Bugs in jQuery itself should be reported on the [jQuery Core bug tracker](http://bugs.jquery.com/) and again should be accompanied by a test case from [jsFiddle.net](http://jsFiddle.net/) or [jsbin.com](http://jsbin.com) so that we can reproduce the issue.
 
