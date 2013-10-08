@@ -193,27 +193,11 @@ test( "jQuery.sub() - .fn Methods", function(){
 	expect( 378 );
 
 	var Subclass = jQuery.sub(),
-		SubclassSubclass = Subclass.sub(),
-		jQueryDocument = jQuery(document),
-		selectors, contexts, method, arg, description;
-
-	jQueryDocument.toString = function(){ return "jQueryDocument"; };
-
-	Subclass.fn.subclassMethod = function(){};
-	SubclassSubclass.fn.subclassSubclassMethod = function(){};
-
-	selectors = [
-		"body",
-		"html, body",
-		"<div></div>"
-	];
-
-	contexts = [undefined, document, jQueryDocument];
-
-	jQuery.expandedEach = jQuery.each;
-	jQuery.each(selectors, function(i, selector){
-
-		jQuery.expandedEach({ // all methods that return a new jQuery instance
+		SubSubclass = Subclass.sub(),
+		jQueryDocument = jQuery( document ),
+		contexts = [ undefined, document, jQueryDocument ],
+		selectors = [ "body", "html,body", "<div></div>" ],
+		methodArguments = {
 			"eq": 1 ,
 			"add": document,
 			"end": undefined,
@@ -221,36 +205,41 @@ test( "jQuery.sub() - .fn Methods", function(){
 			"closest": "div",
 			"filter": document,
 			"find": "div"
-		}, function(method, arg){
-			jQuery.each(contexts, function(i, context){
+		};
 
-				description = "(\""+selector+"\", "+context+")."+method+"("+(arg||"")+")";
+	jQueryDocument.toString = function() {
+		return "jQueryDocument";
+	};
 
-				deepEqual(
-					(function(var_args){ return jQuery.fn[method].apply(jQuery(selector, context), arguments).subclassMethod; })(arg),
-					undefined, "jQuery"+description+" doesn't have Subclass methods"
-				);
-				deepEqual(
-					(function(var_args){ return jQuery.fn[method].apply(jQuery(selector, context), arguments).subclassSubclassMethod; })(arg),
-					undefined, "jQuery"+description+" doesn't have SubclassSubclass methods"
-				);
-				deepEqual(
-					Subclass(selector, context)[method](arg).subclassMethod, Subclass.fn.subclassMethod,
-					"Subclass"+description+" has Subclass methods"
-				);
-				deepEqual(
-					Subclass(selector, context)[method](arg).subclassSubclassMethod, undefined,
-					"Subclass"+description+" doesn't have SubclassSubclass methods"
-				);
-				deepEqual(
-					SubclassSubclass(selector, context)[method](arg).subclassMethod, Subclass.fn.subclassMethod,
-					"SubclassSubclass"+description+" has Subclass methods"
-				);
-				deepEqual(
-					SubclassSubclass(selector, context)[method](arg).subclassSubclassMethod, SubclassSubclass.fn.subclassSubclassMethod,
-					"SubclassSubclass"+description+" has SubclassSubclass methods"
-				);
+	Subclass.fn.subMethod = function(){};
+	SubSubclass.fn.subSubMethod = function(){};
 
+	jQuery.each( contexts, function( i, context ) {
+			jQuery.each( selectors, function( i, selector ) {
+				jQuery.each( methodArguments, function( method, arg ){
+
+				var description = "(\"" + selector + "\", " + context + ")." + method + "(" + (arg || "") + ")",
+					$instance = jQuery( selector, context )[ method ]( arg ),
+					$subInstance = Subclass( selector, context )[ method ]( arg ),
+					$subSubInstance = SubSubclass( selector, context )[ method ]( arg );
+
+				// jQuery
+				strictEqual( $instance.subMethod, undefined,
+					"jQuery" + description + " doesn't have Subclass methods" );
+				strictEqual( $instance.subSubMethod, undefined,
+					"jQuery" + description + " doesn't have SubSubclass methods" );
+
+				// Subclass
+				strictEqual( $subInstance.subMethod, Subclass.fn.subMethod,
+					"Subclass" + description + " has Subclass methods" );
+				strictEqual( $subInstance.subSubMethod, undefined,
+					"Subclass" + description + " doesn't have SubSubclass methods" );
+
+				// SubSubclass
+				strictEqual( $subSubInstance.subMethod, Subclass.fn.subMethod,
+					"SubSubclass" + description + " has Subclass methods" );
+				strictEqual( $subSubInstance.subSubMethod, SubSubclass.fn.subSubMethod,
+					"SubSubclass" + description + " has SubSubclass methods" );
 			});
 		});
 	});
