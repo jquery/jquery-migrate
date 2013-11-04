@@ -40,7 +40,7 @@ jQuery.fn.init.prototype = jQuery.fn;
 
 // Let $.parseJSON(falsy_value) return null
 jQuery.parseJSON = function( json ) {
-	if ( !json && json !== null ) {
+	if ( !json ) {
 		migrateWarn("jQuery.parseJSON requires a valid JSON string");
 		return null;
 	}

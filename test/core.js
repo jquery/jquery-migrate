@@ -107,7 +107,7 @@ test( "jQuery.parseJSON() falsy values", function() {
 	expectNoWarning( "valid JSON", function() {
 		jQuery.parseJSON("{\"a\":1}");
 	});
-	expectNoWarning( "actual null", function() {
+	expectWarning( "actual null", function() {
 		jQuery.parseJSON(null);
 	});
 	expectNoWarning( "string null", function() {
