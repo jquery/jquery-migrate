@@ -133,6 +133,15 @@ test( "jQuery.browser", function() {
 	});
 });
 
+test( "jQuery.boxModel and jQuery.support.boxModel", function() {
+	expect( 3 );
+
+	( jQuery._definePropertyBroken ? expectNoWarning : expectWarning )( "boxModel", 2, function() {
+		equal( jQuery.boxModel, true, "jQuery.boxModel is true (not in Quirks)" );
+		equal( jQuery.support.boxModel, true, "jQuery.support.boxModel is true (not in Quirks)" );
+	});
+});
+
 test( "jQuery.sub() - Static Methods", function(){
 	expect( 19 );
 

@@ -86,6 +86,11 @@ if ( !jQuery.browser ) {
 // Warn if the code tries to get jQuery.browser
 migrateWarnProp( jQuery, "browser", jQuery.browser, "jQuery.browser is deprecated" );
 
+// jQuery.boxModel deprecated in 1.3, jQuery.support.boxModel deprecated in 1.7
+jQuery.boxModel = jQuery.support.boxModel = (document.compatMode === "CSS1Compat");
+migrateWarnProp( jQuery, "boxModel", jQuery.boxModel, "jQuery.boxModel is deprecated" );
+migrateWarnProp( jQuery.support, "boxModel", jQuery.support.boxModel, "jQuery.support.boxModel is deprecated" );
+
 jQuery.sub = function() {
 	function jQuerySub( selector, context ) {
 		return new jQuerySub.fn.init( selector, context );

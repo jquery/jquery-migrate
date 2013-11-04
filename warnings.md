@@ -42,6 +42,13 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Put a [valid doctype](http://www.w3.org/QA/2002/04/valid-dtd-list.html) in the document and ensure that the document is rendering in standards mode. The simplest valid doctype is the HTML5 one, which we highly recommend: `<!doctype html>` . The jQuery Migrate plugin does not attempt to fix issues related to quirks mode.
 
+### JQMIGRATE: jQuery.boxModel is deprecated
+### JQMIGRATE: jQuery.support.boxModel is deprecated
+
+**Cause:** These two deprecated properties are `false` when the page is using Quirks mode, and `true` when the page is in standards mode. Quirks mode was never supported in jQuery so these properties were removed. 
+
+**Solution:** Do not use jQuery in Quirks, it has never been supported. See the previous item for solutions.
+
 ### JQMIGRATE: jQuery.parseJSON requires a valid JSON string
 
 **Cause**: Before jQuery 1.9.0, the `$.parseJSON()` method allowed some invalid JSON strings and returned `null` as a result without throwing an error. This put it at odds with the `JSON.parse()` method. The two methods are aligned as of 1.9.0 and values such as an empty string are properly not considered valid by `$.parseJSON()`. 
