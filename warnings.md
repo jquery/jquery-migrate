@@ -2,7 +2,7 @@
 
 To allow developers to identify and fix compatibility issues when migrating older jQuery code, the development (uncompressed) version of the plugin generates console warning messages whenever any of its functionality is called. The messages only appear once on the console for each unique message. 
 
-**In most cases these messages are simply _warnings_; code should continue to work properly with later versions of jQuery as long as the jQuery Migrate plugin is used, but we recommmend changing the code where possible to eliminate warnings so that the plugin does not need to be used.**
+**In most cases these messages are simply _warnings_; code should continue to work properly with later versions of jQuery as long as the jQuery Migrate plugin is used, but we recommend changing the code where possible to eliminate warnings so that the plugin does not need to be used.**
 
 The production (compressed) version of the plugin does not generate these warnings. To continue using jQuery code that has compatibility issues without making any changes and without console messages, simply include the production version in the file rather than the development version. See the [README](README.md) for download instructions.
 
