@@ -14,6 +14,13 @@ var attrFn = jQuery( "<input/>", { size: 1 } ).attr("size") && jQuery.attrFn,
 migrateWarnProp( jQuery, "attrFn", attrFn || {}, "jQuery.attrFn is deprecated" );
 
 jQuery.attr = function( elem, name, value, pass ) {
+
+	// Some plugins try to set an Array of properties,
+	// Then this Array is set like an empty Array and occurs an error.
+	if ( Array.isArray( name ) ) {
+		return;
+	}
+
 	var lowerName = name.toLowerCase(),
 		nType = elem && elem.nodeType;
 
