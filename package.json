@@ -25,7 +25,6 @@
 		"jquery": ">=1.6.4"
 	},
 	"devDependencies": {
-		"npm-check-updates": "1.2.0",
 		"grunt-git-authors": "1.2.0",
 		"grunt-contrib-concat": "0.3.0",
 		"grunt-contrib-watch": "0.5.3",
