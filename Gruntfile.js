@@ -133,9 +133,7 @@ module.exports = function(grunt) {
 
 		// TODO: create separate job for git/git2 so we can do different browsersets
 		testswarm.createClient( {
-			url: config.swarmUrl,
-			pollInterval: 10000,
-			timeout: 1000 * 60 * 30
+			url: config.swarmUrl
 		} )
 		.addReporter( testswarm.reporters.cli )
 		.auth( {
@@ -147,7 +145,8 @@ module.exports = function(grunt) {
 				name: jobName,
 				runs: runs,
 				runMax: config.runMax,
-				browserSets: "popular-no-old-ie"
+				browserSets: "popular-no-old-ie",
+				timeout: 1000 * 60 * 30
 			}, function( err, passed ) {
 				if ( err ) {
 					grunt.log.error( err );
