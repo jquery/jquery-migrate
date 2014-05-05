@@ -253,3 +253,11 @@ test( "jQuery.sub() - .fn Methods", function(){
 		});
 	});
 });
+
+test( ".size", function(){
+    expect( 1 );
+
+    expectWarning( "size", function() {
+        jQuery( "<div />" ).size();
+    });
+});
