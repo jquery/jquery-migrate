@@ -28,18 +28,24 @@ module.exports = function(grunt) {
 			"src/event.js",
 			"src/outro.js"
 		],
-		tests: [
-			"dev+git",
-			"dev+git2",
-			"min+git",
-			"min+git2",
-			"dev+2.0.3",
-			"dev+1.10.2",
-			"dev+1.9.1",
-			"dev+1.8.3",
-			"dev+1.7.2",
-			"dev+1.6.4"
-		],
+		tests: {
+			1: [
+				"dev+git",
+				"min+git",
+				"dev+1.11.1",
+				"dev+1.10.2",
+				"dev+1.9.1",
+				"dev+1.8.3",
+				"dev+1.7.2",
+				"dev+1.6.4"
+			],
+			2: [
+				"dev+git2",
+				"min+git2",
+				"dev+2.1.1",
+				"dev+2.0.3"
+			]
+		},
 		banners: {
 			tiny: "/*! <%= pkg.name %> <%= pkg.version %> - <%= pkg.homepage %> */"
 		},
@@ -108,14 +114,21 @@ module.exports = function(grunt) {
 	grunt.registerTask( "buildnounit", [ "concat", "uglify", "jshint" ] );
 
 	// Testswarm
-	grunt.registerTask( "testswarm", function( commit, configFile ) {
+	grunt.registerTask( "testswarm", function( commit, configFile, browserSets,
+			jQueryVersion ) {
 		var jobName,
 			testswarm = require( "testswarm" ),
 			runs = {},
 			done = this.async(),
 			pull = /PR-(\d+)/.exec( commit ),
 			config = grunt.file.readJSON( configFile ).jquerymigrate,
-			tests = grunt.config("tests");
+			tests = grunt.config( "tests" )[ jQueryVersion || 1 ];
+
+		browserSets = browserSets || config.browserSets;
+		if ( browserSets[ 0 ] === "[" ) {
+			// We got an array, parse it
+			browserSets = JSON.parse( browserSets );
+		}
 
 		if ( pull ) {
 			jobName = "Pull <a href='https://github.com/jquery/jquery-migrate/pull/" +
@@ -145,7 +158,7 @@ module.exports = function(grunt) {
 				name: jobName,
 				runs: runs,
 				runMax: config.runMax,
-				browserSets: "popular-no-old-ie",
+				browserSets: browserSets,
 				timeout: 1000 * 60 * 30
 			}, function( err, passed ) {
 				if ( err ) {
