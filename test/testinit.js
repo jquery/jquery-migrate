@@ -90,7 +90,9 @@ TestManager = {
 		if ( window.addEventListener ) {
 			window.addEventListener( "load", injectSelects, false );
 		} else {
-			window.attachEvent( "onload", injectSelects );
+			window.attachEvent( "onload", function () {
+				setTimeout( injectSelects, 0 );
+			});
 		}
 	}
 };
