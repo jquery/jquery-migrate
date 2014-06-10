@@ -18,7 +18,7 @@ test( "jQuery(html) loose rules", function() {
 		nowarns = {
 			"simple tag": "<div />",
 			"single tag with properties": "<input type=text name=easy />",
-			"embedded newlines": "<div>very\nspacey\n<div>like\n</div> text </div></div>",
+			"embedded newlines": "<div>very\nspacey\n like\n<div> text </div></div>",
 			"embedded hash": "<p>love potion <strong bgcolor='#bad'>#9</strong></p>",
 			"complex html": "<div id='good'><p id='guy'> hello !</p></div>"
 		},
