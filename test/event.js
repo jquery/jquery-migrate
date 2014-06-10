@@ -799,9 +799,9 @@ test( "global events not on document", function() {
 	});
 });
 
-// Support: IE<8
+// Support: IE<=8
 // Need ES5 Object.defineProperty() to catch property access
-if ( jQuery.event.dispatch && window.addEventListener ) {
+if ( jQuery.event.dispatch && Object.defineProperties ) {
 
 	test( "jQuery.event.handle", function() {
 		expect( 2 );
