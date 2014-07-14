@@ -74,14 +74,15 @@ test( "attrHooks[\"value\"]", function() {
 		var button = jQuery("#button"),
 			majorMinorPatch = jQuery.fn.jquery.split(".");
 
-		// Respect the jQuery 1.9.0+ behavior change
+		// Respect the jQuery 1.9.0+ behavior changes
 		if ( majorMinorPatch[0] > 1 || ( majorMinorPatch[0] === "1" && majorMinorPatch[1] >= 9 ) ) {
 			equal( button.attr("value"), undefined, "button.attr('value') returns attribute." );
+			equal( button.attr( "value", "foo" ).attr("value"), "foo", "button.attr('value', val) sets attribute." );
 		} else {
 			equal( button.attr("value"), "", "button.attr('value') returns empty string." );
+			ok( true, "Can't assert consistency of button.attr('value', val) on jQuery<1.9.0." );
 		}
-		equal( button.attr( "value", "foo" ).attr("value"), "foo", "button.attr('value', val) sets attribute." );
-		equal( button.html(), "Button", "button.attr('value') doesn't affect contents" );
+		equal( button.attr( "value", "bar" ).html(), "Button", "button.attr('value') doesn't affect contents" );
 	});
 
 	expectWarning( "div.attr(...)", 2, function() {
