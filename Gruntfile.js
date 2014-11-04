@@ -29,9 +29,9 @@ module.exports = function(grunt) {
 			"src/outro.js"
 		],
 		tests: {
-			1: [
-				"dev+git",
-				"min+git",
+			"jquery-compat": [
+				"dev+compat-git",
+				"min+compat-git",
 				"dev+1.11.1",
 				"dev+1.10.2",
 				"dev+1.9.1",
@@ -39,9 +39,9 @@ module.exports = function(grunt) {
 				"dev+1.7.2",
 				"dev+1.6.4"
 			],
-			2: [
-				"dev+git2",
-				"min+git2",
+			jquery: [
+				"dev+git",
+				"min+git",
 				"dev+2.1.1",
 				"dev+2.0.3"
 			]
@@ -114,17 +114,16 @@ module.exports = function(grunt) {
 	grunt.registerTask( "buildnounit", [ "concat", "uglify", "jshint" ] );
 
 	// Testswarm
-	grunt.registerTask( "testswarm", function( commit, configFile, browserSets,
-			jQueryVersion ) {
+	grunt.registerTask( "testswarm", function( commit, configFile, destName ) {
 		var jobName,
 			testswarm = require( "testswarm" ),
 			runs = {},
 			done = this.async(),
 			pull = /PR-(\d+)/.exec( commit ),
 			config = grunt.file.readJSON( configFile ).jquerymigrate,
-			tests = grunt.config( "tests" )[ jQueryVersion || 1 ];
+			tests = grunt.config( "tests" )[ destName ],
+			browserSets = destName || config.browserSets;
 
-		browserSets = browserSets || config.browserSets;
 		if ( browserSets[ 0 ] === "[" ) {
 			// We got an array, parse it
 			browserSets = JSON.parse( browserSets );
@@ -144,7 +143,7 @@ module.exports = function(grunt) {
 				plugin_jquery[0] + "&jquery=" + plugin_jquery[1];
 		});
 
-		// TODO: create separate job for git/git2 so we can do different browsersets
+		// TODO: create separate job for compat-git/git so we can do different browsersets
 		testswarm.createClient( {
 			url: config.swarmUrl
 		} )

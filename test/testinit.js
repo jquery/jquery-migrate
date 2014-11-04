@@ -19,7 +19,7 @@ TestManager = {
 			file = projectRoot + "/dist/" + projectName + ".js";
 		} else if ( version === "min" ) {
 			file = projectRoot + "/dist/" + projectName + ".min.js";
-		} else if ( /^[\w\.]+$/.test( version ) ) {
+		} else if ( /^[\w\.\-]+$/.test( version ) ) {
 			file = "http://code.jquery.com/" + projectName + "-" + version + ".js";
 		} else {
 			file = version;
