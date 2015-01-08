@@ -53,9 +53,7 @@ module.exports = function(grunt) {
 			options: {
 				banner: "/*!\n * <%= pkg.title || pkg.name %> - v<%= pkg.version %> - " +
 					"<%= grunt.template.today('yyyy-mm-dd') %>\n" +
-					" * <%= pkg.homepage %>\n" +
-					" * Copyright 2005, <%= grunt.template.today('yyyy') %> <%= pkg.author.name %>;" +
-					" Licensed <%= _.pluck(pkg.licenses, 'type').join(', ') %>\n */\n"
+					" * Copyright <%= pkg.author.name %>\n */\n"
 			},
 			dist: {
 				src: "<%= files %>",
@@ -90,7 +88,7 @@ module.exports = function(grunt) {
 				}
 			},
 			options: {
-				banner: "/*! jQuery Migrate v<%= pkg.version %> | (c) 2005, <%= grunt.template.today('yyyy') %> <%= pkg.author.name %> | jquery.org/license */\n",
+				banner: "/*! jQuery Migrate v<%= pkg.version %> | (c) <%= pkg.author.name %> | jquery.org/license */\n",
 				beautify: {
 					ascii_only: true
 				}
