@@ -20,12 +20,12 @@ test( "jQuery(html) loose rules", function() {
 			"single tag with properties": "<input type=text name=easy />",
 			"embedded newlines": "<div>very\nspacey\n like\n<div> text </div></div>",
 			"embedded hash": "<p>love potion <strong bgcolor='#bad'>#9</strong></p>",
-			"complex html": "<div id='good'><p id='guy'> hello !</p></div>"
-		},
-		warns = {
+			"complex html": "<div id='good'><p id='guy'> hello !</p></div>",
 			"leading space": "  <div />",
 			"leading newline": "\n<div />",
-			"lots of space/newline": "  <em>  spaces \n and \n newlines </em> \n ",
+			"lots of space/newline": "  <em>  spaces \n and \n newlines </em> \n "
+		},
+		warns = {
 			"leading text": "don't<div>try this</div>",
 			"trailing text": "<div>try this</div>junk",
 			"both text": "don't<div>try this</div>either"

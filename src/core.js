@@ -2,6 +2,7 @@
 var matched, browser,
 	oldInit = jQuery.fn.init,
 	oldParseJSON = jQuery.parseJSON,
+	rspaceAngle = /^\s*</,
 	// Note: XSS check is done below after string is trimmed
 	rquickExpr = /^([^<]*)(<[\w\W]+>)([^>]*)$/;
 
@@ -12,7 +13,7 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 	if ( selector && typeof selector === "string" && !jQuery.isPlainObject( context ) &&
 			(match = rquickExpr.exec( jQuery.trim( selector ) )) && match[ 0 ] ) {
 		// This is an HTML string according to the "old" rules; is it still?
-		if ( selector.charAt( 0 ) !== "<" ) {
+		if ( !rspaceAngle.test( selector ) ) {
 			migrateWarn("$(html) HTML strings must start with '<' character");
 		}
 		if ( match[ 3 ] ) {
