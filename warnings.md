@@ -47,7 +47,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Cause:** These two deprecated properties are `false` when the page is using Quirks mode, and `true` when the page is in standards mode. Quirks mode was never supported in jQuery so these properties were removed. 
 
-**Solution:** Do not use jQuery in Quirks, it has never been supported. See the previous item for solutions.
+**Solution:** Do not use jQuery in Quirks mode, it has never been supported. See the previous item for solutions.
 
 ### JQMIGRATE: jQuery.parseJSON requires a valid JSON string
 
