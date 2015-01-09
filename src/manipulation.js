@@ -1,11 +1,5 @@
 
-var rscriptType = /\/(java|ecma)script/i,
-	oldSelf = jQuery.fn.andSelf || jQuery.fn.addBack;
-
-jQuery.fn.andSelf = function() {
-	migrateWarn("jQuery.fn.andSelf() replaced by jQuery.fn.addBack()");
-	return oldSelf.apply( this, arguments );
-};
+var rscriptType = /\/(java|ecma)script/i;
 
 // Since jQuery.clean is used internally on older versions, we only shim if it's missing
 if ( !jQuery.clean ) {

@@ -1,4 +1,6 @@
+var oldSelf = jQuery.fn.andSelf || jQuery.fn.addBack;
+
 jQuery.fn.andSelf = function() {
-	migrateWarn( "jQuery.fn.andSelf is deprecated; use jQuery.fn.addBack" );
-	return jQuery.fn.addBack.apply( this, arguments );
+	migrateWarn("jQuery.fn.andSelf() replaced by jQuery.fn.addBack()");
+	return oldSelf.apply( this, arguments );
 };
