@@ -8,7 +8,7 @@ var matched, browser,
 
 // $(html) "looks like html" rule change
 jQuery.fn.init = function( selector, context, rootjQuery ) {
-	var match;
+	var match, ret;
 
 	if ( selector && typeof selector === "string" && !jQuery.isPlainObject( context ) &&
 			(match = rquickExpr.exec( jQuery.trim( selector ) )) && match[ 0 ] ) {
@@ -31,11 +31,28 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 			context = context.context;
 		}
 		if ( jQuery.parseHTML ) {
-			return oldInit.call( this, jQuery.parseHTML( match[ 2 ], context, true ),
+			return oldInit.call( this,
+					jQuery.parseHTML( match[ 2 ], context && context.ownerDocument || context, true ),
 					context, rootjQuery );
 		}
 	}
-	return oldInit.apply( this, arguments );
+
+	ret = oldInit.apply( this, arguments );
+
+	// Fill in selector and context properties so .live() works
+	if ( selector && selector.selector !== undefined ) {
+		// A jQuery object, copy its properties
+		ret.selector = selector.selector;
+		ret.context = selector.context;
+
+	} else {
+		ret.selector = typeof selector === "string" ? selector : "";
+		if ( selector ) {
+			ret.context = selector.nodeType? selector : context || document;
+		}
+	}
+
+	return ret;
 };
 jQuery.fn.init.prototype = jQuery.fn;
 

@@ -47,6 +47,49 @@ test( "jQuery(html) loose rules", function() {
 	}
 });
 
+test( "selector state", function() {
+	expect( 18 );
+
+	var test;
+
+	test = jQuery( undefined );
+	equal( test.selector, "", "Empty jQuery Selector" );
+	equal( test.context, undefined, "Empty jQuery Context" );
+
+	test = jQuery( document );
+	equal( test.selector, "", "Document Selector" );
+	equal( test.context, document, "Document Context" );
+
+	test = jQuery( document.body );
+	equal( test.selector, "", "Body Selector" );
+	equal( test.context, document.body, "Body Context" );
+
+	test = jQuery("#qunit-fixture");
+	equal( test.selector, "#qunit-fixture", "#qunit-fixture Selector" );
+	equal( test.context, document, "#qunit-fixture Context" );
+
+	test = jQuery("#notfoundnono");
+	equal( test.selector, "#notfoundnono", "#notfoundnono Selector" );
+	equal( test.context, document, "#notfoundnono Context" );
+
+	test = jQuery( "#qunit-fixture", document );
+	equal( test.selector, "#qunit-fixture", "#qunit-fixture Selector" );
+	equal( test.context, document, "#qunit-fixture Context" );
+
+	test = jQuery( "#qunit-fixture", document.body );
+	equal( test.selector, "#qunit-fixture", "#qunit-fixture Selector" );
+	equal( test.context, document.body, "#qunit-fixture Context" );
+
+	// Test cloning
+	test = jQuery( test );
+	equal( test.selector, "#qunit-fixture", "#qunit-fixture Selector" );
+	equal( test.context, document.body, "#qunit-fixture Context" );
+
+	test = jQuery( document.body ).find("#qunit-fixture");
+	equal( test.selector, "#qunit-fixture", "#qunit-fixture find Selector" );
+	equal( test.context, document.body, "#qunit-fixture find Context" );
+});
+
 test( "XSS injection", function() {
 	expect( 10 );
 
