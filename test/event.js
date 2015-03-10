@@ -722,13 +722,39 @@ test( "error() event method", function() {
 	expect( 2 );
 
 	expectWarning( "jQuery.fn.error()", function() {
-		jQuery("<img />")
+		jQuery( "<img />" )
 			.error(function(){
 				ok( true, "Triggered error event" );
 			})
 			.error()
-			.unbind("error")
+			.unbind( "error" )
 			.error()
+			.remove();
+	});
+});
+
+test( "load() and unload() event methods", function() {
+	expect( 4 );
+
+	expectWarning( "jQuery.fn.load()", function() {
+		jQuery( "<img />" )
+			.load(function(){
+				ok( true, "Triggered load event" );
+			})
+			.load()
+			.unbind( "load" )
+			.load()
+			.remove();
+	});
+
+	expectWarning( "jQuery.fn.unload()", function() {
+		jQuery( "<img />" )
+			.unload(function(){
+				ok( true, "Triggered unload event" );
+			})
+			.unload()
+			.unbind( "unload" )
+			.unload()
 			.remove();
 	});
 });

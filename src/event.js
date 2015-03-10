@@ -4,6 +4,7 @@ var eventAdd = jQuery.event.add,
 	oldToggle = jQuery.fn.toggle,
 	oldLive = jQuery.fn.live,
 	oldDie = jQuery.fn.die,
+	oldLoad = jQuery.fn.load,
 	ajaxEvents = "ajaxStart|ajaxStop|ajaxSend|ajaxComplete|ajaxError|ajaxSuccess",
 	rajaxEvent = new RegExp( "\\b(?:" + ajaxEvents + ")\\b" ),
 	rhoverHack = /(?:^|\s)hover(\.\S+|)\b/,
@@ -38,17 +39,34 @@ jQuery.event.remove = function( elem, types, handler, selector, mappedTypes ){
 	eventRemove.call( this, elem, hoverHack( types ) || "", handler, selector, mappedTypes );
 };
 
-jQuery.fn.error = function() {
-	var args = Array.prototype.slice.call( arguments, 0);
-	migrateWarn("jQuery.fn.error() is deprecated");
-	args.splice( 0, 0, "error" );
-	if ( arguments.length ) {
-		return this.bind.apply( this, args );
-	}
-	// error event should not bubble to window, although it does pre-1.7
-	this.triggerHandler.apply( this, args );
-	return this;
-};
+jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
+
+	jQuery.fn[ name ] = function() {
+		var args = Array.prototype.slice.call( arguments, 0 );
+		migrateWarn( "jQuery.fn." + name + "() is deprecated" );
+
+		// If this is an ajax load() the first arg should be the string URL;
+		// technically this could also be the "Anything" arg of the event .load()
+		// which just goes to show why this dumb signature has been deprecated!
+		// jQuery custom builds that exclude the Ajax module justifiably die here.
+		if ( name === "load" && typeof arguments[ 0 ] === "string" ) {
+			return oldLoad.apply( this, arguments );
+		}
+
+		args.splice( 0, 0, name );
+		if ( arguments.length ) {
+			return this.bind.apply( this, args );
+		}
+
+		// Use .triggerHandler here because:
+		// - load and unload events don't need to bubble, only applied to window or image
+		// - error event should not bubble to window, although it does pre-1.7
+		// See http://bugs.jquery.com/ticket/11820
+		this.triggerHandler.apply( this, args );
+		return this;
+	};
+
+});
 
 jQuery.fn.toggle = function( fn, fn2 ) {
 
