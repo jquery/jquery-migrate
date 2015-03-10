@@ -93,6 +93,13 @@ $.ajax({
 
 **Solution:** Change any use of `$().error(fn)` to `$().on("error", fn)`.
 
+### JQMIGRATE: jQuery.fn.load() is deprecated
+### JQMIGRATE: jQuery.fn.unload() is deprecated
+
+**Cause:** The `$().load()` and `$().unload()` methods attach an "load" and "unload" event, respectively, to an element. They were deprecated in 1.9 to reduce confusion with the AJAX-related `$.load()` method that loads HTML fragments and which has not been deprecated. Note that these two methods are used almost exclusively with a jQuery collection consisting of only the `window` element. Also note that attaching an "unload" or "beforeunload" event on a window via any means can impact performance on some browsers because it disables the document cache (bfcache). For that reason we strongly advise against it.
+
+**Solution:** Change any use of `$().load(fn)` to `$().on("load", fn)` and `$().unload(fn)` to `$().on("unload", fn)`.
+
 ### JQMIGRATE: jQuery.fn.toggle(handler, handler...) is deprecated
 
 **Cause:** There are two completely different meanings for the `.toggle()` method. The use of `.toggle()` to show or hide elements is _not_ affected. The use of `.toggle()` as a specialized click handler was deprecated in 1.8 and removed in 1.9. 
