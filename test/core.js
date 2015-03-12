@@ -47,6 +47,15 @@ test( "jQuery(html) loose rules", function() {
 	}
 });
 
+test( "jQuery( '#' )", function() {
+	expect( 2 );
+
+	expectWarning( "Selector, through the jQuery constructor, nothing but hash", function() {
+		var set = jQuery( "#" );
+		equal( set.length, 0, "empty set" );
+	});
+});
+
 test( "selector state", function() {
 	expect( 18 );
 

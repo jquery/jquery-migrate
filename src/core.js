@@ -19,6 +19,7 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 		if ( match[ 3 ] ) {
 			migrateWarn("$(html) HTML text after last tag is ignored");
 		}
+
 		// Consistently reject any HTML-like string starting with a hash (#9521)
 		// Note that this may break jQuery 1.6.x code that otherwise would work.
 		if ( match[ 0 ].charAt( 0 ) === "#" ) {
@@ -35,6 +36,12 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 					jQuery.parseHTML( match[ 2 ], context && context.ownerDocument || context, true ),
 					context, rootjQuery );
 		}
+	}
+
+	// jQuery( "#" ) is a bogus ID selector, but it returned an empty set before jQuery 3.0
+	if ( selector === "#" ) {
+		migrateWarn( "jQuery( '#' ) is not a valid selector" );
+		selector = [];
 	}
 
 	ret = oldInit.apply( this, arguments );
