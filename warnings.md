@@ -148,6 +148,19 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution**: Boolean properties should generally not be passed to `$().attr` at all; replace with `$().prop` unless you truly intend to update the underlying HTML *attribute*.
 
+### JQMIGRATE: deferred.pipe() is deprecated
+
+**Cause**: The `.pipe()` method on a `jQuery.Deferred` object was deprecated as of jQuery 1.8, when the `.then()` method was changed to perform the same function.
+
+**Solution**: In most cases it is sufficient to change all occurrences of `.pipe()` to `.then()`. Ensure that you aren't relying on context/state propagation (e.g., using `this`) or synchronous callback invocation, which were dropped from `.then()` for Promises/A+ interoperability as of jQuery 3.0.
+
+### JQMIGRATE: deferred.isResolved() is deprecated
+### JQMIGRATE: deferred.isRejected() is deprecated
+
+**Cause**: As of jQuery 1.7, the `isResolved()` and `isRejected` methods of the `jQuery.Deferred` object have been deprecated. They were removed in jQuery 1.8 and are no longer available in later versions.
+
+**Solution**: To determine the state of a Deferred object, call `deferred.state()` and check for a `"resolved"` or `"rejected"` string values.
+
 ### JQMIGRATE: jQuery.clean() is deprecated
 
 **Cause**: `jQuery.buildFragment()` and `jQuery.clean()` are undocumented internal methods. The signature of `jQuery.buildFragment()` was changed in jQuery 1.8 and 1.9, and `jQuery.clean()` was removed in 1.9. However, we are aware of some plugins or other code that may be using them.
