@@ -132,6 +132,6 @@ jQuery.sub = function() {
 
 // The number of elements contained in the matched element set
 jQuery.fn.size = function() {
-	migrateWarn( "jQuery.fn.size is deprecated; use the length property" );
+	migrateWarn( "jQuery.fn.size() is deprecated; use the .length property" );
 	return this.length;
 };
