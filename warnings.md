@@ -166,3 +166,15 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution**: If you are creating HTML that absolutely requires leading text, use `$.parseHTML` and pass the results to `$()`.
 
+### JQMIGRATE: jQuery.fn.andSelf() replaced by jQuery.fn.addBack()
+
+**Cause**: The `.andSelf()` method has been renamed to `.addBack()` as of jQuery 1.9 to better reflect its purpose of adding back the previous set of results.
+
+**Solution**: Replace any use of `.andSelf()` with `.addBack()`.
+
+### JQMIGRATE: jQuery.fn.size() is deprecated; use the .length property
+
+**Cause**: The `.size()` method returns the number of elements in the current jQuery object, but duplicates the more-efficient `.length` property which provides the same functionality. As of jQuery 1.9 the `.length` property is the preferred way to retrieve this value.
+
+**Solution**: Replace any use of `.size()` with `.length`.
+
