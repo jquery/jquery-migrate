@@ -31,7 +31,9 @@
     "grunt-contrib-qunit": "0.5.2",
     "grunt-contrib-jshint": "0.11.0",
     "grunt-contrib-uglify": "0.8.0",
+    "grunt-npmcopy": "0.1.0",
     "grunt": "~0.4.5",
+    "qunitjs": "1.17.1",
     "testswarm": "~1.1.0"
   },
   "keywords": []

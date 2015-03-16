@@ -64,6 +64,17 @@ module.exports = function(grunt) {
 		qunit: {
 			files: [ "test/**/*.html" ]
 		},
+		npmcopy: {
+			all: {
+				options: {
+					destPrefix: "external"
+				},
+				files: {
+					"qunit/qunit.js": "qunitjs/qunit/qunit.js",
+					"qunit/qunit.css": "qunitjs/qunit/qunit.css",
+					"qunit/LICENSE.txt": "qunitjs/LICENSE.txt"				}
+			}
+		},
 		jshint: {
 			dist: {
 				src: [ "dist/jquery-migrate.js" ],
@@ -105,6 +116,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-contrib-qunit");
+	grunt.loadNpmTasks("grunt-npmcopy");
 
 	// Default task.
 	grunt.registerTask( "default", [ "concat", "uglify", "jshint", "qunit" ] );

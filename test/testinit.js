@@ -33,65 +33,19 @@ TestManager = {
 		// Prevents a jshint warning about eval-like behavior of document.write
 		document["write"]( "<script src='" + file + "'></script>" );
 	},
-	/*
-	 *	Set the list of projects, including the project version choices.
-	 */
 	init: function( projects ) {
-		var self = this,
-			html = "";
+		var p, project;
 
 		this.projects = projects;
 		this.loaded = [];
 
-		function injectSelects() {
-			var i, c, project, tag, choices, toolbar, loaded, elem, selects;
-
-			for ( i = 0; i < self.loaded.length; i++ ) {
-				loaded = self.loaded[ i ];
-				project = projects[ loaded.projectName ];
-				tag = loaded.tag;
-				choices = project.choices.split(",");
-				if ( choices[ 0 ] !== tag ) {
-					choices.unshift( tag );
-				}
-
-				html += " " + project.urlTag + ":<select name='" + project.urlTag + "'>";
-				for ( c = 0; c < choices.length; c++ ) {
-					html += "<option value='" + choices[ c ] + "'" +
-						(c ? "" : " selected" ) + ">" + choices[ c ] + "</option>";
-				}
-				html += "</select>";
-			}
-
-			// Reach into QUnit's toolbar to add our selects;
-			// if this returns null then our assumptions have failed.
-			toolbar = document.getElementById("qunit-testrunner-toolbar");
-			toolbar.insertAdjacentHTML( "beforeend", html );
-
-			// Connect the selects so they reload the page with an updated URL
-			function updateUrl( e ) {
-				var arg = {},
-					target = e.target || event.srcElement;
-				arg[ target.name ] = target.value;
-				window.location = QUnit.url( arg );
-			}
-			selects = toolbar.getElementsByTagName("select");
-			for ( c = 0; c < selects.length; c++ ) {
-				elem = selects[ c ];
-				if ( elem.addEventListener ) {
-					elem.addEventListener( "change", updateUrl, false );
-				} else if ( elem.attachEvent ) {
-					elem.attachEvent( "onchange", updateUrl );
-				}
-			}
-		}
-
-		// Since we're adding a load handler after QUnit, the toolbar should be present
-		if ( window.addEventListener ) {
-			window.addEventListener( "load", injectSelects, false );
-		} else {
-			window.attachEvent( "onload", function () {
-				setTimeout( injectSelects, 0 );
+		// Set the list of projects, including the project version choices.
+		for ( p in projects ) {
+			project = projects[ p ];
+			QUnit.config.urlConfig.push({
+				label: p,
+				id: project.urlTag,
+				value: project.choices.split(",")
 			});
 		}
 	}
@@ -100,7 +54,7 @@ TestManager = {
 /**
  * QUnit configuration
  */
-// Max time for stop() and asyncTest() until it aborts test
+// Max time for async tests until it aborts test
 // and start()'s the next test.
 QUnit.config.testTimeout = 20 * 1000; // 20 seconds
 
