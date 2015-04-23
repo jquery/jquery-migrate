@@ -22,6 +22,7 @@ module.exports = function(grunt) {
 			"src/migrate.js",
 			"src/attributes.js",
 			"src/core.js",
+			"src/css.js",
 			"src/ajax.js",
 			"src/data.js",
 			"src/manipulation.js",
