@@ -178,3 +178,8 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution**: Replace any use of `.size()` with `.length`.
 
+### JQMIGRATE: jQuery.swap() is undocumented and deprecated
+
+**Cause**: The `jQuery.swap()` method temporarily exchanges a set of CSS properties. It was never documented as part of jQuery's public API and should not be used because it can cause performance problems due to forced layout.
+
+**Solution**: Rework the code to avoid calling `jQuery.swap()`, or explicitly set and restore the properties you need to change.
