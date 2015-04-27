@@ -28,6 +28,7 @@ module.exports = function(grunt) {
 			"src/manipulation.js",
 			"src/event.js",
 			"src/traversing.js",
+			"src/deferred.js",
 			"src/outro.js"
 		],
 		tests: {
