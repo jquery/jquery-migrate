@@ -28,7 +28,6 @@ var releaseVersion,
 
 	readmeFile = "README.md",
 	packageFile = "package.json",
-	pluginFile = "migrate.jquery.json",
 	devFile = "dist/jquery-migrate.js",
 	minFile = "dist/jquery-migrate.min.js",
 
@@ -122,7 +121,6 @@ function checkGitStatus( next ) {
 
 function tagReleaseVersion( next ) {
 	updatePackageVersion( releaseVersion );
-	updatePluginVersion( releaseVersion );
 	git( [ "commit", "-a", "-m", "Tagging the " + releaseVersion + " release." ], function(){
 		git( [ "tag", releaseVersion ], next);
 	});
@@ -214,18 +212,6 @@ function updatePackageVersion( ver, blobVer ) {
 	pkg.author.url = setBlobVersion( pkg.author.url, blobVer );
 	pkg.licenses[0].url = setBlobVersion( pkg.licenses[0].url, blobVer );
 	writeJsonSync( packageFile, pkg );
-}
-
-function updatePluginVersion( ver ) {
-	var plug;
-
-	log( "Updating " + pluginFile + " version to " + ver );
-	plug = JSON.parse( fs.readFileSync( pluginFile ) );
-	plug.version = ver;
-	plug.author.url = setBlobVersion( plug.author.url, ver );
-	plug.licenses[0].url = setBlobVersion( plug.licenses[0].url, ver );
-	plug.download = setBlobVersion( plug.download, ver );
-	writeJsonSync( pluginFile, plug );
 }
 
 function setBlobVersion( s, v ) {
