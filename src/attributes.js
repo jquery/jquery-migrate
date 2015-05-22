@@ -71,7 +71,7 @@ jQuery.attr = function( elem, name, value, pass ) {
 
 		// Warn only for attributes that can remain distinct from their properties post-1.9
 		if ( ruseDefault.test( lowerName ) ) {
-			migrateWarn( "jQuery.fn.attr('" + lowerName + "') may use property instead of attribute" );
+			migrateWarn( "jQuery.fn.attr('" + lowerName + "') might use property instead of attribute" );
 		}
 	}
 
