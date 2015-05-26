@@ -20,7 +20,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### JQMIGRATE: $(html) HTML strings must start with '<' character
 
-**Cause:** In jQuery 1.9, HTML strings passed to `$()` must start with a tag; in other words the first character of the string must be a `<` character. There _cannot_ be any preceding characters, including whitespace. This is done to reduce the chances of inadvertent execution of scripts that may be present in HTML that is obtained from the URL, AJAX, or other sources. Use of simple literal HTML strings like `$("<div />")` or `$("<p>hello</p>")` are unaffected since they should not have leading spaces or text.
+**Cause:** In jQuery 1.9, HTML strings passed to `$()` must start with a tag; in other words the first character of the string must be a `<` character. There _cannot_ be any preceding characters, including whitespace. This is done to reduce the chances of inadvertent execution of scripts that might be present in HTML that is obtained from the URL, AJAX, or other sources. Use of simple literal HTML strings like `$("<div />")` or `$("<p>hello</p>")` are unaffected since they should not have leading spaces or text.
 
 **Solution**: Use the `$.parseHTML()` method to parse arbitrary HTML, especially HTML from external sources. To obtain a jQuery object that has the parsed HTML without running scripts, use `$($.parseHTML("string"))`. To run scripts in the HTML as well, use `$($.parseHTML("string", document, true))` instead. We do not recommend running `$.trim()` on the string to circumvent this check.
 
@@ -142,7 +142,7 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Solution**: Use `$().val( val )` (for form controls) or `$().prop( "value", val )` (for other elements) to set the *current* value.
 
-### JQMIGRATE: jQuery.fn.attr('selected') may use property instead of attribute
+### JQMIGRATE: jQuery.fn.attr('selected') might use property instead of attribute
 
 **Cause**: Prior to jQuery 1.9, `$().attr("checked")` etc. would sometimes use the checked|selected *property* instead of the *attribute* when interacting with non-XML elements, despite the fact that browsers and the HTML specifications allow the properties (current state) to differ from the attributes (initial/default state). This was a holdover from earlier versions of jQuery that did not offer `$().prop`.
 
@@ -163,7 +163,7 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 ### JQMIGRATE: jQuery.clean() is deprecated
 
-**Cause**: `jQuery.buildFragment()` and `jQuery.clean()` are undocumented internal methods. The signature of `jQuery.buildFragment()` was changed in jQuery 1.8 and 1.9, and `jQuery.clean()` was removed in 1.9. However, we are aware of some plugins or other code that may be using them.
+**Cause**: `jQuery.buildFragment()` and `jQuery.clean()` are undocumented internal methods. The signature of `jQuery.buildFragment()` was changed in jQuery 1.8 and 1.9, and `jQuery.clean()` was removed in 1.9. However, we are aware of some plugins or other code that might be using them.
 
 **Solution**: Rewrite any code that makes use of these or any other undocumented methods. For example the `jQuery.parseHTML()` method, introduced in jQuery 1.8, can convert HTML to an array of DOM elements that you can append to a document fragment.
 
