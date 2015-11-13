@@ -32,9 +32,7 @@ module.exports = function(grunt) {
 			"src/outro.js"
 		],
 		tests: {
-			"jquery-compat": [
-				"dev+compat-git",
-				"min+compat-git",
+			"jquery-1": [
 				"dev+1.11.1",
 				"dev+1.10.2",
 				"dev+1.9.1",
@@ -156,7 +154,7 @@ module.exports = function(grunt) {
 				plugin_jquery[0] + "&jquery=" + plugin_jquery[1];
 		});
 
-		// TODO: create separate job for compat-git/git so we can do different browsersets
+		// TODO: create separate job for git so we can do different browsersets
 		testswarm.createClient( {
 			url: config.swarmUrl
 		} )
