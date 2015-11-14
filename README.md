@@ -29,7 +29,7 @@ This version provides console warning messages when deprecated and/or removed AP
 **Latest released development version:** This file is hosted on jQuery's CDN, and can be hotlinked if desired.
 [http://code.jquery.com/jquery-migrate-1.2.1.js](http://code.jquery.com/jquery-migrate-1.2.1.js)
 
-**Current work-in-progress build:** Although this file represents the most recent updates to the plugin, it may not have been thorougly tested.
+**Current work-in-progress build:** Although this file represents the most recent updates to the plugin, it may not have been thoroughly tested.
 [http://code.jquery.com/jquery-migrate-git.js](http://code.jquery.com/jquery-migrate-git.js)
 
 ### Production version
@@ -40,7 +40,7 @@ The minified production file is compressed and does not generate console warning
 [http://code.jquery.com/jquery-migrate-1.2.1.min.js](http://code.jquery.com/jquery-migrate-1.2.1.min.js)
  This file is hosted on jQuery's CDN, and can be hotlinked if desired.
 
-**Current work-in-progress build:** Although this file represents the most recent updates to the plugin, it may not have been thorougly tested. We do not recommend using this file on production sites since it may be unstable; use the released production version above.
+**Current work-in-progress build:** Although this file represents the most recent updates to the plugin, it may not have been thoroughly tested. We do not recommend using this file on production sites since it may be unstable; use the released production version above.
 [http://code.jquery.com/jquery-migrate-git.min.js](http://code.jquery.com/jquery-migrate-git.min.js)
 
 ## Migrate Plugin API
