@@ -102,6 +102,9 @@ test( "selector state", function() {
 test( "XSS injection", function() {
 	expect( 10 );
 
+	// IE6 doesn't throw exceptions, just skip it since the XSS is still stopped
+	var expectThrow = navigator.userAgent.indexOf( "MSIE 6" ) < 0;
+
 	// Bad HTML will throw on some supported versions
 	expectWarning( "leading hash", function() {
 		try {
@@ -120,7 +123,7 @@ test( "XSS injection", function() {
 		} catch ( e ) {
 			threw = true;
 		}
-		equal( threw, true, "Throw on leading-hash HTML (treated as selector)" );
+		equal( threw, expectThrow, "Throw on leading-hash HTML (treated as selector)" );
 		equal( window.XSS, false, "XSS" );
 	});
 
@@ -132,7 +135,7 @@ test( "XSS injection", function() {
 		} catch ( e ) {
 			threw = true;
 		}
-		equal( threw, true, "Throw on leading-hash HTML and space (treated as selector)" );
+		equal( threw, expectThrow, "Throw on leading-hash HTML and space (treated as selector)" );
 		equal( window.XSS, false, "XSS" );
 	});
 
@@ -144,7 +147,7 @@ test( "XSS injection", function() {
 		} catch ( e ) {
 			threw = true;
 		}
-		equal( threw, true, "Throw on leading-hash HTML (treated as selector)" );
+		equal( threw, expectThrow, "Throw on leading-hash HTML (treated as selector)" );
 		stop();
 		setTimeout(function() {
 			equal( window.XSS, false, "XSS" );
