@@ -79,7 +79,7 @@ test( "attrHooks[\"value\"]", function() {
 			equal( button.attr("value"), undefined, "button.attr('value') returns attribute." );
 			equal( button.attr( "value", "foo" ).attr("value"), "foo", "button.attr('value', val) sets attribute." );
 		} else {
-			equal( button.attr("value"), "", "button.attr('value') returns empty string." );
+			ok( !button.attr("value"), "button.attr('value') is falsy." );
 			ok( true, "Can't assert consistency of button.attr('value', val) on jQuery<1.9.0." );
 		}
 		equal( button.attr( "value", "bar" ).html(), "Button", "button.attr('value') doesn't affect contents" );
