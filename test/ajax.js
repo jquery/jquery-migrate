@@ -15,7 +15,8 @@ if ( window.location.protocol !== "file:" ) {
 			cache: false,
 			success: function( data ) {
 				equal( data, null, "empty string converted to null" );
-				equal( jQuery.migrateWarnings.length, 1, "warned" );
+				// We only generate 1 warning but jQuery < 1.11 uses .unload() internally
+				ok( jQuery.migrateWarnings.length > 0, "warned" );
 			},
 			error: function( xhr, msg ) {
 				ok( false, "error: "+ msg );
