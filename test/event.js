@@ -765,6 +765,16 @@ test( "hover pseudo-event", function() {
 	});
 });
 
+test( "ready event", function() {
+	expect( 2 );
+
+	expectWarning( "Setting a ready event", 1, function() {
+		jQuery( document ).on( "ready", function() {
+			ok( true, "ready event was triggered" );
+		}).trigger( "ready" );
+	});
+});
+
 test( "global events not on document", function() {
 	expect( 16 );
 

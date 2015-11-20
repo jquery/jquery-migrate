@@ -196,3 +196,9 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 **Cause**: The `jQuery.swap()` method temporarily exchanges a set of CSS properties. It was never documented as part of jQuery's public API and should not be used because it can cause performance problems due to forced layout.
 
 **Solution**: Rework the code to avoid calling `jQuery.swap()`, or explicitly set and restore the properties you need to change.
+
+### JQMIGRATE: 'ready' event is deprecated
+
+**Cause**: Using one of jQuery's API methods to bind a "ready" event, e.g. `$( document ).on( "ready", fn )`, will cause the function to be called when the document is ready, but only if it is attached before the browser fires its own `DOMContentLoaded` event. That makes it unreliable for many uses, particularly ones where jQuery or its plugins are loaded asynchronously after page load.
+
+**Solution**: Replace any use of `$( document ).on( "ready", fn )` with `$( document ).ready( fn )` or more simply, just `$( fn )`. These alternative methods work reliably even when the document is already loaded.
