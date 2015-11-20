@@ -795,7 +795,7 @@ test( "ready event", function() {
 	expect( 2 );
 
 	expectWarning( "Setting a ready event", 1, function() {
-		jQuery( document ).on( "ready", function() {
+		jQuery( document ).bind( "ready", function() {
 			ok( true, "ready event was triggered" );
 		}).trigger( "ready" );
 	});
