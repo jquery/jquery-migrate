@@ -117,7 +117,7 @@ jQuery.each( ajaxEvents.split("|"),
 				// The document needs no shimming; must be !== for oldIE
 				if ( elem !== document ) {
 					jQuery.event.add( document, name + "." + jQuery.guid, function() {
-						jQuery.event.trigger( name, null, elem, true );
+						jQuery.event.trigger( name, Array.prototype.slice.call( arguments, 1 ), elem, true );
 					});
 					jQuery._data( this, name, jQuery.guid++ );
 				}

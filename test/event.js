@@ -766,15 +766,16 @@ test( "hover pseudo-event", function() {
 });
 
 test( "global events not on document", function() {
-	expect( 16 );
+	expect( 20 );
 
 	expectWarning( "Global ajax events", 1, function() {
 		var events = "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess";
 
 		// Attach to random element, just like old times
-		jQuery("#first").bind( events, function( e ) {
+		jQuery( "#first" ).bind( events, function( e ) {
 			ok( true, e.type + " on #first" );
 		});
+
 		// Ensure attach to document still fires
 		jQuery( document ).bind( events, function( e ) {
 			ok( true, e.type + " on document" );
@@ -786,11 +787,19 @@ test( "global events not on document", function() {
 			complete: function() {
 				// Give events a chance to fire before we remove them
 				setTimeout(function() {
-					jQuery("#first").unbind( events );
+					jQuery( "#first" ).unbind( events );
+					// Ensure all args are passed to non-document ajax events
+					jQuery( "#first" ).bind( "ajaxError", function( e, jqXHR, options ) {
+						equal( arguments.length, 4, "passed all args" );
+						equal( options.url, "not_found_404.html", "matched URL" );
+					});
 					jQuery.ajax({
 						url: "not_found_404.html",
 						complete: function() {
-							setTimeout( start, 10 );
+							setTimeout(function() {
+								jQuery( "#first" ).unbind( "ajaxError" );
+								start();
+							});
 						}
 					});
 				}, 1);
