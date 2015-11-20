@@ -132,3 +132,7 @@ jQuery.each( ajaxEvents.split("|"),
 		};
 	}
 );
+
+jQuery.event.special.ready = {
+	setup: function() { migrateWarn( "'ready' event is deprecated" ); }
+};
