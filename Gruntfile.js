@@ -179,32 +179,4 @@ module.exports = function(grunt) {
 			}
 		);
 	});
-
-	// Update manifest for jQuery plugin registry
-	grunt.registerTask( "manifest", function() {
-		var pkg = grunt.config( "pkg" );
-		grunt.file.write( "migrate.jquery.json", JSON.stringify({
-			name: "migrate",
-			title: pkg.title,
-			description: pkg.description,
-			keywords: pkg.keywords,
-			version: pkg.version,
-			author: {
-				name: pkg.author.name,
-				url: pkg.author.url.replace( "master", pkg.version )
-			},
-			maintainers: pkg.maintainers,
-			licenses: pkg.licenses.map(function( license ) {
-				license.url = license.url.replace( "master", pkg.version );
-				return license;
-			}),
-			bugs: pkg.bugs,
-			homepage: pkg.homepage,
-			docs: pkg.homepage,
-			download: "https://github.com/jquery/jquery-migrate/blob/" + pkg.version + "/README.md#download",
-			dependencies: {
-				jquery: ">=1.6.4"
-			}
-		}, null, "\t" ) );
-	});
 };
