@@ -1,6 +1,12 @@
 
 module("core");
 
+test( "jQuery.migrateVersion", function( assert ) {
+	assert.expect( 1 );
+
+	assert.ok( /^\d+\.\d+\.[\w\-]+/.test( jQuery.migrateVersion ), "Version property" );
+});
+
 test( "jQuery(html, props)", function() {
 	expect( 3 );
 
