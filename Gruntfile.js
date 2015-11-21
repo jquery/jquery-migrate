@@ -19,6 +19,7 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON("package.json"),
 		files: [
 			"src/intro.js",
+			"src/version.js",
 			"src/migrate.js",
 			"src/attributes.js",
 			"src/core.js",

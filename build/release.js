@@ -28,6 +28,7 @@ var releaseVersion,
 
 	readmeFile = "README.md",
 	packageFile = "package.json",
+	versionFile = "src/version.js",
 	devFile = "dist/jquery-migrate.js",
 	minFile = "dist/jquery-migrate.min.js",
 
@@ -39,7 +40,7 @@ var releaseVersion,
 steps(
 	initialize,
 	checkGitStatus,
-	updateReadme,
+	updateVersions,
 	tagReleaseVersion,
 	gruntBuild,
 	makeReleaseCopies,
@@ -126,21 +127,10 @@ function tagReleaseVersion( next ) {
 	});
 }
 
-function updateReadme( next ) {
-	var readme = fs.readFileSync( readmeFile, "utf8" );
-
-	// Change version references from the old version to the new one;
-	// Only release versions should be updated which simplifies the regex
-	if ( isBeta ) {
-		log( "Skipping " + readmeFile + " update (beta release)" );
-	} else { 
-		log( "Updating " + readmeFile );
-		readme = readme
-			.replace( /jquery-migrate-\d+\.\d+\.\d+/g, "jquery-migrate-" + releaseVersion );
-		if ( !debug ) {
-			fs.writeFileSync( readmeFile, readme );
-		}
-	}
+function updateVersions( next ) {
+	updateSourceVersion( releaseVersion );
+	updateReadmeVersion( releaseVersion );
+	updatePackageVersion( releaseVersion );
 	next();
 }
 
@@ -167,6 +157,7 @@ function makeReleaseCopies( next ) {
 }
 
 function setNextVersion( next ) {
+	updateSourceVersion( nextVersion );
 	updatePackageVersion( nextVersion, "master" );
 	git( [ "commit", "-a", "-m", "Updating the source version to " + nextVersion ], next );
 }
@@ -212,6 +203,32 @@ function updatePackageVersion( ver, blobVer ) {
 	pkg.author.url = setBlobVersion( pkg.author.url, blobVer );
 	pkg.licenses[0].url = setBlobVersion( pkg.licenses[0].url, blobVer );
 	writeJsonSync( packageFile, pkg );
+}
+
+function updateSourceVersion( ver ) {
+	var stmt = "\njQuery.migrateVersion = \"" + ver + "\";\n";
+
+	log( "Updating " + stmt.replace( /\n/g, "" ) );
+	if ( !debug ) {
+		fs.writeFileSync( versionFile, stmt );
+	}
+}
+
+function updateReadmeVersion( ver ) {
+	var readme = fs.readFileSync( readmeFile, "utf8" );
+
+	// Change version references from the old version to the new one;
+	// Only release versions should be updated which simplifies the regex
+	if ( isBeta ) {
+		log( "Skipping " + readmeFile + " update (beta release)" );
+	} else {
+		log( "Updating " + readmeFile );
+		readme = readme
+			.replace( /jquery-migrate-\d+\.\d+\.\d+/g, "jquery-migrate-" + releaseVersion );
+		if ( !debug ) {
+			fs.writeFileSync( readmeFile, readme );
+		}
+	}
 }
 
 function setBlobVersion( s, v ) {
