@@ -802,7 +802,7 @@ test( "ready event", function() {
 });
 
 test( "global events not on document", function() {
-	expect( 20 );
+	expect( 13 );
 
 	expectWarning( "Global ajax events", 1, function() {
 		var events = "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess";
@@ -823,7 +823,7 @@ test( "global events not on document", function() {
 			complete: function() {
 				// Give events a chance to fire before we remove them
 				setTimeout(function() {
-					jQuery( "#first" ).unbind( events );
+					jQuery( "#first" ).add( document ).unbind( events );
 					// Ensure all args are passed to non-document ajax events
 					jQuery( "#first" ).bind( "ajaxError", function( e, jqXHR, options ) {
 						equal( arguments.length, 4, "passed all args" );
@@ -835,10 +835,10 @@ test( "global events not on document", function() {
 							setTimeout(function() {
 								jQuery( "#first" ).unbind( "ajaxError" );
 								start();
-							});
+							}, 500 );
 						}
 					});
-				}, 1);
+				}, 500 );
 			}
 		});
 	});
