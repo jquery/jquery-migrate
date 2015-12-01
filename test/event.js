@@ -802,7 +802,7 @@ test( "ready event", function() {
 });
 
 test( "global events not on document", function() {
-	expect( 13 );
+	expect( 11 );
 
 	expectWarning( "Global ajax events", 1, function() {
 		var events = "ajaxStart ajaxStop ajaxSend ajaxComplete ajaxError ajaxSuccess";
@@ -824,23 +824,30 @@ test( "global events not on document", function() {
 				// Give events a chance to fire before we remove them
 				setTimeout(function() {
 					jQuery( "#first" ).add( document ).unbind( events );
-					// Ensure all args are passed to non-document ajax events
-					jQuery( "#first" ).bind( "ajaxError", function( e, jqXHR, options ) {
-						equal( arguments.length, 4, "passed all args" );
-						equal( options.url, "not_found_404.html", "matched URL" );
-					});
-					jQuery.ajax({
-						url: "not_found_404.html",
-						complete: function() {
-							setTimeout(function() {
-								jQuery( "#first" ).unbind( "ajaxError" );
-								start();
-							}, 500 );
-						}
-					});
-				}, 500 );
+					setTimeout( start, 10 );
+				}, 10 );
 			}
 		});
+	});
+});
+
+test( "event args on non-document ajax events (#113)", function() {
+
+	expect( 2 );
+
+	// Ensure all args are passed to non-document ajax events
+	jQuery( "#first" ).bind( "ajaxError", function( e, jqXHR, options ) {
+		equal( arguments.length, 4, "passed all args" );
+		equal( options.url, "not_found_404.html", "matched URL" );
+	});
+
+	stop();
+	jQuery.ajax({
+		url: "not_found_404.html",
+		complete: function() {
+			jQuery( "#first" ).unbind( "ajaxError" );
+			setTimeout( start, 10 );
+		}
 	});
 });
 
