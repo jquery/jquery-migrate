@@ -156,6 +156,13 @@ test( "XSS injection", function() {
 	});
 });
 
+test( "jQuery( '<element>' ) usable on detached elements (#128)" , function() {
+	expect( 1 );
+
+	jQuery( "<a>" ).outerWidth();
+	ok( true, "No crash when operating on detached elements with window" );
+});
+
 test( "jQuery.parseJSON() falsy values", function() {
 	expect(6);
 

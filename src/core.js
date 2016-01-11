@@ -33,8 +33,8 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 		}
 		if ( jQuery.parseHTML ) {
 			return oldInit.call( this,
-					jQuery.parseHTML( match[ 2 ], context && context.ownerDocument || context, true ),
-					context, rootjQuery );
+					jQuery.parseHTML( match[ 2 ], context && context.ownerDocument ||
+						context || document, true ), context, rootjQuery );
 		}
 	}
 
