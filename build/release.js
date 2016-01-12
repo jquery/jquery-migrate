@@ -4,7 +4,7 @@
  */
 
 // Debugging variables
-var	debug = false,
+var	dryrun = false,
 	skipRemote = false;
 
 var fs = require( "fs" ),
@@ -55,11 +55,11 @@ steps(
 
 function initialize( next ) {
 
-	// -d debug mode, no commands are executed at all
+	// -d dryrun mode, no commands are executed at all
 	if ( process.argv[2] === "-d" ) {
 		process.argv.shift();
-		debug = true;
-		console.warn("=== DEBUG MODE ===" );
+		dryrun = true;
+		console.warn("=== DRY RUN MODE ===" );
 	}
 
 	// -r skip remote mode, no remote commands are executed
@@ -231,7 +231,7 @@ function updateSourceVersion( ver ) {
 	var stmt = "\njQuery.migrateVersion = \"" + ver + "\";\n";
 
 	status( "Updating " + stmt.replace( /\n/g, "" ) );
-	if ( !debug ) {
+	if ( !dryrun ) {
 		fs.writeFileSync( versionFile, stmt );
 	}
 }
@@ -247,7 +247,7 @@ function updateReadmeVersion( ver ) {
 		status( "Updating " + readmeFile );
 		readme = readme
 			.replace( /jquery-migrate-\d+\.\d+\.\d+/g, "jquery-migrate-" + releaseVersion );
-		if ( !debug ) {
+		if ( !dryrun ) {
 			fs.writeFileSync( readmeFile, readme );
 		}
 	}
@@ -258,7 +258,7 @@ function setBlobVersion( s, v ) {
 }
 
 function writeJsonSync( fname, json ) {
-	if ( debug ) {
+	if ( dryrun ) {
 		console.log( JSON.stringify( json, null, "  " ) );
 	} else {
 		fs.writeFileSync( fname, JSON.stringify( json, null, "\t" ) + "\n" );
@@ -267,7 +267,7 @@ function writeJsonSync( fname, json ) {
 
 function copy( oldFile, newFile ) {
 	status( "Copying " + oldFile + " to " + newFile );
-	if ( !debug ) {
+	if ( !dryrun ) {
 		fs.writeFileSync( newFile, fs.readFileSync( oldFile, "utf8" ) );
 	}
 }
@@ -277,7 +277,7 @@ function git( args, fn, skip ) {
 }
 
 function exec( cmd, args, fn, skip ) {
-	if ( debug || skip ) {
+	if ( dryrun || skip ) {
 		log( chalk.black.bgBlue( "# " + cmd + " " + args.join(" ") ) );
 		fn();
 	} else {
