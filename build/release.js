@@ -34,8 +34,8 @@ var releaseVersion,
 	minFile = "dist/jquery-migrate.min.js",
 
 	releaseFiles = {
-		"jquery-migrate-VER.js": devFile,
-		"jquery-migrate-VER.min.js": minFile
+		"CDN/jquery-migrate-VER.js": devFile,
+		"CDN/jquery-migrate-VER.min.js": minFile
 	};
 
 steps(
@@ -46,9 +46,9 @@ steps(
 	tagReleaseVersion,
 	gruntBuild,
 	makeReleaseCopies,
+	// uploadToCDN,
 	publishToNPM,
 	setNextVersion,
-	uploadToCDN,
 	pushToRemote,
 	exit
 );
