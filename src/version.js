@@ -1,1 +1,2 @@
-jQuery.migrateVersion = "1.2.2-pre";
+
+jQuery.migrateVersion = "1.3.0";
