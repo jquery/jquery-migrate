@@ -1,6 +1,6 @@
 # jQuery Migrate Plugin - Warning Messages
 
-To allow developers to identify and fix compatibility issues when migrating older jQuery code, the development (uncompressed) version of the plugin generates console warning messages whenever any of its functionality is called. The messages only appear once on the console for each unique message. 
+To allow developers to identify and fix compatibility issues when migrating older jQuery code, the development (uncompressed) version of the plugin generates console warning messages whenever any of its functionality is called. The messages only appear once on the console for each unique message.
 
 **In most cases these messages are simply _warnings_; code should continue to work properly with later versions of jQuery as long as the jQuery Migrate plugin is used, but we recommend changing the code where possible to eliminate warnings so that the plugin does not need to be used.**
 
@@ -32,7 +32,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### JQMIGRATE: Can't change the 'type' of an input or button in IE 6/7/8
 
-**Cause:** IE 6, 7, and 8 throw an error if you attempt to change the type attribute of an input or button element, for example to change a radio button to a checkbox. Prior to 1.9, jQuery threw an error for every browser to create consistent behavior. As of jQuery 1.9 setting the type is allowed, but will still throw an error in oldIE. 
+**Cause:** IE 6, 7, and 8 throw an error if you attempt to change the type attribute of an input or button element, for example to change a radio button to a checkbox. Prior to 1.9, jQuery threw an error for every browser to create consistent behavior. As of jQuery 1.9 setting the type is allowed, but will still throw an error in oldIE.
 
 **Solution:** For compatibility with oldIE, do not attempt to change the type of an input element. Instead, create a new element in your code and replace the old one.
 
@@ -45,13 +45,13 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 ### JQMIGRATE: jQuery.boxModel is deprecated
 ### JQMIGRATE: jQuery.support.boxModel is deprecated
 
-**Cause:** These two deprecated properties are `false` when the page is using Quirks mode, and `true` when the page is in standards mode. Quirks mode was never supported in jQuery so these properties were removed. 
+**Cause:** These two deprecated properties are `false` when the page is using Quirks mode, and `true` when the page is in standards mode. Quirks mode was never supported in jQuery so these properties were removed.
 
 **Solution:** Do not use jQuery in Quirks mode, it has never been supported. See the previous item for solutions.
 
 ### JQMIGRATE: jQuery.parseJSON requires a valid JSON string
 
-**Cause**: Before jQuery 1.9.0, the `$.parseJSON()` method allowed some invalid JSON strings and returned `null` as a result without throwing an error. This put it at odds with the `JSON.parse()` method. The two methods are aligned as of 1.9.0 and values such as an empty string are properly not considered valid by `$.parseJSON()`. 
+**Cause**: Before jQuery 1.9.0, the `$.parseJSON()` method allowed some invalid JSON strings and returned `null` as a result without throwing an error. This put it at odds with the `JSON.parse()` method. The two methods are aligned as of 1.9.0 and values such as an empty string are properly not considered valid by `$.parseJSON()`.
 
 **Solution:** If you want to consider values such as `""` or `false` successful and treat them as `null`, check for them before calling `$.parseJSON()`. Since falsy values such as an empty string were previously returned as a `null` without complaint, this code will suffice in most cases:
 ```js
@@ -71,7 +71,7 @@ $.ajax({
 
 ### JQMIGRATE: jQuery.browser is deprecated
 
-**Cause:** `jQuery.browser` was deprecated in version 1.3, and finally removed in 1.9. Browser sniffing is notoriously unreliable as means of detecting whether to implement particular features. 
+**Cause:** `jQuery.browser` was deprecated in version 1.3, and finally removed in 1.9. Browser sniffing is notoriously unreliable as means of detecting whether to implement particular features.
 
 **Solution:** Where possible, use feature detection to make code decisions rather than trying to detect a specific browser. The [Modernizr](http://modernizr.com) library provides a wide variety of feature detections. As a last resort, you can directly look at the `navigator.userAgent` string to detect specific strings returned by the browser.
 
@@ -102,19 +102,19 @@ $.ajax({
 
 ### JQMIGRATE: jQuery.fn.toggle(handler, handler...) is deprecated
 
-**Cause:** There are two completely different meanings for the `.toggle()` method. The use of `.toggle()` to show or hide elements is _not_ affected. The use of `.toggle()` as a specialized click handler was deprecated in 1.8 and removed in 1.9. 
+**Cause:** There are two completely different meanings for the `.toggle()` method. The use of `.toggle()` to show or hide elements is _not_ affected. The use of `.toggle()` as a specialized click handler was deprecated in 1.8 and removed in 1.9.
 
-**Solution:** Rewrite the code that depends on `$().toggle()`, use the minified production version of the jQuery Migrate plugin to provide the functionality, or extract the `$().toggle()` method from the plugin's source and use it in the application. 
+**Solution:** Rewrite the code that depends on `$().toggle()`, use the minified production version of the jQuery Migrate plugin to provide the functionality, or extract the `$().toggle()` method from the plugin's source and use it in the application.
 
 ### JQMIGRATE: jQuery.fn.live() is deprecated; jQuery.fn.die() is deprecated
 
-**Cause:** The `.live()` and `.die()` methods were deprecated in 1.7 due to their [performance and usability drawbacks](http://api.jquery.com/live), and are no longer supported. 
+**Cause:** The `.live()` and `.die()` methods were deprecated in 1.7 due to their [performance and usability drawbacks](http://api.jquery.com/live), and are no longer supported.
 
 **Solution:** Rewrite calls to `.live()` using `.on()` or `.delegate()`. Instructions for doing so are provided in the [`.live()` API documentation](http://api.jquery.com/live).
 
 ### JQMIGRATE: AJAX events should be attached to document
 
-**Cause:** As of jQuery 1.9, the global AJAX events (ajaxStart, ajaxStop, ajaxSend, ajaxComplete, ajaxError, and ajaxSuccess) are only triggered on the `document` element. 
+**Cause:** As of jQuery 1.9, the global AJAX events (ajaxStart, ajaxStop, ajaxSend, ajaxComplete, ajaxError, and ajaxSuccess) are only triggered on the `document` element.
 
 **Solution:** Change the program to listen for the AJAX events on the document. For example, if the code currently looks like this:
 ```javascript
@@ -129,7 +129,7 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 **Cause:** jQuery 1.9 does not support globally triggered events. The only documented global events were the AJAX events and they are now triggered only on `document` as discussed above. jQuery never provided a documented interface for outside code to trigger global events.
 
-**Solution:** Change the program to avoid the use of global events. The jQuery Migrate plugin warns about this case but does _not_ restore the previous behavior since it was undocumented. 
+**Solution:** Change the program to avoid the use of global events. The jQuery Migrate plugin warns about this case but does _not_ restore the previous behavior since it was undocumented.
 
 ### JQMIGRATE: jQuery.event.handle is undocumented and deprecated
 
@@ -176,7 +176,7 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 ### JQMIGRATE: Use of jQuery.fn.data('events') is deprecated
 
-**Cause**: Prior to 1.9, `.data("events")` could be used to retrieve jQuery's undocumented internal event data structure for an element if no other code had defined a data element with the name "events". This special case has been removed in 1.9. 
+**Cause**: Prior to 1.9, `.data("events")` could be used to retrieve jQuery's undocumented internal event data structure for an element if no other code had defined a data element with the name "events". This special case has been removed in 1.9.
 
 **Solution**: There is no public interface to retrieve this internal data structure, and it remains undocumented. The only useful applications might be for debugging. The data is available via `jQuery._data("events")` but this is not a documented interface.
 
@@ -209,3 +209,27 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 **Cause**: Using one of jQuery's API methods to bind a "ready" event, e.g. `$( document ).on( "ready", fn )`, will cause the function to be called when the document is ready, but only if it is attached before the browser fires its own `DOMContentLoaded` event. That makes it unreliable for many uses, particularly ones where jQuery or its plugins are loaded asynchronously after page load.
 
 **Solution**: Replace any use of `$( document ).on( "ready", fn )` with `$( document ).ready( fn )` or more simply, just `$( fn )`. These alternative methods work reliably even when the document is already loaded.
+
+### JQMIGRATE: Additional params for 'jQuery.easing' functions are not documented and redundant
+
+**Cause**: Additional params for 'jQuery.easing' methods were never documented and redundant, same behaviour could be easily achived by other means.
+
+**Solution**: Instead of using time and duration arguments, etc; it is already sufficient to use only first "percentage" argument.
+
+For example, if you want to implement [Cubic](https://en.wikipedia.org/wiki/Cubic_function) function, then instead of old approach -
+
+```js
+jQuery.easing.easeInCubic = function ( p, t, b, c, d ) {
+	return c * ( t /= d ) * t * t + b;
+}
+```
+
+You could achive same effect with -
+
+```js
+jQuery.easing.easeInCubic = function ( p ) {
+	return Math.pow( p, 3 );
+}
+```
+
+See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58b6ad122ab425c4cc1a4da4a520#diff-9cd789a170c765edcf0f4854db386e1a) for other possible cases.
