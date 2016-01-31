@@ -27,6 +27,7 @@ module.exports = function(grunt) {
 			"src/ajax.js",
 			"src/data.js",
 			"src/manipulation.js",
+			"src/effects.js",
 			"src/event.js",
 			"src/traversing.js",
 			"src/deferred.js",
@@ -107,8 +108,11 @@ module.exports = function(grunt) {
 					ascii_only: true
 				}
 			}
-
-		}
+		},
+		watch: {
+			files: [ "src/*.js", "test/*.js" ],
+			tasks: [ "buildnounit" ]
+		},
 	});
 
 	// Load grunt tasks from NPM packages
