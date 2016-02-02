@@ -37,8 +37,5 @@
     "qunitjs": "1.17.1",
     "testswarm": "~1.1.0"
   },
-  "scripts": {
-    "prepublish": "grunt"
-  },
   "keywords": []
 }
