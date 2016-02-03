@@ -212,7 +212,7 @@ $(document).ajaxStart(function(){ $("#status").text("Ajax started"); });
 
 ### JQMIGRATE: Additional params for 'jQuery.easing' functions are not documented and redundant
 
-**Cause**: Additional params for `jQuery.easing` methods were never documented and redundant, same behavior could be easily achived by other means.
+**Cause**: Additional params for `jQuery.easing` methods were never documented and redundant, same behavior could be easily achieved by other means.
 
 **Solution**: Instead of using time and duration arguments, etc; it is already sufficient to use only first "percentage" argument.
 
