@@ -734,7 +734,7 @@ test( "error() event method", function() {
 });
 
 test( "load() and unload() event methods", function() {
-	expect( 4 );
+	expect( 5 );
 
 	expectWarning( "jQuery.fn.load()", function() {
 		jQuery( "<img />" )
@@ -756,6 +756,16 @@ test( "load() and unload() event methods", function() {
 			.unbind( "unload" )
 			.unload()
 			.remove();
+	});
+
+	expectNoWarning( "ajax load", function() {
+		stop();
+		jQuery( "<div id=load138></div>" )
+			.appendTo( "#qunit-fixture" )
+			.load( "not-found.file", function() {
+				jQuery( "#load138" ).remove();
+				start();
+			});
 	});
 });
 
