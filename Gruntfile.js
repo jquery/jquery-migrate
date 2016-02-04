@@ -57,6 +57,15 @@ module.exports = function(grunt) {
 			}
 		},
 		qunit: {
+			options: {
+				coverage: {
+					disposeCollector: true,
+					instrumentedFiles: "temp/",
+					src: [ "dist/jquery-migrate.js" ],
+					htmlReport: "coverage/",
+					linesThresholdPct: 85
+				}
+			},
 			files: [ "test/**/*.html" ]
 		},
 		npmcopy: {
@@ -114,7 +123,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-watch");
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
-	grunt.loadNpmTasks("grunt-contrib-qunit");
+	grunt.loadNpmTasks("grunt-qunit-istanbul");
 	grunt.loadNpmTasks("grunt-npmcopy");
 
 	// Default task.
