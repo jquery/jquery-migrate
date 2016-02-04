@@ -43,15 +43,16 @@ jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
 
 	jQuery.fn[ name ] = function() {
 		var args = Array.prototype.slice.call( arguments, 0 );
-		migrateWarn( "jQuery.fn." + name + "() is deprecated" );
 
 		// If this is an ajax load() the first arg should be the string URL;
 		// technically this could also be the "Anything" arg of the event .load()
 		// which just goes to show why this dumb signature has been deprecated!
 		// jQuery custom builds that exclude the Ajax module justifiably die here.
-		if ( name === "load" && typeof arguments[ 0 ] === "string" ) {
-			return oldLoad.apply( this, arguments );
+		if ( name === "load" && typeof args[ 0 ] === "string" ) {
+			return oldLoad.apply( this, args );
 		}
+
+		migrateWarn( "jQuery.fn." + name + "() is deprecated" );
 
 		args.splice( 0, 0, name );
 		if ( arguments.length ) {
