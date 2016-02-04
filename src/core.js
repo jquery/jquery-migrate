@@ -3,6 +3,7 @@ var matched, browser,
 	oldInit = jQuery.fn.init,
 	oldParseJSON = jQuery.parseJSON,
 	rspaceAngle = /^\s*</,
+	rattrHash = /\[\s*\w+\s*[~|^$*]?=\s*#/,
 	// Note: XSS check is done below after string is trimmed
 	rquickExpr = /^([^<]*)(<[\w\W]+>)([^>]*)$/;
 
@@ -38,10 +39,17 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 		}
 	}
 
-	// jQuery( "#" ) is a bogus ID selector, but it returned an empty set before jQuery 3.0
 	if ( selector === "#" ) {
+
+		// jQuery( "#" ) is a bogus ID selector, but it returned an empty set before jQuery 3.0
 		migrateWarn( "jQuery( '#' ) is not a valid selector" );
 		selector = [];
+
+	} else if ( rattrHash.test( selector ) ) {
+
+		// The nonstandard and undocumented unquoted-hash was removed in jQuery 1.12.0
+		// Note that this doesn't actually fix the selector due to potential false positives
+		migrateWarn( "Attribute selectors with '#' must be quoted: '" + selector + "'" );
 	}
 
 	ret = oldInit.apply( this, arguments );
