@@ -62,6 +62,48 @@ test( "jQuery( '#' )", function() {
 	});
 });
 
+test( "attribute selectors with naked '#'", function() {
+	expect( 6 );
+
+	// These are wrapped in try/catch because they throw on jQuery 1.12.0+
+
+	expectWarning( "attribute equals", function() {
+		try {
+			jQuery( "a[href=#]" );
+		} catch( e ) {}
+	});
+
+	expectWarning( "attribute contains", function() {
+		try {
+			jQuery( "link[rel*=#stuff]" );
+		} catch( e ) {}
+	});
+
+	expectWarning( "attribute starts, with spaces", function() {
+		try {
+			jQuery( "a[href ^= #junk]" );
+		} catch( e ) {}
+	});
+
+	expectWarning( "attribute equals, hash not starting", function() {
+		try {
+			jQuery( "a[href=space#junk]" );
+		} catch( e ) {}
+	});
+
+	expectNoWarning( "attribute equals, with single quotes", function() {
+		try {
+			jQuery( "a[href='#junk']" );
+		} catch( e ) {}
+	});
+
+	expectNoWarning( "attribute equals, with double quotes", function() {
+		try {
+			jQuery( "a[href=\"#junk\"]" );
+		} catch( e ) {}
+	});
+});
+
 test( "selector state", function() {
 	expect( 18 );
 
