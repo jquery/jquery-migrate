@@ -792,12 +792,22 @@ test( "hover pseudo-event", function() {
 });
 
 test( "ready event", function() {
-	expect( 2 );
+	expect( 4 );
 
 	expectWarning( "Setting a ready event", 1, function() {
 		jQuery( document ).bind( "ready", function() {
 			ok( true, "ready event was triggered" );
-		}).trigger( "ready" );
+		})
+		.trigger( "ready" )
+		.unbind( "ready" );
+	});
+
+	expectNoWarning( "Custom ready event not on document", 1, function() {
+		jQuery( "#foo" ).bind( "ready", function( e ) {
+			ok( true, "custom ready event was triggered" );
+		})
+		.trigger( "ready" )
+		.unbind( "ready" );
 	});
 });
 

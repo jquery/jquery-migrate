@@ -152,5 +152,9 @@ jQuery.each( ajaxEvents.split("|"),
 );
 
 jQuery.event.special.ready = {
-	setup: function() { migrateWarn( "'ready' event is deprecated" ); }
+	setup: function() {
+		if ( this === document ) {
+			migrateWarn( "'ready' event is deprecated" );
+		}
+	}
 };
