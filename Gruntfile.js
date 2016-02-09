@@ -34,20 +34,12 @@ module.exports = function(grunt) {
 			"src/outro.js"
 		],
 		tests: {
-			"jquery-1": [
-				"dev+1.x-git",
-				"dev+1.11.3",
-				"dev+1.10.2",
-				"dev+1.9.1",
-				"dev+1.8.3",
-				"dev+1.7.2",
-				"dev+1.6.4"
-			],
-			"jquery-2": [
+			"jquery": [
 				"dev+2.x-git",
 				"min+2.x-git.min",
-				"dev+2.1.4",
-				"dev+2.0.3"
+				"dev+2.2.0",
+				"dev+1.x-git",
+				"dev+1.12.0"
 			]
 		},
 		banners: {
