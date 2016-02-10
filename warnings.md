@@ -30,6 +30,12 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: Usually this warning is due to an error in the HTML string, where text is present when it should not be there. Remove the leading or trailing text before passing the string to `$.parseHTML()` if it should not be part of the collection. Alternatively you can use `$($.parseHTML(html)).filter("*")` to remove all top-level text nodes from the set and leave only elements.
 
+### JQMIGRATE: Attribute selectors with '#' must be quoted
+
+**Cause:** CSS selectors such as `a[href=#main]` are not valid CSS syntax because the value contains special characters that are not quoted. Until jQuery 1.11.3/2.1.4 this syntax was accepted, but the behavior is non-standard and was never documented. In later versions this selector throws an error. *In some rare cases Migrate may mis-diagnose this problem, so it does not attempt a repair.*
+
+**Solution**: Put quotes around any attribute values that have special characters, e.g. `a[href="#main"]`. The warning message contains the selector that caused the problem, use that to find the selector in the source files.
+
 ### JQMIGRATE: Can't change the 'type' of an input or button in IE 6/7/8
 
 **Cause:** IE 6, 7, and 8 throw an error if you attempt to change the type attribute of an input or button element, for example to change a radio button to a checkbox. Prior to 1.9, jQuery threw an error for every browser to create consistent behavior. As of jQuery 1.9 setting the type is allowed, but will still throw an error in oldIE.
