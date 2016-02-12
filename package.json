@@ -17,6 +17,9 @@
     "url": "http://bugs.jquery.com/"
   },
   "license": "MIT",
+  "scripts": {
+    "test": "grunt"
+  },
   "devDependencies": {
     "chalk": "1.1.1",
     "grunt": "~0.4.5",
