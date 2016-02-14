@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 module.exports = function( grunt ) {
 	grunt.registerTask( "testswarm", function( commit, configFile, destName ) {
@@ -12,6 +12,7 @@ module.exports = function( grunt ) {
 			browserSets = destName || config.browserSets;
 
 		if ( browserSets[ 0 ] === "[" ) {
+
 			// We got an array, parse it
 			browserSets = JSON.parse( browserSets );
 		}
@@ -24,11 +25,11 @@ module.exports = function( grunt ) {
 				commit + "'>" + commit.substr( 0, 10 ) + "</a>";
 		}
 
-		tests.forEach(function( test ) {
-			var plugin_jquery = test.split("+");
-			runs[test] = config.testUrl + commit + "/test/index.html?plugin=" +
-				plugin_jquery[0] + "&jquery=" + plugin_jquery[1];
-		});
+		tests.forEach( function( test ) {
+			var pluginjQuery = test.split( "+" );
+			runs[ test ] = config.testUrl + commit + "/test/index.html?plugin=" +
+				pluginjQuery[ 0 ] + "&jquery=" + pluginjQuery[ 1 ];
+		} );
 
 		// TODO: create separate job for git so we can do different browsersets
 		testswarm.createClient( {
@@ -38,7 +39,7 @@ module.exports = function( grunt ) {
 		.auth( {
 			id: config.authUsername,
 			token: config.authToken
-		})
+		} )
 		.addjob(
 			{
 				name: jobName,
@@ -53,5 +54,5 @@ module.exports = function( grunt ) {
 				done( passed );
 			}
 		);
-	});
+	} );
 };

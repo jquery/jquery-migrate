@@ -1,6 +1,6 @@
 
 // Don't spew on in the console window when we build
-if ( navigator.userAgent.indexOf("PhantomJS") >= 0 ) {
+if ( navigator.userAgent.indexOf( "PhantomJS" ) >= 0 ) {
 	jQuery.migrateMute = true;
 }
 
@@ -26,11 +26,14 @@ function expectWarning( name, expected, fn ) {
 
 	// Failure; use deepEqual to show the warnings that *were* generated and the expectation
 	} else {
-		deepEqual( jQuery.migrateWarnings, "<warnings: " + ( expected || "1+" ) + ">", name + ": warned" );
+		deepEqual( jQuery.migrateWarnings,
+			"<warnings: " + ( expected || "1+" ) + ">", name + ": warned"
+		);
 	}
 }
 
 function expectNoWarning( name, expected, fn ) {
+
 	// Expected is present only for signature compatibility with expectWarning
 	return expectWarning( name, 0, fn || expected );
 }

@@ -13,7 +13,7 @@ TestManager = {
 			urlTag = this.projects[ projectName ].urlTag,
 			matcher = new RegExp( "\\b" + urlTag + "=([^&]+)" ),
 			projectRoot = isSelf ? ".." : "../../" + projectName,
-			version = ( matcher.exec( document.location.search ) || {} )[1] || defaultVersion;
+			version = ( matcher.exec( document.location.search ) || {} )[ 1 ] || defaultVersion;
 
 		if ( version === "dev" ) {
 			file = projectRoot + "/dist/" + projectName + ".js";
@@ -24,14 +24,14 @@ TestManager = {
 		} else {
 			file = version;
 		}
-		this.loaded.push({
+		this.loaded.push( {
 			projectName: projectName,
 			tag: version,
 			file: file
-		});
+		} );
 
 		// Prevents a jshint warning about eval-like behavior of document.write
-		document["write"]( "<script src='" + file + "'></script>" );
+		document.write( "<script src='" + file + "'></script>" );
 	},
 	init: function( projects ) {
 		var p, project;
@@ -42,11 +42,11 @@ TestManager = {
 		// Set the list of projects, including the project version choices.
 		for ( p in projects ) {
 			project = projects[ p ];
-			QUnit.config.urlConfig.push({
+			QUnit.config.urlConfig.push( {
 				label: p,
 				id: project.urlTag,
-				value: project.choices.split(",")
-			});
+				value: project.choices.split( "," )
+			} );
 		}
 	}
 };
@@ -54,6 +54,7 @@ TestManager = {
 /**
  * QUnit configuration
  */
+
 // Max time for async tests until it aborts test
 // and start()'s the next test.
 QUnit.config.testTimeout = 20 * 1000; // 20 seconds
@@ -64,14 +65,15 @@ QUnit.config.requireExpects = true;
 /**
  * Load the TestSwarm listener if swarmURL is in the address.
  */
-(function() {
+( function() {
 	var url = window.location.search;
-	url = decodeURIComponent( url.slice( url.indexOf("swarmURL=") + "swarmURL=".length ) );
+	url = decodeURIComponent( url.slice( url.indexOf( "swarmURL=" ) + "swarmURL=".length ) );
 
-	if ( !url || url.indexOf("http") !== 0 ) {
+	if ( !url || url.indexOf( "http" ) !== 0 ) {
 		return;
 	}
 
-	document.write("<scr" + "ipt src='http://swarm.jquery.org/js/inject.js?" + (new Date()).getTime() + "'></scr" + "ipt>");
-})();
+	document.write( "<scr" + "ipt src='http://swarm.jquery.org/js/inject.js?" +
+		( new Date() ).getTime() + "'></scr" + "ipt>" );
+} )();
 

@@ -9,7 +9,7 @@ jQuery.migrateWarnings = [];
 
 // Show a message on the console so devs know we're active
 if ( !jQuery.migrateMute && window.console && window.console.log ) {
-	window.console.log("JQMIGRATE: Logging is active");
+	window.console.log( "JQMIGRATE: Logging is active" );
 }
 
 // Set to false to disable traces that appear with warnings
@@ -23,7 +23,7 @@ jQuery.migrateReset = function() {
 	jQuery.migrateWarnings.length = 0;
 };
 
-function migrateWarn( msg) {
+function migrateWarn( msg ) {
 	var console = window.console;
 	if ( !warnedAbout[ msg ] ) {
 		warnedAbout[ msg ] = true;
@@ -39,6 +39,7 @@ function migrateWarn( msg) {
 
 function migrateWarnProp( obj, prop, value, msg ) {
 	if ( Object.defineProperty ) {
+
 		// On ES5 browsers (non-oldIE), warn if the code tries to get prop;
 		// allow property to be overwritten in case some other plugin wants it
 		try {
@@ -53,9 +54,10 @@ function migrateWarnProp( obj, prop, value, msg ) {
 					migrateWarn( msg );
 					value = newValue;
 				}
-			});
+			} );
 			return;
-		} catch( err ) {
+		} catch ( err ) {
+
 			// IE8 is a dope about Object.defineProperty, can't warn there
 		}
 	}
@@ -66,6 +68,7 @@ function migrateWarnProp( obj, prop, value, msg ) {
 }
 
 if ( document.compatMode === "BackCompat" ) {
-	// jQuery has never supported or tested Quirks Mode
+
+	// JQuery has never supported or tested Quirks Mode
 	migrateWarn( "jQuery is not compatible with Quirks Mode" );
 }

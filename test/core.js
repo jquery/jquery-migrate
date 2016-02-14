@@ -1,21 +1,22 @@
 
-module("core");
+module( "core" );
 
 test( "jQuery.migrateVersion", function( assert ) {
 	assert.expect( 1 );
 
 	assert.ok( /^\d+\.\d+\.[\w\-]+/.test( jQuery.migrateVersion ), "Version property" );
-});
+} );
 
 test( "jQuery(html, props)", function() {
 	expect( 3 );
 
 	var $el = jQuery( "<input/>", { name: "name", val: "value", size: 42 } );
 
-	equal( $el.attr("name"), "name", "Name attribute" );
-	equal( $el.attr("size"), jQuery.isEmptyObject(jQuery.attrFn) ? undefined : "42", "Size attribute" );
+	equal( $el.attr( "name" ), "name", "Name attribute" );
+	equal( $el.attr( "size" ),
+		jQuery.isEmptyObject( jQuery.attrFn ) ? undefined : "42", "Size attribute" );
 	equal( $el.val(), "value", "Call setter method" );
-});
+} );
 
 test( "jQuery(html) loose rules", function() {
 	expect( 33 );
@@ -46,12 +47,12 @@ test( "jQuery(html) loose rules", function() {
 		};
 
 	for ( w in nowarns ) {
-		expectNoWarning( w, generate( nowarns[w] ) );
+		expectNoWarning( w, generate( nowarns[ w ] ) );
 	}
 	for ( w in warns ) {
-		expectWarning( w, generate( warns[w] ) );
+		expectWarning( w, generate( warns[ w ] ) );
 	}
-});
+} );
 
 test( "jQuery( '#' )", function() {
 	expect( 2 );
@@ -59,8 +60,8 @@ test( "jQuery( '#' )", function() {
 	expectWarning( "Selector, through the jQuery constructor, nothing but hash", function() {
 		var set = jQuery( "#" );
 		equal( set.length, 0, "empty set" );
-	});
-});
+	} );
+} );
 
 test( "attribute selectors with naked '#'", function() {
 	expect( 6 );
@@ -70,39 +71,39 @@ test( "attribute selectors with naked '#'", function() {
 	expectWarning( "attribute equals", function() {
 		try {
 			jQuery( "a[href=#]" );
-		} catch( e ) {}
-	});
+		} catch ( e ) {}
+	} );
 
 	expectWarning( "attribute contains", function() {
 		try {
 			jQuery( "link[rel*=#stuff]" );
-		} catch( e ) {}
-	});
+		} catch ( e ) {}
+	} );
 
 	expectWarning( "attribute starts, with spaces", function() {
 		try {
 			jQuery( "a[href ^= #junk]" );
-		} catch( e ) {}
-	});
+		} catch ( e ) {}
+	} );
 
 	expectWarning( "attribute equals, hash not starting", function() {
 		try {
 			jQuery( "a[href=space#junk]" );
-		} catch( e ) {}
-	});
+		} catch ( e ) {}
+	} );
 
 	expectNoWarning( "attribute equals, with single quotes", function() {
 		try {
 			jQuery( "a[href='#junk']" );
-		} catch( e ) {}
-	});
+		} catch ( e ) {}
+	} );
 
 	expectNoWarning( "attribute equals, with double quotes", function() {
 		try {
 			jQuery( "a[href=\"#junk\"]" );
-		} catch( e ) {}
-	});
-});
+		} catch ( e ) {}
+	} );
+} );
 
 test( "selector state", function() {
 	expect( 18 );
@@ -121,11 +122,11 @@ test( "selector state", function() {
 	equal( test.selector, "", "Body Selector" );
 	equal( test.context, document.body, "Body Context" );
 
-	test = jQuery("#qunit-fixture");
+	test = jQuery( "#qunit-fixture" );
 	equal( test.selector, "#qunit-fixture", "#qunit-fixture Selector" );
 	equal( test.context, document, "#qunit-fixture Context" );
 
-	test = jQuery("#notfoundnono");
+	test = jQuery( "#notfoundnono" );
 	equal( test.selector, "#notfoundnono", "#notfoundnono Selector" );
 	equal( test.context, document, "#notfoundnono Context" );
 
@@ -142,10 +143,10 @@ test( "selector state", function() {
 	equal( test.selector, "#qunit-fixture", "#qunit-fixture Selector" );
 	equal( test.context, document.body, "#qunit-fixture Context" );
 
-	test = jQuery( document.body ).find("#qunit-fixture");
+	test = jQuery( document.body ).find( "#qunit-fixture" );
 	equal( test.selector, "#qunit-fixture", "#qunit-fixture find Selector" );
 	equal( test.context, document.body, "#qunit-fixture find Context" );
-});
+} );
 
 test( "XSS injection", function() {
 	expect( 10 );
@@ -156,9 +157,9 @@ test( "XSS injection", function() {
 	// Bad HTML will throw on some supported versions
 	expectWarning( "leading hash", function() {
 		try {
-			jQuery("#yeah<p>RIGHT</p>");
+			jQuery( "#yeah<p>RIGHT</p>" );
 		} catch ( e ) {}
-	});
+	} );
 
 	// Don't expect HTML if there's a leading hash char; this is
 	// more strict than the 1.7 version but closes an XSS hole.
@@ -173,7 +174,7 @@ test( "XSS injection", function() {
 		}
 		equal( threw, expectThrow, "Throw on leading-hash HTML (treated as selector)" );
 		equal( window.XSS, false, "XSS" );
-	});
+	} );
 
 	expectWarning( "XSS with hash and leading space", function() {
 		var threw = false;
@@ -185,7 +186,7 @@ test( "XSS injection", function() {
 		}
 		equal( threw, expectThrow, "Throw on leading-hash HTML and space (treated as selector)" );
 		equal( window.XSS, false, "XSS" );
-	});
+	} );
 
 	expectWarning( "XSS via onerror inline handler", function() {
 		var threw = false;
@@ -197,42 +198,42 @@ test( "XSS injection", function() {
 		}
 		equal( threw, expectThrow, "Throw on leading-hash HTML (treated as selector)" );
 		stop();
-		setTimeout(function() {
+		setTimeout( function() {
 			equal( window.XSS, false, "XSS" );
 			start();
-		}, 1000);
-	});
-});
+		}, 1000 );
+	} );
+} );
 
-test( "jQuery( '<element>' ) usable on detached elements (#128)" , function() {
+test( "jQuery( '<element>' ) usable on detached elements (#128)", function() {
 	expect( 1 );
 
 	jQuery( "<a>" ).outerWidth();
 	ok( true, "No crash when operating on detached elements with window" );
-});
+} );
 
 test( "jQuery.parseJSON() falsy values", function() {
-	expect(6);
+	expect( 6 );
 
 	expectNoWarning( "valid JSON", function() {
-		jQuery.parseJSON("{\"a\":1}");
-	});
+		jQuery.parseJSON( "{\"a\":1}" );
+	} );
 	expectWarning( "actual null", function() {
-		jQuery.parseJSON(null);
-	});
+		jQuery.parseJSON( null );
+	} );
 	expectNoWarning( "string null", function() {
-		jQuery.parseJSON("null");
-	});
+		jQuery.parseJSON( "null" );
+	} );
 	expectWarning( "empty string", function() {
-		jQuery.parseJSON("");
-	});
+		jQuery.parseJSON( "" );
+	} );
 	expectWarning( "Boolean false", function() {
-		jQuery.parseJSON(false);
-	});
+		jQuery.parseJSON( false );
+	} );
 	expectWarning( "undefined", function() {
-		jQuery.parseJSON(undefined);
-	});
-});
+		jQuery.parseJSON( undefined );
+	} );
+} );
 
 test( "jQuery.browser", function() {
 	expect( 3 );
@@ -240,8 +241,8 @@ test( "jQuery.browser", function() {
 	( jQuery._definePropertyBroken ? expectNoWarning : expectWarning )( "browser", function() {
 		ok( jQuery.browser, "jQuery.browser present" );
 		ok( jQuery.browser.version, "have a browser version" );
-	});
-});
+	} );
+} );
 
 test( "jQuery.boxModel and jQuery.support.boxModel", function() {
 	expect( 3 );
@@ -249,10 +250,10 @@ test( "jQuery.boxModel and jQuery.support.boxModel", function() {
 	( jQuery._definePropertyBroken ? expectNoWarning : expectWarning )( "boxModel", 2, function() {
 		equal( jQuery.boxModel, true, "jQuery.boxModel is true (not in Quirks)" );
 		equal( jQuery.support.boxModel, true, "jQuery.support.boxModel is true (not in Quirks)" );
-	});
-});
+	} );
+} );
 
-test( "jQuery.sub() - Static Methods", function(){
+test( "jQuery.sub() - Static Methods", function() {
 	expect( 19 );
 
 	var Subclass, SubSubclass;
@@ -260,55 +261,68 @@ test( "jQuery.sub() - Static Methods", function(){
 	// Other warnings may be fired when props are copied
 	expectWarning( "jQuery.sub", function() {
 		Subclass = jQuery.sub();
-	});
+	} );
 
-	Subclass.extend({
+	Subclass.extend( {
 		"topLevelMethod": function() {return this.debug;},
 		"debug": false,
 		"config": {
 			"locale": "en_US"
 		},
-		"setup": function(config) {
-			this.extend(true, this["config"], config);
+		"setup": function( config ) {
+			this.extend( true, this.config, config );
 		}
-	});
-	Subclass.fn.extend({"subClassMethod": function() { return this;}});
+	} );
+	Subclass.fn.extend( { "subClassMethod": function() { return this;} } );
 
 	//Test Simple Subclass
-	ok(Subclass["topLevelMethod"]() === false, "Subclass.topLevelMethod thought debug was true");
-	ok(Subclass["config"]["locale"] === "en_US", Subclass["config"]["locale"] + " is wrong!");
-	deepEqual(Subclass["config"]["test"], undefined, "Subclass.config.test is set incorrectly");
-	equal(jQuery.ajax, Subclass.ajax, "The subclass failed to get all top level methods");
+	ok( Subclass.topLevelMethod() === false,
+		"Subclass.topLevelMethod thought debug was true"
+	);
+	ok( Subclass.config.locale === "en_US", Subclass.config.locale + " is wrong!" );
+	deepEqual( Subclass.config.test, undefined, "Subclass.config.test is set incorrectly" );
+	equal( jQuery.ajax, Subclass.ajax, "The subclass failed to get all top level methods" );
 
 	//Create a SubSubclass
 	SubSubclass = Subclass.sub();
 
 	//Make Sure the SubSubclass inherited properly
-	ok(SubSubclass["topLevelMethod"]() === false, "SubSubclass.topLevelMethod thought debug was true");
-	ok(SubSubclass["config"]["locale"] === "en_US", SubSubclass["config"]["locale"] + " is wrong!");
-	deepEqual(SubSubclass["config"]["test"], undefined, "SubSubclass.config.test is set incorrectly");
-	equal(jQuery.ajax, SubSubclass.ajax, "The subsubclass failed to get all top level methods");
+	ok( SubSubclass.topLevelMethod() === false,
+		"SubSubclass.topLevelMethod thought debug was true" );
+	ok( SubSubclass.config.locale === "en_US",
+		SubSubclass.config.locale + " is wrong!" );
+	deepEqual( SubSubclass.config.test, undefined,
+		"SubSubclass.config.test is set incorrectly" );
+	equal( jQuery.ajax, SubSubclass.ajax, "The subsubclass failed to get all top level methods" );
 
 	//Modify The Subclass and test the Modifications
-	SubSubclass.fn.extend({"subSubClassMethod": function() { return this;}});
-	SubSubclass["setup"]({"locale": "es_MX", "test": "worked"});
-	SubSubclass["debug"] = true;
+	SubSubclass.fn.extend( { "subSubClassMethod": function() { return this;} } );
+	SubSubclass.setup( { "locale": "es_MX", "test": "worked" } );
+	SubSubclass.debug = true;
 	SubSubclass.ajax = function() {return false;};
-	ok(SubSubclass["topLevelMethod"](), "SubSubclass.topLevelMethod thought debug was false");
-	deepEqual(SubSubclass(document)["subClassMethod"], Subclass.fn["subClassMethod"], "Methods Differ!");
-	ok(SubSubclass["config"]["locale"] === "es_MX", SubSubclass["config"]["locale"] + " is wrong!");
-	ok(SubSubclass["config"]["test"] === "worked", "SubSubclass.config.test is set incorrectly");
-	notEqual(jQuery.ajax, SubSubclass.ajax, "The subsubclass failed to get all top level methods");
+	ok( SubSubclass.topLevelMethod(), "SubSubclass.topLevelMethod thought debug was false" );
+	deepEqual( SubSubclass( document ).subClassMethod,
+		Subclass.fn.subClassMethod, "Methods Differ!" );
+	ok( SubSubclass.config.locale === "es_MX",
+		SubSubclass.config.locale + " is wrong!" );
+	ok( SubSubclass.config.test === "worked",
+		"SubSubclass.config.test is set incorrectly" );
+	notEqual( jQuery.ajax, SubSubclass.ajax,
+		"The subsubclass failed to get all top level methods" );
 
 	//This shows that the modifications to the SubSubClass did not bubble back up to it's superclass
-	ok(Subclass["topLevelMethod"]() === false, "Subclass.topLevelMethod thought debug was true");
-	ok(Subclass["config"]["locale"] === "en_US", Subclass["config"]["locale"] + " is wrong!");
-	deepEqual(Subclass["config"]["test"], undefined, "Subclass.config.test is set incorrectly");
-	deepEqual(Subclass(document)["subSubClassMethod"], undefined, "subSubClassMethod set incorrectly");
-	equal(jQuery.ajax, Subclass.ajax, "The subclass failed to get all top level methods");
-});
+	ok( Subclass.topLevelMethod() === false,
+		"Subclass.topLevelMethod thought debug was true" );
+	ok( Subclass.config.locale === "en_US",
+		Subclass.config.locale + " is wrong!" );
+	deepEqual( Subclass.config.test, undefined,
+		"Subclass.config.test is set incorrectly" );
+	deepEqual( Subclass( document ).subSubClassMethod,
+		undefined, "subSubClassMethod set incorrectly" );
+	equal( jQuery.ajax, Subclass.ajax, "The subclass failed to get all top level methods" );
+} );
 
-test( "jQuery.sub() - .fn Methods", function(){
+test( "jQuery.sub() - .fn Methods", function() {
 	expect( 378 );
 
 	var Subclass = jQuery.sub(),
@@ -317,7 +331,7 @@ test( "jQuery.sub() - .fn Methods", function(){
 		contexts = [ undefined, document, jQueryDocument ],
 		selectors = [ "body", "html,body", "<div></div>" ],
 		methodArguments = {
-			"eq": 1 ,
+			"eq": 1,
 			"add": document,
 			"end": undefined,
 			"has": undefined,
@@ -330,19 +344,20 @@ test( "jQuery.sub() - .fn Methods", function(){
 		return "jQueryDocument";
 	};
 
-	Subclass.fn.subMethod = function(){};
-	SubSubclass.fn.subSubMethod = function(){};
+	Subclass.fn.subMethod = function() {};
+	SubSubclass.fn.subSubMethod = function() {};
 
 	jQuery.each( contexts, function( i, context ) {
 			jQuery.each( selectors, function( i, selector ) {
-				jQuery.each( methodArguments, function( method, arg ){
+				jQuery.each( methodArguments, function( method, arg ) {
 
-				var description = "(\"" + selector + "\", " + context + ")." + method + "(" + (arg || "") + ")",
+				var description = "(\"" + selector + "\", " + context + ")." +
+						method + "(" + ( arg || "" ) + ")",
 					$instance = jQuery( selector, context )[ method ]( arg ),
 					$subInstance = Subclass( selector, context )[ method ]( arg ),
 					$subSubInstance = SubSubclass( selector, context )[ method ]( arg );
 
-				// jQuery
+				// JQuery
 				strictEqual( $instance.subMethod, undefined,
 					"jQuery" + description + " doesn't have Subclass methods" );
 				strictEqual( $instance.subSubMethod, undefined,
@@ -359,15 +374,15 @@ test( "jQuery.sub() - .fn Methods", function(){
 					"SubSubclass" + description + " has Subclass methods" );
 				strictEqual( $subSubInstance.subSubMethod, SubSubclass.fn.subSubMethod,
 					"SubSubclass" + description + " has SubSubclass methods" );
-			});
-		});
-	});
-});
+			} );
+		} );
+	} );
+} );
 
-test( ".size", function(){
+test( ".size", function() {
     expect( 1 );
 
     expectWarning( "size", function() {
         jQuery( "<div />" ).size();
-    });
-});
+    } );
+} );

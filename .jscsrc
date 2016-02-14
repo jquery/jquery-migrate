@@ -1,0 +1,5 @@
+"preset": "jquery"
+"requireCamelCaseOrUpperCaseIdentifiers": {
+	"ignoreProperties": true
+}
+"excludeFiles": [ "external", "src/intro.js", "src/outro.js", "node_modules" ]

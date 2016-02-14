@@ -1,5 +1,5 @@
 /*global module:false*/
-module.exports = function(grunt) {
+module.exports = function( grunt ) {
 
 	"use strict";
 
@@ -8,15 +8,15 @@ module.exports = function(grunt) {
 			var data = {};
 			try {
 				data = grunt.file.readJSON( filepath );
-			} catch(e) {}
+			} catch ( e ) {}
 			return data;
 		},
-		srcHintOptions = readOptionalJSON("src/.jshintrc");
+		srcHintOptions = readOptionalJSON( "src/.jshintrc" );
 	delete srcHintOptions.onevar;
 
 	// Project configuration.
-	grunt.initConfig({
-		pkg: grunt.file.readJSON("package.json"),
+	grunt.initConfig( {
+		pkg: grunt.file.readJSON( "package.json" ),
 		files: [
 			"src/intro.js",
 			"src/version.js",
@@ -77,6 +77,14 @@ module.exports = function(grunt) {
 				force: true
 			}
 		},
+		jscs: {
+			src: [
+				"test/**/*.js",
+				"<%= files %>",
+				"Gruntfile.js",
+				"build/**/*.js"
+			]
+		},
 		npmcopy: {
 			all: {
 				options: {
@@ -86,7 +94,7 @@ module.exports = function(grunt) {
 					"phantomjs-polyfill/bind-polyfill.js": "phantomjs-polyfill/bind-polyfill.js",
 					"qunit/qunit.js": "qunitjs/qunit/qunit.js",
 					"qunit/qunit.css": "qunitjs/qunit/qunit.css",
-					"qunit/LICENSE.txt": "qunitjs/LICENSE.txt"				}
+					"qunit/LICENSE.txt": "qunitjs/LICENSE.txt" }
 			}
 		},
 		jshint: {
@@ -114,7 +122,8 @@ module.exports = function(grunt) {
 				}
 			},
 			options: {
-				banner: "/*! jQuery Migrate v<%= pkg.version %> | (c) <%= pkg.author.name %> | jquery.org/license */\n",
+				banner: "/*! jQuery Migrate v<%= pkg.version %>" +
+					" | (c) <%= pkg.author.name %> | jquery.org/license */\n",
 				beautify: {
 					ascii_only: true
 				}
@@ -123,18 +132,19 @@ module.exports = function(grunt) {
 		watch: {
 			files: [ "src/*.js", "test/*.js" ],
 			tasks: [ "build" ]
-		},
-	});
+		}
+	} );
 
 	// Load grunt tasks from NPM packages
-	grunt.loadNpmTasks("grunt-git-authors");
-	grunt.loadNpmTasks("grunt-contrib-concat");
-	grunt.loadNpmTasks("grunt-contrib-watch");
-	grunt.loadNpmTasks("grunt-contrib-jshint");
-	grunt.loadNpmTasks("grunt-contrib-uglify");
-	grunt.loadNpmTasks("grunt-qunit-istanbul");
-	grunt.loadNpmTasks("grunt-coveralls");
-	grunt.loadNpmTasks("grunt-npmcopy");
+	grunt.loadNpmTasks( "grunt-git-authors" );
+	grunt.loadNpmTasks( "grunt-contrib-concat" );
+	grunt.loadNpmTasks( "grunt-contrib-watch" );
+	grunt.loadNpmTasks( "grunt-contrib-jshint" );
+	grunt.loadNpmTasks( "grunt-jscs" );
+	grunt.loadNpmTasks( "grunt-contrib-uglify" );
+	grunt.loadNpmTasks( "grunt-qunit-istanbul" );
+	grunt.loadNpmTasks( "grunt-coveralls" );
+	grunt.loadNpmTasks( "grunt-npmcopy" );
 
 	// Integrate jQuery migrate specific tasks
 	grunt.loadTasks( "build/tasks" );

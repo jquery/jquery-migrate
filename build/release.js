@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * jQuery Migrate Plugin Release Management
+ * JQuery Migrate Plugin Release Management
  */
 
 // Debugging variables
@@ -46,7 +46,8 @@ steps(
 	tagReleaseVersion,
 	gruntBuild,
 	makeReleaseCopies,
-	// uploadToCDN,
+
+	// UploadToCDN,
 	publishToNPM,
 	setNextVersion,
 	pushToRemote,
@@ -56,19 +57,19 @@ steps(
 function initialize( next ) {
 
 	// -d dryrun mode, no commands are executed at all
-	if ( process.argv[2] === "-d" ) {
+	if ( process.argv[ 2 ] === "-d" ) {
 		process.argv.shift();
 		dryrun = true;
-		console.warn("=== DRY RUN MODE ===" );
+		console.warn( "=== DRY RUN MODE ===" );
 	}
 
 	// -r skip remote mode, no remote commands are executed
 	// (git push, npm publish, cdn copy)
 	// Reset with `git reset --hard HEAD~2 && git tag -d (version) && grunt`
-	if ( process.argv[2] === "-r" ) {
+	if ( process.argv[ 2 ] === "-r" ) {
 		process.argv.shift();
 		skipRemote = true;
-		console.warn("=== SKIPREMOTE MODE ===" );
+		console.warn( "=== SKIPREMOTE MODE ===" );
 	}
 
 	// First arg should be the version number being released; this is a proper subset
@@ -76,14 +77,13 @@ function initialize( next ) {
 	// Examples: 1.0.1, 1.0.1-pre, 1.0.1-rc1, 1.0.1-rc1.1
 	var newver, oldver,
 		rsemver = /^(\d+)\.(\d+)\.(\d+)(?:-([\dA-Za-z\-]+(?:\.[\dA-Za-z\-]+)*))?$/,
-		version = rsemver.exec( process.argv[2] || "" ) || [],
-		major = version[1],
-		minor = version[2],
-		patch = version[3],
-		xbeta = version[4];
+		version = rsemver.exec( process.argv[ 2 ] || "" ) || [],
+		major = version[ 1 ],
+		minor = version[ 2 ],
+		patch = version[ 3 ],
+		xbeta = version[ 4 ];
 
-
-	releaseVersion = process.argv[2];
+	releaseVersion = process.argv[ 2 ];
 	isBeta = !!xbeta;
 
 	if ( !releaseVersion ) {
@@ -95,14 +95,14 @@ function initialize( next ) {
 	if ( xbeta === "pre" ) {
 		die( "Cannot release a 'pre' version!" );
 	}
-	if ( !(fs.existsSync || path.existsSync)( packageFile ) ) {
+	if ( !( fs.existsSync || path.existsSync )( packageFile ) ) {
 		die( "No " + packageFile + " in this directory" );
 	}
 	pkg = JSON.parse( fs.readFileSync( packageFile ) );
 
 	status( "Current version is " + pkg.version + "; generating release " + releaseVersion );
 	version = rsemver.exec( pkg.version );
-	oldver = ( +version[1] ) * 10000 + ( +version[2] * 100 ) + ( +version[3] )
+	oldver = ( +version[ 1 ] ) * 10000 + ( +version[ 2 ] * 100 ) + ( +version[ 3 ] );
 	newver = ( +major ) * 10000 + ( +minor * 100 ) + ( +patch );
 	if ( newver < oldver ) {
 		die( "Next version is older than current version!" );
@@ -119,24 +119,24 @@ function initialize( next ) {
 
 function checkGitStatus( next ) {
 	child.execFile( "git", [ "status" ], function( error, stdout, stderr ) {
-		var onBranch = ((stdout||"").match( /On branch (\S+)/ ) || [])[1];
+		var onBranch = ( ( stdout || "" ).match( /On branch (\S+)/ ) || [] )[ 1 ];
 		if ( onBranch !== branch ) {
 			die( "Branches don't match: Wanted " + branch + ", got " + onBranch );
 		}
 		if ( /Changes to be committed/i.test( stdout ) ) {
-			die("Please commit changed files before attemping to push a release.");
+			die( "Please commit changed files before attemping to push a release." );
 		}
 		if ( /Changes not staged for commit/i.test( stdout ) ) {
-			die("Please stash files before attempting to push a release.");
+			die( "Please stash files before attempting to push a release." );
 		}
 		next();
-	});
+	} );
 }
 
 function tagReleaseVersion( next ) {
-	git( [ "commit", "-a", "-m", "Tagging the " + releaseVersion + " release." ], function(){
-		git( [ "tag", releaseVersion ], next);
-	});
+	git( [ "commit", "-a", "-m", "Tagging the " + releaseVersion + " release." ], function() {
+		git( [ "tag", releaseVersion ], next );
+	} );
 }
 
 function updateVersions( next ) {
@@ -153,18 +153,18 @@ function gruntBuild( next ) {
 		}
 		log( stdout || "(no output)" );
 		next();
-	});
+	} );
 }
 
 function makeReleaseCopies( next ) {
 	finalFiles = {};
-	Object.keys( releaseFiles ).forEach(function( key ) {
+	Object.keys( releaseFiles ).forEach( function( key ) {
 		var builtFile = releaseFiles[ key ],
 			releaseFile = key.replace( /VER/g, releaseVersion );
 
 		copy( builtFile, releaseFile );
 		finalFiles[ releaseFile ] = builtFile;
-	});
+	} );
 	next();
 }
 
@@ -187,18 +187,18 @@ function setNextVersion( next ) {
 function uploadToCDN( next ) {
 	var cmds = [];
 
-	Object.keys( finalFiles ).forEach(function( name ) {
+	Object.keys( finalFiles ).forEach( function( name ) {
 		cmds.push(
-			function( nxt ){
+			function( nxt ) {
 				exec( "scp", [ name, scpURL ], nxt, skipRemote );
 			},
-			function( nxt ){
+			function( nxt ) {
 				exec( "curl", [ cdnURL + name + "?reload" ], nxt, skipRemote );
 			}
 		);
-	});
+	} );
 	cmds.push( next );
-	
+
 	steps.apply( this, cmds );
 }
 
@@ -211,11 +211,11 @@ function pushToRemote( next ) {
 function steps() {
 	var cur = 0,
 		steps = arguments;
-	(function next(){
-		process.nextTick(function(){
+	( function next() {
+		process.nextTick( function() {
 			steps[ cur++ ]( next );
-		});
-	})();
+		} );
+	} )();
 }
 
 function updatePackageVersion( ver, blobVer ) {
@@ -223,7 +223,7 @@ function updatePackageVersion( ver, blobVer ) {
 	blobVer = blobVer || ver;
 	pkg.version = ver;
 	pkg.author.url = setBlobVersion( pkg.author.url, blobVer );
-	pkg.licenses[0].url = setBlobVersion( pkg.licenses[0].url, blobVer );
+	pkg.licenses[ 0 ].url = setBlobVersion( pkg.licenses[ 0 ].url, blobVer );
 	writeJsonSync( packageFile, pkg );
 }
 
@@ -278,11 +278,11 @@ function git( args, fn, skip ) {
 
 function exec( cmd, args, fn, skip ) {
 	if ( dryrun || skip ) {
-		log( chalk.black.bgBlue( "# " + cmd + " " + args.join(" ") ) );
+		log( chalk.black.bgBlue( "# " + cmd + " " + args.join( " " ) ) );
 		fn();
 	} else {
-		log( chalk.green( cmd + " " + args.join(" ") ) );
-		child.execFile( cmd, args, { env: process.env }, 
+		log( chalk.green( cmd + " " + args.join( " " ) ) );
+		child.execFile( cmd, args, { env: process.env },
 			function( err, stdout, stderr ) {
 				if ( err ) {
 					die( stderr || stdout || err );

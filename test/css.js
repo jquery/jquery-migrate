@@ -1,5 +1,5 @@
 
-module("css");
+module( "css" );
 
 test( "jQuery.swap()", function( assert ) {
 	assert.expect( 6 );
@@ -14,7 +14,7 @@ test( "jQuery.swap()", function( assert ) {
 			assert.equal( arg, 42, "arg was passed" );
 
 		}, [ 42 ] );
-	});
+	} );
 	assert.equal( div.style.borderRightWidth, "4px", "style was restored" );
 
 	expectNoWarning( "Internal swap() call", function() {
@@ -22,6 +22,6 @@ test( "jQuery.swap()", function( assert ) {
 			width = $fp.width();
 
 		assert.equal( $fp.hide().width(), width, "correct width" );
-	});
+	} );
 
-});
+} );

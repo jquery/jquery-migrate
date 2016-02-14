@@ -13,7 +13,7 @@ var eventAdd = jQuery.event.add,
 			return events;
 		}
 		if ( rhoverHack.test( events ) ) {
-			migrateWarn("'hover' pseudo-event is deprecated, use 'mouseenter mouseleave'");
+			migrateWarn( "'hover' pseudo-event is deprecated, use 'mouseenter mouseleave'" );
 		}
 		return events && events.replace( rhoverHack, "mouseenter$1 mouseleave$1" );
 	};
@@ -25,17 +25,22 @@ if ( jQuery.event.props && jQuery.event.props[ 0 ] !== "attrChange" ) {
 
 // Undocumented jQuery.event.handle was "deprecated" in jQuery 1.7
 if ( jQuery.event.dispatch ) {
-	migrateWarnProp( jQuery.event, "handle", jQuery.event.dispatch, "jQuery.event.handle is undocumented and deprecated" );
+	migrateWarnProp(
+		jQuery.event,
+		"handle",
+		jQuery.event.dispatch,
+		"jQuery.event.handle is undocumented and deprecated"
+	);
 }
 
 // Support for 'hover' pseudo-event and ajax event warnings
-jQuery.event.add = function( elem, types, handler, data, selector ){
+jQuery.event.add = function( elem, types, handler, data, selector ) {
 	if ( elem !== document && rajaxEvent.test( types ) ) {
 		migrateWarn( "AJAX events should be attached to document: " + types );
 	}
 	eventAdd.call( this, elem, hoverHack( types || "" ), handler, data, selector );
 };
-jQuery.event.remove = function( elem, types, handler, selector, mappedTypes ){
+jQuery.event.remove = function( elem, types, handler, selector, mappedTypes ) {
 	eventRemove.call( this, elem, hoverHack( types ) || "", handler, selector, mappedTypes );
 };
 
@@ -67,7 +72,7 @@ jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
 		return this;
 	};
 
-});
+} );
 
 jQuery.fn.toggle = function( fn, fn2 ) {
 
@@ -75,13 +80,14 @@ jQuery.fn.toggle = function( fn, fn2 ) {
 	if ( !jQuery.isFunction( fn ) || !jQuery.isFunction( fn2 ) ) {
 		return oldToggle.apply( this, arguments );
 	}
-	migrateWarn("jQuery.fn.toggle(handler, handler...) is deprecated");
+	migrateWarn( "jQuery.fn.toggle(handler, handler...) is deprecated" );
 
 	// Save reference to arguments for access in closure
 	var args = arguments,
 		guid = fn.guid || jQuery.guid++,
 		i = 0,
 		toggler = function( event ) {
+
 			// Figure out which function to execute
 			var lastToggle = ( jQuery._data( this, "lastToggle" + fn.guid ) || 0 ) % i;
 			jQuery._data( this, "lastToggle" + fn.guid, lastToggle + 1 );
@@ -89,11 +95,11 @@ jQuery.fn.toggle = function( fn, fn2 ) {
 			// Make sure that clicks stop
 			event.preventDefault();
 
-			// and execute the function
+			// And execute the function
 			return args[ lastToggle ].apply( this, arguments ) || false;
 		};
 
-	// link all the functions, so any of them can unbind this click handler
+	// Link all the functions, so any of them can unbind this click handler
 	toggler.guid = guid;
 	while ( i < args.length ) {
 		args[ i++ ].guid = guid;
@@ -103,7 +109,7 @@ jQuery.fn.toggle = function( fn, fn2 ) {
 };
 
 jQuery.fn.live = function( types, data, fn ) {
-	migrateWarn("jQuery.fn.live() is deprecated");
+	migrateWarn( "jQuery.fn.live() is deprecated" );
 	if ( oldLive ) {
 		return oldLive.apply( this, arguments );
 	}
@@ -112,7 +118,7 @@ jQuery.fn.live = function( types, data, fn ) {
 };
 
 jQuery.fn.die = function( types, fn ) {
-	migrateWarn("jQuery.fn.die() is deprecated");
+	migrateWarn( "jQuery.fn.die() is deprecated" );
 	if ( oldDie ) {
 		return oldDie.apply( this, arguments );
 	}
@@ -121,13 +127,13 @@ jQuery.fn.die = function( types, fn ) {
 };
 
 // Turn global events into document-triggered events
-jQuery.event.trigger = function( event, data, elem, onlyHandlers  ){
+jQuery.event.trigger = function( event, data, elem, onlyHandlers  ) {
 	if ( !elem && !rajaxEvent.test( event ) ) {
 		migrateWarn( "Global events are undocumented and deprecated" );
 	}
 	return eventTrigger.call( this,  event, data, elem || document, onlyHandlers  );
 };
-jQuery.each( ajaxEvents.split("|"),
+jQuery.each( ajaxEvents.split( "|" ),
 	function( _, name ) {
 		jQuery.event.special[ name ] = {
 			setup: function() {
@@ -136,8 +142,13 @@ jQuery.each( ajaxEvents.split("|"),
 				// The document needs no shimming; must be !== for oldIE
 				if ( elem !== document ) {
 					jQuery.event.add( document, name + "." + jQuery.guid, function() {
-						jQuery.event.trigger( name, Array.prototype.slice.call( arguments, 1 ), elem, true );
-					});
+						jQuery.event.trigger(
+							name,
+							Array.prototype.slice.call( arguments, 1 ),
+							elem,
+							true
+						);
+					} );
 					jQuery._data( this, name, jQuery.guid++ );
 				}
 				return false;

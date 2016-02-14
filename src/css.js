@@ -16,7 +16,7 @@ if ( jQuery.swap ) {
 				return ret;
 			};
 		}
-	});
+	} );
 }
 
 jQuery.swap = function( elem, options, callback, args ) {

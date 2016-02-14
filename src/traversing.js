@@ -2,7 +2,7 @@ var oldSelf = jQuery.fn.andSelf || jQuery.fn.addBack,
 	oldFind = jQuery.fn.find;
 
 jQuery.fn.andSelf = function() {
-	migrateWarn("jQuery.fn.andSelf() replaced by jQuery.fn.addBack()");
+	migrateWarn( "jQuery.fn.andSelf() replaced by jQuery.fn.addBack()" );
 	return oldSelf.apply( this, arguments );
 };
 
