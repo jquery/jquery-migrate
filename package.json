@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "chalk": "1.1.1",
+    "commitplease": "^2.3.0",
     "grunt": "~0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-concat": "0.5.1",
@@ -40,5 +41,31 @@
     "qunitjs": "1.17.1",
     "testswarm": "~1.1.0"
   },
-  "keywords": []
+  "keywords": [],
+  "commitplease": {
+    "components": [
+      "Docs",
+      "Tests",
+      "Build",
+      "Release",
+      "Core",
+      "Ajax",
+      "Attributes",
+      "Callbacks",
+      "CSS",
+      "Data",
+      "Deferred",
+      "Deprecated",
+      "Dimensions",
+      "Effects",
+      "Event",
+      "Manipulation",
+      "Offset",
+      "Queue",
+      "Selector",
+      "Serialize",
+      "Traversing",
+      "Wrap"
+    ]
+  }
 }
