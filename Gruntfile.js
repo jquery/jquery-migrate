@@ -63,10 +63,19 @@ module.exports = function(grunt) {
 					instrumentedFiles: "temp/",
 					src: [ "dist/jquery-migrate.js" ],
 					htmlReport: "coverage/",
+					lcovReport: "coverage/",
 					linesThresholdPct: 85
 				}
 			},
 			files: [ "test/**/*.html" ]
+		},
+		coveralls: {
+			src: "coverage/lcov.info",
+			options: {
+
+				// Should not fail if coveralls is down
+				force: true
+			}
 		},
 		npmcopy: {
 			all: {
@@ -124,6 +133,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-uglify");
 	grunt.loadNpmTasks("grunt-qunit-istanbul");
+	grunt.loadNpmTasks("grunt-coveralls");
 	grunt.loadNpmTasks("grunt-npmcopy");
 
 	// Default task.
@@ -131,6 +141,9 @@ module.exports = function(grunt) {
 
 	// Skip unit tests, used by testswarm
 	grunt.registerTask( "buildnounit", [ "concat", "uglify", "jshint" ] );
+
+	// For CI
+	grunt.registerTask( "ci", [ "default", "coveralls" ] );
 
 	// Testswarm
 	grunt.registerTask( "testswarm", function( commit, configFile, destName ) {
