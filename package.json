@@ -41,7 +41,13 @@
     "qunitjs": "1.17.1",
     "testswarm": "~1.1.0"
   },
-  "keywords": [],
+  "keywords": [
+    "jquery",
+    "javascript",
+    "browser",
+    "plugin",
+    "migrate"
+  ],
   "commitplease": {
     "components": [
       "Docs",
