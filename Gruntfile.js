@@ -152,7 +152,9 @@ module.exports = function( grunt ) {
 	// Just an alias
 	grunt.registerTask( "test", [ "qunit" ] );
 
-	grunt.registerTask( "build", [ "concat", "uglify", "jshint" ] );
+	grunt.registerTask( "lint", [ "jshint", "jscs" ] );
+	grunt.registerTask( "build", [ "concat", "uglify", "lint" ] );
+
 	grunt.registerTask( "default", [ "build", "test" ] );
 
 	// For CI
