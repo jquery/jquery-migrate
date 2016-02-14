@@ -3,4 +3,3 @@ sudo: false
 node_js:
 - "5"
 script: "npm run ci"
-before_install: npm install -g grunt-cli
