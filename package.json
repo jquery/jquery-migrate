@@ -18,7 +18,8 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "grunt",
+    "build": "grunt build",
+    "test": "grunt test",
     "ci": "grunt ci"
   },
   "devDependencies": {

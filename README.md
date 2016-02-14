@@ -1,4 +1,7 @@
-# jquery-migrate: Migrate older jQuery code to jQuery 1.9+
+[![Build Status](https://travis-ci.org/jquery/jquery-migrate.svg?branch=master)](https://travis-ci.org/jquery/jquery-migrate)
+[![Coverage Status](https://img.shields.io/coveralls/jquery/jquery-migrate.svg?style=flat)](https://coveralls.io/r/jquery/jquery-migrate?branch=master)
+
+# Migrate older jQuery code to jQuery 1.9+
 
 This plugin can be used to detect and restore APIs or features that have been deprecated in jQuery and removed as of version 1.9.
 See the [warnings page](https://github.com/jquery/jquery-migrate/blob/master/warnings.md) for more information regarding messages the plugin generates.
@@ -65,19 +68,35 @@ Bugs in jQuery itself should be reported on the [jQuery Core bug tracker](http:/
 
 For other questions about the plugin that aren't bugs, ask on the [jQuery Forum](http://forum.jquery.com).
 
-How to run the tests:
+Build and run tests:
 ====================================================
-Clone this repo, install `grunt`:
 
+## Build with `npm` commands
 ```sh
-git clone git://github.com/jquery/jquery-migrate.git
-cd jquery-migrate
-npm install
-npm install -g grunt-cli
+$ git clone git://github.com/jquery/jquery-migrate.git
+$ cd jquery-migrate
+$ npm install
+$ npm run build
 ```
 
-Run `grunt` to `jshint`, `qunit` and `uglify` release.
+## Build with [`grunt`](http://gruntjs.com/)
 
 ```sh
-grunt
+$ git clone git://github.com/jquery/jquery-migrate.git
+$ cd jquery-migrate
+$ npm install
+$ npm install -g grunt-cli
+$ grunt build
+```
+
+### Run tests
+
+```sh
+$ npm test
+```
+
+### Or
+
+```sh
+$ grunt test
 ```
