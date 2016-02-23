@@ -18,14 +18,13 @@ var releaseVersion,
 	isBeta,
 	pkg,
 
-	scpURL = "jqadmin@code.origin.jquery.com:/var/www/html/code.jquery.com/",
-	cdnURL = "http://code.origin.jquery.com/",
 	repoURL = "git@github.com:jquery/jquery-migrate.git",
 	branch = "master",
 
 	// Windows needs the .cmd version but will find the non-.cmd
-	// On Windows, ensure the HOME environment variable is set
+	// On Windows, also ensure the HOME environment variable is set
 	gruntCmd = process.platform === "win32" ? "grunt.cmd" : "grunt",
+	npmCmd = process.platform == "win32" ? "npm.cmd" : "npm",
 
 	readmeFile = "README.md",
 	packageFile = "package.json",
@@ -46,10 +45,11 @@ steps(
 	tagReleaseVersion,
 	gruntBuild,
 	makeReleaseCopies,
-	// uploadToCDN,
+
 	publishToNPM,
 	setNextVersion,
 	pushToRemote,
+	remindAboutCDN,
 	exit
 );
 
@@ -172,9 +172,9 @@ function publishToNPM( next ) {
 
 	// Don't update "latest" if this is a beta
 	if ( isBeta ) {
-		exec( "npm", [ "publish", "--tag", releaseVersion ], next, skipRemote );
+		exec( npmCmd, [ "publish", "--tag", releaseVersion ], next, skipRemote );
 	} else {
-		exec( "npm", [ "publish" ], next, skipRemote );
+		exec( npmCmd, [ "publish" ], next, skipRemote );
 	}
 }
 
@@ -184,26 +184,14 @@ function setNextVersion( next ) {
 	git( [ "commit", "-a", "-m", "Updating the source version to " + nextVersion ], next );
 }
 
-function uploadToCDN( next ) {
-	var cmds = [];
-
-	Object.keys( finalFiles ).forEach(function( name ) {
-		cmds.push(
-			function( nxt ){
-				exec( "scp", [ name, scpURL ], nxt, skipRemote );
-			},
-			function( nxt ){
-				exec( "curl", [ cdnURL + name + "?reload" ], nxt, skipRemote );
-			}
-		);
-	});
-	cmds.push( next );
-	
-	steps.apply( this, cmds );
-}
-
 function pushToRemote( next ) {
 	git( [ "push", "--tags", repoURL, branch ], next, skipRemote );
+}
+
+function remindAboutCDN( next ) {
+	console.log( chalk.red( "TODO: Update CDN with jquery-migrate." + releaseVersion + " files (min and regular)" ) );
+	console.log( chalk.red( "  clone codeorigin.jquery.org, git add files, commit, push" ) );
+	next();
 }
 
 //==============================
@@ -223,7 +211,7 @@ function updatePackageVersion( ver, blobVer ) {
 	blobVer = blobVer || ver;
 	pkg.version = ver;
 	pkg.author.url = setBlobVersion( pkg.author.url, blobVer );
-	pkg.licenses[0].url = setBlobVersion( pkg.licenses[0].url, blobVer );
+
 	writeJsonSync( packageFile, pkg );
 }
 
