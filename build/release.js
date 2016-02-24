@@ -187,7 +187,8 @@ function pushToRemote( next ) {
 }
 
 function remindAboutCDN( next ) {
-	console.log( chalk.red( "TODO: Update CDN with jquery-migrate." + releaseVersion + " files (min and regular)" ) );
+	console.log( chalk.red( "TODO: Update CDN with jquery-migrate." +
+		releaseVersion + " files (min and regular)" ) );
 	console.log( chalk.red( "  clone codeorigin.jquery.org, git add files, commit, push" ) );
 	next();
 }
