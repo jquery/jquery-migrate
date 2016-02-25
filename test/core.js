@@ -212,29 +212,6 @@ test( "jQuery( '<element>' ) usable on detached elements (#128)", function() {
 	ok( true, "No crash when operating on detached elements with window" );
 } );
 
-test( "jQuery.parseJSON() falsy values", function() {
-	expect( 6 );
-
-	expectNoWarning( "valid JSON", function() {
-		jQuery.parseJSON( "{\"a\":1}" );
-	} );
-	expectWarning( "actual null", function() {
-		jQuery.parseJSON( null );
-	} );
-	expectNoWarning( "string null", function() {
-		jQuery.parseJSON( "null" );
-	} );
-	expectWarning( "empty string", function() {
-		jQuery.parseJSON( "" );
-	} );
-	expectWarning( "Boolean false", function() {
-		jQuery.parseJSON( false );
-	} );
-	expectWarning( "undefined", function() {
-		jQuery.parseJSON( undefined );
-	} );
-} );
-
 test( "jQuery.browser", function() {
 	expect( 3 );
 
@@ -384,5 +361,17 @@ test( ".size", function() {
 
     expectWarning( "size", function() {
         jQuery( "<div />" ).size();
+    } );
+} );
+
+test( "jQuery.parseJSON", function() {
+    expect( 2 );
+
+    expectWarning( "jQuery.parseJSON", function() {
+		deepEqual(
+			jQuery.parseJSON( "{\"a\":1}" ),
+			{ a: 1 },
+			"jQuery.parseJSON output"
+		);
     } );
 } );

@@ -56,26 +56,6 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Do not use jQuery in Quirks mode, it has never been supported. See the previous item for solutions.
 
-### JQMIGRATE: jQuery.parseJSON requires a valid JSON string
-
-**Cause**: Before jQuery 1.9.0, the `$.parseJSON()` method allowed some invalid JSON strings and returned `null` as a result without throwing an error. This put it at odds with the `JSON.parse()` method. The two methods are aligned as of 1.9.0 and values such as an empty string are properly not considered valid by `$.parseJSON()`.
-
-**Solution:** If you want to consider values such as `""` or `false` successful and treat them as `null`, check for them before calling `$.parseJSON()`. Since falsy values such as an empty string were previously returned as a `null` without complaint, this code will suffice in most cases:
-```js
-var json = $.parseJSON(jsonString || "null");
-```
-If your own code is not calling `$.parseJSON()` directly, it is probably using AJAX to retrieve a JSON value from a server that is returning an empty string in the content body rather than a valid JSON response such as `null` or `{}`. If it isn't possible to correct the invalid JSON in the server response, you can retrieve the response as text:
-```js
-$.ajax({
-    url: "...",
-    dataType: "text",
-    success: function( text ) {
-        var json = text? $.parseJSON(text) : null;
-        ...
-    }
-});
-```
-
 ### JQMIGRATE: jQuery.browser is deprecated
 
 **Cause:** `jQuery.browser` was deprecated in version 1.3, and finally removed in 1.9. Browser sniffing is notoriously unreliable as means of detecting whether to implement particular features.
@@ -240,3 +220,9 @@ jQuery.easing.easeInCubic = function ( p ) {
 ```
 
 See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58b6ad122ab425c4cc1a4da4a520#diff-9cd789a170c765edcf0f4854db386e1a) for other possible cases.
+
+### JQMIGRATE: jQuery.parseJSON is deprecated; use JSON.parse
+
+**Cause**: The `jQuery.parseJSON` method in recent jQuery is identical to the native `JSON.parse`. As of jQuery 3.0 `jQuery.parseJSON` is deprecated.
+
+**Solution**: Replace any use of `jQuery.parseJSON` with `JSON.parse`.

@@ -24,7 +24,6 @@ module.exports = function( grunt ) {
 			"src/attributes.js",
 			"src/core.js",
 			"src/css.js",
-			"src/ajax.js",
 			"src/data.js",
 			"src/manipulation.js",
 			"src/effects.js",

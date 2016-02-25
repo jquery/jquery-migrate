@@ -1,7 +1,6 @@
 
 var matched, browser,
 	oldInit = jQuery.fn.init,
-	oldParseJSON = jQuery.parseJSON,
 	rspaceAngle = /^\s*</,
 	rattrHash = /\[\s*\w+\s*[~|^$*]?=\s*(?![\s'"])[^#\]]*#/,
 
@@ -76,15 +75,6 @@ jQuery.fn.init = function( selector, context, rootjQuery ) {
 };
 jQuery.fn.init.prototype = jQuery.fn;
 
-// Let $.parseJSON(falsy_value) return null
-jQuery.parseJSON = function( json ) {
-	if ( !json ) {
-		migrateWarn( "jQuery.parseJSON requires a valid JSON string" );
-		return null;
-	}
-	return oldParseJSON.apply( this, arguments );
-};
-
 jQuery.uaMatch = function( ua ) {
 	ua = ua.toLowerCase();
 
@@ -158,4 +148,9 @@ jQuery.sub = function() {
 jQuery.fn.size = function() {
 	migrateWarn( "jQuery.fn.size() is deprecated; use the .length property" );
 	return this.length;
+};
+
+jQuery.parseJSON = function() {
+	migrateWarn( "jQuery.parseJSON is deprecated; use JSON.parse" );
+	return JSON.parse.apply( null, arguments );
 };

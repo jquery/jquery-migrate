@@ -24,7 +24,6 @@ TestManager = {
 				"attributes",
 				"core",
 				"css",
-				"ajax",
 				"data",
 				"manipulation",
 				"effects",
