@@ -7,7 +7,7 @@
   "homepage": "https://github.com/jquery/jquery-migrate",
   "author": {
     "name": "jQuery Foundation and other contributors",
-    "url": "https://github.com/jquery/jquery-migrate/blob/master/AUTHORS.txt"
+    "url": "https://github.com/jquery/jquery-migrate/blob/1.x-stable/AUTHORS.txt"
   },
   "repository": {
     "type": "git",

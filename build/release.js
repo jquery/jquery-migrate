@@ -19,7 +19,7 @@ var releaseVersion,
 	pkg,
 
 	repoURL = "git@github.com:jquery/jquery-migrate.git",
-	branch = "master",
+	branch = "1.x-stable",
 
 	// Windows needs the .cmd version but will find the non-.cmd
 	// On Windows, also ensure the HOME environment variable is set
@@ -180,7 +180,7 @@ function publishToNPM( next ) {
 
 function setNextVersion( next ) {
 	updateSourceVersion( nextVersion );
-	updatePackageVersion( nextVersion, "master" );
+	updatePackageVersion( nextVersion, branch );
 	git( [ "commit", "-a", "-m", "Updating the source version to " + nextVersion ], next );
 }
 
@@ -242,7 +242,7 @@ function updateReadmeVersion( ver ) {
 }
 
 function setBlobVersion( s, v ) {
-	return s.replace( /\/blob\/(?:(\d+\.\d+[^\/]+)|master)/, "/blob/" + v );
+	return s.replace( /\/blob\/[^\/]+/, "/blob/" + v );
 }
 
 function writeJsonSync( fname, json ) {
