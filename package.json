@@ -3,11 +3,11 @@
 	"title": "jQuery Migrate",
 	"description": "Migrate older jQuery code to jQuery 1.9+",
 	"main": "dist/jquery-migrate.js",
-	"version": "1.4.0",
+	"version": "1.4.1-pre",
 	"homepage": "https://github.com/jquery/jquery-migrate",
 	"author": {
 		"name": "jQuery Foundation and other contributors",
-		"url": "https://github.com/jquery/jquery-migrate/blob/1.4.0/AUTHORS.txt"
+		"url": "https://github.com/jquery/jquery-migrate/blob/1.x-stable/AUTHORS.txt"
 	},
 	"repository": {
 		"type": "git",
