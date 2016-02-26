@@ -40,10 +40,10 @@ var releaseVersion,
 steps(
 	initialize,
 	checkGitStatus,
-	gruntBuild,
+	function( next ) { gruntBuild( "default", next ); },
 	updateVersions,
 	tagReleaseVersion,
-	gruntBuild,
+	function( next ) { gruntBuild( "buildnounit", next ); },
 	makeReleaseCopies,
 
 	publishToNPM,
@@ -146,8 +146,8 @@ function updateVersions( next ) {
 	next();
 }
 
-function gruntBuild( next ) {
-	exec( gruntCmd, [], function( error, stdout ) {
+function gruntBuild( target, next ) {
+	exec( gruntCmd, [ target || "default" ], function( error, stdout ) {
 		if ( error ) {
 			die( error + stderr );
 		}
