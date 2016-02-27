@@ -61,16 +61,16 @@ module.exports = function( grunt ) {
 				coverage: {
 					disposeCollector: true,
 					instrumentedFiles: "temp/",
-					src: [ "dist/jquery-migrate.js" ],
-					htmlReport: "coverage/",
-					lcovReport: "coverage/",
+					src: [ "src/!(intro.js|outro.js)" ],
+					htmlReport: "coverage/html",
+					lcovReport: "coverage/lcov",
 					linesThresholdPct: 85
 				}
 			},
 			files: [ "test/**/*.html" ]
 		},
 		coveralls: {
-			src: "coverage/lcov.info",
+			src: "coverage/lcov/lcov.info",
 			options: {
 
 				// Should not fail if coveralls is down

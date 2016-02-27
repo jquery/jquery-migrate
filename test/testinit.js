@@ -1,4 +1,3 @@
-
 TestManager = {
 	/*
 	 * Load a version of a file based on URL parameters.
@@ -9,14 +8,34 @@ TestManager = {
 	 *	else	Full or relative path to be used for script src
 	 */
 	loadProject: function( projectName, defaultVersion, isSelf ) {
-		var file,
+		var file, i,
+			lines = "",
 			urlTag = this.projects[ projectName ].urlTag,
 			matcher = new RegExp( "\\b" + urlTag + "=([^&]+)" ),
 			projectRoot = isSelf ? ".." : "../../" + projectName,
 			version = ( matcher.exec( document.location.search ) || {} )[ 1 ] || defaultVersion;
 
 		if ( version === "dev" ) {
-			file = projectRoot + "/dist/" + projectName + ".js";
+
+			// Order is important
+			file = [
+				"version",
+				"migrate",
+				"attributes",
+				"core",
+				"css",
+				"ajax",
+				"data",
+				"manipulation",
+				"effects",
+				"event",
+				"traversing",
+				"deferred"
+			];
+
+			for ( i = 0; i < file.length; i++ ) {
+				file[ i ] = projectRoot + "/src/" + file[ i ] + ".js";
+			}
 		} else if ( version === "min" ) {
 			file = projectRoot + "/dist/" + projectName + ".min.js";
 		} else if ( /^[\w\.\-]+$/.test( version ) ) {
@@ -30,8 +49,16 @@ TestManager = {
 			file: file
 		} );
 
-		// Prevents a jshint warning about eval-like behavior of document.write
-		document.write( "<script src='" + file + "'></script>" );
+		if ( typeof file === "string" ) {
+			document.write( "<script src='" + file + "'></script>" );
+
+		} else {
+			for ( i = 0; i < file.length; i++ ) {
+				lines += "<script src='" + file[ i ] + "'></script>";
+			}
+
+			document.write( lines );
+		}
 	},
 	init: function( projects ) {
 		var p, project;
