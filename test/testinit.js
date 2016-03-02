@@ -21,11 +21,8 @@ TestManager = {
 			file = [
 				"version",
 				"migrate",
-				"attributes",
 				"core",
 				"css",
-				"data",
-				"manipulation",
 				"effects",
 				"event",
 				"traversing",
