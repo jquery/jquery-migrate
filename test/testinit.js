@@ -23,6 +23,7 @@ TestManager = {
 				"migrate",
 				"core",
 				"css",
+				"data",
 				"effects",
 				"event",
 				"traversing",
