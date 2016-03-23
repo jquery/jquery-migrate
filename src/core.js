@@ -32,3 +32,6 @@ jQuery.parseJSON = function() {
 	migrateWarn( "jQuery.parseJSON is deprecated; use JSON.parse" );
 	return JSON.parse.apply( null, arguments );
 };
+
+migrateWarnProp( jQuery, "unique", jQuery.uniqueSort,
+	"jQuery.unique is deprecated, use jQuery.uniqueSort" );
