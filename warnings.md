@@ -25,6 +25,14 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Put a [valid doctype](http://www.w3.org/QA/2002/04/valid-dtd-list.html) in the document and ensure that the document is rendering in standards mode. The simplest valid doctype is the HTML5 one, which we highly recommend: `<!doctype html>` . The jQuery Migrate plugin does not attempt to fix issues related to quirks mode.
 
+### JQMIGRATE: jQXHR.success is deprecated and removed
+### JQMIGRATE: jQXHR.error is deprecated and removed
+### JQMIGRATE: jQXHR.complete is deprecated and removed
+
+**Cause:** The `.success()`, `.error()`, and `.complete()` methods of the `jQXHR` object returned from `jQuery.ajax()` have been deprecated since jQuery 1.8 and were removed in jQuery 3.0.
+
+**Solution:** Replace the use of these methods with the standard Deferred methods: `.success()` becomes `.done()`, `.error()` becomes `.fail()`, and `.complete()` becomes `.always()`.
+
 ### JQMIGRATE: jQuery.fn.error() is deprecated
 
 **Cause:** The `$().error()` method was used to attach an "error" event to an element but has been removed in 1.9 to reduce confusion with the `$.error()` method which is unrelated and has not been deprecated. It also serves to discourage the temptation to use `$(window).error()` which does not work because `window.onerror` does not follow standard event handler conventions. The `$().error()` method was removed in jQuery 3.0.

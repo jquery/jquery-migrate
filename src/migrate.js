@@ -39,6 +39,17 @@ function migrateWarn( msg ) {
 	}
 }
 
+function migrateWarnProp( obj, prop, value, msg ) {
+	Object.defineProperty( obj, prop, {
+		configurable: true,
+		enumerable: true,
+		get: function() {
+			migrateWarn( msg );
+			return value;
+		}
+	} );
+}
+
 if ( document.compatMode === "BackCompat" ) {
 
 	// JQuery has never supported or tested Quirks Mode
