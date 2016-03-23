@@ -64,6 +64,13 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: Replace any use of `.size()` with `.length`.
 
+### JQMIGRATE: jQuery.fn.offset() requires a valid DOM element
+### JQMIGRATE: jQuery.fn.offset() requires an element connected to a document
+
+**Cause:** In earlier versions of jQuery, the `.offset()` method would return a value of `{ top: 0, left: 0 }` for some cases of invalid input. jQuery 3.0 throws errors in some of these cases. The selected element in the jQuery collection must be a DOM element that is currently in a document. Text nodes, the `window` object, plain JavaScript objects, and disconnected elements are not valid input to the `.offset()` method. jQuery *may* throw an error in those cases but in general does not guarantee specific results with invalid inputs.
+
+**Solution**: Do not attempt to get or set the offset information of invalid input.
+
 ### JQMIGRATE: jQuery.swap() is undocumented and deprecated
 
 **Cause**: The `jQuery.swap()` method temporarily exchanges a set of CSS properties. It was never documented as part of jQuery's public API and should not be used because it can cause performance problems due to forced layout. This method has been removed in jQuery 3.0.
