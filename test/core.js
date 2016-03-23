@@ -155,3 +155,17 @@ test( "jQuery.parseJSON", function() {
 		);
     } );
 } );
+
+test( "jQuery.unique", function( assert ) {
+	assert.expect( 2 );
+
+	expectWarning( "jQuery.unique", function() {
+		var body = jQuery( "body" )[ 0 ],
+			head = jQuery( "head" )[ 0 ];
+		assert.deepEqual(
+			jQuery.unique( [ body, head, body ] ),
+			[ head, body ],
+			"unique sorted" );
+	} );
+} );
+
