@@ -26,6 +26,7 @@ TestManager = {
 				"css",
 				"effects",
 				"event",
+				"offset",
 				"traversing",
 				"deferred"
 			];
