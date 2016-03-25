@@ -18,11 +18,13 @@
 	"browser": true,
 
 	"globals": {
-		"jQuery": true,
 		"define": true,
 		"module": true,
 
+		"jQuery": true,
 		"migrateWarn": true,
-		"migrateWarnProp": true
+		"migrateWarnProp": true,
+
+		"noGlobal": true
 	}
 }
