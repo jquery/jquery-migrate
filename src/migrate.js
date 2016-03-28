@@ -46,10 +46,6 @@ function migrateWarnProp( obj, prop, value, msg ) {
 		get: function() {
 			migrateWarn( msg );
 			return value;
-		},
-		set: function( newValue ) {
-			migrateWarn( msg );
-			value = newValue;
 		}
 	} );
 }
