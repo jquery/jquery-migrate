@@ -1,18 +1,34 @@
 
+( function() {
+
+	// Support: IE9 only
+	// Console can go away during the page run so don't cache globally
+	var log = window.console && window.console.log.bind( window.console ),
+		rbadVersions = /^[12]\./;
+
+	if ( !log ) {
+		return;
+	}
+
+	// Need jQuery 3.0.0+ and no older Migrate loaded
+	if ( !window.jQuery || rbadVersions.test( jQuery.fn.jquery ) ) {
+		log( "JQMIGRATE: jQuery 3.0.0+ REQUIRED" );
+	}
+	if ( jQuery.migrateWarnings ) {
+		log( "JQMIGRATE: Migrate plugin loaded multiple times" );
+	}
+
+	// Show a message on the console so devs know we're active
+	log( "JQMIGRATE: Migrate is installed" +
+		( jQuery.migrateMute ? "" : " with logging active" ) +
+		", version " + jQuery.migrateVersion );
+
+} )();
+
 var warnedAbout = {};
 
 // List of warnings already given; public read only
 jQuery.migrateWarnings = [];
-
-// Set to true to prevent console output; migrateWarnings still maintained
-// jQuery.migrateMute = false;
-
-// Show a message on the console so devs know we're active
-if ( window.console && window.console.log ) {
-	window.console.log( "JQMIGRATE: Migrate is installed" +
-		( jQuery.migrateMute ? "" : " with logging active" ) +
-		", version " + jQuery.migrateVersion );
-}
 
 // Set to false to disable traces that appear with warnings
 if ( jQuery.migrateTrace === undefined ) {
