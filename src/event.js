@@ -30,6 +30,11 @@ jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
 
 } );
 
+// Trigger "ready" event only once, on document ready
+jQuery( function() {
+	jQuery( document ).triggerHandler( "ready" );
+} );
+
 jQuery.event.special.ready = {
 	setup: function() {
 		if ( this === document ) {
