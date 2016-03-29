@@ -155,3 +155,32 @@ test( "jQuery.parseJSON", function() {
 		);
     } );
 } );
+
+test( "jQuery.expr.pseudos aliases", function( assert ) {
+	assert.expect( 7 );
+
+	expectWarning( "jQuery.expr.filters", function() {
+		jQuery.expr.filters.mazda = function( elem ) {
+			return elem.style.zoom === "3";
+		};
+	} );
+
+	expectWarning( "jQuery.expr[':']", function() {
+		jQuery.expr[ ":" ].marginal = function( elem ) {
+			return parseInt( elem.style.marginLeftWidth ) > 20;
+		};
+	} );
+
+	expectNoWarning( "jQuery.expr.pseudos", function() {
+		var fixture = jQuery( "#qunit-fixture" ).prepend( "<p>hello</p>" );
+
+		assert.ok( jQuery.expr.pseudos.mazda, "filters assigned" );
+		assert.ok( jQuery.expr.pseudos.marginal, "[':'] assigned" );
+		fixture.find( "p" ).first().css( "marginLeftWidth", "40px" );
+		assert.equal( fixture.find( "p:marginal" ).length, 1, "One marginal element" );
+		assert.equal( fixture.find( "div:mazda" ).length, 0, "No mazda elements" );
+		delete jQuery.expr.pseudos.mazda;
+		delete jQuery.expr.pseudos.marginal;
+	} );
+
+} );

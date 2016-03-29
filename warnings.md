@@ -105,3 +105,10 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Cause**: The `jQuery.parseJSON` method in recent jQuery is identical to the native `JSON.parse`. As of jQuery 3.0 `jQuery.parseJSON` is deprecated.
 
 **Solution**: Replace any use of `jQuery.parseJSON` with `JSON.parse`.
+
+### JQMIGRATE: jQuery.expr[':'] is jQuery.expr.pseudos
+### JQMIGRATE: jQuery.expr.filters is now jQuery.expr.pseudos
+
+**Cause:** The standard way to add new custom selectors through jQuery is `jQuery.expr.pseudos`. These two other aliases are deprecated, although they still work as of jQuery 3.0.
+
+**Solution:** Rename any of the older usage to `jQuery.expr.pseudos`. The functionality is identical.
