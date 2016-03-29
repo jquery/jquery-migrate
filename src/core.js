@@ -32,3 +32,9 @@ jQuery.parseJSON = function() {
 	migrateWarn( "jQuery.parseJSON is deprecated; use JSON.parse" );
 	return JSON.parse.apply( null, arguments );
 };
+
+// Now jQuery.expr.pseudos is the standard incantation
+migrateWarnProp( jQuery.expr, "filters", jQuery.expr.pseudos,
+	"jQuery.expr.filters is now jQuery.expr.pseudos" );
+migrateWarnProp( jQuery.expr, ":", jQuery.expr.pseudos,
+	"jQuery.expr[\":\"] is now jQuery.expr.pseudos" );
