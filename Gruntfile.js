@@ -63,7 +63,7 @@ module.exports = function( grunt ) {
 					linesThresholdPct: 85
 				}
 			},
-			files: [ "test/**/*.html" ]
+			files: [ "test/**/index.html" ]
 		},
 		coveralls: {
 			src: "coverage/lcov/lcov.info",

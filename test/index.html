@@ -15,16 +15,6 @@
 	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
 	<script src="testinit.js"></script>
 	<script>
-		TestManager.init({
-			"jquery": {
-				urlTag: "jquery",
-				choices: "dev,min,git,3.0.0"
-			},
-			"jquery-migrate": {
-				urlTag: "plugin",
-				choices: "dev,min,git,3.0.0"
-			}
-		});
 		TestManager.loadProject( "jquery", "git" );
 		// Close this script tag so file will load
 	</script>

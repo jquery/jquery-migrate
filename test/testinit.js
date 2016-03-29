@@ -57,11 +57,60 @@ TestManager = {
 			document.write( lines );
 		}
 	},
+	/**
+	 * Iframe tests that require setup not covered in the standard unit test
+	 *
+	 * Note that options passed into the standard unit tests will also be passed to
+	 * the iframe, but the iframe html page is responsible for processing them
+	 * as appropriate (for example by calling TestManager.loadProject)
+	 */
+	runIframeTest: function( title, url, func ) {
+		var self = this;
+		QUnit.test( title, function( assert ) {
+			var iframe,
+				query = window.location.search.slice( 1 ),
+				done = assert.async();
+
+			self.iframeCallback = function() {
+				var args = Array.prototype.slice.call( arguments );
+
+				args.push( assert );
+
+				setTimeout( function() {
+					self.iframeCallback = undefined;
+
+					func.apply( this, args );
+					func = function() {};
+					iframe.remove();
+
+					done();
+				} );
+			};
+			iframe = jQuery( "<div/>" )
+				.css( { position: "absolute", width: "500px", left: "-600px" } )
+				.append( jQuery( "<iframe/>" ).attr( "src", url +
+					( query && ( /\?/.test( url ) ? "&" : "?" ) ) + query ) )
+				.appendTo( "#qunit-fixture" );
+		} );
+	},
+	iframeCallback: undefined,
 	init: function( projects ) {
 		var p, project;
 
 		this.projects = projects;
 		this.loaded = [];
+
+		// Do QUnit setup if QUnit is loaded (could be an iframe page)
+		 if ( !window.QUnit ) {
+			return;
+		 }
+
+		// Max time for async tests until it aborts test
+		// and start()'s the next test.
+		QUnit.config.testTimeout = 20 * 1000; // 20 seconds
+
+		// Enforce an "expect" argument or expect() call in all test bodies.
+		QUnit.config.requireExpects = true;
 
 		// Set the list of projects, including the project version choices.
 		for ( p in projects ) {
@@ -74,17 +123,16 @@ TestManager = {
 		}
 	}
 };
-
-/**
- * QUnit configuration
- */
-
-// Max time for async tests until it aborts test
-// and start()'s the next test.
-QUnit.config.testTimeout = 20 * 1000; // 20 seconds
-
-// Enforce an "expect" argument or expect() call in all test bodies.
-QUnit.config.requireExpects = true;
+TestManager.init( {
+	"jquery": {
+		urlTag: "jquery",
+		choices: "dev,min,git,3.0.0"
+	},
+	"jquery-migrate": {
+		urlTag: "plugin",
+		choices: "dev,min,git,3.0.0"
+	}
+} );
 
 /**
  * Load the TestSwarm listener if swarmURL is in the address.

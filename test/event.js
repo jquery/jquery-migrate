@@ -52,16 +52,8 @@ test( "load() and unload() event methods", function() {
 	} );
 } );
 
-test( "ready event", function() {
-	expect( 4 );
-
-	expectWarning( "Setting a ready event", 1, function() {
-		jQuery( document ).on( "ready", function() {
-			ok( true, "ready event was triggered" );
-		} )
-		.trigger( "ready" )
-		.off( "ready" );
-	} );
+test( "custom ready", function() {
+	expect( 2 );
 
 	expectNoWarning( "Custom ready event not on document", 1, function() {
 		jQuery( "#foo" ).on( "ready", function( e ) {
@@ -71,3 +63,11 @@ test( "ready event", function() {
 		.off( "ready" );
 	} );
 } );
+
+TestManager.runIframeTest( "document ready", "ready-event.html",
+	function( fired, warnings, assert ) {
+		assert.expect( 2 );
+
+		assert.ok( fired, "ready event fired" );
+		assert.equal( warnings.length, 1, "warnings: " + JSON.stringify( warnings ) );
+	} );
