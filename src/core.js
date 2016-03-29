@@ -35,3 +35,9 @@ jQuery.parseJSON = function() {
 
 migrateWarnProp( jQuery, "unique", jQuery.uniqueSort,
 	"jQuery.unique is deprecated, use jQuery.uniqueSort" );
+
+// Now jQuery.expr.pseudos is the standard incantation
+migrateWarnProp( jQuery.expr, "filters", jQuery.expr.pseudos,
+	"jQuery.expr.filters is now jQuery.expr.pseudos" );
+migrateWarnProp( jQuery.expr, ":", jQuery.expr.pseudos,
+	"jQuery.expr[\":\"] is now jQuery.expr.pseudos" );

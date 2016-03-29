@@ -111,3 +111,10 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Cause**: The fact that `jQuery.unique` sorted its results in DOM order was surprising to many who did not read the documentation carefully. As of jQuery 3.0 this function is being renamed to make it clear.
 
 **Solution**: Replace all uses of `jQuery.unique` with `jQuery.uniqueSort` which is the same function with a better name.
+
+### JQMIGRATE: jQuery.expr[':'] is jQuery.expr.pseudos
+### JQMIGRATE: jQuery.expr.filters is now jQuery.expr.pseudos
+
+**Cause:** The standard way to add new custom selectors through jQuery is `jQuery.expr.pseudos`. These two other aliases are deprecated, although they still work as of jQuery 3.0.
+
+**Solution:** Rename any of the older usage to `jQuery.expr.pseudos`. The functionality is identical.
