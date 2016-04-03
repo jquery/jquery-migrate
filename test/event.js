@@ -52,6 +52,48 @@ test( "load() and unload() event methods", function() {
 	} );
 } );
 
+QUnit.test( ".bind() and .unbind()", function( assert ) {
+	assert.expect( 3 );
+
+	var $elem = jQuery( "<div />" ).appendTo( "#qunit-fixture" );
+
+	expectWarning( ".bind()", 1, function() {
+		$elem
+			.bind( "click", function() {
+				assert.ok( true, "click fired" );
+			} )
+			.trigger( "click" );
+	} );
+
+	expectWarning( ".unbind()", 1, function() {
+		$elem
+			.unbind( "click" )
+			.trigger( "click" );
+	} );
+} );
+
+QUnit.test( ".delegate() and .undelegate()", function( assert ) {
+	assert.expect( 3 );
+
+	var $div = jQuery( "<div />" ).appendTo( "#qunit-fixture" );
+
+	jQuery( "<p />" ).appendTo( $div );
+
+	expectWarning( ".delegate()", 1, function() {
+		$div
+			.delegate( "p", "click", function() {
+				assert.ok( true, "delegated click fired" );
+			} )
+			.find( "p" ).trigger( "click" );
+	} );
+
+	expectWarning( ".undelegate()", 1, function() {
+		$div
+			.undelegate( "p", "click" )
+			.find( "p" ).trigger( "click" );
+	} );
+} );
+
 test( "custom ready", function() {
 	expect( 2 );
 
