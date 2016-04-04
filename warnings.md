@@ -70,6 +70,15 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: Rework the code to avoid calling `jQuery.swap()`, or explicitly set and restore the properties you need to change.
 
+### JQMIGRATE: jQuery.fn.bind() is deprecated
+### JQMIGRATE: jQuery.fn.unbind() is deprecated
+### JQMIGRATE: jQuery.fn.delegate() is deprecated
+### JQMIGRATE: jQuery.fn.undelegate() is deprecated
+
+**Cause:**: These event binding methods have been deprecated in favor of the `.on()` and `.off()` methods which can handle both delegated and direct event binding. Although the older methods are still present in jQuery 3.0, they may be removed as early as the next major-version update.
+
+**Solution**: Change the method call to use `.on()` or `.off()`, the documentation for the old methods include specific instructions. In general, the `.bind()` and `.unbind()` methods can be renamed directly to `.on()` and `.off()` respectively since the argument orders are identical.
+
 ### JQMIGRATE: 'ready' event is deprecated
 
 **Cause**: Using one of jQuery's API methods to bind a "ready" event, e.g. `$( document ).on( "ready", fn )`, will cause the function to be called when the document is ready, but only if it is attached before the browser fires its own `DOMContentLoaded` event. That makes it unreliable for many uses, particularly ones where jQuery or its plugins are loaded asynchronously after page load.
