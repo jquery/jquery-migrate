@@ -11,7 +11,7 @@
 	}
 
 	// Need jQuery 3.0.0+ and no older Migrate loaded
-	if ( !window.jQuery || rbadVersions.test( jQuery.fn.jquery ) ) {
+	if ( !jQuery || rbadVersions.test( jQuery.fn.jquery ) ) {
 		log( "JQMIGRATE: jQuery 3.0.0+ REQUIRED" );
 	}
 	if ( jQuery.migrateWarnings ) {

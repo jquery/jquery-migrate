@@ -5,7 +5,7 @@
 
 #### NOTE: If you have not yet upgraded to 1.12.x or 2.2.x, first upgrade to them and use [jQuery Migrate 1.x](https://github.com/jquery/jquery-migrate/tree/1.x-stable#readme) to resolve any compatibility issues before using jQuery Migrate 3.0 and upgrading to jQuery 3.0.
 
-This plugin can be used to detect and/or restore APIs and behaviors that have been deprecated and/or removed as of jQuery version 3.0.
+This plugin can be used to warn about and/or restore APIs and behaviors that have been deprecated and/or removed as of jQuery version 3.0.
 See the [warnings page](https://github.com/jquery/jquery-migrate/blob/master/warnings.md) for more information regarding messages the plugin generates.
 For more information about the changes made in jQuery 3.0, see the [upgrade guide](http://jquery.com/upgrade-guide/3.0/) and [blog post](http://blog.jquery.com/FILL-THIS-IN-UPON-FINAL-RELEASE).
 
