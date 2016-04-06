@@ -19,16 +19,11 @@
 		// Close this script tag so file will load
 	</script>
 	<script>
-	var readyEventFired = false;
-
-	jQuery.migrateMute = true;
-	jQuery.migrateReset();
-	jQuery( document ).on( "ready", function() {
-		readyEventFired = true;
-	} );
-	window.onload = function() {
-		parent.TestManager.iframeCallback( readyEventFired, jQuery.migrateWarnings );
-	};
+		jQuery.migrateMute = true;
+		jQuery.migrateReset();
+		jQuery( document ).on( "ready", function() {
+			parent.TestManager.iframeCallback( true, jQuery.migrateWarnings );
+		} );
 	</script>
 </head>
 <body>
