@@ -64,6 +64,12 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: Replace any use of `.size()` with `.length`.
 
+### JQMIGRATE: jQuery.data() always sets/gets camelCased names
+
+**Cause:** The page is attempting to set or get a jQuery data item using kebab case, e.g. `my-data`, when a `my-data` item  has been set directly on the jQuery data object. jQuery 3.0 always exclusively uses camel case, e.g., `myData`, when it accesses data items via the `.data()` API and does not find kebab case data in that object.
+
+**Solution:** Either 1) Always use the `.data()` API to set or get data items, 2) Always use camelCase names when also setting properties directly on jQuery's data object, or 3) Always set properties directly on the data object without using the API call to set or get data by name. Never mix direct access to the data object and API calls with kebab case names.
+
 ### JQMIGRATE: jQuery.swap() is undocumented and deprecated
 
 **Cause**: The `jQuery.swap()` method temporarily exchanges a set of CSS properties. It was never documented as part of jQuery's public API and should not be used because it can cause performance problems due to forced layout. This method has been removed in jQuery 3.0.

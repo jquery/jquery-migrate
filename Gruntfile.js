@@ -24,6 +24,7 @@ module.exports = function( grunt ) {
 			"src/core.js",
 			"src/ajax.js",
 			"src/css.js",
+			"src/data.js",
 			"src/effects.js",
 			"src/event.js",
 			"src/traversing.js",
