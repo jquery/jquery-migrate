@@ -1,5 +1,6 @@
 
 var oldInit = jQuery.fn.init,
+	oldIsNumeric = jQuery.isNumeric,
 	rattrHash = /\[\s*\w+\s*[~|^$*]?=\s*(?![\s'"])[^#\]]*#/;
 
 jQuery.fn.init = function( selector ) {
@@ -31,6 +32,23 @@ jQuery.fn.size = function() {
 jQuery.parseJSON = function() {
 	migrateWarn( "jQuery.parseJSON is deprecated; use JSON.parse" );
 	return JSON.parse.apply( null, arguments );
+};
+
+jQuery.isNumeric = function( val ) {
+
+	// 2.x implementation of isNumeric
+	function isNumeric2( obj ) {
+		return !jQuery.isArray( obj ) && ( obj - parseFloat( obj ) + 1 ) >= 0;
+	}
+
+	var newValue = oldIsNumeric( val ),
+		oldValue = isNumeric2( val );
+
+	if ( newValue !== oldValue ) {
+		migrateWarn( "jQuery.isNumeric() should not be called on constructed objects" );
+	}
+
+	return oldValue;
 };
 
 migrateWarnProp( jQuery, "unique", jQuery.uniqueSort,
