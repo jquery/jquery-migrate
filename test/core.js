@@ -156,6 +156,30 @@ test( "jQuery.parseJSON", function() {
     } );
 } );
 
+test( "jQuery.isNumeric", function( assert ) {
+    assert.expect( 8 );
+
+	var ToString = function( value ) {
+			this.toString = function() {
+				return String( value );
+			};
+		};
+
+    expectWarning( "changed cases", function() {
+		assert.equal( jQuery.isNumeric( new ToString( "42" ) ), true,
+			"Custom .toString returning number" );
+    } );
+
+    expectNoWarning( "unchanged cases", function() {
+		assert.equal( jQuery.isNumeric( 42 ), true, "number" );
+		assert.equal( jQuery.isNumeric( "42" ), true, "number string" );
+		assert.equal( jQuery.isNumeric( "devo" ), false, "non-numeric string" );
+		assert.equal( jQuery.isNumeric( [ 2, 4 ] ), false, "array" );
+		assert.equal( jQuery.isNumeric( new ToString( "devo" ) ), false,
+			"Custom .toString returning non-number" );
+	} );
+} );
+
 test( "jQuery.unique", function( assert ) {
 	assert.expect( 2 );
 

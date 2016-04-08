@@ -128,6 +128,12 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution**: Replace any use of `jQuery.parseJSON` with `JSON.parse`.
 
+### JQMIGRATE: jQuery.isNumeric() should not be called on constructed objects
+
+**Cause**: The intended use case of `jQuery.isNumeric` is to see if its argument is either already a number, or a string that can be converted to a number. In jQuery 3.0 some edge cases changed to not return the same values. In particular, a constructed object (one created with `new MyObject()`) that contains a `.toString()` method is never considered to be numeric, even if that method returns a string that could be converted to a number. Please do not taunt this method.
+
+**Solution**: Either use a different test for being numeric, or call the object's `.toString()` method before calling the jQuery method: `jQuery.isNumeric( myObject.toString() )`.
+
 ### JQMIGRATE: jQuery.unique is deprecated; use jQuery.uniqueSort
 
 **Cause**: The fact that `jQuery.unique` sorted its results in DOM order was surprising to many who did not read the documentation carefully. As of jQuery 3.0 this function is being renamed to make it clear.
