@@ -3,7 +3,9 @@
 
 	// Support: IE9 only
 	// Console can go away during the page run so don't cache globally
-	var log = window.console && window.console.log.bind( window.console ),
+	// Also avoid Function.bind here to simplify PhantomJS usage
+	var log = window.console && window.console.log &&
+			function() { window.console.log.apply( window.console, arguments ); },
 		rbadVersions = /^[12]\./;
 
 	if ( !log ) {
