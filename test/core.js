@@ -221,3 +221,10 @@ test( "jQuery.expr.pseudos aliases", function( assert ) {
 	} );
 
 } );
+
+TestManager.runIframeTest( "old pre-3.0 jQuery", "old-jquery.html",
+	function( logOutput, assert ) {
+		assert.expect( 1 );
+
+		assert.ok( /jQuery 3/.test( logOutput ), "logged: " + logOutput );
+	} );
