@@ -23,6 +23,7 @@ module.exports = function( grunt ) {
 			"src/migrate.js",
 			"src/core.js",
 			"src/ajax.js",
+			"src/attributes.js",
 			"src/css.js",
 			"src/data.js",
 			"src/effects.js",

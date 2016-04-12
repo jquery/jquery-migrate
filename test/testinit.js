@@ -23,6 +23,7 @@ TestManager = {
 				"migrate",
 				"core",
 				"ajax",
+				"attributes",
 				"css",
 				"data",
 				"effects",
