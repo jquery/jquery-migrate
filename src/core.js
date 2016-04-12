@@ -36,9 +36,10 @@ jQuery.parseJSON = function() {
 
 jQuery.isNumeric = function( val ) {
 
-	// 2.x implementation of isNumeric
+	// The jQuery 2.2.3 implementation of isNumeric
 	function isNumeric2( obj ) {
-		return !jQuery.isArray( obj ) && ( obj - parseFloat( obj ) + 1 ) >= 0;
+		var realStringObj = obj && obj.toString();
+		return !jQuery.isArray( obj ) && ( realStringObj - parseFloat( realStringObj ) + 1 ) >= 0;
 	}
 
 	var newValue = oldIsNumeric( val ),
