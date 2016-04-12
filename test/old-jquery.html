@@ -10,6 +10,12 @@
 	<script>
 		// Capture log output to ensure we warned on old jQuery
 		var logOutput = "";
+
+		// Support: IE9 only (no console at times)
+		if ( !window.console ) {
+			window.console = {};
+		}
+
 		window.console.log = function() {
 			logOutput += Array.prototype.join.call( arguments, " " ) + "\n";
 		};
