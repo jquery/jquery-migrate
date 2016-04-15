@@ -49,6 +49,7 @@ steps(
 	setNextVersion,
 	pushToRemote,
 	remindAboutCDN,
+	remindAboutSites,
 	exit
 );
 
@@ -190,6 +191,11 @@ function remindAboutCDN( next ) {
 	console.log( chalk.red( "TODO: Update CDN with jquery-migrate." +
 		releaseVersion + " files (min and regular)" ) );
 	console.log( chalk.red( "  clone codeorigin.jquery.org, git add files, commit, push" ) );
+	next();
+}
+
+function remindAboutSites( next ) {
+	console.log( chalk.red( "TODO: Update jquery.com download page to " + releaseVersion ) );
 	next();
 }
 
