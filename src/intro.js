@@ -1,3 +1,2 @@
-(function( jQuery, window, undefined ) {
-// See http://bugs.jquery.com/ticket/13335
-// "use strict";
+(function( jQuery, window ) {
+"use strict";
