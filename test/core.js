@@ -28,7 +28,7 @@ test( "jQuery( '#' )", function() {
 } );
 
 test( "attribute selectors with naked '#'", function() {
-	expect( 6 );
+	expect( 7 );
 
 	// These are wrapped in try/catch because they throw on jQuery 1.12.0+
 
@@ -65,6 +65,16 @@ test( "attribute selectors with naked '#'", function() {
 	expectNoWarning( "attribute equals, with double quotes", function() {
 		try {
 			jQuery( "a[href=\"#junk\"]" );
+		} catch ( e ) {}
+	} );
+
+	expectNoWarning( "ready function with attribute selector", function() {
+		try {
+			jQuery( function() {
+				if ( jQuery.thisIsNeverTrue ) {
+					jQuery( "a[href=#]" );
+				}
+			} );
 		} catch ( e ) {}
 	} );
 } );
