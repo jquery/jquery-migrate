@@ -31,9 +31,10 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: Usually this warning is due to an error in the HTML string, where text is present when it should not be there. Remove the leading or trailing text before passing the string to `$.parseHTML()` if it should not be part of the collection. Alternatively you can use `$($.parseHTML(html)).filter("*")` to remove all top-level text nodes from the set and leave only elements.
 
-### JQMIGRATE: Attribute selectors with '#' must be quoted
+### JQMIGRATE: Attribute selector with '#' must be quoted
+### JQMIGRATE: Attribute selector with '#' was not fixed
 
-**Cause:** CSS selectors such as `a[href=#main]` are not valid CSS syntax because the value contains special characters that are not quoted. Until jQuery 1.11.3/2.1.4 this syntax was accepted, but the behavior is non-standard and was never documented. In later versions this selector throws an error. *In some rare cases Migrate may mis-diagnose this problem, so it does not attempt a repair.*
+**Cause:** Selectors such as `a[href=#main]` are not valid CSS syntax because the value contains special characters that are not quoted. Until jQuery 1.11.3/2.1.4 this was accepted, but the behavior is non-standard and was never documented. In later versions this selector throws an error. *In some cases with complex selectors, Migrate may not attempt a repair.* In those cases a fatal error will be logged on the console and you will need to fix the selector manually.
 
 **Solution**: Put quotes around any attribute values that have special characters, e.g. `a[href="#main"]`. The warning message contains the selector that caused the problem, use that to find the selector in the source files.
 
