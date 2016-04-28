@@ -1,7 +1,7 @@
 
 var oldInit = jQuery.fn.init,
 	oldIsNumeric = jQuery.isNumeric,
-	rattrHash = /\[\s*\w+\s*[~|^$*]?=\s*(?![\s'"])[^#\]]*#/;
+	rattrHash = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]+)\s*\]/g;
 
 jQuery.fn.init = function( selector ) {
 	var args = Array.prototype.slice.call( arguments );
@@ -13,11 +13,30 @@ jQuery.fn.init = function( selector ) {
 			migrateWarn( "jQuery( '#' ) is not a valid selector" );
 			args[ 0 ] = selector = [];
 
-		} else if ( rattrHash.test( selector ) ) {
+		// Can't use .test here because rattrHash is //g and in global scope
+		} else if ( rattrHash.exec( selector ) ) {
 
 			// The nonstandard and undocumented unquoted-hash was removed in jQuery 1.12.0
-			// Note that this doesn't actually fix the selector due to potential false positives
-			migrateWarn( "Attribute selectors with '#' must be quoted: '" + selector + "'" );
+			// First see if qS thinks it's a valid selector, if so avoid a false positive
+			try {
+				document.querySelector( selector );
+			} catch ( err1 ) {
+
+				// Didn't *look* valid to qSA, warn and try quoting what we think is the value
+				selector = selector.replace( rattrHash, function( _, attr, op, value ) {
+					return "[" + attr + op + "\"" + value + "\"]";
+				} );
+
+				// If the regexp *may* have created an invalid selector, don't update it
+				// Note that there may be false alarms if selector uses jQuery extensions
+				try {
+					document.querySelector( selector );
+					args[ 0 ] = selector;
+					migrateWarn( "Attribute selector with '#' must be quoted: " + selector );
+				} catch ( err2 ) {
+					migrateWarn( "Attribute selector with '#' was not fixed: " + args[ 0 ] );
+				}
+			}
 		}
 	}
 
