@@ -27,47 +27,87 @@ test( "jQuery( '#' )", function() {
 	} );
 } );
 
-test( "attribute selectors with naked '#'", function() {
-	expect( 7 );
+QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
+	expect( 31 );
 
-	// These are wrapped in try/catch because they throw on jQuery 1.12.0+
+	var markup = jQuery(
+			"<div>" +
+				"<div data-selector='a[href=#main]'></div>" +
+				"<a href='space#junk'>test</a>" +
+				"<link rel='good#stuff' />" +
+				"<p class='space #junk'>" +
+					"<a href='#some-anchor'>anchor2</a>" +
+					"<input value='[strange*=#stuff]' />" +
+					"<a href='#' data-id='#junk'>anchor</a>" +
+				"</p>" +
+			"</div>" ).appendTo( "#qunit-fixture" ),
 
-	expectWarning( "attribute equals", function() {
-		try {
-			jQuery( "a[href=#]" );
-		} catch ( e ) {}
+		// No warning, no need to fix
+		okays = [
+			"a[href='#some-anchor']",
+			"[data-id=\"#junk\"]",
+			"div[data-selector='a[href=#main]']",
+			"input[value~= '[strange*=#stuff]']"
+		],
+
+		// Fixable, and gives warning
+		fixables = [
+			"a[href=#]",
+			"a[href*=#]:not([href=#]):first-child",
+			".space a[href=#]",
+			"a[href=#some-anchor]",
+			"link[rel*=#stuff]",
+			"p[class *= #junk]",
+			"a[href=space#junk]"
+		],
+
+		// False positives that still work
+		positives = [
+			"div[data-selector='a[href=#main]']:first",
+			"input[value= '[strange*=#stuff]']:eq(0)"
+		],
+
+		// Failures due to quotes and jQuery extensions combined
+		failures = [
+			"p[class ^= #junk]:first",
+			"a[href=space#junk]:eq(1)"
+		];
+
+	expectNoWarning( "Perfectly cromulent selectors are unchanged", function() {
+		okays.forEach( function( okay ) {
+			assert.equal( jQuery( okay, markup ).length, 1, okay );
+			assert.equal( markup.find( okay ).length, 1, okay );
+		} );
 	} );
 
-	expectWarning( "attribute contains", function() {
-		try {
-			jQuery( "link[rel*=#stuff]" );
-		} catch ( e ) {}
+	expectWarning( "Values with unquoted hashes are quoted", fixables.length, function() {
+		fixables.forEach( function( fixable ) {
+			assert.equal( jQuery( fixable, markup ).length, 1, fixable );
+			assert.equal( markup.find( fixable ).length, 1, fixable );
+		} );
 	} );
 
-	expectWarning( "attribute starts, with spaces", function() {
-		try {
-			jQuery( "a[href ^= #junk]" );
-		} catch ( e ) {}
+	expectWarning( "False positives", positives.length, function() {
+		positives.forEach( function( positive ) {
+			assert.equal( jQuery( positive, markup ).length, 1,  positive );
+			assert.equal( markup.find( positive ).length, 1, positive );
+		} );
 	} );
 
-	expectWarning( "attribute equals, hash not starting", function() {
-		try {
-			jQuery( "a[href=space#junk]" );
-		} catch ( e ) {}
+	expectWarning( "Unfixable cases", failures.length, function() {
+		failures.forEach( function( failure ) {
+			try {
+				jQuery( failure, markup );
+				assert.ok( false, "Expected jQuery() to die!" );
+			} catch ( err1 ) { }
+			try {
+				markup.find( failure );
+				assert.ok( false, "Expected .find() to die!" );
+			} catch ( err2 ) { }
+		} );
 	} );
 
-	expectNoWarning( "attribute equals, with single quotes", function() {
-		try {
-			jQuery( "a[href='#junk']" );
-		} catch ( e ) {}
-	} );
-
-	expectNoWarning( "attribute equals, with double quotes", function() {
-		try {
-			jQuery( "a[href=\"#junk\"]" );
-		} catch ( e ) {}
-	} );
-
+	// Ensure we don't process jQuery( x ) when x is a function
 	expectNoWarning( "ready function with attribute selector", function() {
 		try {
 			jQuery( function() {
