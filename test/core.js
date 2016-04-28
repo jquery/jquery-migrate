@@ -63,7 +63,7 @@ test( "jQuery( '#' )", function() {
 });
 
 test( "attribute selectors with naked '#'", function() {
-	expect( 6 );
+	expect( 7 );
 
 	// These are wrapped in try/catch because they throw on jQuery 1.12.0+
 
@@ -102,7 +102,33 @@ test( "attribute selectors with naked '#'", function() {
 			jQuery( "a[href=\"#junk\"]" );
 		} catch( e ) {}
 	});
+
+	expectNoWarning( "function containing tempting string (#178)", function() {
+		try {
+			jQuery( function() {
+				if ( jQuery.thisIsNeverDefined ) {
+					jQuery( "a[href=#junk]" );
+				}
+			} );
+		} catch( e ) {}
+	});
 });
+
+QUnit.test( "document.context defined (#178)", function( assert ) {
+	assert.expect( 1 );
+
+	var span = jQuery( "<span>hi</span>" ).appendTo( "#qunit-fixture" );
+	try {
+		document.context = "!!hosed!!";
+		span.wrap( "<p></p>" );
+		assert.ok( true, "document.context did not kill jQuery" );
+	} catch ( err ) {
+		assert.ok( false, "died while wrapping" );
+	}
+
+	// Can't delete this property because of oldIE
+	document.context = null;
+} );
 
 test( "selector state", function() {
 	expect( 18 );

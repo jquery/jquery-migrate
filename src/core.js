@@ -11,45 +11,50 @@ var matched, browser,
 jQuery.fn.init = function( selector, context, rootjQuery ) {
 	var match, ret;
 
-	if ( selector && typeof selector === "string" && !jQuery.isPlainObject( context ) &&
-			(match = rquickExpr.exec( jQuery.trim( selector ) )) && match[ 0 ] ) {
-		// This is an HTML string according to the "old" rules; is it still?
-		if ( !rspaceAngle.test( selector ) ) {
-			migrateWarn("$(html) HTML strings must start with '<' character");
-		}
-		if ( match[ 3 ] ) {
-			migrateWarn("$(html) HTML text after last tag is ignored");
+	if ( selector && typeof selector === "string" ) {
+		if ( !jQuery.isPlainObject( context ) &&
+				(match = rquickExpr.exec( jQuery.trim( selector ) )) && match[ 0 ] ) {
+
+			// This is an HTML string according to the "old" rules; is it still?
+			if ( !rspaceAngle.test( selector ) ) {
+				migrateWarn("$(html) HTML strings must start with '<' character");
+			}
+			if ( match[ 3 ] ) {
+				migrateWarn("$(html) HTML text after last tag is ignored");
+			}
+
+			// Consistently reject any HTML-like string starting with a hash (gh-9521)
+			// Note that this may break jQuery 1.6.x code that otherwise would work.
+			if ( match[ 0 ].charAt( 0 ) === "#" ) {
+				migrateWarn("HTML string cannot start with a '#' character");
+				jQuery.error("JQMIGRATE: Invalid selector string (XSS)");
+			}
+
+			// Now process using loose rules; let pre-1.8 play too
+			// Is this a jQuery context? parseHTML expects a DOM element (#178)
+			if ( context && context.context && context.context.nodeType ) {
+				context = context.context;
+			}
+
+			if ( jQuery.parseHTML ) {
+				return oldInit.call( this,
+						jQuery.parseHTML( match[ 2 ], context && context.ownerDocument ||
+							context || document, true ), context, rootjQuery );
+			}
 		}
 
-		// Consistently reject any HTML-like string starting with a hash (#9521)
-		// Note that this may break jQuery 1.6.x code that otherwise would work.
-		if ( match[ 0 ].charAt( 0 ) === "#" ) {
-			migrateWarn("HTML string cannot start with a '#' character");
-			jQuery.error("JQMIGRATE: Invalid selector string (XSS)");
+		if ( selector === "#" ) {
+
+			// jQuery( "#" ) is a bogus ID selector, but it returned an empty set before jQuery 3.0
+			migrateWarn( "jQuery( '#' ) is not a valid selector" );
+			selector = [];
+
+		} else if ( rattrHash.test( selector ) ) {
+
+			// The nonstandard and undocumented unquoted-hash was removed in jQuery 1.12.0
+			// Note that this doesn't actually fix the selector due to potential false positives
+			migrateWarn( "Attribute selectors with '#' must be quoted: '" + selector + "'" );
 		}
-		// Now process using loose rules; let pre-1.8 play too
-		if ( context && context.context ) {
-			// jQuery object as context; parseHTML expects a DOM object
-			context = context.context;
-		}
-		if ( jQuery.parseHTML ) {
-			return oldInit.call( this,
-					jQuery.parseHTML( match[ 2 ], context && context.ownerDocument ||
-						context || document, true ), context, rootjQuery );
-		}
-	}
-
-	if ( selector === "#" ) {
-
-		// jQuery( "#" ) is a bogus ID selector, but it returned an empty set before jQuery 3.0
-		migrateWarn( "jQuery( '#' ) is not a valid selector" );
-		selector = [];
-
-	} else if ( rattrHash.test( selector ) ) {
-
-		// The nonstandard and undocumented unquoted-hash was removed in jQuery 1.12.0
-		// Note that this doesn't actually fix the selector due to potential false positives
-		migrateWarn( "Attribute selectors with '#' must be quoted: '" + selector + "'" );
 	}
 
 	ret = oldInit.apply( this, arguments );
