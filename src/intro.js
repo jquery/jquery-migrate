@@ -1,2 +1,2 @@
-(function( jQuery, window, undefined ) {
+(function( jQuery, window ) {
 "use strict";
