@@ -29,6 +29,7 @@ TestManager = {
 				"effects",
 				"event",
 				"offset",
+				"serialize",
 				"traversing",
 				"deferred"
 			];
