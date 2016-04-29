@@ -28,14 +28,24 @@ test( "jQuery( '#' )", function() {
 } );
 
 QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
-	expect( 8 );
+	expect( 18 );
 
-	var
+	var markup = jQuery(
+			"<div>" +
+				"<div data-selector='a[href=#main]'></div>" +
+				"<a href='space#junk'>test</a>" +
+				"<link rel='good#stuff' />" +
+				"<p class='space #junk'>" +
+					"<a href='#some-anchor'>anchor2</a>" +
+					"<input value='[strange*=#stuff]' />" +
+					"<a href='#' data-id='#junk'>anchor</a>" +
+				"</p>" +
+			"</div>" ).appendTo( "#qunit-fixture" ),
 
 		// No warning, no need to fix
 		okays = [
-			"a[href='#junk']",
-			"div[data-id=\"#junk\"]",
+			"a[href='#some-anchor']",
+			"[data-id=\"#junk\"]",
 			"div[data-selector='a[href=#main]']",
 			"input[value~= '[strange*=#stuff]']"
 		],
@@ -43,18 +53,18 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 		// Fixable, and gives warning
 		fixables = [
 			"a[href=#]",
-			"a[href*=#]:not([href=#])",
-			".class a[href=#anchor]",
+			"a[href*=#]:not([href=#]):first-child	",
+			".space a[href=#]",
 			"a[href=#some-anchor]",
 			"link[rel*=#stuff]",
-			"p[class ^= #junk]",
+			"p[class *= #junk]",
 			"a[href=space#junk]"
 		],
 
 		// False positives that still work
 		positives = [
 			"div[data-selector='a[href=#main]']:first",
-			"input[value= '[strange*=#stuff]']:eq(1)"
+			"input[value= '[strange*=#stuff]']:eq(0)"
 		],
 
 		// Failures due to quotes and jQuery extensions combined
@@ -63,30 +73,28 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 			"a[href=space#junk]:eq(1)"
 		];
 
-	// TODO: ensure these actually select what they should
-
 	expectNoWarning( "Perfectly cromulent selectors are unchanged", function() {
 		okays.forEach( function( okay ) {
-			jQuery( okay );
+			assert.equal( jQuery( okay, markup ).length, 1, okay );
 		} );
 	} );
 
 	expectWarning( "Values with unquoted hashes are quoted", fixables.length, function() {
 		fixables.forEach( function( fixable ) {
-			jQuery( fixable );
+			assert.equal( jQuery( fixable, markup ).length, 1, fixable );
 		} );
 	} );
 
-	expectWarning( "False positives", 2 * positives.length, function() {
+	expectWarning( "False positives", positives.length, function() {
 		positives.forEach( function( positive ) {
-			jQuery( positive );
+			assert.equal( jQuery( positive, markup ).length, 1,  positive );
 		} );
 	} );
 
-	expectWarning( "Unfixable cases", 2 * failures.length, function() {
+	expectWarning( "Unfixable cases", failures.length, function() {
 		failures.forEach( function( failure ) {
 			try {
-				jQuery( failure );
+				jQuery( failure, markup );
 				assert.ok( false, "No Mr. Bond I expect you to die!" );
 			} catch ( err ) { }
 		} );

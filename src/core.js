@@ -1,7 +1,8 @@
 
 var oldInit = jQuery.fn.init,
 	oldIsNumeric = jQuery.isNumeric,
-	rattrHash = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]+)\s*\]/g;
+	rattrHashTest = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]*?#[-\w#]*)\s*\]/,
+	rattrHashGlob = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]*?#[-\w#]*)\s*\]/g;
 
 jQuery.fn.init = function( selector ) {
 	var args = Array.prototype.slice.call( arguments );
@@ -13,8 +14,9 @@ jQuery.fn.init = function( selector ) {
 			migrateWarn( "jQuery( '#' ) is not a valid selector" );
 			args[ 0 ] = selector = [];
 
-		// Can't use .test here because rattrHash is //g and in global scope
-		} else if ( rattrHash.exec( selector ) ) {
+		// Support: PhantomJS 1.x
+		// String#match fails to match when used with a //g RegExp, only on some strings
+		} else if ( rattrHashTest.test( selector ) ) {
 
 			// The nonstandard and undocumented unquoted-hash was removed in jQuery 1.12.0
 			// First see if qS thinks it's a valid selector, if so avoid a false positive
@@ -23,7 +25,7 @@ jQuery.fn.init = function( selector ) {
 			} catch ( err1 ) {
 
 				// Didn't *look* valid to qSA, warn and try quoting what we think is the value
-				selector = selector.replace( rattrHash, function( _, attr, op, value ) {
+				selector = selector.replace( rattrHashGlob, function( _, attr, op, value ) {
 					return "[" + attr + op + "\"" + value + "\"]";
 				} );
 
