@@ -42,8 +42,8 @@ QUnit.test( ".removeAttr( boolean attribute )", function( assert ) {
 
 } );
 
-QUnit.test( "", function( assert ) {
-	assert.expect( 13 );
+QUnit.test( ".toggleClass( boolean )", function( assert ) {
+	assert.expect( 14 );
 
 	var e = jQuery( "<div />" ).appendTo( "#qunit-fixture" );
 
@@ -52,7 +52,7 @@ QUnit.test( "", function( assert ) {
 		assert.equal( e[ 0 ].className, "", "Assert class is empty (data was empty)" );
 	} );
 
-	expectNoWarning( "toggleClass not full className", function() {
+	expectNoWarning( ".toggleClass( string ) not full className", function() {
 		e.attr( "class", "" );
 		e.toggleClass( "classy" );
 		assert.equal( e.attr( "class" ), "classy", "class was toggle-set" );
@@ -60,14 +60,21 @@ QUnit.test( "", function( assert ) {
 		assert.equal( e.attr( "class" ), "", "class was toggle-removed" );
 	} );
 
-	expectWarning( "toggleClass full-className manipulations", function() {
+	expectWarning( ".toggleClass() save and clear", 1, function() {
 		e.addClass( "testD testE" );
 		assert.ok( e.is( ".testD.testE" ), "Assert class present" );
 		e.toggleClass();
 		assert.ok( !e.is( ".testD.testE" ), "Assert class not present" );
-		assert.equal( jQuery.data( e[ 0 ], "__className__" ), "testD testE", "Data was stored" );
+
+		// N.B.: Store should have "testD testE" now, next test will assert that
+	} );
+
+	expectWarning( ".toggleClass() restore", 1, function() {
 		e.toggleClass();
 		assert.ok( e.is( ".testD.testE" ), "Assert class present (restored from data)" );
+	} );
+
+	expectWarning( ".toggleClass( boolean )", 1, function() {
 		e.toggleClass( false );
 		assert.ok( !e.is( ".testD.testE" ), "Assert class not present" );
 		e.toggleClass( true );

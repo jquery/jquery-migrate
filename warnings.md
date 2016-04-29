@@ -167,8 +167,8 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution:** Rename any of the older usage to `jQuery.expr.pseudos`. The functionality is identical.
 
-### JQMIGRATE: jQuery.fn.toggleClass( boolean ) is deprecated
+### JQMIGRATE: jQuery.fn.toggleClass( [ boolean ] ) is deprecated
 
-**Cause:** Calling `.toggleClass()` with no arguments or with a single Boolean `true` or `false` argument has been deprecated. Its behavior was poorly documented, but essentially the method saved away the current `class` value in a data item when the class was removed and restored the saved value when it was toggled back. If you do not believe you are specificially trying to use this form of the method, it is possible you are accidentally doing so via an inadvertent undefined value, as `.toggleClass( undefined )` toggles all classes.
+**Cause:** Calling `.toggleClass()` with no arguments, or with a single Boolean `true` or `false` argument, has been deprecated. Its behavior was poorly documented, but essentially the method saved away the current `class` value in a data item when the class was removed and restored the saved value when it was toggled back. If you do not believe you are specificially trying to use this form of the method, it is possible you are accidentally doing so via an inadvertent undefined value, as `.toggleClass( undefined )` toggles all classes.
 
 **Solution:** If this functionality is still needed, save the current full `.attr( "class" )` value in a data item and restore it when required.
