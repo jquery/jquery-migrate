@@ -97,6 +97,12 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: Do not attempt to get or set the offset information of invalid input.
 
+### JQMIGRATE: jQuery.param() no longer uses jQuery.ajaxSettings.traditional
+
+**Cause:** As of jQuery 3.0, the serialization method `jQuery.param` is fully independent of jQuery's ajax module. As a result, it does not look at the `jQuery.ajaxSettings.traditional` flag that affects how form data is encoded. Note that the `jQuery.ajax()` method still honors this flag if you make a request through it.
+
+**Solution:** To continue using the `traditional` flag, pass it explicitly: `jQuery.data( myData, jQuery.ajaxSettings.traditional )`.
+
 ### JQMIGRATE: jQuery.swap() is undocumented and deprecated
 
 **Cause**: The `jQuery.swap()` method temporarily exchanges a set of CSS properties. It was never documented as part of jQuery's public API and should not be used because it can cause performance problems due to forced layout. This method has been removed in jQuery 3.0.
