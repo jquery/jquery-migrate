@@ -28,7 +28,7 @@ test( "jQuery( '#' )", function() {
 } );
 
 QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
-	expect( 18 );
+	expect( 31 );
 
 	var markup = jQuery(
 			"<div>" +
@@ -53,7 +53,7 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 		// Fixable, and gives warning
 		fixables = [
 			"a[href=#]",
-			"a[href*=#]:not([href=#]):first-child	",
+			"a[href*=#]:not([href=#]):first-child",
 			".space a[href=#]",
 			"a[href=#some-anchor]",
 			"link[rel*=#stuff]",
@@ -76,18 +76,21 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 	expectNoWarning( "Perfectly cromulent selectors are unchanged", function() {
 		okays.forEach( function( okay ) {
 			assert.equal( jQuery( okay, markup ).length, 1, okay );
+			assert.equal( markup.find( okay ).length, 1, okay );
 		} );
 	} );
 
 	expectWarning( "Values with unquoted hashes are quoted", fixables.length, function() {
 		fixables.forEach( function( fixable ) {
 			assert.equal( jQuery( fixable, markup ).length, 1, fixable );
+			assert.equal( markup.find( fixable ).length, 1, fixable );
 		} );
 	} );
 
 	expectWarning( "False positives", positives.length, function() {
 		positives.forEach( function( positive ) {
 			assert.equal( jQuery( positive, markup ).length, 1,  positive );
+			assert.equal( markup.find( positive ).length, 1, positive );
 		} );
 	} );
 
@@ -95,8 +98,12 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 		failures.forEach( function( failure ) {
 			try {
 				jQuery( failure, markup );
-				assert.ok( false, "No Mr. Bond I expect you to die!" );
-			} catch ( err ) { }
+				assert.ok( false, "Expected jQuery() to die!" );
+			} catch ( err1 ) { }
+			try {
+				markup.find( failure );
+				assert.ok( false, "Expected .find() to die!" );
+			} catch ( err2 ) { }
 		} );
 	} );
 
