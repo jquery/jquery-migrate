@@ -53,11 +53,11 @@ test( "jQuery(html) loose rules", function() {
 	}
 });
 
-// Selector quoting doesn't work in IE8
-if ( !document.querySelector ) {
+// Selector quoting doesn't work in IE<8
+if ( document.querySelector ) {
 
 QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
-	expect( 31 );
+	expect( 29 );
 
 	var markup = jQuery(
 			"<div>" +
@@ -82,7 +82,6 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 		// Fixable, and gives warning
 		fixables = [
 			"a[href=#]",
-			"a[href*=#]:not([href=#]):first-child",
 			".space a[href=#]",
 			"a[href=#some-anchor]",
 			"link[rel*=#stuff]",
@@ -103,28 +102,28 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 		];
 
 	expectNoWarning( "Perfectly cromulent selectors are unchanged", function() {
-		okays.forEach( function( okay ) {
+		jQuery.each( okays, function( _, okay ) {
 			assert.equal( jQuery( okay, markup ).length, 1, okay );
 			assert.equal( markup.find( okay ).length, 1, okay );
 		} );
 	} );
 
 	expectWarning( "Values with unquoted hashes are quoted", fixables.length, function() {
-		fixables.forEach( function( fixable ) {
+		jQuery.each( fixables, function( _, fixable ) {
 			assert.equal( jQuery( fixable, markup ).length, 1, fixable );
 			assert.equal( markup.find( fixable ).length, 1, fixable );
 		} );
 	} );
 
 	expectWarning( "False positives", positives.length, function() {
-		positives.forEach( function( positive ) {
+		jQuery.each( positives, function( _, positive ) {
 			assert.equal( jQuery( positive, markup ).length, 1,  positive );
 			assert.equal( markup.find( positive ).length, 1, positive );
 		} );
 	} );
 
 	expectWarning( "Unfixable cases", failures.length, function() {
-		failures.forEach( function( failure ) {
+		jQuery.each( failures, function( _, failure ) {
 			try {
 				jQuery( failure, markup );
 				assert.ok( false, "Expected jQuery() to die!" );
