@@ -113,3 +113,14 @@ TestManager.runIframeTest( "document ready", "ready-event.html",
 		assert.ok( fired, "ready event fired" );
 		assert.equal( warnings.length, 1, "warnings: " + JSON.stringify( warnings ) );
 	} );
+
+if ( jQuery.event.addProp ) {
+
+	// Do this as iframe because there is no way to undo prop addition
+	TestManager.runIframeTest( "jQuery.event.props and fixHooks", "event-props.html",
+		function( worked, assert ) {
+			assert.expect( 1 );
+
+			assert.ok( worked, "hooks were installed" );
+		} );
+}
