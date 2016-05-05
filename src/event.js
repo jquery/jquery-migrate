@@ -1,4 +1,37 @@
-var oldLoad = jQuery.fn.load;
+var oldLoad = jQuery.fn.load,
+	originalFix = jQuery.event.fix;
+
+// Skip this when checking against older 3.0 betas since they lack addProp
+if ( jQuery.event.addProp ) {
+
+	jQuery.event.props = [];
+	jQuery.event.fixHooks = {};
+
+	jQuery.event.fix = function( originalEvent ) {
+		var event,
+			type = originalEvent.type,
+			fixHook = this.fixHooks[ type ],
+			props = jQuery.event.props;
+
+		if ( props.length ) {
+			migrateWarn( "jQuery.event.props are deprecated and removed" );
+			while ( props.length ) {
+				jQuery.event.addProp( props.pop() );
+			}
+		}
+
+		if ( fixHook && ( props = fixHook.props ) && props.length ) {
+			migrateWarn( "jQuery.event.fixHooks are deprecated and removed" );
+			while ( props.length ) {
+			   jQuery.event.addProp( props.pop() );
+			}
+		}
+
+		event = originalFix.call( this, originalEvent );
+
+		return fixHook && fixHook.filter ? fixHook.filter( event, originalEvent ) : event;
+	};
+}
 
 jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
 

@@ -179,3 +179,10 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Cause:** Calling `.toggleClass()` with no arguments, or with a single Boolean `true` or `false` argument, has been deprecated. Its behavior was poorly documented, but essentially the method saved away the current `class` value in a data item when the class was removed and restored the saved value when it was toggled back. If you do not believe you are specificially trying to use this form of the method, it is possible you are accidentally doing so via an inadvertent undefined value, as `.toggleClass( undefined )` toggles all classes.
 
 **Solution:** If this functionality is still needed, save the current full `.attr( "class" )` value in a data item and restore it when required.
+
+### JQMIGRATE: jQuery.event.props are deprecated and removed
+### JQMIGRATE: jQuery.event.fixHooks are deprecated and removed
+
+**Cause:** The code on the page has added one or more properties to the `jQuery.event.props` or `jQuery.event.fixHooks` data structures. These were used in previous versions to affect the properties that are copied from the native event to the jQuery event each time an event is delivered, but they had the potential to create performance issues. An improved API will be announced in a future version of jQuery.
+
+**Solution:** The most popular use of these data structures are to add properties for touch or pointer events, and those properties are now supported by default with a newer high-performance approach in jQuery 3.0 that only retrieves the properties on first access. If you are using plugins such as [pointerTouch](https://github.com/timmywil/jquery.event.pointertouch) or [touchHooks](https://github.com/aarongloege/jquery.touchHooks), simply remove them as they are no longer needed.
