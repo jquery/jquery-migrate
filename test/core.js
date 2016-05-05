@@ -57,7 +57,7 @@ test( "jQuery(html) loose rules", function() {
 if ( document.querySelector ) {
 
 QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
-	expect( 29 );
+	expect( 33 );
 
 	var markup = jQuery(
 			"<div>" +
@@ -126,12 +126,16 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 		jQuery.each( failures, function( _, failure ) {
 			try {
 				jQuery( failure, markup );
-				assert.ok( false, "Expected jQuery() to die!" );
-			} catch ( err1 ) { }
+				assert.ok( true, "jQuery() may die, it didn't" );
+			} catch ( err1 ) {
+				assert.ok( true, "jQuery() may die, it did" );
+			}
 			try {
 				markup.find( failure );
-				assert.ok( false, "Expected .find() to die!" );
-			} catch ( err2 ) { }
+				assert.ok( true, ".find() may die, it didn't" );
+			} catch ( err2 ) {
+				assert.ok( true, ".find() may die, it did" );
+			}
 		} );
 	} );
 
