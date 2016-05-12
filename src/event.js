@@ -11,16 +11,19 @@ jQuery.event.fix = function( originalEvent ) {
 		props = jQuery.event.props;
 
 	if ( props.length ) {
-		migrateWarn( "jQuery.event.props are deprecated and removed" );
+		migrateWarn( "jQuery.event.props are deprecated and removed: " + props.join() );
 		while ( props.length ) {
 			jQuery.event.addProp( props.pop() );
 		}
 	}
 
-	if ( fixHook && ( props = fixHook.props ) && props.length ) {
-		migrateWarn( "jQuery.event.fixHooks are deprecated and removed" );
-		while ( props.length ) {
-		   jQuery.event.addProp( props.pop() );
+	if ( fixHook && !fixHook._migrated_ ) {
+		fixHook._migrated_ = true;
+		migrateWarn( "jQuery.event.fixHooks are deprecated and removed: " + type );
+		if ( ( props = fixHook.props ) && props.length ) {
+			while ( props.length ) {
+			   jQuery.event.addProp( props.pop() );
+			}
 		}
 	}
 

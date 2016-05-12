@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>jQuery Migrate event fixHooks iframe test</title>
+
+	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
+	<script src="testinit.js"></script>
+	<script>
+		TestManager.loadProject( "jquery", "git" );
+	</script>
+	<script src="iframeTest.js"></script>
+	<script>
+		jQuery.noConflict();
+		TestManager.loadProject( "jquery-migrate", "dev", true );
+	</script>
+	<script>
+		function dispatchEvent( elem, type ) {
+			var e = document.createEvent( "HTMLEvents" );
+			e.initEvent( type, true, true );
+			elem.dispatchEvent( e );
+		}
+
+		function runTest() {
+			var div = document.createElement( "div" ),
+				$div = jQuery( div ).appendTo( document.body );
+
+			jQuery.event.fixHooks[ "excite" ] = {
+				props: [ "reallyHappy", "reallySad" ],
+				filter: function( event, original ) {
+					if ( "reallySad" in event ) {
+						event.gotSad = 1;
+					}
+					if ( "reallyHappy" in event ) {
+						event.gotHappy = 2;
+					}
+					return event;
+				}
+			};
+			jQuery.event.fixHooks[ "thrill" ] = {
+				filter: function( event, original ) {
+					event.thrilled = "MJ";
+					return event;
+				}
+			};
+			$div.on( "excite", function( event ) {
+				var test1 =
+					// Hooks were called
+					event.gotSad === 1 &&
+					event.gotHappy === 2 &&
+
+					jQuery.event.props.length === 0 &&
+					jQuery.event.fixHooks[ "excite" ].props.length === 0;
+
+				var test2 = $div.triggerHandler( "thrill" );
+
+				// Second thrill should not give another warning
+				$div.triggerHandler( "thrill" );
+
+				startIframeTest( test1, test2 );
+			} );
+			$div.on( "thrill", function( event ) {
+				return event.thrilled === "MJ";
+			} );
+
+			dispatchEvent( div, "excite" );
+		}
+
+		jQuery( runTest );
+	</script>
+</head>
+<body>
+	<p>jQuery Migrate</p>
+</body>
+</html>

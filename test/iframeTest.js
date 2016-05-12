@@ -3,8 +3,11 @@
  * Load this file immediately after jQuery, before jQuery Migrate
  */
 
+// Don't spew on in the console window when we build
 // Warning messages are available to parent test in jQuery.migrateWarnings
-jQuery.migrateMute = true;
+if ( navigator.userAgent.indexOf( "PhantomJS" ) >= 0 ) {
+	jQuery.migrateMute = true;
+}
 
 // Support: IE9 only (no console at times)
 if ( !window.console ) {

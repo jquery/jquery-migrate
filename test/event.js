@@ -115,11 +115,21 @@ TestManager.runIframeTest( "document ready", "ready-event.html",
 	} );
 
 // Do this as iframe because there is no way to undo prop addition
-TestManager.runIframeTest( "jQuery.event.props and fixHooks", "event-props.html",
-	function( assert, jQuery, window, document, log, worked ) {
+TestManager.runIframeTest( "jQuery.event.props", "event-props.html",
+	function( assert, jQuery, window, document, log, test1, test2 ) {
 		assert.expect( 2 );
 
-		assert.ok( worked, "hooks were installed" );
+		assert.ok( test1 && test2, "props were processed" );
+		assert.equal( jQuery.migrateWarnings.length, 2, "warnings: " +
+			JSON.stringify( jQuery.migrateWarnings ) );
+	} );
+
+// Do this as iframe because there is no way to undo prop addition
+TestManager.runIframeTest( "jQuery.event.fixHooks", "event-fixHooks.html",
+	function( assert, jQuery, window, document, log, test1, test2 ) {
+		assert.expect( 2 );
+
+		assert.ok( test1 && test2, "hooks were processed" );
 		assert.equal( jQuery.migrateWarnings.length, 2, "warnings: " +
 			JSON.stringify( jQuery.migrateWarnings ) );
 	} );
