@@ -107,20 +107,19 @@ test( "custom ready", function() {
 } );
 
 TestManager.runIframeTest( "document ready", "ready-event.html",
-	function( fired, warnings, assert ) {
-		assert.expect( 2 );
+	function( assert, jQuery, window, document, log ) {
+		assert.expect( 1 );
 
-		assert.ok( fired, "ready event fired" );
-		assert.equal( warnings.length, 1, "warnings: " + JSON.stringify( warnings ) );
+		assert.equal( jQuery.migrateWarnings.length, 1, "warnings: " +
+			JSON.stringify( jQuery.migrateWarnings ) );
 	} );
 
-if ( jQuery.event.addProp ) {
+// Do this as iframe because there is no way to undo prop addition
+TestManager.runIframeTest( "jQuery.event.props and fixHooks", "event-props.html",
+	function( assert, jQuery, window, document, log, worked ) {
+		assert.expect( 2 );
 
-	// Do this as iframe because there is no way to undo prop addition
-	TestManager.runIframeTest( "jQuery.event.props and fixHooks", "event-props.html",
-		function( worked, assert ) {
-			assert.expect( 1 );
-
-			assert.ok( worked, "hooks were installed" );
-		} );
-}
+		assert.ok( worked, "hooks were installed" );
+		assert.equal( jQuery.migrateWarnings.length, 2, "warnings: " +
+			JSON.stringify( jQuery.migrateWarnings ) );
+	} );

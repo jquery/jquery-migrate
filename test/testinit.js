@@ -78,7 +78,7 @@ TestManager = {
 			self.iframeCallback = function() {
 				var args = Array.prototype.slice.call( arguments );
 
-				args.push( assert );
+				args.unshift( assert );
 
 				setTimeout( function() {
 					self.iframeCallback = undefined;
