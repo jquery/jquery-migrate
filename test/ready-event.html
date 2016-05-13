@@ -8,18 +8,16 @@
 	<script src="testinit.js"></script>
 	<script>
 		TestManager.loadProject( "jquery", "git" );
-		// Close this script tag so file will load
 	</script>
+	<script src="iframeTest.js"></script>
 	<script>
 		jQuery.noConflict();
 		TestManager.loadProject( "jquery-migrate", "dev", true );
-		// Close this script tag so file will load
 	</script>
 	<script>
-		jQuery.migrateMute = true;
-		jQuery.migrateReset();
+		// This should warn when the handler runs
 		jQuery( document ).on( "ready", function() {
-			parent.TestManager.iframeCallback( true, jQuery.migrateWarnings );
+			startIframeTest();
 		} );
 	</script>
 </head>

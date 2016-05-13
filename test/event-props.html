@@ -8,17 +8,13 @@
 	<script src="testinit.js"></script>
 	<script>
 		TestManager.loadProject( "jquery", "git" );
-		// Close this script tag so file will load
 	</script>
+	<script src="iframeTest.js"></script>
 	<script>
 		jQuery.noConflict();
 		TestManager.loadProject( "jquery-migrate", "dev", true );
-		// Close this script tag so file will load
 	</script>
 	<script>
-		jQuery.migrateMute = true;
-		jQuery.migrateReset();
-
 		function dispatchEvent( elem, type ) {
 			var e = document.createEvent( "HTMLEvents" );
 			e.initEvent( type, true, true );
@@ -57,7 +53,7 @@
 					jQuery.event.props.length === 0 &&
 					jQuery.event.fixHooks[ "excite" ].props.length === 0;
 
-				parent.TestManager.iframeCallback( worked );
+				startIframeTest( worked );
 			} );
 
 			dispatchEvent( div, "excite" );
