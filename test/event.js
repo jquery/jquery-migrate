@@ -1,13 +1,13 @@
 
 module( "event" );
 
-test( "error() event method", function() {
-	expect( 2 );
+test( "error() event method", function( assert ) {
+	assert.expect( 2 );
 
 	expectWarning( "jQuery.fn.error()", function() {
 		jQuery( "<img />" )
 			.error( function() {
-				ok( true, "Triggered error event" );
+				assert.ok( true, "Triggered error event" );
 			} )
 			.error()
 			.off( "error" )
@@ -16,13 +16,13 @@ test( "error() event method", function() {
 	} );
 } );
 
-test( "load() and unload() event methods", function() {
-	expect( 5 );
+test( "load() and unload() event methods", function( assert ) {
+	assert.expect( 5 );
 
 	expectWarning( "jQuery.fn.load()", function() {
 		jQuery( "<img />" )
 			.load( function() {
-				ok( true, "Triggered load event" );
+				assert.ok( true, "Triggered load event" );
 			} )
 			.load()
 			.off( "load" )
@@ -33,7 +33,7 @@ test( "load() and unload() event methods", function() {
 	expectWarning( "jQuery.fn.unload()", function() {
 		jQuery( "<img />" )
 			.unload( function() {
-				ok( true, "Triggered unload event" );
+				assert.ok( true, "Triggered unload event" );
 			} )
 			.unload()
 			.off( "unload" )
@@ -42,7 +42,7 @@ test( "load() and unload() event methods", function() {
 	} );
 
 	expectNoWarning( "ajax load", function() {
-		stop();
+		var start = assert.async();
 		jQuery( "<div id=load138></div>" )
 			.appendTo( "#qunit-fixture" )
 			.load( "not-found.file", function() {
@@ -94,12 +94,12 @@ QUnit.test( ".delegate() and .undelegate()", function( assert ) {
 	} );
 } );
 
-test( "custom ready", function() {
-	expect( 2 );
+test( "custom ready", function( assert ) {
+	assert.expect( 2 );
 
 	expectNoWarning( "Custom ready event not on document", 1, function() {
 		jQuery( "#foo" ).on( "ready", function( e ) {
-			ok( true, "custom ready event was triggered" );
+			assert.ok( true, "custom ready event was triggered" );
 		} )
 		.trigger( "ready" )
 		.off( "ready" );

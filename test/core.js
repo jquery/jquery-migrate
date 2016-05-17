@@ -119,8 +119,8 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 	} );
 } );
 
-test( "XSS injection (leading hash)", function() {
-	expect( 1 );
+test( "XSS injection (leading hash)", function( assert ) {
+	assert.expect( 1 );
 
 	var threw = false;
 
@@ -130,11 +130,11 @@ test( "XSS injection (leading hash)", function() {
 		threw = true;
 	}
 
-	equal( threw, true, "Throw on leading-hash HTML (treated as selector)" );
+	assert.equal( threw, true, "Throw on leading-hash HTML (treated as selector)" );
 } );
 
-test( "XSS injection (XSS via script tag)", function() {
-	expect( 2 );
+test( "XSS injection (XSS via script tag)", function( assert ) {
+	assert.expect( 2 );
 
 	var threw = false;
 	window.XSS = false;
@@ -143,12 +143,12 @@ test( "XSS injection (XSS via script tag)", function() {
 	} catch ( e ) {
 		threw = true;
 	}
-	equal( threw, true, "Throw on leading-hash HTML (treated as selector)" );
-	equal( window.XSS, false, "XSS" );
+	assert.equal( threw, true, "Throw on leading-hash HTML (treated as selector)" );
+	assert.equal( window.XSS, false, "XSS" );
 } );
 
-test( "XSS injection (XSS with hash and leading space)", function() {
-	expect( 2 );
+test( "XSS injection (XSS with hash and leading space)", function( assert ) {
+	assert.expect( 2 );
 
 	var threw = false;
 	window.XSS = false;
@@ -157,48 +157,51 @@ test( "XSS injection (XSS with hash and leading space)", function() {
 	} catch ( e ) {
 		threw = true;
 	}
-	equal( threw, true, "Throw on leading-hash HTML and space (treated as selector)" );
-	equal( window.XSS, false, "XSS" );
+	assert.equal( threw, true, "Throw on leading-hash HTML and space (treated as selector)" );
+	assert.equal( window.XSS, false, "XSS" );
 } );
 
-test( "XSS injection (XSS via onerror inline handler)", function() {
-	expect( 2 );
+test( "XSS injection (XSS via onerror inline handler)", function( assert ) {
+	assert.expect( 2 );
 
-	var threw = false;
+	var start,
+		threw = false;
+
 	window.XSS = false;
 	try {
 		jQuery( "#<img src=haha onerror='window.XSS=true' />" );
 	} catch ( e ) {
 		threw = true;
 	}
-	equal( threw, true, "Throw on leading-hash HTML (treated as selector)" );
-	stop();
+	assert.equal( threw, true, "Throw on leading-hash HTML (treated as selector)" );
+
+	start = assert.async();
 	setTimeout( function() {
-		equal( window.XSS, false, "XSS" );
+		assert.equal( window.XSS, false, "XSS" );
 		start();
 	}, 1000 );
 } );
 
-test( "jQuery( '<element>' ) usable on detached elements (#128)", function() {
-	expect( 1 );
+test( "jQuery( '<element>' ) usable on detached elements (#128)", function( assert ) {
+	assert.expect( 1 );
 
 	jQuery( "<a>" ).outerWidth();
-	ok( true, "No crash when operating on detached elements with window" );
+	assert.ok( true, "No crash when operating on detached elements with window" );
 } );
 
-test( ".size", function() {
-    expect( 1 );
+test( ".size", function( assert ) {
+    assert.expect( 1 );
 
     expectWarning( "size", function() {
         jQuery( "<div />" ).size();
     } );
 } );
 
-test( "jQuery.parseJSON", function() {
-    expect( 2 );
+test( "jQuery.parseJSON", function( assert ) {
+    assert.expect( 2 );
 
     expectWarning( "jQuery.parseJSON", function() {
-		deepEqual(
+		assert.deepEqual(
 			jQuery.parseJSON( "{\"a\":1}" ),
 			{ a: 1 },
 			"jQuery.parseJSON output"
