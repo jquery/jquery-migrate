@@ -86,7 +86,10 @@ function initialize( next ) {
 	isBeta = !!xbeta;
 
 	if ( !releaseVersion ) {
-		die( "Usage: release [ -d ] releaseVersion" );
+		log( "Usage: release [ -d -r ] releaseVersion" );
+		log( "       -d  Dry-run; no commands are executed at all" );
+		log( "       -r  Skip-remote; nothing is pushed externally" );
+		die( "Invalid args" );
 	}
 	if ( !version.length ) {
 		die( "'" + releaseVersion + "' is not a valid semver!" );
