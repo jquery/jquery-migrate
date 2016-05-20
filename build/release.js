@@ -136,9 +136,11 @@ function checkGitStatus( next ) {
 }
 
 function tagReleaseVersion( next ) {
-	git( [ "commit", "-a", "--no-verify", "-m", "Tagging the " + releaseVersion + " release." ], function() {
-		git( [ "tag", releaseVersion ], next );
-	} );
+	git( [ "commit", "-a", "--no-verify", "-m", "Tagging the " + releaseVersion + " release." ],
+		function() {
+			git( [ "tag", releaseVersion ], next );
+		}
+	);
 }
 
 function updateVersions( next ) {
@@ -183,7 +185,8 @@ function publishToNPM( next ) {
 function setNextVersion( next ) {
 	updateSourceVersion( nextVersion );
 	updatePackageVersion( nextVersion, "master" );
-	git( [ "commit", "-a", "--no-verify", "-m", "Updating the source version to " + nextVersion ], next );
+	git( [ "commit", "-a", "--no-verify", "-m", "Updating the source version to " + nextVersion ],
+		next );
 }
 
 function pushToRemote( next ) {
