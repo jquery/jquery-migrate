@@ -174,7 +174,7 @@ function publishToNPM( next ) {
 
 	// Don't update "latest" if this is a beta
 	if ( isBeta ) {
-		exec( npmCmd, [ "publish", "--tag", releaseVersion ], next, skipRemote );
+		exec( npmCmd, [ "publish", "--tag", "beta" ], next, skipRemote );
 	} else {
 		exec( npmCmd, [ "publish" ], next, skipRemote );
 	}
