@@ -47,13 +47,16 @@ function migrateWarn( msg ) {
 	var console = window.console;
 	if ( !warnedAbout[ msg ] ) {
 		warnedAbout[ msg ] = true;
-		jQuery.migrateWarnings.push( msg );
+		var msgObj = new String(msg);
+		msgObj.asError = new Error(msg);
+		jQuery.migrateWarnings.push( msgObj );
 		if ( console && console.warn && !jQuery.migrateMute ) {
 			console.warn( "JQMIGRATE: " + msg );
 			if ( jQuery.migrateTrace && console.trace ) {
 				console.trace();
 			}
 		}
+		jQuery(window).trigger("migrateWarning");
 	}
 }
 
