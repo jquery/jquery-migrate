@@ -56,7 +56,7 @@ function migrateWarn( msg ) {
 				console.trace();
 			}
 		}
-		jQuery(window).trigger("migrateWarning");
+		jQuery( window ).trigger( "migrateWarning" );
 	}
 }
 
