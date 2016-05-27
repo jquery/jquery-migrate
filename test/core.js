@@ -28,7 +28,7 @@ test( "jQuery( '#' )", function() {
 } );
 
 QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
-	expect( 31 );
+	expect( 34 );
 
 	var markup = jQuery(
 			"<div>" +

@@ -53,7 +53,7 @@ test( "load() and unload() event methods", function( assert ) {
 } );
 
 QUnit.test( ".bind() and .unbind()", function( assert ) {
-	assert.expect( 3 );
+	assert.expect( 5 );
 
 	var $elem = jQuery( "<div />" ).appendTo( "#qunit-fixture" );
 
@@ -73,7 +73,7 @@ QUnit.test( ".bind() and .unbind()", function( assert ) {
 } );
 
 QUnit.test( ".delegate() and .undelegate()", function( assert ) {
-	assert.expect( 3 );
+	assert.expect( 5 );
 
 	var $div = jQuery( "<div />" ).appendTo( "#qunit-fixture" );
 

@@ -16,7 +16,7 @@ test( "jQuery.data() camelCased names", function( assert ) {
 			"-dashy-hanger"
 		];
 
-	assert.expect( 16 );
+	assert.expect( 17 );
 
 	var curData,
 		div = document.createElement( "div" );
