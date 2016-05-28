@@ -49,7 +49,7 @@ function migrateWarn( msg ) {
 	if ( !warnedAbout[ msg ] ) {
 		warnedAbout[ msg ] = true;
 		jQuery.migrateWarnings.push( msg );
-		jQuery.migrateWarnings.asErrors.push( msg );
+		jQuery.migrateWarnings.asErrors.push( new Error( msg ) );
 		if ( console && console.warn && !jQuery.migrateMute ) {
 			console.warn( "JQMIGRATE: " + msg );
 			if ( jQuery.migrateTrace && console.trace ) {
