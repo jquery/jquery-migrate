@@ -237,14 +237,14 @@ function updateSourceVersion( ver ) {
 function updateReadmeVersion( ver ) {
 	var readme = fs.readFileSync( readmeFile, "utf8" );
 
-	// Change version references from the old version to the new one;
-	// Only release versions should be updated which simplifies the regex
+	// Change version references from the old version to the new one.
+	// The regex can update beta versions in case it was changed manually.
 	if ( isBeta ) {
 		status( "Skipping " + readmeFile + " update (beta release)" );
 	} else {
 		status( "Updating " + readmeFile );
 		readme = readme
-			.replace( /jquery-migrate-\d+\.\d+\.\d+/g, "jquery-migrate-" + releaseVersion );
+			.replace( /jquery-migrate-\d+\.\d+\.\d+(?:-\w+)?/g, "jquery-migrate-" + releaseVersion );
 		if ( !dryrun ) {
 			fs.writeFileSync( readmeFile, readme );
 		}
