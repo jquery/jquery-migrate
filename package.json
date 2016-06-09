@@ -3,11 +3,11 @@
 	"title": "jQuery Migrate",
 	"description": "Migrate older jQuery code to jQuery 3.0+",
 	"main": "dist/jquery-migrate.js",
-	"version": "3.0.0",
+	"version": "3.0.1-pre",
 	"homepage": "https://github.com/jquery/jquery-migrate",
 	"author": {
 		"name": "jQuery Foundation and other contributors",
-		"url": "https://github.com/jquery/jquery-migrate/blob/3.0.0/AUTHORS.txt"
+		"url": "https://github.com/jquery/jquery-migrate/blob/master/AUTHORS.txt"
 	},
 	"repository": {
 		"type": "git",
