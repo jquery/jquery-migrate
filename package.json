@@ -22,6 +22,9 @@
 		"test": "grunt test",
 		"ci": "grunt ci"
 	},
+	"dependencies": {
+		"jquery": "3.0.0"
+	},
 	"devDependencies": {
 		"chalk": "1.1.3",
 		"commitplease": "2.3.1",
