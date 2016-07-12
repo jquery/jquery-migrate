@@ -4,6 +4,9 @@ var oldLoad = jQuery.fn.load,
 jQuery.event.props = [];
 jQuery.event.fixHooks = {};
 
+migrateWarnProp( jQuery.event.props, "concat", jQuery.event.props.concat,
+	"jQuery.event.props.concat() is deprecated and removed" );
+
 jQuery.event.fix = function( originalEvent ) {
 	var event,
 		type = originalEvent.type,

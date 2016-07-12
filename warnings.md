@@ -181,8 +181,9 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Solution:** If this functionality is still needed, save the current full `.attr( "class" )` value in a data item and restore it when required.
 
 ### JQMIGRATE: jQuery.event.props are deprecated and removed
+### JQMIGRATE: jQuery.event.props.concat() is deprecated and removed
 ### JQMIGRATE: jQuery.event.fixHooks are deprecated and removed
 
-**Cause:** The code on the page has added one or more properties to the `jQuery.event.props` or `jQuery.event.fixHooks` data structures. These were used in previous versions to affect the properties that are copied from the native event to the jQuery event each time an event is delivered, but they had the potential to create performance issues. An improved API will be announced in a future version of jQuery.
+**Cause:** The code on the page has used the `jQuery.event.props` or `jQuery.event.fixHooks` data structures. These were used in previous versions to affect the properties that are copied from the native event to the jQuery event each time an event is delivered, but they had the potential to create performance issues. Versions of jQuery Mobile before 1.5 make use of this API and require jQuery Migrate to run properly.
 
-**Solution:** The most popular use of these data structures are to add properties for touch or pointer events, and those properties are now supported by default with a newer high-performance approach in jQuery 3.0 that only retrieves the properties on first access. If you are using plugins such as [pointerTouch](https://github.com/timmywil/jquery.event.pointertouch) or [touchHooks](https://github.com/aarongloege/jquery.touchHooks), simply remove them as they are no longer needed.
+**Solution:** The most popular use of these data structures are to add properties for touch or pointer events, and those properties are now supported by default with a newer high-performance approach in jQuery 3.0 that only retrieves the properties on first access. If you are using jQuery Mobile, check the [jquerymobile.com](https://jquerymobile.com) site for updates. If you are using plugins such as [pointerTouch](https://github.com/timmywil/jquery.event.pointertouch) or [touchHooks](https://github.com/aarongloege/jquery.touchHooks), simply remove them as they are no longer needed.

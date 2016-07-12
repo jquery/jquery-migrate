@@ -114,6 +114,18 @@ TestManager.runIframeTest( "document ready", "ready-event.html",
 			JSON.stringify( jQuery.migrateWarnings ) );
 	} );
 
+TestManager.runIframeTest( "jQuery.event.props.concat", "event-mobile14.html",
+	function( assert, jQuery, window, document, log ) {
+		assert.expect( 1 );
+
+		var matches = jQuery.migrateWarnings.reduce( function( pv, warning ) {
+				return warning.indexOf( "event.props.concat" ) >= 0 ? pv + 1 : pv;
+			}, 0 );
+
+		assert.equal( matches, 1, "warnings: " +
+			JSON.stringify( jQuery.migrateWarnings ) );
+	} );
+
 // Do this as iframe because there is no way to undo prop addition
 TestManager.runIframeTest( "jQuery.event.props", "event-props.html",
 	function( assert, jQuery, window, document, log, test1, test2 ) {
