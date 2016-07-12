@@ -62,7 +62,7 @@ for ( findProp in oldFind ) {
 
 // The number of elements contained in the matched element set
 jQuery.fn.size = function() {
-	migrateWarn( "jQuery.fn.size() is deprecated; use the .length property" );
+	migrateWarn( "jQuery.fn.size() is deprecated and removed, use the .length property" );
 	return this.length;
 };
 
@@ -94,6 +94,6 @@ migrateWarnProp( jQuery, "unique", jQuery.uniqueSort,
 
 // Now jQuery.expr.pseudos is the standard incantation
 migrateWarnProp( jQuery.expr, "filters", jQuery.expr.pseudos,
-	"jQuery.expr.filters is now jQuery.expr.pseudos" );
+	"jQuery.expr.filters is deprecated, use jQuery.expr.pseudos" );
 migrateWarnProp( jQuery.expr, ":", jQuery.expr.pseudos,
-	"jQuery.expr[\":\"] is now jQuery.expr.pseudos" );
+	"jQuery.expr[':'] is deprecated, use jQuery.expr.pseudos" );
