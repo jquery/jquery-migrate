@@ -68,6 +68,13 @@ function migrateWarnProp( obj, prop, value, msg ) {
 	} );
 }
 
+function migrateWarnFunc( obj, prop, newFunc, msg ) {
+	obj[ prop ] = function() {
+		migrateWarn( msg );
+		return newFunc.apply( this, arguments );
+	};
+}
+
 if ( document.compatMode === "BackCompat" ) {
 
 	// JQuery has never supported or tested Quirks Mode
