@@ -6,11 +6,11 @@ jQuery.ajax = function( ) {
 
 	// Be sure we got a jQXHR (e.g., not sync)
 	if ( jQXHR.promise ) {
-		migrateWarnProp( jQXHR, "success", jQXHR.done,
+		migrateWarnFunc( jQXHR, "success", jQXHR.done,
 			"jQXHR.success is deprecated and removed" );
-		migrateWarnProp( jQXHR, "error", jQXHR.fail,
+		migrateWarnFunc( jQXHR, "error", jQXHR.fail,
 			"jQXHR.error is deprecated and removed" );
-		migrateWarnProp( jQXHR, "complete", jQXHR.always,
+		migrateWarnFunc( jQXHR, "complete", jQXHR.always,
 			"jQXHR.complete is deprecated and removed" );
 	}
 

@@ -89,7 +89,7 @@ jQuery.isNumeric = function( val ) {
 	return oldValue;
 };
 
-migrateWarnProp( jQuery, "unique", jQuery.uniqueSort,
+migrateWarnFunc( jQuery, "unique", jQuery.uniqueSort,
 	"jQuery.unique is deprecated, use jQuery.uniqueSort" );
 
 // Now jQuery.expr.pseudos is the standard incantation
