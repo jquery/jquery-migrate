@@ -19,13 +19,13 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Cause:** The page does not have a version of jQuery installed, or is using a version of jQuery older than 3.0.0. The jQuery Migrate plugin is not intended to be used for those cases. Any messages that follow this one may not be accurate, or the page may not run properly at all.
 
-**Solution:** See the [README](https://github.com/jquery/jquery-migrate/#readme) for more information on usage and upgrading from older versions. 
+**Solution:** See the [README](https://github.com/jquery/jquery-migrate/#readme) for more information on usage and upgrading from older versions.
 
 ### JQMIGRATE: Migrate plugin loaded multiple times
 
 **Cause:** The plugin detected that some version of jQuery Migrate is already loaded. Loading multiple versions can cause unpredictable behavior.
 
-**Solution:** Remove all but the latest version of the jQuery Migrate plugin. See the [README](https://github.com/jquery/jquery-migrate/#readme) for more information on usage and upgrading from older versions. 
+**Solution:** Remove all but the latest version of the jQuery Migrate plugin. See the [README](https://github.com/jquery/jquery-migrate/#readme) for more information on usage and upgrading from older versions.
 
 ### JQMIGRATE: Attribute selector with '#' must be quoted
 ### JQMIGRATE: Attribute selector with '#' was not fixed
@@ -66,6 +66,12 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 **Cause**: The `.pipe()` method on a `jQuery.Deferred` object was deprecated as of jQuery 1.8, when the `.then()` method was changed to perform the same function.
 
 **Solution**: In most cases it is sufficient to change all occurrences of `.pipe()` to `.then()`. Ensure that you aren't relying on context/state propagation (e.g., using `this`) or synchronous callback invocation, which were dropped from `.then()` for Promises/A+ interoperability as of jQuery 3.0.
+
+### JQMIGRATE: jQuery.fx.interval is deprecated
+
+**Cause**: As of jQuery 3.0 the `jQuery.fx.interval` property can be used to change the animation interval _only_ on browsers that do not support the `window.requestAnimationFrame()` method. That is currently only Internet Explorer 9 and the Android Browser. Once support is dropped for these browsers, the property will serve no purpose and it will be removed.
+
+**Solution**: Find and remove code that changes or uses `jQuery.fx.interval`. If the value is being used by code in your page or a plugin, the code may be making assumptions that are no longer valid. The default value of `jQuery.fx.interval` is `13` (milliseconds), which could be used instead of accessing this property.
 
 ### JQMIGRATE: jQuery.fn.andSelf() is deprecated and removed, use jQuery.fn.addBack()
 

@@ -16,3 +16,12 @@ jQuery.Tween.prototype.run = function( percent ) {
 
 	oldTweenRun.apply( this, arguments );
 };
+
+jQuery.fx.interval = jQuery.fx.interval || 13;
+
+// Support: IE9, Android <=4.4
+// Avoid false positives on browsers that lack rAF
+if ( window.requestAnimationFrame ) {
+	migrateWarnProp( jQuery.fx, "interval", jQuery.fx.interval,
+		"jQuery.fx.interval is deprecated" );
+}
