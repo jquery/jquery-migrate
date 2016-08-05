@@ -106,7 +106,7 @@ test( "custom ready", function( assert ) {
 	} );
 } );
 
-TestManager.runIframeTest( "document ready", "ready-event.html",
+TestManager.runIframeTest( "document ready", "event-ready.html",
 	function( assert, jQuery, window, document, log ) {
 		assert.expect( 1 );
 

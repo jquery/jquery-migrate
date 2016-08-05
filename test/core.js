@@ -275,7 +275,7 @@ test( "jQuery.expr.pseudos aliases", function( assert ) {
 
 } );
 
-TestManager.runIframeTest( "old pre-3.0 jQuery", "old-jquery.html",
+TestManager.runIframeTest( "old pre-3.0 jQuery", "core-jquery2.html",
 	function( assert, jQuery, window, document, log ) {
 		assert.expect( 1 );
 
