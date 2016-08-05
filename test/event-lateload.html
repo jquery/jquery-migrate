@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>jQuery Migrate late load event binding test</title>
+
+	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
+	<script src="testinit.js"></script>
+	<script>
+		TestManager.loadProject( "jquery", "git" );
+	</script>
+	<script src="iframeTest.js"></script>
+	<script>
+		jQuery.noConflict();
+		TestManager.loadProject( "jquery-migrate", "dev", true );
+	</script>
+	<script>
+		var loaded = jQuery.Deferred();
+
+		// No warning here, document isn't yet loaded
+		jQuery( window ).on( "load", function() {
+			loaded.resolve();
+		});
+
+		jQuery.when( jQuery.ready, loaded ).then( function() {
+
+			// This .on() call should warn
+			jQuery( window ).on( "load", jQuery.noop );
+
+			startIframeTest();
+		} );
+	</script>
+</head>
+<body>
+	<p>jQuery Migrate late load event binding test</p>
+</body>
+</html>
