@@ -145,3 +145,12 @@ TestManager.runIframeTest( "jQuery.event.fixHooks", "event-fixHooks.html",
 		assert.equal( jQuery.migrateWarnings.length, 2, "warnings: " +
 			JSON.stringify( jQuery.migrateWarnings ) );
 	} );
+
+TestManager.runIframeTest( "Load within a ready handler", "event-lateload.html",
+	function( assert, jQuery, window, document, log ) {
+		assert.expect( 2 );
+
+		assert.equal( jQuery.migrateWarnings.length, 1, "warnings: " +
+			JSON.stringify( jQuery.migrateWarnings ) );
+		assert.ok( /load/.test( jQuery.migrateWarnings[ 0 ] ), "message ok" );
+	} );

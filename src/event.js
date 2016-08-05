@@ -1,4 +1,5 @@
 var oldLoad = jQuery.fn.load,
+	oldEventAdd = jQuery.event.add,
 	originalFix = jQuery.event.fix;
 
 jQuery.event.props = [];
@@ -33,6 +34,15 @@ jQuery.event.fix = function( originalEvent ) {
 	event = originalFix.call( this, originalEvent );
 
 	return fixHook && fixHook.filter ? fixHook.filter( event, originalEvent ) : event;
+};
+
+jQuery.event.add = function( elem, types ) {
+
+	// This misses the multiple-types case but that seems awfully rare
+	if ( elem === window && types === "load" && document.readyState === "complete" ) {
+		migrateWarn( "jQuery(window).on('load'...) called after load event occurred" );
+	}
+	return oldEventAdd.apply( this, arguments );
 };
 
 jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
