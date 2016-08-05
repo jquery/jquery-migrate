@@ -20,8 +20,6 @@ QUnit.test( "jQuery.easing", function( assert ) {
 } );
 
 // If the browser has requestAnimationFrame, jQuery won't touch fx.interval
-if ( window.requestAnimationFrame ) {
-
 QUnit.test( "jQuery.fx.interval - no warning on animations", function( assert ) {
 	assert.expect( 1 );
 
@@ -37,19 +35,22 @@ QUnit.test( "jQuery.fx.interval - no warning on animations", function( assert ) 
 		} );
 } );
 
-QUnit.test( "jQuery.fx.interval - warning on user change", function( assert ) {
-	assert.expect( 2 );
+// Only rAF browsers implement the interval warning
+QUnit.test( "jQuery.fx.interval - user change", function( assert ) {
+	assert.expect( 3 );
 
-	var oldInterval;
+	var oldInterval,
+		warner = window.requestAnimationFrame ? expectWarning : expectNoWarning;
 
-	expectWarning( "read fx.interval", function() {
+	assert.ok( true, "requestAnimationFrame is " +
+		( window.requestAnimationFrame ? "present" : "absent" ) );
+	warner( "read fx.interval", function() {
 		oldInterval = jQuery.fx.interval;
 	} );
-	expectWarning( "write fx.interval", function() {
+	warner( "write fx.interval", function() {
 		jQuery.fx.interval = 13;
 	} );
 
 	jQuery.fx.interval = oldInterval;
 } );
 
-}
