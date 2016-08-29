@@ -79,7 +79,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: Replace any use of `.andSelf()` with `.addBack()`.
 
-### JQMIGRATE: jQuery.fn.size() is deprecated and removed, use the .length property
+### JQMIGRATE: jQuery.fn.size() is deprecated and removed; use the .length property
 
 **Cause**: The `.size()` method returns the number of elements in the current jQuery object, but duplicates the more-efficient `.length` property which provides the same functionality. As of jQuery 1.9 the `.length` property is the preferred way to retrieve this value. jQuery 3.0 no longer contains the `.size()` method.
 
@@ -173,8 +173,8 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution**: Replace all uses of `jQuery.unique` with `jQuery.uniqueSort` which is the same function with a better name.
 
-### JQMIGRATE: jQuery.expr[':'] is deprecated, use jQuery.expr.pseudos
-### JQMIGRATE: jQuery.expr.filters is deprecated, use jQuery.expr.pseudos
+### JQMIGRATE: jQuery.expr[':'] is deprecated; use jQuery.expr.pseudos
+### JQMIGRATE: jQuery.expr.filters is deprecated; use jQuery.expr.pseudos
 
 **Cause:** The standard way to add new custom selectors through jQuery is `jQuery.expr.pseudos`. These two other aliases are deprecated, although they still work as of jQuery 3.0.
 
