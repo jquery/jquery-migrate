@@ -37,7 +37,9 @@ module.exports = function( grunt ) {
 		tests: {
 			"jquery": [
 				"dev+git",
-				"min+git.min"
+				"min+git.min",
+				"dev+3.1.0",
+				"dev+3.0.0"
 			]
 		},
 		banners: {
