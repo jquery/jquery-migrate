@@ -40,7 +40,7 @@ jQuery.event.add = function( elem, types ) {
 
 	// This misses the multiple-types case but that seems awfully rare
 	if ( elem === window && types === "load" && document.readyState === "complete" ) {
-		migrateWarn( "$(window).on('load'...) called after load event occurred" );
+		migrateWarn( "jQuery(window).on('load'...) called after load event occurred" );
 	}
 	return oldEventAdd.apply( this, arguments );
 };

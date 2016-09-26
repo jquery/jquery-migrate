@@ -194,7 +194,7 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution:** The most popular use of these data structures are to add properties for touch or pointer events, and those properties are now supported by default with a newer high-performance approach in jQuery 3.0 that only retrieves the properties on first access. If you are using jQuery Mobile, check the [jquerymobile.com](https://jquerymobile.com) site for updates. If you are using plugins such as [pointerTouch](https://github.com/timmywil/jquery.event.pointertouch) or [touchHooks](https://github.com/aarongloege/jquery.touchHooks), simply remove them as they are no longer needed.
 
-### JQMIGRATE: $(window).on('load'...) called after load event occurred
+### JQMIGRATE: jQuery(window).on('load'...) called after load event occurred
 
 **Cause:** The calling code has attempted to attach a `load` event to `window` after the page has already loaded. That means the handler will never run and so is probably not what the caller intended. This can occur when the event attachment is made too late, for example, in a jQuery ready handler. It can also occur when a file is loaded dynamically with jQuery after the page has loaded, for example using the `$.getScript()` method.
 
