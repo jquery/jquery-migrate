@@ -23,7 +23,7 @@
 		"ci": "grunt ci"
 	},
 	"peerDependencies": {
-		"jquery": ">3.0.0"
+		"jquery": ">=3 <4"
 	},
 	"devDependencies": {
 		"chalk": "1.1.3",
