@@ -2,7 +2,7 @@ module( "effects" );
 
 QUnit.test( "jQuery.easing", function( assert ) {
 	var lastP = false,
-		easingCallCount = 0;
+		easingCallCount = 0,
 		animComplete = assert.async();
 
 	assert.expect( 7 );
@@ -10,14 +10,14 @@ QUnit.test( "jQuery.easing", function( assert ) {
 	jQuery.easing.test = function( p, n, firstNum, diff ) {
 
 		// First frame of animation
-		if ( easingCallCount === 0 ){
+		if ( easingCallCount === 0 ) {
 			assert.equal( p, 0 );
 			assert.notEqual( n, undefined );
 			assert.notEqual( firstNum, undefined );
-			assert.notEqual( diff, undefined);
+			assert.notEqual( diff, undefined );
 
 		// Second frame of animation. (Only check once so we know how many assertions to expect.)
-		}else if (easingCallCount === 1){
+		}else if ( easingCallCount === 1 ) {
 			assert.ok( p > 0 );
 
 		}
