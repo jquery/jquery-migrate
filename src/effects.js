@@ -8,10 +8,15 @@ jQuery.Tween.prototype.run = function( percent ) {
 			"\" should use only first argument"
 		);
 
-		jQuery.easing[ this.easing ] = jQuery.easing[ this.easing ].bind(
-			jQuery.easing,
-			percent, this.options.duration * percent, 0, 1, this.options.duration
-		);
+			jQuery.easing[ this.easing ] = jQuery.easing[ this.easing ].bind(
+				jQuery.easing,
+				percent, this.options.duration * percent, 0, 1, this.options.duration
+			);
+		// var oldEasing = jQuery.easing[ this.easing ];
+		// jQuery.easing[ this.easing ] = function( newPercent ) {
+		//   return oldEasing.call( jQuery.easing,
+		//     newPercent, newPercent, 0, 1, 1 );
+		// }.bind( this );
 	}
 
 	oldTweenRun.apply( this, arguments );

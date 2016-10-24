@@ -1,13 +1,31 @@
 module( "effects" );
 
 QUnit.test( "jQuery.easing", function( assert ) {
-	assert.expect( 5 );
+	var lastP = false,
+		easingCallCount = 0;
+		animComplete = assert.async();
+
+	assert.expect( 7 );
 
 	jQuery.easing.test = function( p, n, firstNum, diff ) {
-		assert.notEqual( p, undefined );
-		assert.notEqual( n, undefined );
-		assert.notEqual( firstNum, undefined );
-		assert.notEqual( diff, undefined );
+
+		// First frame of animation
+		if ( easingCallCount === 0 ){
+			assert.equal( p, 0 );
+			assert.notEqual( n, undefined );
+			assert.notEqual( firstNum, undefined );
+			assert.notEqual( diff, undefined);
+
+		// Second frame of animation. (Only check once so we know how many assertions to expect.)
+		}else if (easingCallCount === 1){
+			assert.ok( p > 0 );
+
+		}
+		lastP = p;
+		easingCallCount++;
+
+		// Linear
+		return p;
 	};
 
 	var div = jQuery( "<div>test</div>" );
@@ -15,7 +33,14 @@ QUnit.test( "jQuery.easing", function( assert ) {
 	div.appendTo( "#qunit-fixture" );
 
 	expectWarning( "easing", function() {
-		div.animate( { width: 20 }, 10, "test" );
+		div.animate( { width: 20 }, {
+			duration: 100,
+			easing: "test",
+			complete: function() {
+				assert.equal( lastP, 1 );
+				animComplete();
+			}
+		} );
 	} );
 } );
 
@@ -53,4 +78,3 @@ QUnit.test( "jQuery.fx.interval - user change", function( assert ) {
 
 	jQuery.fx.interval = oldInterval;
 } );
-
