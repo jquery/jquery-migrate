@@ -37,6 +37,23 @@ test( "jQuery.data() camelCased names", function( assert ) {
 		} );
 	} );
 
+	div = document.createElement( "div" );
+
+	// = sames.length + diffs.length + noWarning
+	expectNoWarning( "Data set as an object and get without warning via API", function() {
+		var testData = {};
+
+		sames.concat( diffs ).forEach( function( name, index ) {
+			testData[ name ] = index;
+		} );
+
+		jQuery.data( div, testData );
+
+		sames.concat( diffs ).forEach( function( name, index ) {
+			assert.equal( jQuery.data( div, name ), index, name + "=" + index );
+		} );
+	} );
+
 	// Camelized values set for all names above, get the data object
 	curData = jQuery.data( div );
 
