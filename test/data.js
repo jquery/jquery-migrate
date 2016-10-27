@@ -39,17 +39,32 @@ test( "jQuery.data() camelCased names", function( assert ) {
 
 	div = document.createElement( "div" );
 
-	// = sames.length + diffs.length + noWarning
+	// = sames.length + noWarning
 	expectNoWarning( "Data set as an object and get without warning via API", function() {
 		var testData = {};
 
-		sames.concat( diffs ).forEach( function( name, index ) {
+		sames.forEach( function( name, index ) {
 			testData[ name ] = index;
 		} );
 
 		jQuery.data( div, testData );
 
-		sames.concat( diffs ).forEach( function( name, index ) {
+		sames.forEach( function( name, index ) {
+			assert.equal( jQuery.data( div, name ), index, name + "=" + index );
+		} );
+	} );
+
+	// = diffs.length + noWarning
+	expectWarning( "Data set as an object and get without warning via API", function() {
+		var testData = {};
+
+		diffs.forEach( function( name, index ) {
+			testData[ name ] = index;
+		} );
+
+		jQuery.data( div, testData );
+
+		diffs.forEach( function( name, index ) {
 			assert.equal( jQuery.data( div, name ), index, name + "=" + index );
 		} );
 	} );
