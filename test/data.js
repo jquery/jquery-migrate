@@ -50,3 +50,55 @@ test( "jQuery.data() camelCased names", function( assert ) {
 	} );
 
 } );
+
+test( "jQuery.data() camelCased names (mass setter)", function( assert ) {
+	var sames = [
+			"datum",
+			"ropeAdope",
+			"Олег\u0007Michał",
+			"already-Big",
+			"number-2",
+			"unidash-"
+		],
+		diffs = [
+			"dat-data",
+			"hangy-dasher-",
+			"-dashy-hanger"
+		];
+
+	assert.expect( 11 );
+
+	var div = document.createElement( "div" );
+
+	// = sames.length + noWarning
+	expectNoWarning( "Data set as an object and get without warning via API", function() {
+		var testData = {};
+
+		sames.forEach( function( name, index ) {
+			testData[ name ] = index;
+		} );
+
+		jQuery.data( div, testData );
+
+		sames.forEach( function( name, index ) {
+			assert.equal( jQuery.data( div, name ), index, name + "=" + index );
+		} );
+	} );
+
+	// = diffs.length + warning
+	expectWarning( "Data set as an object and get without warning via API", function() {
+		var testData = {};
+
+		diffs.forEach( function( name, index ) {
+			testData[ name ] = index;
+		} );
+
+		jQuery.data( div, testData );
+
+		diffs.forEach( function( name, index ) {
+			assert.equal( jQuery.data( div, name ), index, name + "=" + index );
+		} );
+	} );
+
+} );
+
