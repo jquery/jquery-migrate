@@ -2,16 +2,16 @@ var oldData = jQuery.data;
 
 jQuery.data = function( elem, name, value ) {
 	var curData;
-	
-	//name can be an object, and each entry in the object is meant to be set as data
+
+	//Name can be an object, and each entry in the object is meant to be set as data
 	if ( name && typeof name === "object" && arguments.length === 2 ) {
 		for ( var key in name ) {
-			if ( key !== jQuery.camelCase( key ) ){
+			if ( key !== jQuery.camelCase( key ) ) {
 				migrateWarn( "jQuery.data() always sets/gets camelCased names: " + key );
 			}
 		}
-		
-		//jQuery.data will convert keys to camelCase, and this is a setter.	
+
+		//Original jQuery.data will convert keys to camelCase, and this is a setter.
 		return oldData.apply( this, arguments );
 	}
 
