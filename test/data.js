@@ -16,7 +16,7 @@ test( "jQuery.data() camelCased names", function( assert ) {
 			"-dashy-hanger"
 		];
 
-	assert.expect( 16 );
+	assert.expect( 27 );
 
 	var curData,
 		div = document.createElement( "div" );
@@ -54,7 +54,7 @@ test( "jQuery.data() camelCased names", function( assert ) {
 		} );
 	} );
 
-	// = diffs.length + noWarning
+	// = diffs.length + warning
 	expectWarning( "Data set as an object and get without warning via API", function() {
 		var testData = {};
 
