@@ -136,15 +136,7 @@ module.exports = function( grunt ) {
 	} );
 
 	// Load grunt tasks from NPM packages
-	grunt.loadNpmTasks( "grunt-git-authors" );
-	grunt.loadNpmTasks( "grunt-contrib-concat" );
-	grunt.loadNpmTasks( "grunt-contrib-watch" );
-	grunt.loadNpmTasks( "grunt-contrib-jshint" );
-	grunt.loadNpmTasks( "grunt-jscs" );
-	grunt.loadNpmTasks( "grunt-contrib-uglify" );
-	grunt.loadNpmTasks( "grunt-qunit-istanbul" );
-	grunt.loadNpmTasks( "grunt-coveralls" );
-	grunt.loadNpmTasks( "grunt-npmcopy" );
+	require( "load-grunt-tasks" )( grunt );
 
 	// Integrate jQuery migrate specific tasks
 	grunt.loadTasks( "build/tasks" );
