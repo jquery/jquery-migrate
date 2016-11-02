@@ -1,3 +1,4 @@
+/* exported expectWarning, expectNoWarning */
 
 // Don't spew on in the console window when we build
 if ( navigator.userAgent.indexOf( "PhantomJS" ) >= 0 ) {

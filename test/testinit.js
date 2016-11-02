@@ -1,4 +1,5 @@
 TestManager = {
+
 	/*
 	 * Load a version of a file based on URL parameters.
 	 *
@@ -61,6 +62,7 @@ TestManager = {
 			document.write( lines );
 		}
 	},
+
 	/**
 	 * Iframe tests that require setup not covered in the standard unit test
 	 *
@@ -105,9 +107,9 @@ TestManager = {
 		this.loaded = [];
 
 		// Do QUnit setup if QUnit is loaded (could be an iframe page)
-		 if ( !window.QUnit ) {
+		if ( !window.QUnit ) {
 			return;
-		 }
+		}
 
 		// Max time for async tests until it aborts test
 		// and start()'s the next test.

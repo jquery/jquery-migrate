@@ -25,7 +25,7 @@ jQuery.event.fix = function( originalEvent ) {
 		migrateWarn( "jQuery.event.fixHooks are deprecated and removed: " + type );
 		if ( ( props = fixHook.props ) && props.length ) {
 			while ( props.length ) {
-			   jQuery.event.addProp( props.pop() );
+				jQuery.event.addProp( props.pop() );
 			}
 		}
 	}
@@ -67,12 +67,12 @@ jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
 
 // Trigger "ready" event only once, on document ready
 jQuery( function() {
-	jQuery( document ).triggerHandler( "ready" );
+	jQuery( window.document ).triggerHandler( "ready" );
 } );
 
 jQuery.event.special.ready = {
 	setup: function() {
-		if ( this === document ) {
+		if ( this === window.document ) {
 			migrateWarn( "'ready' event is deprecated" );
 		}
 	}

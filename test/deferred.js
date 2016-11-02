@@ -34,7 +34,9 @@ test( "[PIPE ONLY] jQuery.Deferred.pipe - filtering (fail)", function( assert ) 
 		piped = defer.pipe( null, function( a, b ) {
 			return a * b;
 		} ),
-		done = jQuery.map( new Array( 3 ), function() { return assert.async(); } );
+		done = jQuery.map( new Array( 3 ), function() {
+			return assert.async();
+		} );
 
 	piped.fail( function( result ) {
 		value3 = result;
@@ -100,7 +102,9 @@ test( "[PIPE ONLY] jQuery.Deferred.pipe - context", function( assert ) {
 
 	var defer, piped, defer2, piped2,
 		context = {},
-		done = jQuery.map( new Array( 4 ), function() { return assert.async(); } );
+		done = jQuery.map( new Array( 4 ), function() {
+			return assert.async();
+		} );
 
 	jQuery.Deferred().resolveWith( context, [ 2 ] ).pipe( function( value ) {
 		return value * 3;

@@ -1,24 +1,16 @@
 {
-	"boss": true,
-	"curly": true,
-	"eqeqeq": true,
-	"eqnull": true,
-	"expr": true,
-	"immed": true,
-	"noarg": true,
-	"onevar": true,
-	"quotmark": "double",
-	"smarttabs": true,
-	"trailing": true,
-	"undef": true,
-
-	"evil": true,
-	"sub": true,
-
-	"browser": true,
-	"devel": true,
-	"wsh": true,
-
+	"extends": "../src/.eslintrc.json",
+	"root": true,
+	"env": {
+		"browser": true,
+		"node": false
+	},
+	// Support: IE <=9 only, Android <=4.0 only
+	// The above browsers are failing a lot of tests in the ES5
+	// test suite at http://test262.ecmascript.org.
+	"parserOptions": {
+		"ecmaVersion": 3
+	},
 	"globals": {
 		"expectWarning": true,
 		"expectNoWarning": true,

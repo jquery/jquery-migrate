@@ -3,17 +3,6 @@ module.exports = function( grunt ) {
 
 	"use strict";
 
-	// The concatenated file won't pass onevar but our modules can
-	var readOptionalJSON = function( filepath ) {
-			var data = {};
-			try {
-				data = grunt.file.readJSON( filepath );
-			} catch ( e ) {}
-			return data;
-		},
-		srcHintOptions = readOptionalJSON( "src/.jshintrc" );
-	delete srcHintOptions.onevar;
-
 	// Project configuration.
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( "package.json" ),
@@ -77,13 +66,24 @@ module.exports = function( grunt ) {
 				force: true
 			}
 		},
-		jscs: {
-			src: [
-				"test/*.js",
-				"<%= files %>",
-				"Gruntfile.js",
-				"build/**/*.js"
-			]
+		eslint: {
+			options: {
+
+				// See https://github.com/sindresorhus/grunt-eslint/issues/119
+				quiet: true
+			},
+
+			dist: {
+				src: "dist/jquery-migrate.js"
+			},
+			dev: {
+				src: [
+					"Gruntfile.js",
+					"build/**/*.js",
+					"src/**/*.js",
+					"test/**/*.js"
+				]
+			}
 		},
 		npmcopy: {
 			all: {
@@ -95,24 +95,6 @@ module.exports = function( grunt ) {
 					"qunit/qunit.js": "qunitjs/qunit/qunit.js",
 					"qunit/qunit.css": "qunitjs/qunit/qunit.css",
 					"qunit/LICENSE.txt": "qunitjs/LICENSE.txt" }
-			}
-		},
-		jshint: {
-			dist: {
-				src: [ "dist/jquery-migrate.js" ],
-				options: srcHintOptions
-			},
-			tests: {
-				src: [ "test/*.js" ],
-				options: {
-					jshintrc: "test/.jshintrc"
-				}
-			},
-			grunt: {
-				src: [ "Gruntfile.js" ],
-				options: {
-					jshintrc: ".jshintrc"
-				}
 			}
 		},
 		uglify: {
@@ -144,7 +126,15 @@ module.exports = function( grunt ) {
 	// Just an alias
 	grunt.registerTask( "test", [ "qunit" ] );
 
-	grunt.registerTask( "lint", [ "jshint", "jscs" ] );
+	grunt.registerTask( "lint", [
+
+		// Running the full eslint task without breaking it down to targets
+		// would run the dist target first which would point to errors in the built
+		// file, making it harder to fix them. We want to check the built file only
+		// if we already know the source files pass the linter.
+		"eslint:dev",
+		"eslint:dist"
+	] );
 	grunt.registerTask( "build", [ "concat", "uglify", "lint" ] );
 
 	grunt.registerTask( "default", [ "build", "test" ] );

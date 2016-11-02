@@ -11,7 +11,7 @@ jQuery.fn.offset = function() {
 		return origin;
 	}
 
-	docElem = ( elem.ownerDocument || document ).documentElement;
+	docElem = ( elem.ownerDocument || window.document ).documentElement;
 	if ( !jQuery.contains( docElem, elem ) ) {
 		migrateWarn( "jQuery.fn.offset() requires an element connected to a document" );
 		return origin;

@@ -1,3 +1,4 @@
+/* exported migrateWarn, migrateWarnFunc, migrateWarnProp */
 
 ( function() {
 
@@ -5,7 +6,9 @@
 	// IE9 only creates console object when dev tools are first opened
 	// Also, avoid Function#bind here to simplify PhantomJS usage
 	var log = window.console && window.console.log &&
-			function() { window.console.log.apply( window.console, arguments ); },
+		function() {
+			window.console.log.apply( window.console, arguments );
+		},
 		rbadVersions = /^[12]\./;
 
 	if ( !log ) {
@@ -79,7 +82,7 @@ function migrateWarnFunc( obj, prop, newFunc, msg ) {
 	};
 }
 
-if ( document.compatMode === "BackCompat" ) {
+if ( window.document.compatMode === "BackCompat" ) {
 
 	// JQuery has never supported or tested Quirks Mode
 	migrateWarn( "jQuery is not compatible with Quirks Mode" );

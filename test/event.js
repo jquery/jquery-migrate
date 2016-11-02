@@ -98,7 +98,7 @@ test( "custom ready", function( assert ) {
 	assert.expect( 2 );
 
 	expectNoWarning( "Custom ready event not on document", 1, function() {
-		jQuery( "#foo" ).on( "ready", function( e ) {
+		jQuery( "#foo" ).on( "ready", function() {
 			assert.ok( true, "custom ready event was triggered" );
 		} )
 		.trigger( "ready" )
@@ -107,7 +107,7 @@ test( "custom ready", function( assert ) {
 } );
 
 TestManager.runIframeTest( "document ready", "event-ready.html",
-	function( assert, jQuery, window, document, log ) {
+	function( assert, jQuery ) {
 		assert.expect( 1 );
 
 		assert.equal( jQuery.migrateWarnings.length, 1, "warnings: " +
@@ -115,7 +115,7 @@ TestManager.runIframeTest( "document ready", "event-ready.html",
 	} );
 
 TestManager.runIframeTest( "jQuery.event.props.concat", "event-mobile14.html",
-	function( assert, jQuery, window, document, log ) {
+	function( assert, jQuery ) {
 		assert.expect( 1 );
 
 		var matches = jQuery.migrateWarnings.reduce( function( pv, warning ) {

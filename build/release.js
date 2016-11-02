@@ -24,7 +24,7 @@ var releaseVersion,
 	// Windows needs the .cmd version but will find the non-.cmd
 	// On Windows, also ensure the HOME environment variable is set
 	gruntCmd = process.platform === "win32" ? "grunt.cmd" : "grunt",
-	npmCmd = process.platform == "win32" ? "npm.cmd" : "npm",
+	npmCmd = process.platform === "win32" ? "npm.cmd" : "npm",
 
 	readmeFile = "README.md",
 	packageFile = "package.json",
@@ -120,7 +120,7 @@ function initialize( next ) {
 // (look for " BRANCH     pushes to BRANCH     (up to date)")
 
 function checkGitStatus( next ) {
-	child.execFile( "git", [ "status" ], function( error, stdout, stderr ) {
+	child.execFile( "git", [ "status" ], function( error, stdout ) {
 		var onBranch = ( ( stdout || "" ).match( /On branch (\S+)/ ) || [] )[ 1 ];
 		if ( onBranch !== branch ) {
 			die( "Branches don't match: Wanted " + branch + ", got " + onBranch );
@@ -151,7 +151,7 @@ function updateVersions( next ) {
 }
 
 function gruntBuild( next ) {
-	exec( gruntCmd, [], function( error, stdout ) {
+	exec( gruntCmd, [], function( error, stdout, stderr ) {
 		if ( error ) {
 			die( error + stderr );
 		}
@@ -234,7 +234,7 @@ function updateSourceVersion( ver ) {
 	}
 }
 
-function updateReadmeVersion( ver ) {
+function updateReadmeVersion() {
 	var readme = fs.readFileSync( readmeFile, "utf8" );
 
 	// Change version references from the old version to the new one.
@@ -243,8 +243,10 @@ function updateReadmeVersion( ver ) {
 		status( "Skipping " + readmeFile + " update (beta release)" );
 	} else {
 		status( "Updating " + readmeFile );
-		readme = readme
-			.replace( /jquery-migrate-\d+\.\d+\.\d+(?:-\w+)?/g, "jquery-migrate-" + releaseVersion );
+		readme = readme.replace(
+			/jquery-migrate-\d+\.\d+\.\d+(?:-\w+)?/g,
+			"jquery-migrate-" + releaseVersion
+		);
 		if ( !dryrun ) {
 			fs.writeFileSync( readmeFile, readme );
 		}

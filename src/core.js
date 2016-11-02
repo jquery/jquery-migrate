@@ -29,7 +29,7 @@ jQuery.find = function( selector ) {
 		// The nonstandard and undocumented unquoted-hash was removed in jQuery 1.12.0
 		// First see if qS thinks it's a valid selector, if so avoid a false positive
 		try {
-			document.querySelector( selector );
+			window.document.querySelector( selector );
 		} catch ( err1 ) {
 
 			// Didn't *look* valid to qSA, warn and try quoting what we think is the value
@@ -40,7 +40,7 @@ jQuery.find = function( selector ) {
 			// If the regexp *may* have created an invalid selector, don't update it
 			// Note that there may be false alarms if selector uses jQuery extensions
 			try {
-				document.querySelector( selector );
+				window.document.querySelector( selector );
 				migrateWarn( "Attribute selector with '#' must be quoted: " + args[ 0 ] );
 				args[ 0 ] = selector;
 			} catch ( err2 ) {
