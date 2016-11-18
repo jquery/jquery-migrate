@@ -3,7 +3,7 @@ var oldData = jQuery.data;
 jQuery.data = function( elem, name, value ) {
 	var curData;
 
-	//Name can be an object, and each entry in the object is meant to be set as data
+	// Name can be an object, and each entry in the object is meant to be set as data
 	if ( name && typeof name === "object" && arguments.length === 2 ) {
 		curData = jQuery.hasData( elem ) && oldData.call( this, elem );
 		var sameKeys = {};

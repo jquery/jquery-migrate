@@ -16,7 +16,7 @@ test( "jQuery.data() camelCased names", function( assert ) {
 			"-dashy-hanger"
 		];
 
-	assert.expect( 27 );
+	assert.expect( 16 );
 
 	var curData,
 		div = document.createElement( "div" );
@@ -37,7 +37,38 @@ test( "jQuery.data() camelCased names", function( assert ) {
 		} );
 	} );
 
-	div = document.createElement( "div" );
+	// Camelized values set for all names above, get the data object
+	curData = jQuery.data( div );
+
+	// = diffs.length + warning
+	expectWarning( "Dashed name conflicts", diffs.length, function() {
+		diffs.forEach( function( name, index ) {
+			curData[ name ] = index;
+			assert.equal( jQuery.data( div, name ), curData[ name ],
+				name + " respects data object" );
+		} );
+	} );
+
+} );
+
+test( "jQuery.data() camelCased names (mass setter)", function( assert ) {
+	var sames = [
+			"datum",
+			"ropeAdope",
+			"Олег\u0007Michał",
+			"already-Big",
+			"number-2",
+			"unidash-"
+		],
+		diffs = [
+			"dat-data",
+			"hangy-dasher-",
+			"-dashy-hanger"
+		];
+
+	assert.expect( 11 );
+
+	var div = document.createElement( "div" );
 
 	// = sames.length + noWarning
 	expectNoWarning( "Data set as an object and get without warning via API", function() {
@@ -69,16 +100,5 @@ test( "jQuery.data() camelCased names", function( assert ) {
 		} );
 	} );
 
-	// Camelized values set for all names above, get the data object
-	curData = jQuery.data( div );
-
-	// = diffs.length + warning
-	expectWarning( "Dashed name conflicts", diffs.length, function() {
-		diffs.forEach( function( name, index ) {
-			curData[ name ] = index;
-			assert.equal( jQuery.data( div, name ), curData[ name ],
-				name + " respects data object" );
-		} );
-	} );
-
 } );
+
