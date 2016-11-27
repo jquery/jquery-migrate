@@ -7,7 +7,7 @@
 
 This plugin can be used to warn about and/or restore APIs and behaviors that have been deprecated and/or removed as of jQuery version 3.0.
 See the [warnings page](https://github.com/jquery/jquery-migrate/blob/master/warnings.md) for more information regarding messages the plugin generates.
-For more information about the changes made in jQuery 3.0, see the [upgrade guide](http://jquery.com/upgrade-guide/3.0/) and [blog post](http://blog.jquery.com/FILL-THIS-IN-UPON-FINAL-RELEASE).
+For more information about the changes made in jQuery 3.0, see the [upgrade guide](https://jquery.com/upgrade-guide/3.0/) and [blog post](https://blog.jquery.com/2016/06/09/jquery-3-0-final-released/E).
 
 In your web page, load this plugin *after* the script tag for jQuery, for example:
 
