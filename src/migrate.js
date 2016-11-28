@@ -2,29 +2,25 @@
 
 ( function() {
 
+	var rbadVersions = /^[12]\./;
+
 	// Support: IE9 only
 	// IE9 only creates console object when dev tools are first opened
-	// Also, avoid Function#bind here to simplify PhantomJS usage
-	var log = window.console && window.console.log &&
-		function() {
-			window.console.log.apply( window.console, arguments );
-		},
-		rbadVersions = /^[12]\./;
-
-	if ( !log ) {
+	// IE9 console is a host object, callable but doesn't have .apply()
+	if ( !window.console || !window.console.log ) {
 		return;
 	}
 
 	// Need jQuery 3.0.0+ and no older Migrate loaded
 	if ( !jQuery || rbadVersions.test( jQuery.fn.jquery ) ) {
-		log( "JQMIGRATE: jQuery 3.0.0+ REQUIRED" );
+		window.console.log( "JQMIGRATE: jQuery 3.0.0+ REQUIRED" );
 	}
 	if ( jQuery.migrateWarnings ) {
-		log( "JQMIGRATE: Migrate plugin loaded multiple times" );
+		window.console.log( "JQMIGRATE: Migrate plugin loaded multiple times" );
 	}
 
 	// Show a message on the console so devs know we're active
-	log( "JQMIGRATE: Migrate is installed" +
+	window.console.log( "JQMIGRATE: Migrate is installed" +
 		( jQuery.migrateMute ? "" : " with logging active" ) +
 		", version " + jQuery.migrateVersion );
 
