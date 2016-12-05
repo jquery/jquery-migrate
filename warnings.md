@@ -199,3 +199,15 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Cause:** The calling code has attempted to attach a `load` event to `window` after the page has already loaded. That means the handler will never run and so is probably not what the caller intended. This can occur when the event attachment is made too late, for example, in a jQuery ready handler. It can also occur when a file is loaded dynamically with jQuery after the page has loaded, for example using the `$.getScript()` method.
 
 **Solution:** If a function `fn` does not actually depend on all page assets being fully loaded, switch to a ready handler `$( fn )` which runs earlier and will aways run `fn` even if the script that contains the code loads long after the page has fully loaded. If `fn` actually does depend on the script being fully loaded, check `document.readyState`. If the value is `"complete"` run the function immediately, otherwise use `$(window).on( "load", fn )`.
+
+### JQMIGRATE: jQuery.fn.click() event shorthand is deprecated
+
+**Cause:** The `.on()` and `.trigger()` methods can set an event handler or generate an event for any event type, and should be used instead of the shortcut methods. This message also applies to the other event shorthands, including: blur, focus, focusin, focusout, resize, scroll, dblclick, mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave, change, select, submit, keydown, keypress, keyup, and contextmenu.
+
+**Solution:** Instead of `.click(fn)` use `.on("click", fn)`. Instead of `.click()` use `.trigger("click")`.
+
+### JQMIGRATE: jQuery.fn.hover() is deprecated
+
+**Cause:** The `.hover()` method is a shorthand for the use of the `mouseover`/`mouseout` events. It is often a poor user interface choice because it does not allow for any small amounts of delay between when the mouse enters or exits an area and when the event fires. This can make it quite difficult to use with UI widgets such as drop-down menus.  For more information on the problems of hovering, see the [hoverIntent plugin](http://cherne.net/brian/resources/jquery.hoverIntent.html).
+
+**Solution:** Review uses of `.hover()` to determine if they are appropriate, and consider use of plugins such as `hoverIntent` as an alternative. The direct replacement for `.hover(fn1, fn2)`, is `.on("mouseenter", fn1).on("mouseleave", fn2)`.

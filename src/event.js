@@ -75,6 +75,20 @@ jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
 
 } );
 
+jQuery.each( ( "blur focus focusin focusout resize scroll click dblclick " +
+	"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
+	"change select submit keydown keypress keyup contextmenu" ).split( " " ),
+	function( i, name ) {
+
+	// Handle event binding
+	jQuery.fn[ name ] = function( data, fn ) {
+		migrateWarn( "jQuery.fn." + name + "() event shorthand is deprecated" );
+		return arguments.length > 0 ?
+			this.on( name, null, data, fn ) :
+			this.trigger( name );
+	};
+} );
+
 // Trigger "ready" event only once, on document ready
 jQuery( function() {
 	jQuery( window.document ).triggerHandler( "ready" );
@@ -107,5 +121,9 @@ jQuery.fn.extend( {
 		return arguments.length === 1 ?
 			this.off( selector, "**" ) :
 			this.off( types, selector || "**", fn );
+	},
+	hover: function( fnOver, fnOut ) {
+		migrateWarn( "jQuery.fn.hover() is deprecated" );
+		return this.on( "mouseenter", fnOver ).on( "mouseleave", fnOut || fnOver );
 	}
 } );
