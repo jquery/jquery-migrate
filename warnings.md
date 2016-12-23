@@ -205,3 +205,9 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Cause:** The `jQuery.holdReady()` method has been deprecated due to its detrimental effect on the global performance of the page. This method can prevent all the code on the page from initializing for extended lengths of time.
 
 **Solution:** Rewrite the page so that it does not require all jQuery ready handlers to be delayed. This might be accomplished, for example, by late-loading only the code that requires the delay when it is safe to run. Due to the complexity of this method, jQuery Migrate does not attempt to fill the functionality. If the underlying version of jQuery used with jQuery Migrate no longer contains `jQuery.holdReady()` the code will fail shortly after this warning appears.
+
+### JQMIGRATE: jQuery.isArray is deprecated; use Array.isArray
+
+**Cause:** Older versions of JavaScript made it difficult to determine if a particular object was a true `Array`, so jQuery provided a cross-browser function to do the work. The browsers supported by jQuery 3.0 all provide `Array.isArray(obj)` for this purpose.
+
+**Solution**: Replace any calls to `jQuery.isArray` with `Array.isArray`.
