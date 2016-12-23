@@ -202,6 +202,6 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 ### JQMIGRATE: jQuery.isArray is deprecated; use Array.isArray
 
-**Cause:** Older versions of JavaScript made it difficult to determine if a particular object was a true `Array`, so jQuery provide a cross-browser function to do the work. The browsers supported by jQuery 3.0 all provide `Array.isArray(obj)` for this purpose.
+**Cause:** Older versions of JavaScript made it difficult to determine if a particular object was a true `Array`, so jQuery provided a cross-browser function to do the work. The browsers supported by jQuery 3.0 all provide `Array.isArray(obj)` for this purpose.
 
 **Solution**: Replace any calls to `jQuery.isArray` with `Array.isArray`.
