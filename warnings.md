@@ -199,3 +199,9 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Cause:** The calling code has attempted to attach a `load` event to `window` after the page has already loaded. That means the handler will never run and so is probably not what the caller intended. This can occur when the event attachment is made too late, for example, in a jQuery ready handler. It can also occur when a file is loaded dynamically with jQuery after the page has loaded, for example using the `$.getScript()` method.
 
 **Solution:** If a function `fn` does not actually depend on all page assets being fully loaded, switch to a ready handler `$( fn )` which runs earlier and will aways run `fn` even if the script that contains the code loads long after the page has fully loaded. If `fn` actually does depend on the script being fully loaded, check `document.readyState`. If the value is `"complete"` run the function immediately, otherwise use `$(window).on( "load", fn )`.
+
+### JQMIGRATE: jQuery.holdReady() is deprecated
+
+**Cause:** The `jQuery.holdReady()` method has been deprecated due to its detrimental effect on the global performance of the page. This method can prevent all the code on the page from initializing for extended lengths of time.
+
+**Solution:** Rewrite the page so that it does not require all jQuery ready handlers to be delayed. This might be accomplished, for example, by late-loading only the code that requires the delay when it is safe to run. Due to the complexity of this method, jQuery Migrate does not attempt to fill the functionality. If the underlying version of jQuery used with jQuery Migrate no longer contains `jQuery.holdReady()` the code will fail shortly after this warning appears.

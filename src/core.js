@@ -89,6 +89,9 @@ jQuery.isNumeric = function( val ) {
 	return oldValue;
 };
 
+migrateWarnFunc( jQuery, "holdReady", jQuery.holdReady,
+	"jQuery.holdReady is deprecated" );
+
 migrateWarnFunc( jQuery, "unique", jQuery.uniqueSort,
 	"jQuery.unique is deprecated; use jQuery.uniqueSort" );
 
