@@ -275,6 +275,15 @@ test( "jQuery.expr.pseudos aliases", function( assert ) {
 
 } );
 
+QUnit.test( "jQuery.holdReady (warn only)", function( assert ) {
+	assert.expect( 1 );
+
+	expectWarning( "jQuery.holdReady", 1, function() {
+		jQuery.holdReady( true );
+		jQuery.holdReady( false );
+	} );
+} );
+
 TestManager.runIframeTest( "old pre-3.0 jQuery", "core-jquery2.html",
 	function( assert, jQuery, window, document, log ) {
 		assert.expect( 1 );
