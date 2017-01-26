@@ -95,25 +95,27 @@ QUnit.test( ".delegate() and .undelegate()", function( assert ) {
 } );
 
 QUnit.test( "Event aliases", function( assert) {
-	assert.expect( 16 );
+	assert.expect( 14 );
 
 	var $div = jQuery( "<div />" );
 
 	"scroll click submit keydown".split( " " ).forEach( function( name ) {
 		expectWarning( "." + name + "()", 1, function() {
 			$div[ name ]( function( event ) {
-				assert.equal( event.type, name, name)
+				assert.equal( event.type, name, name );
+				$div.off( event );
 			} )[ name ]();
 		} );
 	} );
 
-	expectWarning( ".hover() one-arg", function() {
+	expectWarning( ".hover() one-arg", 1, function() {
 		$div.hover( function( event ) {
 			assert.ok( /mouseenter|mouseleave/.test( event.type ), event.type );
+			$div.off( event );
 		} ).trigger( "mouseenter" ).trigger( "mouseleave" );
 	} );
 
-	expectWarning( ".hover() two-arg", function() {
+	expectWarning( ".hover() two-arg", 1, function() {
 		$div.hover(
 			function( event ) {
 				assert.equal( "mouseenter", event.type, event.type );
