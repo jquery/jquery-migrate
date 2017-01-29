@@ -73,10 +73,10 @@ jQuery.parseJSON = function() {
 
 jQuery.isNumeric = function( val ) {
 
-	// The jQuery 2.2.3 implementation of isNumeric, using Array.isArray
+	// The jQuery 2.2.3 implementation of isNumeric
 	function isNumeric2( obj ) {
 		var realStringObj = obj && obj.toString();
-		return !Array.isArray( obj ) && ( realStringObj - parseFloat( realStringObj ) + 1 ) >= 0;
+		return !jQuery.isArray( obj ) && ( realStringObj - parseFloat( realStringObj ) + 1 ) >= 0;
 	}
 
 	var newValue = oldIsNumeric( val ),
@@ -91,13 +91,6 @@ jQuery.isNumeric = function( val ) {
 
 migrateWarnFunc( jQuery, "holdReady", jQuery.holdReady,
 	"jQuery.holdReady is deprecated" );
-
-migrateWarnFunc( jQuery, "isArray",
-	function( a ) {
-		return Array.isArray( a );
-	},
-	"jQuery.isArray is deprecated; use Array.isArray"
-);
 
 migrateWarnFunc( jQuery, "unique", jQuery.uniqueSort,
 	"jQuery.unique is deprecated; use jQuery.uniqueSort" );

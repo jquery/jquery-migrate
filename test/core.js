@@ -284,17 +284,6 @@ QUnit.test( "jQuery.holdReady (warn only)", function( assert ) {
 	} );
 } );
 
-QUnit.test( "jQuery.isArray", function( assert ) {
-	assert.expect( 4 );
-
-	expectWarning( "isArray", 1, function() {
-		assert.equal( jQuery.isArray( [] ), true, "empty array" );
-		assert.equal( jQuery.isArray( "" ), false, "empty string" );
-		assert.equal( jQuery.isArray( jQuery().toArray() ), true, "toArray" );
-	} );
-
-} );
-
 TestManager.runIframeTest( "old pre-3.0 jQuery", "core-jquery2.html",
 	function( assert, jQuery, window, document, log ) {
 		assert.expect( 1 );
