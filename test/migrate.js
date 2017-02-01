@@ -20,6 +20,7 @@ function expectWarning( name, expected, fn ) {
 	// Simple numeric equality assertion for warnings matching an explicit count
 	} else if ( expected && jQuery.migrateWarnings.length === expected ) {
 		equal( jQuery.migrateWarnings.length, expected, name + ": warned" );
+		equal( jQuery.migrateWarnings.asErrors.length, expected, name + ": warned as Errors" );
 
 	// Simple ok assertion when we saw at least one warning and weren't looking for an explict count
 	} else if ( !expected && jQuery.migrateWarnings.length ) {

@@ -1,7 +1,7 @@
 module( "ajax" );
 
 test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
-	assert.expect( 3 );
+	assert.expect( 4 );
 
 	var done = assert.async();
 

@@ -2,7 +2,7 @@
 QUnit.module( "attributes" );
 
 QUnit.test( ".removeAttr( boolean attribute )", function( assert ) {
-	assert.expect( 8 );
+	assert.expect( 9 );
 
 	expectNoWarning( "non-boolean attr", function() {
 		var $div = jQuery( "<div />" )
@@ -43,7 +43,7 @@ QUnit.test( ".removeAttr( boolean attribute )", function( assert ) {
 } );
 
 QUnit.test( ".toggleClass( boolean )", function( assert ) {
-	assert.expect( 14 );
+	assert.expect( 17 );
 
 	var e = jQuery( "<div />" ).appendTo( "#qunit-fixture" );
 

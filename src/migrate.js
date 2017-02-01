@@ -30,6 +30,7 @@ var warnedAbout = {};
 
 // List of warnings already given; public read only
 jQuery.migrateWarnings = [];
+jQuery.migrateWarnings.asErrors = [];
 
 // Set to false to disable traces that appear with warnings
 if ( jQuery.migrateTrace === undefined ) {
@@ -39,7 +40,7 @@ if ( jQuery.migrateTrace === undefined ) {
 // Forget any warnings we've already given; public
 jQuery.migrateReset = function() {
 	warnedAbout = {};
-	jQuery.migrateWarnings.length = 0;
+	jQuery.migrateWarnings.length = jQuery.migrateWarnings.asErrors.length = 0;
 };
 
 function migrateWarn( msg ) {
@@ -47,12 +48,14 @@ function migrateWarn( msg ) {
 	if ( !warnedAbout[ msg ] ) {
 		warnedAbout[ msg ] = true;
 		jQuery.migrateWarnings.push( msg );
+		jQuery.migrateWarnings.asErrors.push( new Error( msg ) );
 		if ( console && console.warn && !jQuery.migrateMute ) {
 			console.warn( "JQMIGRATE: " + msg );
 			if ( jQuery.migrateTrace && console.trace ) {
 				console.trace();
 			}
 		}
+		jQuery( window ).trigger( "migrateWarning" );
 	}
 }
 
