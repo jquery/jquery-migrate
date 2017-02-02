@@ -7,7 +7,7 @@ For more information about the changes made in jQuery 1.9, see the [upgrade guid
 In your web page, load this plugin *after* the script for jQuery:
 
 ```html
-<script src="http://code.jquery.com/jquery-1.11.3.js"></script>
+<script src="http://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.4.1.js"></script>
 ```
 
