@@ -1,13 +1,12 @@
 [![Build Status](https://travis-ci.org/jquery/jquery-migrate.svg?branch=master)](https://travis-ci.org/jquery/jquery-migrate)
 [![Coverage Status](https://img.shields.io/coveralls/jquery/jquery-migrate.svg?style=flat)](https://coveralls.io/r/jquery/jquery-migrate?branch=master)
 
-#### NOTE: To upgrade to jQurey 3.0 you first need version 1.12.x or 2.2.x. If you're using an older version, first upgrade to one of these versions using [jQuery Migrate 1.x](https://github.com/jquery/jquery-migrate/tree/1.x-stable#readme) to resolve any compatibility issues. Then you can upgrade to 3.0 using jQuery Migrate 3.0. For more information about the changes made in jQuery 3.0, see the [upgrade guide](http://jquery.com/upgrade-guide/3.0/) and [blog post](https://blog.jquery.com/2016/06/09/jquery-3-0-final-released/).
+#### NOTE: To upgrade to jQuery 3.0, you first need version 1.12.x or 2.2.x. If you're using an older version, first upgrade to one of these versions using [jQuery Migrate 1.x](https://github.com/jquery/jquery-migrate/tree/1.x-stable#readme), to resolve any compatibility issues. For more information about the changes made in jQuery 3.0, see the [upgrade guide](https://jquery.com/upgrade-guide/3.0/) and [blog post](https://blog.jquery.com/2016/06/09/jquery-3-0-final-released/).
 
 # jQuery Migrate
-Upgrading jQuery can be painful, when breaking changes have been introduced.
-jQuery Migrate helps you in this process, by restoring the APIs that were removed, and additionally shows warnings in the browser console (development version of jQuery migrate only) when removed and/or deprecated APIs are used.
+Upgrading libraries such as jQuery can be a lot of work, when breaking changes have been introduced. jQuery Migrate makes this easier, by restoring the APIs that were removed, and additionally shows warnings in the browser console (development version of jQuery Migrate only) when removed and/or deprecated APIs are used.
 
-That way you can spot and fix what otherwise would have been errors, until you no longer need jQuery migrate and can remove it.
+That way you can spot and fix what otherwise would have been errors, until you no longer need jQuery Migrate and can remove it.
 
 ## Usage
 
