@@ -5,13 +5,12 @@ QUnit.test( "jQuery.easing", function( assert ) {
 		easingCallCount = 0,
 		animComplete = assert.async();
 
-	assert.expect( 7 );
+	assert.expect( 6 );
 
 	jQuery.easing.test = function( p, n, firstNum, diff ) {
 
 		// First frame of animation
 		if ( easingCallCount === 0 ) {
-			assert.equal( p, 0 );
 			assert.notEqual( n, undefined );
 			assert.notEqual( firstNum, undefined );
 			assert.notEqual( diff, undefined );
