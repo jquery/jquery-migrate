@@ -54,3 +54,5 @@ jQuery.Deferred = function( func ) {
 	return deferred;
 };
 
+// Preserve handler of uncaught exceptions in promise chains
+jQuery.Deferred.exceptionHook = oldDeferred.exceptionHook;
