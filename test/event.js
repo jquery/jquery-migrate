@@ -1,10 +1,10 @@
 
-module( "event" );
+QUnit.module( "event" );
 
-test( "error() event method", function( assert ) {
+QUnit.test( "error() event method", function( assert ) {
 	assert.expect( 2 );
 
-	expectWarning( "jQuery.fn.error()", function() {
+	expectWarning( assert, "jQuery.fn.error()", function() {
 		jQuery( "<img />" )
 			.error( function() {
 				assert.ok( true, "Triggered error event" );
@@ -16,10 +16,10 @@ test( "error() event method", function( assert ) {
 	} );
 } );
 
-test( "load() and unload() event methods", function( assert ) {
+QUnit.test( "load() and unload() event methods", function( assert ) {
 	assert.expect( 5 );
 
-	expectWarning( "jQuery.fn.load()", function() {
+	expectWarning( assert, "jQuery.fn.load()", function() {
 		jQuery( "<img />" )
 			.load( function() {
 				assert.ok( true, "Triggered load event" );
@@ -30,7 +30,7 @@ test( "load() and unload() event methods", function( assert ) {
 			.remove();
 	} );
 
-	expectWarning( "jQuery.fn.unload()", function() {
+	expectWarning( assert, "jQuery.fn.unload()", function() {
 		jQuery( "<img />" )
 			.unload( function() {
 				assert.ok( true, "Triggered unload event" );
@@ -41,7 +41,7 @@ test( "load() and unload() event methods", function( assert ) {
 			.remove();
 	} );
 
-	expectNoWarning( "ajax load", function() {
+	expectNoWarning( assert, "ajax load", function() {
 		var start = assert.async();
 		jQuery( "<div id=load138></div>" )
 			.appendTo( "#qunit-fixture" )
@@ -57,7 +57,7 @@ QUnit.test( ".bind() and .unbind()", function( assert ) {
 
 	var $elem = jQuery( "<div />" ).appendTo( "#qunit-fixture" );
 
-	expectWarning( ".bind()", 1, function() {
+	expectWarning( assert, ".bind()", 1, function() {
 		$elem
 			.bind( "click", function() {
 				assert.ok( true, "click fired" );
@@ -65,7 +65,7 @@ QUnit.test( ".bind() and .unbind()", function( assert ) {
 			.trigger( "click" );
 	} );
 
-	expectWarning( ".unbind()", 1, function() {
+	expectWarning( assert, ".unbind()", 1, function() {
 		$elem
 			.unbind( "click" )
 			.trigger( "click" );
@@ -79,7 +79,7 @@ QUnit.test( ".delegate() and .undelegate()", function( assert ) {
 
 	jQuery( "<p />" ).appendTo( $div );
 
-	expectWarning( ".delegate()", 1, function() {
+	expectWarning( assert, ".delegate()", 1, function() {
 		$div
 			.delegate( "p", "click", function() {
 				assert.ok( true, "delegated click fired" );
@@ -87,20 +87,20 @@ QUnit.test( ".delegate() and .undelegate()", function( assert ) {
 			.find( "p" ).trigger( "click" );
 	} );
 
-	expectWarning( ".undelegate()", 1, function() {
+	expectWarning( assert, ".undelegate()", 1, function() {
 		$div
 			.undelegate( "p", "click" )
 			.find( "p" ).trigger( "click" );
 	} );
 } );
 
-QUnit.test( "Event aliases", function( assert) {
+QUnit.test( "Event aliases", function( assert ) {
 	assert.expect( 14 );
 
 	var $div = jQuery( "<div />" );
 
 	"scroll click submit keydown".split( " " ).forEach( function( name ) {
-		expectWarning( "." + name + "()", 1, function() {
+		expectWarning( assert, "." + name + "()", 1, function() {
 			$div[ name ]( function( event ) {
 				assert.equal( event.type, name, name );
 				$div.off( event );
@@ -108,14 +108,14 @@ QUnit.test( "Event aliases", function( assert) {
 		} );
 	} );
 
-	expectWarning( ".hover() one-arg", 1, function() {
+	expectWarning( assert, ".hover() one-arg", 1, function() {
 		$div.hover( function( event ) {
 			assert.ok( /mouseenter|mouseleave/.test( event.type ), event.type );
 			$div.off( event );
 		} ).trigger( "mouseenter" ).trigger( "mouseleave" );
 	} );
 
-	expectWarning( ".hover() two-arg", 1, function() {
+	expectWarning( assert, ".hover() two-arg", 1, function() {
 		$div.hover(
 			function( event ) {
 				assert.equal( "mouseenter", event.type, event.type );
@@ -127,10 +127,10 @@ QUnit.test( "Event aliases", function( assert) {
 	} );
 } );
 
-test( "custom ready", function( assert ) {
+QUnit.test( "custom ready", function( assert ) {
 	assert.expect( 2 );
 
-	expectNoWarning( "Custom ready event not on document", 1, function() {
+	expectNoWarning( assert, "Custom ready event not on document", 1, function() {
 		jQuery( "#foo" ).on( "ready", function() {
 			assert.ok( true, "custom ready event was triggered" );
 		} )

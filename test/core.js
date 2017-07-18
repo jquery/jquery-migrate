@@ -1,34 +1,34 @@
 
-module( "core" );
+QUnit.module( "core" );
 
-test( "jQuery.migrateVersion", function( assert ) {
+QUnit.test( "jQuery.migrateVersion", function( assert ) {
 	assert.expect( 1 );
 
 	assert.ok( /^\d+\.\d+\.[\w\-]+/.test( jQuery.migrateVersion ), "Version property" );
 } );
 
-test( "jQuery(html, props)", function() {
-	expect( 3 );
+QUnit.test( "jQuery(html, props)", function( assert ) {
+	assert.expect( 3 );
 
 	var $el = jQuery( "<input/>", { name: "name", val: "value", size: 42 } );
 
-	equal( $el.attr( "name" ), "name", "Name attribute" );
-	equal( $el.attr( "size" ),
+	assert.equal( $el.attr( "name" ), "name", "Name attribute" );
+	assert.equal( $el.attr( "size" ),
 		jQuery.isEmptyObject( jQuery.attrFn ) ? undefined : "42", "Size attribute" );
-	equal( $el.val(), "value", "Call setter method" );
+	assert.equal( $el.val(), "value", "Call setter method" );
 } );
 
-test( "jQuery( '#' )", function() {
-	expect( 2 );
+QUnit.test( "jQuery( '#' )", function( assert ) {
+	assert.expect( 2 );
 
-	expectWarning( "Selector, through the jQuery constructor, nothing but hash", function() {
+	expectWarning( assert, "Selector, through the jQuery constructor, nothing but hash", function() {
 		var set = jQuery( "#" );
-		equal( set.length, 0, "empty set" );
+		assert.equal( set.length, 0, "empty set" );
 	} );
 } );
 
 QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
-	expect( 31 );
+	assert.expect( 31 );
 
 	var markup = jQuery(
 			"<div>" +
@@ -73,28 +73,28 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 			"a[href=space#junk]:eq(1)"
 		];
 
-	expectNoWarning( "Perfectly cromulent selectors are unchanged", function() {
+	expectNoWarning( assert, "Perfectly cromulent selectors are unchanged", function() {
 		okays.forEach( function( okay ) {
 			assert.equal( jQuery( okay, markup ).length, 1, okay );
 			assert.equal( markup.find( okay ).length, 1, okay );
 		} );
 	} );
 
-	expectWarning( "Values with unquoted hashes are quoted", fixables.length, function() {
+	expectWarning( assert, "Values with unquoted hashes are quoted", fixables.length, function() {
 		fixables.forEach( function( fixable ) {
 			assert.equal( jQuery( fixable, markup ).length, 1, fixable );
 			assert.equal( markup.find( fixable ).length, 1, fixable );
 		} );
 	} );
 
-	expectWarning( "False positives", positives.length, function() {
+	expectWarning( assert, "False positives", positives.length, function() {
 		positives.forEach( function( positive ) {
 			assert.equal( jQuery( positive, markup ).length, 1,  positive );
 			assert.equal( markup.find( positive ).length, 1, positive );
 		} );
 	} );
 
-	expectWarning( "Unfixable cases", failures.length, function() {
+	expectWarning( assert, "Unfixable cases", failures.length, function() {
 		failures.forEach( function( failure ) {
 			try {
 				jQuery( failure, markup );
@@ -108,7 +108,7 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 	} );
 
 	// Ensure we don't process jQuery( x ) when x is a function
-	expectNoWarning( "ready function with attribute selector", function() {
+	expectNoWarning( assert, "ready function with attribute selector", function() {
 		try {
 			jQuery( function() {
 				if ( jQuery.thisIsNeverTrue ) {
@@ -119,7 +119,7 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 	} );
 } );
 
-test( "XSS injection (leading hash)", function( assert ) {
+QUnit.test( "XSS injection (leading hash)", function( assert ) {
 	assert.expect( 1 );
 
 	var threw = false;
@@ -133,7 +133,7 @@ test( "XSS injection (leading hash)", function( assert ) {
 	assert.equal( threw, true, "Throw on leading-hash HTML (treated as selector)" );
 } );
 
-test( "XSS injection (XSS via script tag)", function( assert ) {
+QUnit.test( "XSS injection (XSS via script tag)", function( assert ) {
 	assert.expect( 2 );
 
 	var threw = false;
@@ -147,7 +147,7 @@ test( "XSS injection (XSS via script tag)", function( assert ) {
 	assert.equal( window.XSS, false, "XSS" );
 } );
 
-test( "XSS injection (XSS with hash and leading space)", function( assert ) {
+QUnit.test( "XSS injection (XSS with hash and leading space)", function( assert ) {
 	assert.expect( 2 );
 
 	var threw = false;
@@ -161,7 +161,7 @@ test( "XSS injection (XSS with hash and leading space)", function( assert ) {
 	assert.equal( window.XSS, false, "XSS" );
 } );
 
-test( "XSS injection (XSS via onerror inline handler)", function( assert ) {
+QUnit.test( "XSS injection (XSS via onerror inline handler)", function( assert ) {
 	assert.expect( 2 );
 
 	var start,
@@ -182,25 +182,25 @@ test( "XSS injection (XSS via onerror inline handler)", function( assert ) {
 	}, 1000 );
 } );
 
-test( "jQuery( '<element>' ) usable on detached elements (#128)", function( assert ) {
+QUnit.test( "jQuery( '<element>' ) usable on detached elements (#128)", function( assert ) {
 	assert.expect( 1 );
 
 	jQuery( "<a>" ).outerWidth();
 	assert.ok( true, "No crash when operating on detached elements with window" );
 } );
 
-test( ".size", function( assert ) {
+QUnit.test( ".size", function( assert ) {
     assert.expect( 1 );
 
-    expectWarning( "size", function() {
+    expectWarning( assert, "size", function() {
         jQuery( "<div />" ).size();
     } );
 } );
 
-test( "jQuery.parseJSON", function( assert ) {
+QUnit.test( "jQuery.parseJSON", function( assert ) {
     assert.expect( 2 );
 
-    expectWarning( "jQuery.parseJSON", function() {
+    expectWarning( assert, "jQuery.parseJSON", function() {
 		assert.deepEqual(
 			jQuery.parseJSON( "{\"a\":1}" ),
 			{ a: 1 },
@@ -209,7 +209,7 @@ test( "jQuery.parseJSON", function( assert ) {
     } );
 } );
 
-test( "jQuery.isNumeric", function( assert ) {
+QUnit.test( "jQuery.isNumeric", function( assert ) {
     assert.expect( 8 );
 
 	var ToString = function( value ) {
@@ -218,12 +218,12 @@ test( "jQuery.isNumeric", function( assert ) {
 			};
 		};
 
-    expectWarning( "changed cases", function() {
+    expectWarning( assert, "changed cases", function() {
 		assert.equal( jQuery.isNumeric( new ToString( "42" ) ), true,
 			"Custom .toString returning number" );
     } );
 
-    expectNoWarning( "unchanged cases", function() {
+    expectNoWarning( assert, "unchanged cases", function() {
 		assert.equal( jQuery.isNumeric( 42 ), true, "number" );
 		assert.equal( jQuery.isNumeric( "42" ), true, "number string" );
 		assert.equal( jQuery.isNumeric( "devo" ), false, "non-numeric string" );
@@ -233,10 +233,10 @@ test( "jQuery.isNumeric", function( assert ) {
 	} );
 } );
 
-test( "jQuery.unique", function( assert ) {
+QUnit.test( "jQuery.unique", function( assert ) {
 	assert.expect( 2 );
 
-	expectWarning( "jQuery.unique", function() {
+	expectWarning( assert, "jQuery.unique", function() {
 		var body = jQuery( "body" )[ 0 ],
 			head = jQuery( "head" )[ 0 ];
 		assert.deepEqual(
@@ -246,22 +246,22 @@ test( "jQuery.unique", function( assert ) {
 	} );
 } );
 
-test( "jQuery.expr.pseudos aliases", function( assert ) {
+QUnit.test( "jQuery.expr.pseudos aliases", function( assert ) {
 	assert.expect( 7 );
 
-	expectWarning( "jQuery.expr.filters", function() {
+	expectWarning( assert, "jQuery.expr.filters", function() {
 		jQuery.expr.filters.mazda = function( elem ) {
 			return elem.style.zoom === "3";
 		};
 	} );
 
-	expectWarning( "jQuery.expr[':']", function() {
+	expectWarning( assert, "jQuery.expr[':']", function() {
 		jQuery.expr[ ":" ].marginal = function( elem ) {
 			return parseInt( elem.style.marginLeftWidth ) > 20;
 		};
 	} );
 
-	expectNoWarning( "jQuery.expr.pseudos", function() {
+	expectNoWarning( assert, "jQuery.expr.pseudos", function() {
 		var fixture = jQuery( "#qunit-fixture" ).prepend( "<p>hello</p>" );
 
 		assert.ok( jQuery.expr.pseudos.mazda, "filters assigned" );
@@ -278,7 +278,7 @@ test( "jQuery.expr.pseudos aliases", function( assert ) {
 QUnit.test( "jQuery.holdReady (warn only)", function( assert ) {
 	assert.expect( 1 );
 
-	expectWarning( "jQuery.holdReady", 1, function() {
+	expectWarning( assert, "jQuery.holdReady", 1, function() {
 		jQuery.holdReady( true );
 		jQuery.holdReady( false );
 	} );

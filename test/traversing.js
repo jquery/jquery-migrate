@@ -1,10 +1,10 @@
 
-module( "traversing" );
+QUnit.module( "traversing" );
 
-test( ".andSelf", function( assert ) {
+QUnit.test( ".andSelf", function( assert ) {
     assert.expect( 1 );
 
-    expectWarning( "andSelf", function() {
+    expectWarning( assert, "andSelf", function() {
         jQuery( "<div id='outer'><div id='inner'></div></div>" ).find( ".inner" ).andSelf();
     } );
 } );

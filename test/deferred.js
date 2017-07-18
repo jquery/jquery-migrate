@@ -1,7 +1,7 @@
 
-module( "deferred" );
+QUnit.module( "deferred" );
 
-test( ".pipe() warnings", function( assert ) {
+QUnit.test( ".pipe() warnings", function( assert ) {
 	assert.expect( 4 );
 
 	var d = jQuery.Deferred(),
@@ -12,12 +12,12 @@ test( ".pipe() warnings", function( assert ) {
 	}
 
 	// Deferred
-	expectWarning( "pipe", function() {
+	expectWarning( assert, "pipe", function() {
 		d.pipe( checkValue );
 	} );
 
 	// Deferred's promise object
-	expectWarning( "pipe", function() {
+	expectWarning( assert, "pipe", function() {
 		p.pipe( checkValue );
 	} );
 
@@ -25,7 +25,7 @@ test( ".pipe() warnings", function( assert ) {
 	d.resolve( 1 );
 } );
 
-test( "[PIPE ONLY] jQuery.Deferred.pipe - filtering (fail)", function( assert ) {
+QUnit.test( "[PIPE ONLY] jQuery.Deferred.pipe - filtering (fail)", function( assert ) {
 
 	assert.expect( 4 );
 
@@ -64,7 +64,7 @@ test( "[PIPE ONLY] jQuery.Deferred.pipe - filtering (fail)", function( assert ) 
 	} );
 } );
 
-test( "[PIPE ONLY] jQuery.Deferred.pipe - deferred (progress)", function( assert ) {
+QUnit.test( "[PIPE ONLY] jQuery.Deferred.pipe - deferred (progress)", function( assert ) {
 
 	assert.expect( 3 );
 
@@ -96,7 +96,7 @@ test( "[PIPE ONLY] jQuery.Deferred.pipe - deferred (progress)", function( assert
 	} );
 } );
 
-test( "[PIPE ONLY] jQuery.Deferred.pipe - context", function( assert ) {
+QUnit.test( "[PIPE ONLY] jQuery.Deferred.pipe - context", function( assert ) {
 
 	assert.expect( 5 );
 

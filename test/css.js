@@ -1,13 +1,13 @@
 
-module( "css" );
+QUnit.module( "css" );
 
-test( "jQuery.swap()", function( assert ) {
+QUnit.test( "jQuery.swap()", function( assert ) {
 	assert.expect( 6 );
 
 	var div = document.createElement( "div" );
 	div.style.borderWidth = "4px";
 
-	expectWarning( "External swap() call", function() {
+	expectWarning( assert, "External swap() call", function() {
 		jQuery.swap( div, { borderRightWidth: "5px" }, function( arg ) {
 
 			assert.equal( this.style.borderRightWidth, "5px", "style was changed" );
@@ -17,7 +17,7 @@ test( "jQuery.swap()", function( assert ) {
 	} );
 	assert.equal( div.style.borderRightWidth, "4px", "style was restored" );
 
-	expectNoWarning( "Internal swap() call", function() {
+	expectNoWarning( assert, "Internal swap() call", function() {
 		var $fp = jQuery( "#firstp" ).width( "10em" ),
 			width = $fp.width();
 

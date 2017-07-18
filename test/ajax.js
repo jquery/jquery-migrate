@@ -1,11 +1,11 @@
-module( "ajax" );
+QUnit.module( "ajax" );
 
-test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
+QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 	assert.expect( 3 );
 
 	var done = assert.async();
 
-	expectWarning( ".success(), .error(), .compete() calls", 3, function() {
+	expectWarning( assert, ".success(), .error(), .compete() calls", 3, function() {
 
 		jQuery.ajax( "/not-found.404" )
 			.success( jQuery.noop )
@@ -16,7 +16,8 @@ test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 			} )
 			.complete( function() {
 				assert.ok( true, "ajax complete" );
-				done();
+				// Wait for expectWarning to complete
+				setTimeout(done, 1);
 			} );
 	} );
 

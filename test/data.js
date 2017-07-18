@@ -1,6 +1,6 @@
-﻿module( "data" );
+﻿QUnit.module( "data" );
 
-test( "jQuery.data() camelCased names", function( assert ) {
+QUnit.test( "jQuery.data() camelCased names", function( assert ) {
 
 	var sames = [
 			"datum",
@@ -22,7 +22,7 @@ test( "jQuery.data() camelCased names", function( assert ) {
 		div = document.createElement( "div" );
 
 	// = .hasData + noWarning
-	expectNoWarning( "No existing data object", function() {
+	expectNoWarning( assert, "No existing data object", function() {
 		sames.concat( diffs ).forEach( function( name ) {
 			jQuery.data( div, name );
 		} );
@@ -30,7 +30,7 @@ test( "jQuery.data() camelCased names", function( assert ) {
 	} );
 
 	// = sames.length + diffs.length + noWarning
-	expectNoWarning( "Data set/get without warning via API", function() {
+	expectNoWarning( assert, "Data set/get without warning via API", function() {
 		sames.concat( diffs ).forEach( function( name, index ) {
 			jQuery.data( div, name, index );
 			assert.equal( jQuery.data( div, name ), index, name + "=" + index );
@@ -41,7 +41,7 @@ test( "jQuery.data() camelCased names", function( assert ) {
 	curData = jQuery.data( div );
 
 	// = diffs.length + warning
-	expectWarning( "Dashed name conflicts", diffs.length, function() {
+	expectWarning( assert, "Dashed name conflicts", diffs.length, function() {
 		diffs.forEach( function( name, index ) {
 			curData[ name ] = index;
 			assert.equal( jQuery.data( div, name ), curData[ name ],
@@ -51,7 +51,7 @@ test( "jQuery.data() camelCased names", function( assert ) {
 
 } );
 
-test( "jQuery.data() camelCased names (mass setter)", function( assert ) {
+QUnit.test( "jQuery.data() camelCased names (mass setter)", function( assert ) {
 	var sames = [
 			"datum",
 			"ropeAdope",
@@ -71,7 +71,7 @@ test( "jQuery.data() camelCased names (mass setter)", function( assert ) {
 	var div = document.createElement( "div" );
 
 	// = sames.length + noWarning
-	expectNoWarning( "Data set as an object and get without warning via API", function() {
+	expectNoWarning( assert, "Data set as an object and get without warning via API", function() {
 		var testData = {};
 
 		sames.forEach( function( name, index ) {
@@ -86,7 +86,7 @@ test( "jQuery.data() camelCased names (mass setter)", function( assert ) {
 	} );
 
 	// = diffs.length + warning
-	expectWarning( "Data set as an object and get without warning via API", function() {
+	expectWarning( assert, "Data set as an object and get without warning via API", function() {
 		var testData = {};
 
 		diffs.forEach( function( name, index ) {

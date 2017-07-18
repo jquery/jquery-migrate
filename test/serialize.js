@@ -1,5 +1,5 @@
 
-module( "serialize" );
+QUnit.module( "serialize" );
 
 QUnit.test( "jQuery.param( x, traditional)", function( assert ) {
 	assert.expect( 12 );
@@ -9,19 +9,19 @@ QUnit.test( "jQuery.param( x, traditional)", function( assert ) {
 		standardResult = "a%5B%5D=1&a%5B%5D=2",
 		traditionalResult = "a=1&a=2";
 
-	expectNoWarning( "default, traditional default", function() {
+	expectNoWarning( assert, "default, traditional default", function() {
 		assert.equal(
 			jQuery.param( data ), standardResult,
 			"default, traditional default" );
 	} );
 
-	expectNoWarning( "explicit true, traditional default", function() {
+	expectNoWarning( assert, "explicit true, traditional default", function() {
 		assert.equal(
 			jQuery.param( data, true ), traditionalResult,
 			"explicit true, traditional default" );
 	} );
 
-	expectNoWarning( "explicit false, traditional default", function() {
+	expectNoWarning( assert, "explicit false, traditional default", function() {
 		assert.equal(
 			jQuery.param( data, false ), standardResult,
 			"explicit false, traditional default" );
@@ -29,19 +29,19 @@ QUnit.test( "jQuery.param( x, traditional)", function( assert ) {
 
 	jQuery.ajaxSettings.traditional = true;
 
-	expectWarning( "default, traditional true", function() {
+	expectWarning( assert, "default, traditional true", function() {
 		assert.equal(
 			jQuery.param( data ), traditionalResult,
 			"default, traditional true" );
 	} );
 
-	expectNoWarning( "explicit true, traditional true", function() {
+	expectNoWarning( assert, "explicit true, traditional true", function() {
 		assert.equal(
 			jQuery.param( data, true ), traditionalResult,
 			"explicit true, traditional true" );
 	} );
 
-	expectNoWarning( "explicit false, traditional true", function() {
+	expectNoWarning( assert, "explicit false, traditional true", function() {
 		assert.equal(
 			jQuery.param( data, false ), standardResult,
 			"explicit false, traditional true" );
