@@ -31,15 +31,16 @@ QUnit.test( "jQuery.easing", function( assert ) {
 
 	div.appendTo( "#qunit-fixture" );
 
-	expectWarning( assert, "easing", function() {
-		div.animate( { width: 20 }, {
-			duration: 100,
-			easing: "test",
-			complete: function() {
-				assert.equal( lastP, 1 );
-				animComplete();
-			}
-		} );
+	// Can't use expectWarning since this is async
+	jQuery.migrateReset();
+	div.animate( { width: 20 }, {
+		duration: 100,
+		easing: "test",
+		complete: function() {
+			assert.equal( lastP, 1, "easing" );
+			assert.equal( jQuery.migrateWarnings.length, 1, "warned" );
+			animComplete();
+		}
 	} );
 } );
 
