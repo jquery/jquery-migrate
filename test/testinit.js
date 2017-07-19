@@ -16,7 +16,7 @@ TestManager = {
 			projectRoot = isSelf ? ".." : "../../" + projectName,
 			version = ( matcher.exec( document.location.search ) || {} )[ 1 ] || defaultVersion;
 
-		if ( version === "dev" ) {
+		if ( version === "raw" ) {
 
 			// Order is important
 			file = [
@@ -38,6 +38,8 @@ TestManager = {
 			for ( i = 0; i < file.length; i++ ) {
 				file[ i ] = projectRoot + "/src/" + file[ i ] + ".js";
 			}
+		} else if ( version === "dev" ) {
+			file = projectRoot + "/dist/" + projectName + ".js";
 		} else if ( version === "min" ) {
 			file = projectRoot + "/dist/" + projectName + ".min.js";
 		} else if ( /^[\w\.\-]+$/.test( version ) ) {
@@ -136,7 +138,7 @@ TestManager.init( {
 	},
 	"jquery-migrate": {
 		urlTag: "plugin",
-		choices: "dev,min,git,3.0.0"
+		choices: "dev,min,raw,git,3.0.0"
 	}
 } );
 
