@@ -131,13 +131,13 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: Replace any use of `$( document ).on( "ready", fn )` with `$( fn )`. This approach works reliably even when the document is already loaded.
 
-### JQMIGRATE: Additional params for 'jQuery.easing' functions are not documented and redundant
+### JQMIGRATE: 'jQuery.easing.NAME' should use only one argument
 
-**Cause**: Additional params for `jQuery.easing` methods were never documented and redundant, same behavior could be easily achieved by other means.
+**Cause**: Additional arguments for `jQuery.easing` methods were never documented and are redundant since the same behavior can be easily achieved without them. When Migrate detects this case, the specified easing function is not used and `"linear"` easing is used instead for the animation.
 
-**Solution**: Instead of using time and duration arguments, etc; it is already sufficient to use only first "percentage" argument.
+**Solution**: Rewrite the easing function to only use one argument. If you are using the [jQuery Easing plugin](http://gsgd.co.uk/sandbox/jquery/easing), upgrade to [version 1.4.0 or higher](https://github.com/gdsmith/jquery.easing/releases).
 
-For example, if you want to implement [Cubic](https://en.wikipedia.org/wiki/Cubic_function) function, then instead of old approach -
+For example, to implement [Cubic](https://en.wikipedia.org/wiki/Cubic_function) easing, the old function might be:
 
 ```js
 jQuery.easing.easeInCubic = function ( p, t, b, c, d ) {
@@ -145,7 +145,7 @@ jQuery.easing.easeInCubic = function ( p, t, b, c, d ) {
 }
 ```
 
-You could achive same effect with -
+You can achive same effect with this:
 
 ```js
 jQuery.easing.easeInCubic = function ( p ) {

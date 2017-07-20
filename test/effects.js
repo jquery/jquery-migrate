@@ -1,45 +1,47 @@
 QUnit.module( "effects" );
 
 QUnit.test( "jQuery.easing", function( assert ) {
-	var lastP = false,
+	var lastP = -0.1,
 		easingCallCount = 0,
 		animComplete = assert.async();
 
-	assert.expect( 6 );
+	assert.expect( 4 );
 
-	jQuery.easing.test = function( p, n, firstNum, diff ) {
+	jQuery.easing.testOld = function( p, n, firstNum, diff ) {
+		assert.ok( false, "should not have been called" );
+	};
 
-		// First frame of animation
-		if ( easingCallCount === 0 ) {
-			assert.notEqual( n, undefined );
-			assert.notEqual( firstNum, undefined );
-			assert.notEqual( diff, undefined );
-
-		// Second frame of animation. (Only check once so we know how many assertions to expect.)
-		} else if ( easingCallCount === 1 ) {
-			assert.ok( p > 0 );
-
+	jQuery.easing.testNew = function( p ) {
+		if ( ++easingCallCount < 3 ) {
+			assert.ok( p > lastP, "called, percentage is increasing" );
+			lastP = p;
 		}
-		lastP = p;
-		easingCallCount++;
 
 		// Linear
 		return p;
 	};
 
-	var div = jQuery( "<div>test</div>" );
-
-	div.appendTo( "#qunit-fixture" );
+	var div = jQuery( "<div>test</div>" )
+			.css( "width", "30px" )
+			.appendTo( "#qunit-fixture" );
 
 	// Can't use expectWarning since this is async
+	div;
 	jQuery.migrateReset();
-	div.animate( { width: 20 }, {
-		duration: 100,
-		easing: "test",
+	div.animate( { width: "20px" }, {
+		duration: 50,
+		easing: "testOld",
 		complete: function() {
-			assert.equal( lastP, 1, "easing" );
 			assert.equal( jQuery.migrateWarnings.length, 1, "warned" );
-			animComplete();
+			jQuery.migrateWarnings.length = 0;
+			div.animate( { width: "10px" }, {
+				duration: 50,
+				easing: "testNew",
+				complete: function() {
+					assert.equal( jQuery.migrateWarnings.length, 0, "did not warn" );
+					animComplete();
+				}
+			} );
 		}
 	} );
 } );
