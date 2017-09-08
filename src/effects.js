@@ -1,17 +1,15 @@
 var oldTweenRun = jQuery.Tween.prototype.run;
+var linearEasing = function( pct ) {
+		return pct;
+	};
 
 jQuery.Tween.prototype.run = function( ) {
 	if ( jQuery.easing[ this.easing ].length > 1 ) {
 		migrateWarn(
-			"easing function " +
-			"\"jQuery.easing." + this.easing.toString() +
-			"\" should use only first argument"
+			"'jQuery.easing." + this.easing.toString() + "' should use only one argument"
 		);
 
-		var oldEasing = jQuery.easing[ this.easing ];
-		jQuery.easing[ this.easing ] = function( percent ) {
-			return oldEasing.call( jQuery.easing, percent, percent, 0, 1, 1 );
-		}.bind( this );
+		jQuery.easing[ this.easing ] = linearEasing;
 	}
 
 	oldTweenRun.apply( this, arguments );
