@@ -5,14 +5,14 @@ QUnit.test( "jQuery.easing", function( assert ) {
 		easingCallCount = 0,
 		animComplete = assert.async();
 
-	assert.expect( 5 );
+	assert.expect( 4 );
 
 	jQuery.easing.testOld = function( p, n, firstNum, diff ) {
 		assert.ok( false, "should not have been called" );
 	};
 
 	jQuery.easing.testNew = function( p ) {
-		if ( ++easingCallCount < 4 ) {
+		if ( ++easingCallCount < 3 ) {
 			if ( p === 0 && p === lastP ) {
 				assert.ok( true, "p===0 called twice before jQuery 3.2.0" );
 			} else {
