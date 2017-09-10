@@ -92,7 +92,6 @@ module.exports = function( grunt ) {
 					destPrefix: "external"
 				},
 				files: {
-					"phantomjs-polyfill/bind-polyfill.js": "phantomjs-polyfill/bind-polyfill.js",
 					"qunit/qunit.js": "qunitjs/qunit/qunit.js",
 					"qunit/qunit.css": "qunitjs/qunit/qunit.css",
 					"qunit/LICENSE.txt": "qunitjs/LICENSE.txt" }
