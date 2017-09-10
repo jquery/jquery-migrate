@@ -3,7 +3,8 @@ TestManager = {
 	/*
 	 * Load a version of a file based on URL parameters.
 	 *
-	 *	dev		Uncompressed development version: source files in the project /src dir
+	 *	dev		Uncompressed development version: source files in the project /dist dir
+	 *	raw		Non-combined dev version: source files from the project /src dir
 	 *	min		Minified version in the project /dist dir
 	 *	VER		Version from code.jquery.com, e.g.: git, 1.8.2.min or 1.7rc1
 	 *	else	Full or relative path to be used for script src
