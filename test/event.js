@@ -130,6 +130,8 @@ QUnit.test( "Event aliases", function( assert ) {
 QUnit.test( "custom ready", function( assert ) {
 	assert.expect( 2 );
 
+	jQuery("#qunit-fixture").append("<div id='foo'>bar</div>");
+
 	expectNoWarning( assert, "Custom ready event not on document", 1, function() {
 		jQuery( "#foo" ).on( "ready", function() {
 			assert.ok( true, "custom ready event was triggered" );
