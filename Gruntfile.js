@@ -86,17 +86,6 @@ module.exports = function( grunt ) {
 				]
 			}
 		},
-		npmcopy: {
-			all: {
-				options: {
-					destPrefix: "external"
-				},
-				files: {
-					"qunit/qunit.js": "qunitjs/qunit/qunit.js",
-					"qunit/qunit.css": "qunitjs/qunit/qunit.css",
-					"qunit/LICENSE.txt": "qunitjs/LICENSE.txt" }
-			}
-		},
 		uglify: {
 			all: {
 				files: {
