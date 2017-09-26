@@ -1,80 +1,80 @@
 {
-  "name": "jquery-migrate",
-  "title": "jQuery Migrate",
-  "description": "Migrate older jQuery code to jQuery 3.0+",
-  "main": "dist/jquery-migrate.js",
-  "version": "3.0.1-pre",
-  "homepage": "https://github.com/jquery/jquery-migrate",
-  "author": {
-    "name": "jQuery Foundation and other contributors",
-    "url": "https://github.com/jquery/jquery-migrate/blob/master/AUTHORS.txt"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/jquery/jquery-migrate.git"
-  },
-  "bugs": {
-    "url": "http://bugs.jquery.com/"
-  },
-  "license": "MIT",
-  "scripts": {
-    "build": "grunt build",
-    "test": "grunt test",
-    "ci": "grunt ci"
-  },
-  "peerDependencies": {
-    "jquery": ">=3 <4"
-  },
-  "devDependencies": {
-    "chalk": "2.0.1",
-    "commitplease": "2.7.10",
-    "eslint-config-jquery": "1.0.1",
-    "grunt": "1.0.1",
-    "grunt-cli": "1.2.0",
-    "grunt-contrib-concat": "1.0.1",
-    "grunt-contrib-uglify": "3.0.1",
-    "grunt-contrib-watch": "1.0.0",
-    "grunt-coveralls": "1.0.1",
-    "grunt-eslint": "20.0.0",
-    "grunt-git-authors": "3.2.0",
-    "grunt-npmcopy": "0.1.0",
-    "grunt-qunit-istanbul": "1.0.0",
-    "jquery": "3.1.1",
-    "load-grunt-tasks": "3.5.2",
-    "qunitjs": "2.0.1",
-    "testswarm": "1.1.0"
-  },
-  "keywords": [
-    "jquery",
-    "javascript",
-    "browser",
-    "plugin",
-    "migrate"
-  ],
-  "commitplease": {
-    "components": [
-      "Docs",
-      "Tests",
-      "Build",
-      "Release",
-      "Core",
-      "Ajax",
-      "Attributes",
-      "Callbacks",
-      "CSS",
-      "Data",
-      "Deferred",
-      "Deprecated",
-      "Dimensions",
-      "Effects",
-      "Event",
-      "Manipulation",
-      "Offset",
-      "Queue",
-      "Selector",
-      "Serialize",
-      "Traversing",
-      "Wrap"
-    ]
-  }
+	"name": "jquery-migrate",
+	"title": "jQuery Migrate",
+	"description": "Migrate older jQuery code to jQuery 3.0+",
+	"main": "dist/jquery-migrate.js",
+	"version": "3.0.1",
+	"homepage": "https://github.com/jquery/jquery-migrate",
+	"author": {
+		"name": "jQuery Foundation and other contributors",
+		"url": "https://github.com/jquery/jquery-migrate/blob/3.0.1/AUTHORS.txt"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/jquery/jquery-migrate.git"
+	},
+	"bugs": {
+		"url": "http://bugs.jquery.com/"
+	},
+	"license": "MIT",
+	"scripts": {
+		"build": "grunt build",
+		"test": "grunt test",
+		"ci": "grunt ci"
+	},
+	"peerDependencies": {
+		"jquery": ">=3 <4"
+	},
+	"devDependencies": {
+		"chalk": "2.0.1",
+		"commitplease": "2.7.10",
+		"eslint-config-jquery": "1.0.1",
+		"grunt": "1.0.1",
+		"grunt-cli": "1.2.0",
+		"grunt-contrib-concat": "1.0.1",
+		"grunt-contrib-uglify": "3.0.1",
+		"grunt-contrib-watch": "1.0.0",
+		"grunt-coveralls": "1.0.1",
+		"grunt-eslint": "20.0.0",
+		"grunt-git-authors": "3.2.0",
+		"grunt-npmcopy": "0.1.0",
+		"grunt-qunit-istanbul": "1.0.0",
+		"jquery": "3.1.1",
+		"load-grunt-tasks": "3.5.2",
+		"qunitjs": "2.0.1",
+		"testswarm": "1.1.0"
+	},
+	"keywords": [
+		"jquery",
+		"javascript",
+		"browser",
+		"plugin",
+		"migrate"
+	],
+	"commitplease": {
+		"components": [
+			"Docs",
+			"Tests",
+			"Build",
+			"Release",
+			"Core",
+			"Ajax",
+			"Attributes",
+			"Callbacks",
+			"CSS",
+			"Data",
+			"Deferred",
+			"Deprecated",
+			"Dimensions",
+			"Effects",
+			"Event",
+			"Manipulation",
+			"Offset",
+			"Queue",
+			"Selector",
+			"Serialize",
+			"Traversing",
+			"Wrap"
+		]
+	}
 }
