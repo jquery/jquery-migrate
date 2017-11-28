@@ -32,9 +32,10 @@ var releaseVersion,
 	devFile = "dist/jquery-migrate.js",
 	minFile = "dist/jquery-migrate.min.js",
 
+	releaseDir = "CDN/",
 	releaseFiles = {
-		"CDN/jquery-migrate-VER.js": devFile,
-		"CDN/jquery-migrate-VER.min.js": minFile
+		"jquery-migrate-VER.js": devFile,
+		"jquery-migrate-VER.min.js": minFile
 	};
 
 steps(
@@ -162,8 +163,11 @@ function gruntBuild( next ) {
 
 function makeReleaseCopies( next ) {
 	finalFiles = {};
+	if ( !fs.existsSync( releaseDir ) ) {
+		fs.mkdirSync( releaseDir );
+	}
 	Object.keys( releaseFiles ).forEach( function( key ) {
-		var builtFile = releaseFiles[ key ],
+		var builtFile = releaseDir + releaseFiles[ key ],
 			releaseFile = key.replace( /VER/g, releaseVersion );
 
 		copy( builtFile, releaseFile );
