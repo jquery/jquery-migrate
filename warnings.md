@@ -161,11 +161,17 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution**: Replace any use of `jQuery.parseJSON` with `JSON.parse`.
 
-### JQMIGRATE: jQuery.isNumeric() should not be called on constructed objects
+### JQMIGRATE: jQuery.isNumeric() is deprecated
 
-**Cause**: The intended use case of `jQuery.isNumeric` is to see if its argument is either already a number, or a string that can be converted to a number. In jQuery 3.0 some edge cases changed to not return the same values. In particular, a constructed object (one created with `new MyObject()`) that contains a `.toString()` method is never considered to be numeric, even if that method returns a string that could be converted to a number. Please do not taunt this method.
+**Cause**: This method was used by jQuery to determine if certain string arguments could be converted to numbers, but the name led people to apply their own interpretations to what the method means. As a result, it often doesn't meet the needs of specific cases. For example, a 25-character string of only digits is technically a valid number, but JavaScript cannot represent it accurately. The string `"0x251D"` is a valid hexadecimal number but may not be acceptable numeric input to a web form.
 
-**Solution**: Either use a different test for being numeric, or call the object's `.toString()` method before calling the jQuery method: `jQuery.isNumeric( myObject.toString() )`.
+**Solution**: Use a test for being numeric that makes sense for the specific situation. For example, instead of `jQuery.isNumeric(string)`, use `isNan(parseFloat(string))` if a floating point number is expected, or `string.test(/^[0-9]{1,8}$/)` if a sequence of 1 to 8 digits is expected.
+
+### JQMIGRATE: jQuery.type() is deprecated
+
+**Cause**: This method returns a string that indicates the type of the argument, for example `"number"` or `"function"`. However, as the JavaScript language evolves this method has become problematic because new language constructs might require this function to either return a new string (potentially breaking existing code) or somehow map new constructs into existing strings (again, potentially breaking existing code). Examples of new recent JavaScript features include asynchronous functions, class constructors, `Symbol`s, or functions that act as iterators.
+
+**Solution**: Review code that uses `jQuery.type()` and use a type check that is appropriate for the situation. For example. if the code expects a plain function, check for `typeof arg === "function"`.
 
 ### JQMIGRATE: jQuery.unique is deprecated; use jQuery.uniqueSort
 

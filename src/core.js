@@ -1,6 +1,5 @@
 
 var oldInit = jQuery.fn.init,
-	oldIsNumeric = jQuery.isNumeric,
 	oldFind = jQuery.find,
 	rattrHashTest = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]*?#[-\w#]*)\s*\]/,
 	rattrHashGlob = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]*?#[-\w#]*)\s*\]/g;
@@ -71,33 +70,6 @@ jQuery.parseJSON = function() {
 	return JSON.parse.apply( null, arguments );
 };
 
-jQuery.isNumeric = function( val ) {
-
-	// The jQuery 2.2.3 implementation of isNumeric
-	function isNumeric2( obj ) {
-		var realStringObj = obj && obj.toString();
-		return !jQuery.isArray( obj ) && ( realStringObj - parseFloat( realStringObj ) + 1 ) >= 0;
-	}
-
-	var newValue = oldIsNumeric( val ),
-		oldValue = isNumeric2( val );
-
-	if ( newValue !== oldValue ) {
-		migrateWarn( "jQuery.isNumeric() should not be called on constructed objects" );
-	}
-
-	return oldValue;
-};
-
-if ( jQueryVersionSince( "3.3.0" ) ) {
-	migrateWarnFunc( jQuery, "isWindow",
-		function( obj ) {
-			return obj != null && obj === obj.window;
-		},
-		"jQuery.isWindow() is deprecated"
-	);
-}
-
 migrateWarnFunc( jQuery, "holdReady", jQuery.holdReady,
 	"jQuery.holdReady is deprecated" );
 
@@ -114,4 +86,36 @@ migrateWarnProp( jQuery.expr, ":", jQuery.expr.pseudos,
 if ( jQueryVersionSince( "3.2.0" ) ) {
 	migrateWarnFunc( jQuery, "nodeName", jQuery.nodeName,
 	"jQuery.nodeName is deprecated" );
+}
+
+if ( jQueryVersionSince( "3.3.0" ) ) {
+
+	migrateWarnFunc( jQuery, "isNumeric", jQuery.isNumeric = function( obj ) {
+
+			// As of jQuery 3.0, isNumeric is limited to
+			// strings and numbers (primitives or objects)
+			// that can be coerced to finite numbers (gh-2662)
+			var type = jQuery.type( obj );
+			return ( type === "number" || type === "string" ) &&
+
+				// parseFloat NaNs numeric-cast false positives ("")
+				// ...but misinterprets leading-number strings, e.g. hex literals ("0x...")
+				// subtraction forces infinities to NaN
+				!isNaN( obj - parseFloat( obj ) );
+		},
+		"jQuery.isNumeric() is deprecated"
+	);
+
+	migrateWarnFunc( jQuery, "type", jQuery.type,
+	"jQuery.type is deprecated" );
+
+	migrateWarnFunc( jQuery, "isFunction", jQuery.isFunction,
+		"jQuery.isFunction() is deprecated" );
+
+	migrateWarnFunc( jQuery, "isWindow",
+		function( obj ) {
+			return obj != null && obj === obj.window;
+		},
+		"jQuery.isWindow() is deprecated"
+	);
 }
