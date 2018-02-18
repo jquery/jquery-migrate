@@ -250,6 +250,15 @@ QUnit.test( "jQuery.isNumeric", function( assert ) {
 	} );
 } );
 
+QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.isWindow", function( assert ) {
+	assert.expect( 3 );
+
+	expectWarning( assert, "isWindow", 1, function() {
+		assert.equal( jQuery.isWindow( [] ), false, "array" );
+		assert.equal( jQuery.isWindow( window ), true, "window" );
+	} );
+} );
+
 QUnit.test( "jQuery.unique", function( assert ) {
 	assert.expect( 2 );
 
