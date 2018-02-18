@@ -89,6 +89,15 @@ jQuery.isNumeric = function( val ) {
 	return oldValue;
 };
 
+if ( jQueryVersionSince( "3.3.0" ) ) {
+	migrateWarnFunc( jQuery, "isWindow",
+		function( obj ) {
+			return obj != null && obj === obj.window;
+		},
+		"jQuery.isWindow() is deprecated"
+	);
+}
+
 migrateWarnFunc( jQuery, "holdReady", jQuery.holdReady,
 	"jQuery.holdReady is deprecated" );
 
