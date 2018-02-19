@@ -135,11 +135,11 @@ TestManager = {
 TestManager.init( {
 	"jquery": {
 		urlTag: "jquery",
-		choices: "dev,min,git,3.2.1,3.1.1,3.0.0"
+		choices: "dev,min,git,3.3.1,3.2.1,3.1.1,3.0.0"
 	},
 	"jquery-migrate": {
 		urlTag: "plugin",
-		choices: "dev,min,raw,git,3.0.0"
+		choices: "dev,min,raw,git,3.0.1,3.0.0"
 	}
 } );
 
