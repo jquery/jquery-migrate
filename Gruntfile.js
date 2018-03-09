@@ -11,6 +11,7 @@ module.exports = function( grunt ) {
 		files: [
 			"src/intro.js",
 			"src/version.js",
+			"src/compareVersions.js",
 			"src/migrate.js",
 			"src/core.js",
 			"src/ajax.js",
@@ -96,6 +97,7 @@ module.exports = function( grunt ) {
 				files: [
 					"https://code.jquery.com/jquery-git.min.js",
 					"dist/jquery-migrate.min.js",
+					"src/compareVersions.js",
 
 					"test/testinit.js",
 					"test/migrate.js",

@@ -19,6 +19,7 @@
 		"migrateWarn": true,
 		"migrateWarnFunc": true,
 		"migrateWarnProp": true,
+		"jQueryVersionSince": true,
 
 		"noGlobal": true
 	}
