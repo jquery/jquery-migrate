@@ -7,6 +7,21 @@ QUnit.test( "jQuery.migrateVersion", function( assert ) {
 	assert.ok( /^\d+\.\d+\.[\w\-]+/.test( jQuery.migrateVersion ), "Version property" );
 } );
 
+QUnit.test( "compareVersions and jQueryVersionSince", function( assert ) {
+	assert.expect( 6 );
+
+	assert.equal( compareVersions( "3.0.1", "3.0.0" ), 1, "greater than 1" );
+	assert.equal( compareVersions( "3.0.1", "2.10.0" ), 1, "greater than 2" );
+	assert.equal( compareVersions( "3.2.1", "3.3.0" ), -1, "less than 1" );
+	assert.equal( compareVersions( "3.2.1", "4.1.3" ), -1, "less than 2" );
+	assert.equal( compareVersions( "3.4.1", "3.4.1" ), 0, "equal" );
+
+	// Test against live jQuery version with suitably generous comparisons
+	assert.equal( jQueryVersionSince( "1.4.2" ), true, "since - past version" );
+	assert.equal( jQueryVersionSince( "8.0.3" ), false, "since - future version" );
+	assert.equal( jQueryVersionSince( jQuery.fn.jquery ), true, "since - equal" );
+} );
+
 QUnit.test( "jQuery(html, props)", function( assert ) {
 	assert.expect( 3 );
 
