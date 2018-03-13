@@ -3,6 +3,8 @@ module.exports = function( grunt ) {
 
 	"use strict";
 
+	var isTravis = process.env.TRAVIS;
+
 	// Project configuration.
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( "package.json" ),
@@ -47,25 +49,7 @@ module.exports = function( grunt ) {
 			}
 		},
 		qunit: {
-			options: {
-				coverage: {
-					disposeCollector: true,
-					instrumentedFiles: "temp/",
-					src: [ "src/!(intro.js|outro.js)" ],
-					htmlReport: "coverage/html",
-					lcovReport: "coverage/lcov",
-					linesThresholdPct: 85
-				}
-			},
 			files: [ "test/**/index.html" ]
-		},
-		coveralls: {
-			src: "coverage/lcov/lcov.info",
-			options: {
-
-				// Should not fail if coveralls is down
-				force: true
-			}
 		},
 		eslint: {
 			options: {
@@ -100,6 +84,70 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
+		karma: {
+			options: {
+				customLaunchers: {
+					ChromeHeadlessNoSandbox: {
+						base: "ChromeHeadless",
+						flags: [ "--no-sandbox" ]
+					}
+				},
+				frameworks: [ "qunit" ],
+				files: [
+					"https://code.jquery.com/jquery-git.min.js",
+					"dist/jquery-migrate.min.js",
+
+					"test/testinit.js",
+					"test/migrate.js",
+					"test/core.js",
+					"test/ajax.js",
+					"test/attributes.js",
+					"test/css.js",
+					"test/data.js",
+					"test/deferred.js",
+					"test/effects.js",
+					"test/event.js",
+					"test/offset.js",
+					"test/serialize.js",
+					"test/traversing.js",
+
+					{ pattern: "dist/jquery-migrate.js", included: false, served: true },
+					{ pattern: "test/**/*.@(js|css|jpg|html|xml)", included: false, served: true }
+				],
+				client: {
+					clearContext: false,
+					qunit: {
+						showUI: true,
+						testTimeout: 5000
+					}
+				},
+				reporters: [ "dots" ],
+				autoWatch: false,
+				concurrency: 3,
+				captureTimeout: 20 * 1000,
+				singleRun: true
+			},
+			main: {
+
+				// The Chrome sandbox doesn't work on Travis.
+				browsers: [ isTravis ? "ChromeHeadlessNoSandbox" : "ChromeHeadless" ]
+			},
+
+			// To debug tests with Karma:
+			// 1. Run 'grunt karma:chrome-debug' or 'grunt karma:firefox-debug'
+			//    (any karma subtask that has singleRun=false)
+			// 2. Press "Debug" in the opened browser window to start
+			//    the tests. Unlike the other karma tasks, the debug task will
+			//    keep the browser window open.
+			"chrome-debug": {
+				browsers: [ "Chrome" ],
+				singleRun: false
+			},
+			"firefox-debug": {
+				browsers: [ "Firefox" ],
+				singleRun: false
+			}
+		},
 		watch: {
 			files: [ "src/*.js", "test/*.js" ],
 			tasks: [ "build" ]
@@ -113,7 +161,7 @@ module.exports = function( grunt ) {
 	grunt.loadTasks( "build/tasks" );
 
 	// Just an alias
-	grunt.registerTask( "test", [ "qunit" ] );
+	grunt.registerTask( "test", [ "karma:main" ] );
 
 	grunt.registerTask( "lint", [
 
@@ -129,5 +177,5 @@ module.exports = function( grunt ) {
 	grunt.registerTask( "default", [ "build", "test" ] );
 
 	// For CI
-	grunt.registerTask( "ci", [ "build", "test", "coveralls" ] );
+	grunt.registerTask( "ci", [ "build", "test" ] );
 };

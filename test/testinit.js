@@ -14,9 +14,12 @@ TestManager = {
 			lines = "",
 			urlTag = this.projects[ projectName ].urlTag,
 			matcher = new RegExp( "\\b" + urlTag + "=([^&]+)" ),
-			projectRoot = isSelf ? ".." : "../../" + projectName,
+			projectRoot = this.baseURL + ( isSelf ? ".." : "../../" + projectName ),
 			version = ( matcher.exec( document.location.search ) || {} )[ 1 ] || defaultVersion;
 
+		if ( window.__karma__ && isSelf ) {
+			projectRoot = "/base";
+		}
 		if ( version === "raw" ) {
 
 			// Order is important
@@ -97,12 +100,13 @@ TestManager = {
 			};
 			iframe = jQuery( "<div/>" )
 				.css( { position: "absolute", width: "500px", left: "-600px" } )
-				.append( jQuery( "<iframe/>" ).attr( "src", url +
+				.append( jQuery( "<iframe/>" ).attr( "src", self.baseURL + url +
 					( query && ( /\?/.test( url ) ? "&" : "?" ) ) + query ) )
 				.appendTo( "#qunit-fixture" );
 		} );
 	},
 	iframeCallback: undefined,
+	baseURL: window.__karma__ ? "base/test/" : "./",
 	init: function( projects ) {
 		var p, project;
 
