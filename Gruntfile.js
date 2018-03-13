@@ -162,5 +162,5 @@ module.exports = function( grunt ) {
 	grunt.registerTask( "default", [ "build", "test" ] );
 
 	// For CI
-	grunt.registerTask( "ci", [ "build", "test", "coveralls" ] );
+	grunt.registerTask( "ci", [ "build", "test" ] );
 };
