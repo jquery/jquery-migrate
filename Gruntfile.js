@@ -3,6 +3,8 @@ module.exports = function( grunt ) {
 
 	"use strict";
 
+	var isTravis = process.env.TRAVIS;
+
 	// Project configuration.
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( "package.json" ),
@@ -86,6 +88,12 @@ module.exports = function( grunt ) {
 			options: {
 				customContextFile: "karma/context.html",
 				customDebugFile: "karma/debug.html",
+				customLaunchers: {
+					ChromeHeadlessNoSandbox: {
+						base: "ChromeHeadless",
+						flags: [ "--no-sandbox" ]
+					}
+				},
 				frameworks: [ "qunit" ],
 				files: [
 					"https://code.jquery.com/jquery-git.min.js",
@@ -115,7 +123,9 @@ module.exports = function( grunt ) {
 				singleRun: true
 			},
 			main: {
-				browsers: [ "ChromeHeadless" ]
+
+				// The Chrome sandbox doesn't work on Travis.
+				browsers: [ isTravis ? "ChromeHeadlessNoSandbox" : "ChromeHeadless" ]
 			},
 
 			// To debug tests with Karma:
