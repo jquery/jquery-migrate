@@ -114,6 +114,13 @@ module.exports = function( grunt ) {
 					{ pattern: "dist/jquery-migrate.js", included: false, served: true },
 					{ pattern: "test/**/*.@(js|css|jpg|html|xml)", included: false, served: true }
 				],
+				client: {
+					clearContext: false,
+					qunit: {
+						showUI: true,
+						testTimeout: 5000
+					}
+				},
 				reporters: [ "dots" ],
 				autoWatch: false,
 				concurrency: 3,
