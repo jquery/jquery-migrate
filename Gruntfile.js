@@ -86,8 +86,6 @@ module.exports = function( grunt ) {
 		},
 		karma: {
 			options: {
-				customContextFile: "karma/context.html",
-				customDebugFile: "karma/debug.html",
 				customLaunchers: {
 					ChromeHeadlessNoSandbox: {
 						base: "ChromeHeadless",

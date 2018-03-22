@@ -4,6 +4,4 @@ node_js:
 - "8"
 addons:
   chrome: stable
-env:
-  - NPM_SCRIPT=test:browserless
 script: "npm run ci"
