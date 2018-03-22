@@ -15,11 +15,25 @@ jQuery.Tween.prototype.run = function( ) {
 	oldTweenRun.apply( this, arguments );
 };
 
-jQuery.fx.interval = jQuery.fx.interval || 13;
+var intervalValue = jQuery.fx.interval || 13,
+	intervalMsg = "jQuery.fx.interval is deprecated";
 
 // Support: IE9, Android <=4.4
 // Avoid false positives on browsers that lack rAF
+// Don't warn if document is hidden, jQuery uses setTimeout (#292)
 if ( window.requestAnimationFrame ) {
-	migrateWarnProp( jQuery.fx, "interval", jQuery.fx.interval,
-		"jQuery.fx.interval is deprecated" );
+	Object.defineProperty( jQuery.fx, "interval", {
+		configurable: true,
+		enumerable: true,
+		get: function() {
+			if ( !window.document.hidden ) {
+				migrateWarn( intervalMsg );
+			}
+			return intervalValue;
+		},
+		set: function( newValue ) {
+			migrateWarn( intervalMsg );
+			intervalValue = newValue;
+		}
+	} );
 }
