@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/jquery/jquery-migrate.svg?branch=master)](https://travis-ci.org/jquery/jquery-migrate)
-[![Coverage Status](https://img.shields.io/coveralls/jquery/jquery-migrate.svg?style=flat)](https://coveralls.io/r/jquery/jquery-migrate?branch=master)
 
 #### NOTE: To upgrade to jQuery 3.0, you first need version 1.12.x or 2.2.x. If you're using an older version, first upgrade to one of these versions using [jQuery Migrate 1.x](https://github.com/jquery/jquery-migrate/tree/1.x-stable#readme), to resolve any compatibility issues. For more information about the changes made in jQuery 3.0, see the [upgrade guide](https://jquery.com/upgrade-guide/3.0/) and [blog post](https://blog.jquery.com/2016/06/09/jquery-3-0-final-released/).
 
@@ -21,7 +20,7 @@ In your web page, load this plugin *after* the script tag for jQuery, for exampl
 
 ### Development vs. Production versions
 
-The production build is minified and does not generate console warnings. It will only generate a console log message upon loading, or if it detects an error such as an outdated version of jQuery that it does not support. Do not use this file for development or debugging, it will make your life miserable. 
+The production build is minified and does not generate console warnings. It will only generate a console log message upon loading, or if it detects an error such as an outdated version of jQuery that it does not support. Do not use this file for development or debugging, it will make your life miserable.
 
 |  | Development | Production |
 |--|-------------|------------|
