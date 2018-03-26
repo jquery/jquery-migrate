@@ -8,13 +8,15 @@ QUnit.test( "jQuery.migrateVersion", function( assert ) {
 } );
 
 QUnit.test( "compareVersions and jQueryVersionSince", function( assert ) {
-	assert.expect( 8 );
+	assert.expect( 9 );
 
 	assert.equal( compareVersions( "3.0.1", "3.0.0" ), 1, "greater than 1" );
 	assert.equal( compareVersions( "3.0.1", "2.10.0" ), 1, "greater than 2" );
 	assert.equal( compareVersions( "3.2.1", "3.3.0" ), -1, "less than 1" );
 	assert.equal( compareVersions( "3.2.1", "4.1.3" ), -1, "less than 2" );
+	assert.equal( compareVersions( "3.2.2", "3.11.1" ), -1, "less than 3");
 	assert.equal( compareVersions( "3.4.1", "3.4.1" ), 0, "equal" );
+
 
 	// Test against live jQuery version with suitably generous comparisons
 	assert.equal( jQueryVersionSince( "1.4.2" ), true, "since - past version" );
