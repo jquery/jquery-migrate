@@ -2,8 +2,6 @@
 
 ( function() {
 
-	var rbadVersions = /^[12]\./;
-
 	// Support: IE9 only
 	// IE9 only creates console object when dev tools are first opened
 	// IE9 console is a host object, callable but doesn't have .apply()
@@ -12,7 +10,7 @@
 	}
 
 	// Need jQuery 3.0.0+ and no older Migrate loaded
-	if ( !jQuery || rbadVersions.test( jQuery.fn.jquery ) ) {
+	if ( !jQuery || !jQueryVersionSince( "3.0.0" ) ) {
 		window.console.log( "JQMIGRATE: jQuery 3.0.0+ REQUIRED" );
 	}
 	if ( jQuery.migrateWarnings ) {
