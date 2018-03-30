@@ -100,3 +100,9 @@ migrateWarnProp( jQuery.expr, "filters", jQuery.expr.pseudos,
 	"jQuery.expr.filters is deprecated; use jQuery.expr.pseudos" );
 migrateWarnProp( jQuery.expr, ":", jQuery.expr.pseudos,
 	"jQuery.expr[':'] is deprecated; use jQuery.expr.pseudos" );
+
+// Prior to jQuery 3.2 there were internal refs so we don't warn there
+if ( jQueryVersionSince( "3.2.0" ) ) {
+	migrateWarnFunc( jQuery, "nodeName", jQuery.nodeName,
+	"jQuery.nodeName is deprecated" );
+}

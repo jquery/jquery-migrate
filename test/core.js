@@ -301,6 +301,16 @@ QUnit.test( "jQuery.holdReady (warn only)", function( assert ) {
 	} );
 } );
 
+QUnit[ jQueryVersionSince( "3.2.0" ) ? "test" : "skip" ]( "jQuery.nodeName", function( assert ) {
+	assert.expect( 2 );
+
+	expectWarning( assert, "jQuery.nodeName", function() {
+		var div = document.createElement( "div" );
+
+		assert.equal( jQuery.nodeName( div, "div" ), true, "it's a div" );
+	})
+});
+
 TestManager.runIframeTest( "old pre-3.0 jQuery", "core-jquery2.html",
 	function( assert, jQuery, window, document, log ) {
 		assert.expect( 1 );
