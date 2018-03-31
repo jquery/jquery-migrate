@@ -74,14 +74,33 @@ module.exports = function( grunt ) {
 		uglify: {
 			all: {
 				files: {
-					"dist/jquery-migrate.min.js": [ "src/migratemute.js", "dist/jquery-migrate.js" ]
-				}
-			},
-			options: {
-				banner: "/*! jQuery Migrate v<%= pkg.version %>" +
-					" | (c) <%= pkg.author.name %> | jquery.org/license */\n",
-				beautify: {
-					ascii_only: true
+					"dist/jquery-migrate.min.js":
+						[ "src/migratemute.js", "dist/jquery-migrate.js" ]
+				},
+				options: {
+					preserveComments: false,
+					sourceMap: true,
+					sourceMapName: "dist/jquery-migrate.min.map",
+					report: "min",
+					output: {
+						"ascii_only": true,
+
+						// Support: Android 4.0 only
+						// UglifyJS 3 breaks Android 4.0 if this option is not enabled.
+						// This is in lieu of setting ie8 for all of mangle, compress, and output
+						"ie8": true
+					},
+					banner: "/*! jQuery Migrate v<%= pkg.version %>" +
+						" | (c) <%= pkg.author.name %> | jquery.org/license */",
+					compress: {
+						"hoist_funs": false,
+						loops: false,
+
+						// Support: IE <11
+						// typeofs transformation is unsafe for IE9-10
+						// See https://github.com/mishoo/UglifyJS2/issues/2198
+						typeofs: false
+					}
 				}
 			}
 		},
