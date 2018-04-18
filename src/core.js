@@ -140,4 +140,11 @@ if ( jQueryVersionSince( "3.3.0" ) ) {
 		},
 		"jQuery.isWindow() is deprecated"
 	);
+
+	migrateWarnFunc( jQuery, "isArray",
+		function( a ) {
+			return Array.isArray( a );
+		},
+		"jQuery.isArray is deprecated; use Array.isArray"
+	);
 }
