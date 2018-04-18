@@ -241,3 +241,8 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Cause:** The `jQuery.cssProps` property is a public but undocumented object that allows CSS properties with one name to be mapped into another name. It was used for legacy browsers like IE8 that used non-standard names. This object is no longer used inside jQuery since all supported browsers now use the standard CSS property names.
 
 **Solution:** Remove any uses of `jQuery.cssProps` in application code.
+
+#### JQMIGRATE: jQuery.isArray is deprecated; use Array.isArray
+**Cause:** Older versions of JavaScript made it difficult to determine if a particular object was a true Array, so jQuery provided a cross-browser function to do the work. The browsers supported by jQuery 3.0 all provide a standard method for this purpose.
+
+**Solution:** Replace any calls to `jQuery.isArray` with `Array.isArray`.
