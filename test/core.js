@@ -430,9 +430,20 @@ QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.type (warn)", 
 
 } );
 
+QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.isArray", function( assert ) {
+	assert.expect( 4 );
+
+	expectWarning( assert, "isArray", 1, function() {
+		assert.equal( jQuery.isArray( [] ), true, "empty array" );
+		assert.equal( jQuery.isArray( "" ), false, "empty string" );
+		assert.equal( jQuery.isArray( jQuery().toArray() ), true, "toArray" );
+	} );
+
+} );
+
 TestManager.runIframeTest( "old pre-3.0 jQuery", "core-jquery2.html",
 	function( assert, jQuery, window, document, log ) {
 		assert.expect( 1 );
 
 		assert.ok( /jQuery 3/.test( log ), "logged: " + log );
-	} );
+} );
