@@ -1,21 +1,25 @@
 "use strict";
 
 module.exports = function( grunt ) {
-	grunt.registerTask( "testswarm", function( commit, configFile, destName ) {
-		var jobName,
+	grunt.registerTask( "testswarm", function( commit, configFile, projectName, browserSets,
+		timeout ) {
+		var jobName, config, tests,
 			testswarm = require( "testswarm" ),
 			runs = {},
 			done = this.async(),
-			pull = /PR-(\d+)/.exec( commit ),
-			config = grunt.file.readJSON( configFile ).jquerymigrate,
-			tests = grunt.config( "tests" )[ destName ],
-			browserSets = destName || config.browserSets;
+			pull = /PR-(\d+)/.exec( commit );
+
+		projectName = projectName || "jquerymigrate";
+		config = grunt.file.readJSON( configFile )[ projectName ];
+		browserSets = browserSets || config.browserSets;
 
 		if ( browserSets[ 0 ] === "[" ) {
 
 			// We got an array, parse it
 			browserSets = JSON.parse( browserSets );
 		}
+		timeout = timeout || 1000 * 60 * 15;
+		tests = grunt.config( "tests" ).jquery;
 
 		if ( pull ) {
 			jobName = "Pull <a href='https://github.com/jquery/jquery-migrate/pull/" +
@@ -46,7 +50,7 @@ module.exports = function( grunt ) {
 				runs: runs,
 				runMax: config.runMax,
 				browserSets: browserSets,
-				timeout: 1000 * 60 * 30
+				timeout: timeout
 			}, function( err, passed ) {
 				if ( err ) {
 					grunt.log.error( err );
