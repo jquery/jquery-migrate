@@ -30,7 +30,7 @@ module.exports = function( grunt ) {
 			jquery: [
 				"dev+3.x-git",
 				"min+3.x-git.min",
-				"dev+3.4.0",
+				"dev+3.4.1",
 				"dev+3.3.1",
 				"dev+3.2.1",
 				"dev+3.1.1",
@@ -116,7 +116,7 @@ module.exports = function( grunt ) {
 				},
 				frameworks: [ "qunit" ],
 				files: [
-					"https://code.jquery.com/jquery-git.min.js",
+					"https://code.jquery.com/jquery-3.x-git.min.js",
 					"dist/jquery-migrate.min.js",
 					"src/compareVersions.js",
 
