@@ -52,3 +52,25 @@ if ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) {
 		}
 	} );
 }
+
+if ( !jQuery.cssNumber ) {
+	jQuery.cssNumber = {};
+}
+migrateWarnProp( jQuery, "cssNumber", jQuery.cssNumber,
+	"jQuery.cssNumber is deprecated" );
+
+var oldFnCss = jQuery.fn.css;
+
+jQuery.fn.css = function( name, value ) {
+	var origThis = this;
+	if ( typeof name !== "string" ) {
+		jQuery.each( name, function( n, v ) {
+			jQuery.fn.css.call( origThis, n, v );
+		} );
+	}
+	if ( typeof value === "number" ) {
+		migrateWarn( "Use of number-typed values is deprecated in jQuery.fn.css" );
+	}
+
+	return oldFnCss.apply( this, arguments );
+};
