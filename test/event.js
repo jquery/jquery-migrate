@@ -149,16 +149,15 @@ TestManager.runIframeTest( "document ready", "event-ready.html",
 			JSON.stringify( jQuery.migrateWarnings ) );
 	} );
 
-TestManager.runIframeTest( "jQuery.event.props.concat", "event-mobile14.html",
-	function( assert, jQuery ) {
-		assert.expect( 1 );
+TestManager.runIframeTest( "jQuery.event.props.concat", "event-props-concat.html",
+	function( assert, jQuery,  window, document, log, props ) {
+		assert.expect( 3 );
 
-		var matches = jQuery.migrateWarnings.reduce( function( pv, warning ) {
-				return warning.indexOf( "event.props.concat" ) >= 0 ? pv + 1 : pv;
-			}, 0 );
+		var warns = JSON.stringify( jQuery.migrateWarnings );
 
-		assert.equal( matches, 1, "warnings: " +
-			JSON.stringify( jQuery.migrateWarnings ) );
+		assert.equal( jQuery.migrateWarnings.length, 1, "one warning" );
+		assert.ok( warns.indexOf( "props.concat" ) >= 0, "warnings: " + warns );
+		assert.equal( props[0], "TESTING", "used the empty props" )
 	} );
 
 // Do this as iframe because there is no way to undo prop addition

@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>jQuery Migrate test for jQuery Mobile 1.4 compat</title>
+	<title>jQuery Migrate test for event.props.concat() compat</title>
 
 	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
 	<script src="testinit.js"></script>
@@ -14,12 +14,9 @@
 		jQuery.noConflict();
 		TestManager.loadProject( "jquery-migrate", "dev", true );
 	</script>
-	<script src="data/jquery.mobile-1.4.5.js"></script>
+	<!-- Keep these two in separate script tags so Migrate loads first -->
 	<script>
-		// This should warn when the handler runs
-		jQuery( window ).on( "load", function() {
-			startIframeTest();
-		} );
+		startIframeTest( jQuery.event.props.concat([ "TESTING" ]) );
 	</script>
 </head>
 <body>
@@ -27,7 +24,7 @@
 <div data-role="page">
 
 	<div data-role="header">
-		<h1>jQuery Migrate test for jQuery Mobile 1.4 compat</h1>
+		<h1>jQuery Migrate test for jQuery.event.props.concat() compat</h1>
 	</div><!-- /header -->
 
 	<div role="main" class="ui-content">
