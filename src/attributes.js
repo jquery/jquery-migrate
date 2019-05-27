@@ -6,7 +6,7 @@ var oldRemoveAttr = jQuery.fn.removeAttr,
 jQuery.fn.removeAttr = function( name ) {
 	var self = this;
 
-	jQuery.each( name.match( rmatchNonSpace ), function( i, attr ) {
+	jQuery.each( name.match( rmatchNonSpace ), function( _i, attr ) {
 		if ( jQuery.expr.match.bool.test( attr ) ) {
 			migrateWarn( "jQuery.fn.removeAttr no longer sets boolean properties: " + attr );
 			self.prop( attr, false );
