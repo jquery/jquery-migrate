@@ -122,6 +122,9 @@ function initialize( next ) {
 
 function checkGitStatus( next ) {
 	child.execFile( "git", [ "status" ], function( error, stdout ) {
+		if ( error ) {
+			throw error;
+		}
 		var onBranch = ( ( stdout || "" ).match( /On branch (\S+)/ ) || [] )[ 1 ];
 		if ( onBranch !== branch ) {
 			die( "Branches don't match: Wanted " + branch + ", got " + onBranch );
