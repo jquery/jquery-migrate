@@ -167,8 +167,8 @@ function makeReleaseCopies( next ) {
 		fs.mkdirSync( releaseDir );
 	}
 	Object.keys( releaseFiles ).forEach( function( key ) {
-		var builtFile = releaseDir + releaseFiles[ key ],
-			releaseFile = key.replace( /VER/g, releaseVersion );
+		var builtFile = releaseFiles[ key ],
+			releaseFile = releaseDir + key.replace( /VER/g, releaseVersion );
 
 		copy( builtFile, releaseFile );
 		finalFiles[ releaseFile ] = builtFile;
