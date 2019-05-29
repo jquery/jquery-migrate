@@ -14,7 +14,6 @@ var fs = require( "fs" ),
 
 var releaseVersion,
 	nextVersion,
-	finalFiles,
 	isBeta,
 	pkg,
 
@@ -28,15 +27,10 @@ var releaseVersion,
 
 	readmeFile = "README.md",
 	packageFile = "package.json",
-	versionFile = "src/version.js",
-	devFile = "dist/jquery-migrate.js",
-	minFile = "dist/jquery-migrate.min.js",
+	versionFile = path.join( "src", "version.js" ),
 
-	releaseDir = "CDN/",
-	releaseFiles = {
-		"jquery-migrate-VER.js": devFile,
-		"jquery-migrate-VER.min.js": minFile
-	};
+	releaseDir = "CDN",
+	distDir = "dist";
 
 steps(
 	initialize,
@@ -165,16 +159,30 @@ function gruntBuild( next ) {
 }
 
 function makeReleaseCopies( next ) {
-	finalFiles = {};
 	if ( !fs.existsSync( releaseDir ) ) {
 		fs.mkdirSync( releaseDir );
 	}
+	var passThrough = function( t ) {
+		return t;
+	};
+	var releaseFiles = {
+		"jquery-migrate-VER.js": passThrough,
+		"jquery-migrate-VER.min.js": fixMinRef,
+		"jquery-migrate-VER.min.map": fixMapRef
+	};
 	Object.keys( releaseFiles ).forEach( function( key ) {
-		var builtFile = releaseFiles[ key ],
-			releaseFile = releaseDir + key.replace( /VER/g, releaseVersion );
+		var distFile = key.replace( /-VER/g, "" ),
+			distPath = path.join( distDir, distFile ),
+			releaseFile = key.replace( /VER/g, releaseVersion ),
+			releasePath = path.join( releaseDir, releaseFile );
 
-		copy( builtFile, releaseFile );
-		finalFiles[ releaseFile ] = builtFile;
+		// Remove Windows CRLF if it's there, on *nix this is a no-op
+		log( "Processing " + distPath + " => " + releasePath );
+		var distText = fs.readFileSync( distPath, "utf8" ).replace( /\r\n/g, "\n" );
+		var releaseText = releaseFiles[ key ]( distText, releaseFile );
+		if ( !dryrun ) {
+			fs.writeFileSync( releasePath, releaseText );
+		}
 	} );
 	next();
 }
@@ -272,11 +280,28 @@ function writeJsonSync( fname, json ) {
 	}
 }
 
-function copy( oldFile, newFile ) {
-	status( "Copying " + oldFile + " to " + newFile );
-	if ( !dryrun ) {
-		fs.writeFileSync( newFile, fs.readFileSync( oldFile, "utf8" ) );
+function fixMinRef( oldText ) {
+	var mapRef = new RegExp( "^//# sourceMappingURL=jquery-migrate.min.map\\n?", "m" );
+
+	// Remove the ref for now rather than try to fix it
+	var newText = oldText.replace( mapRef, "" );
+	if ( oldText === newText ) {
+		throw Error( "fixMinRef: Unable to find the sourceMappingURL" );
 	}
+	return newText;
+}
+
+function fixMapRef( oldText, newFile ) {
+	var mapJSON = JSON.parse( oldText );
+	var sources = mapJSON.sources;
+	if ( sources.join() !== "../src/migratemute.js,jquery-migrate.js" ) {
+		throw Error( "fixMapRef: Unexpected sources entry: " + sources );
+	}
+
+	// This file isn't published, not sure the best way to deal with that
+	sources[ 0 ] = "migratemute.js";
+	sources[ 1 ] = newFile.replace( /\.map$/, ".js" );
+	return JSON.stringify( mapJSON );
 }
 
 function git( args, fn, skip ) {
