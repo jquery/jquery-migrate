@@ -286,7 +286,7 @@ function fixMinRef( oldText ) {
 	// Remove the ref for now rather than try to fix it
 	var newText = oldText.replace( mapRef, "" );
 	if ( oldText === newText ) {
-		throw "fixMinRef: Unable to find the sourceMappingURL";
+		throw Error( "fixMinRef: Unable to find the sourceMappingURL" );
 	}
 	return newText;
 }
