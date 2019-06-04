@@ -295,7 +295,7 @@ function fixMapRef( oldText, newFile ) {
 	var mapJSON = JSON.parse( oldText );
 	var sources = mapJSON.sources;
 	if ( sources.join() !== "../src/migratemute.js,jquery-migrate.js" ) {
-		throw "fixMapRef: Unexpected sources entry: " + sources;
+		throw Error( "fixMapRef: Unexpected sources entry: " + sources );
 	}
 
 	// This file isn't published, not sure the best way to deal with that
