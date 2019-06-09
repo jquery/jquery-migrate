@@ -36,14 +36,14 @@
 		"grunt-contrib-watch": "1.1.0",
 		"grunt-eslint": "21.0.0",
 		"grunt-karma": "3.0.2",
+		"jquery": "3.4.1",
 		"karma": "4.1.0",
 		"karma-browserstack-launcher": "1.5.1",
 		"karma-chrome-launcher": "2.2.0",
 		"karma-firefox-launcher": "1.1.0",
 		"karma-qunit": "3.1.2",
-		"jquery": "3.4.1",
 		"load-grunt-tasks": "5.0.0",
-		"qunit": "2.4.1",
+		"qunit": "2.9.2",
 		"testswarm": "1.1.0"
 	},
 	"keywords": [
