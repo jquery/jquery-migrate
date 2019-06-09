@@ -11,6 +11,8 @@
 	},
 	"globals": {
 		"window": true,
+		"Proxy": true,
+		"Reflect": true,
 
 		"define": true,
 		"module": true,
