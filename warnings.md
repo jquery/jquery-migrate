@@ -235,3 +235,9 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Cause:** This public but never-documented method has been deprecated as of jQuery 3.2.0.
 
 **Solution:** Replace calls such as `jQuery.nodeName( elem, "div" )` with a test such as `elem.nodeName.toLowerCase() === "div"`.
+
+### JQMIGRATE: jQuery.cssProps is deprecated
+
+**Cause:** The `jQuery.cssProps` property is a public but undocumented object that allows CSS properties with one name to be mapped into another name. It was used for legacy browsers like IE8 that used non-standard names. This object is no longer used inside jQuery since all supported browsers now use the standard CSS property names.
+
+**Solution:** Remove any uses of `jQuery.cssProps` in application code.

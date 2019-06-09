@@ -42,3 +42,13 @@ jQuery.swap = function( elem, options, callback, args ) {
 
 	return ret;
 };
+
+if ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) {
+
+	jQuery.cssProps = new Proxy( jQuery.cssProps || {}, {
+		set: function() {
+			migrateWarn( "JQMIGRATE: jQuery.cssProps is deprecated" );
+			return Reflect.set.apply( this, arguments );
+		}
+	} );
+}
