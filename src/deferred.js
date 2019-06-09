@@ -22,14 +22,14 @@ jQuery.Deferred = function( func ) {
 
 		return jQuery.Deferred( function( newDefer ) {
 			jQuery.each( tuples, function( i, tuple ) {
-				var fn = jQuery.isFunction( fns[ i ] ) && fns[ i ];
+				var fn = typeof fns[ i ] === "function" && fns[ i ];
 
 				// Deferred.done(function() { bind to newDefer or newDefer.resolve })
 				// deferred.fail(function() { bind to newDefer or newDefer.reject })
 				// deferred.progress(function() { bind to newDefer or newDefer.notify })
 				deferred[ tuple[ 1 ] ]( function() {
 					var returned = fn && fn.apply( this, arguments );
-					if ( returned && jQuery.isFunction( returned.promise ) ) {
+					if ( returned && typeof returned.promise === "function" ) {
 						returned.promise()
 							.done( newDefer.resolve )
 							.fail( newDefer.reject )

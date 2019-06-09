@@ -1,5 +1,11 @@
 var oldData = jQuery.data;
 
+var camelCase = function( string ) {
+	return string.replace( /-([a-z])/g, function( _, letter ) {
+		return letter.toUpperCase();
+	} );
+};
+
 jQuery.data = function( elem, name, value ) {
 	var curData;
 
@@ -8,7 +14,7 @@ jQuery.data = function( elem, name, value ) {
 		curData = jQuery.hasData( elem ) && oldData.call( this, elem );
 		var sameKeys = {};
 		for ( var key in name ) {
-			if ( key !== jQuery.camelCase( key ) ) {
+			if ( key !== camelCase( key ) ) {
 				migrateWarn( "jQuery.data() always sets/gets camelCased names: " + key );
 				curData[ key ] = name[ key ];
 			} else {
@@ -22,7 +28,7 @@ jQuery.data = function( elem, name, value ) {
 	}
 
 	// If the name is transformed, look for the un-transformed name in the data object
-	if ( name && typeof name === "string" && name !== jQuery.camelCase( name ) ) {
+	if ( name && typeof name === "string" && name !== camelCase( name ) ) {
 		curData = jQuery.hasData( elem ) && oldData.call( this, elem );
 		if ( curData && name in curData ) {
 			migrateWarn( "jQuery.data() always sets/gets camelCased names: " + name );
