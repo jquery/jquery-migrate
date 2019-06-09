@@ -25,3 +25,19 @@ QUnit.test( "jQuery.swap()", function( assert ) {
 	} );
 
 } );
+
+QUnit[ ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) ? "test" : "skip" ]
+		( "jQuery.cssProps", function( assert ) {
+	assert.expect( 2 );
+
+	expectWarning( assert, "Write to cssProps", function() {
+		jQuery.cssProps.devoHat = "awesomeHat";
+	} );
+
+	expectNoWarning( assert, "Read from cssProps", function() {
+		jQuery.cssProps.devoHat;
+		jQuery.cssProps.unknownProp;
+	} );
+
+	delete jQuery.cssProps.devoHat;
+} );
