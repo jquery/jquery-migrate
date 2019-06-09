@@ -84,18 +84,20 @@ migrateWarnProp( jQuery.expr, ":", jQuery.expr.pseudos,
 
 // Prior to jQuery 3.2 there were internal refs so we don't warn there
 if ( jQueryVersionSince( "3.2.0" ) ) {
-	migrateWarnFunc( jQuery, "nodeName", jQuery.nodeName,
+	migrateWarnFunc( jQuery, "nodeName", function( elem, name ) {
+		return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
+	},
 	"jQuery.nodeName is deprecated" );
 }
 
 if ( jQueryVersionSince( "3.3.0" ) ) {
 
-	migrateWarnFunc( jQuery, "isNumeric", jQuery.isNumeric = function( obj ) {
+	migrateWarnFunc( jQuery, "isNumeric", function( obj ) {
 
 			// As of jQuery 3.0, isNumeric is limited to
 			// strings and numbers (primitives or objects)
 			// that can be coerced to finite numbers (gh-2662)
-			var type = jQuery.type( obj );
+			var type = typeof obj;
 			return ( type === "number" || type === "string" ) &&
 
 				// parseFloat NaNs numeric-cast false positives ("")
@@ -106,10 +108,30 @@ if ( jQueryVersionSince( "3.3.0" ) ) {
 		"jQuery.isNumeric() is deprecated"
 	);
 
-	migrateWarnFunc( jQuery, "type", jQuery.type,
+	// Populate the class2type map
+	var class2type = {};
+	jQuery.each( "Boolean Number String Function Array Date RegExp Object Error Symbol".
+		split( " " ),
+	function( _, name ) {
+		class2type[ "[object " + name + "]" ] = name.toLowerCase();
+	} );
+
+	migrateWarnFunc( jQuery, "type", function( obj ) {
+		if ( obj == null ) {
+			return obj + "";
+		}
+
+		// Support: Android <=2.3 only (functionish RegExp)
+		return typeof obj === "object" || typeof obj === "function" ?
+			class2type[ Object.prototype.toString.call( obj ) ] || "object" :
+			typeof obj;
+	},
 	"jQuery.type is deprecated" );
 
-	migrateWarnFunc( jQuery, "isFunction", jQuery.isFunction,
+	migrateWarnFunc( jQuery, "isFunction",
+		function( obj ) {
+			return typeof obj === "function";
+		},
 		"jQuery.isFunction() is deprecated" );
 
 	migrateWarnFunc( jQuery, "isWindow",
