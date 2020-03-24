@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery Migrate manipulation jQuery.UNSAFE_restoreLegacyHtmlPrefilter iframe test</title>
+
+	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
+	<script src="testinit.js"></script>
+	<script>
+		TestManager.loadProject( "jquery", "git" );
+	</script>
+	<script src="iframeTest.js"></script>
+	<script>
+		jQuery.noConflict();
+		TestManager.loadProject( "jquery-migrate", "dev", true );
+	</script>
+	<script>
+		jQuery.UNSAFE_restoreLegacyHtmlPrefilter();
+
+		var elem = jQuery( "<div/><span/>" ),
+			childCount = elem.length,
+			firstNodeName = elem[ 0 ] && elem[ 0 ].nodeName.toLowerCase(),
+			secondNodeName = elem[ 1 ] && elem[ 1 ].nodeName.toLowerCase();
+
+		startIframeTest( childCount, firstNodeName, secondNodeName );
+	</script>
+</head>
+<body>
+	<p>jQuery Migrate</p>
+</body>
+</html>
