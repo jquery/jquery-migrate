@@ -2,7 +2,11 @@
 var oldInit = jQuery.fn.init,
 	oldFind = jQuery.find,
 	rattrHashTest = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]*?#[-\w#]*)\s*\]/,
-	rattrHashGlob = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]*?#[-\w#]*)\s*\]/g;
+	rattrHashGlob = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]*?#[-\w#]*)\s*\]/g,
+
+	// Support: Android <=4.0 only
+	// Make sure we trim BOM and NBSP
+	rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
 
 jQuery.fn.init = function( arg1 ) {
 	var args = Array.prototype.slice.call( arguments );
@@ -60,15 +64,15 @@ for ( findProp in oldFind ) {
 }
 
 // The number of elements contained in the matched element set
-jQuery.fn.size = function() {
-	migrateWarn( "jQuery.fn.size() is deprecated and removed; use the .length property" );
+migrateWarnFunc( jQuery.fn, "size", function() {
 	return this.length;
-};
+},
+"jQuery.fn.size() is deprecated and removed; use the .length property" );
 
-jQuery.parseJSON = function() {
-	migrateWarn( "jQuery.parseJSON is deprecated; use JSON.parse" );
+migrateWarnFunc( jQuery, "parseJSON", function() {
 	return JSON.parse.apply( null, arguments );
-};
+},
+"jQuery.parseJSON is deprecated; use JSON.parse" );
 
 migrateWarnFunc( jQuery, "holdReady", jQuery.holdReady,
 	"jQuery.holdReady is deprecated" );
@@ -81,6 +85,16 @@ migrateWarnProp( jQuery.expr, "filters", jQuery.expr.pseudos,
 	"jQuery.expr.filters is deprecated; use jQuery.expr.pseudos" );
 migrateWarnProp( jQuery.expr, ":", jQuery.expr.pseudos,
 	"jQuery.expr[':'] is deprecated; use jQuery.expr.pseudos" );
+
+// Prior to jQuery 3.1.1 there were internal refs so we don't warn there
+if ( jQueryVersionSince( "3.1.1" ) ) {
+	migrateWarnFunc( jQuery, "trim", function( text ) {
+		return text == null ?
+			"" :
+			( text + "" ).replace( rtrim, "" );
+	},
+	"jQuery.trim is deprecated; use String.prototype.trim" );
+}
 
 // Prior to jQuery 3.2 there were internal refs so we don't warn there
 if ( jQueryVersionSince( "3.2.0" ) ) {

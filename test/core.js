@@ -370,6 +370,54 @@ QUnit.test( "jQuery.holdReady (warn only)", function( assert ) {
 	} );
 } );
 
+QUnit[ jQueryVersionSince( "3.1.1" ) ? "test" : "skip" ]( "jQuery.trim", function( assert ) {
+	assert.expect( 26 );
+
+	var nbsp = String.fromCharCode( 160 );
+
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( "hello  " ), "hello", "trailing space" );
+	} );
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( "  hello" ), "hello", "leading space" );
+	} );
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( "  hello   " ), "hello", "space on both sides" );
+	} );
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( "  " + nbsp + "hello  " + nbsp + " " ), "hello", "&nbsp;" );
+	} );
+
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim(), "", "Nothing in." );
+	} );
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( undefined ), "", "Undefined" );
+	} );
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( null ), "", "Null" );
+	} );
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( 5 ), "5", "Number" );
+	} );
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( false ), "false", "Boolean" );
+	} );
+
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( " " ), "", "space should be trimmed" );
+	} );
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( "ipad\xA0" ), "ipad", "nbsp should be trimmed" );
+	} );
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( "\uFEFF" ), "", "zwsp should be trimmed" );
+	} );
+	expectWarning( assert, "jQuery.trim", 1, function() {
+		assert.equal( jQuery.trim( "\uFEFF \xA0! | \uFEFF" ), "! |", "leading/trailing should be trimmed" );
+	} );
+} );
+
 QUnit[ jQueryVersionSince( "3.2.0" ) ? "test" : "skip" ]( "jQuery.nodeName", function( assert ) {
 	assert.expect( 2 );
 
@@ -377,8 +425,8 @@ QUnit[ jQueryVersionSince( "3.2.0" ) ? "test" : "skip" ]( "jQuery.nodeName", fun
 		var div = document.createElement( "div" );
 
 		assert.equal( jQuery.nodeName( div, "div" ), true, "it's a div" );
-	})
-});
+	} );
+} );
 
 QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.isFunction", function( assert ) {
 	assert.expect( 4 );

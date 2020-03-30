@@ -243,6 +243,13 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Solution:** Remove any uses of `jQuery.cssProps` in application code.
 
 #### JQMIGRATE: jQuery.isArray is deprecated; use Array.isArray
+
 **Cause:** Older versions of JavaScript made it difficult to determine if a particular object was a true Array, so jQuery provided a cross-browser function to do the work. The browsers supported by jQuery 3.0 all provide a standard method for this purpose.
 
 **Solution:** Replace any calls to `jQuery.isArray` with `Array.isArray`.
+
+#### JQMIGRATE: jQuery.trim is deprecated; use String.prototype.trim
+
+**Cause:** Older versions of IE & Android Browser didn't implement a method to `trim` strings so jQuery provided a cross-browser implementation. The browsers supported by jQuery 3.0 all provide a standard method for this purpose.
+
+**Solution:** Replace any calls to `jQuery.trim( text )` with `text.trim()` if you know `text` is a string; otherwise, you can replace it with `text == null ? "" : text.trim()`.
