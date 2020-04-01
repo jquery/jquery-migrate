@@ -100,7 +100,7 @@ QUnit.test( "Event aliases", function( assert ) {
 	var $div = jQuery( "<div />" );
 
 	"scroll click submit keydown".split( " " ).forEach( function( name ) {
-		expectWarning( assert, "." + name + "()", 1, function() {
+		expectWarning( assert, "." + name + "()", 2, function() {
 			$div[ name ]( function( event ) {
 				assert.equal( event.type, name, name );
 				$div.off( event );
