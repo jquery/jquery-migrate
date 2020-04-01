@@ -42,14 +42,53 @@ QUnit[ ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) ? "test
 	delete jQuery.cssProps.devoHat;
 } );
 
-QUnit.test( "jQuery.css with numbers", function( assert) {
-	assert.expect( 4 );
+QUnit.test( "jQuery.css with numbers", function( assert ) {
+	assert.expect( 5 );
 
-	expectWarning( assert, "Number value direct", 1, function() {
-		jQuery( "<div />" ).css( "height", 10 );
+	var whitelist = [
+		"margin",
+		"marginTop",
+		"marginRight",
+		"marginBottom",
+		"marginLeft",
+		"padding",
+		"paddingTop",
+		"paddingRight",
+		"paddingBottom",
+		"paddingLeft",
+		"top",
+		"right",
+		"bottom",
+		"left",
+		"width",
+		"height",
+		"minWidth",
+		"minHeight",
+		"maxWidth",
+		"maxHeight",
+		"border",
+		"borderWidth",
+		"borderTop",
+		"borderTopWidth",
+		"borderRight",
+		"borderRightWidth",
+		"borderBottom",
+		"borderBottomWidth",
+		"borderLeft",
+		"borderLeftWidth"
+	];
+
+	function kebabCase( string ) {
+		return string.replace( /[A-Z]/g, function( match ) {
+			return "-" + match.toLowerCase();
+		} );
+	}
+
+	expectWarning( assert, "Number value direct", function() {
+		jQuery( "<div />" ).css( "line-height", 10 );
 	} );
 
-	expectWarning( assert, "Number in an object", 2, function() {
+	expectWarning( assert, "Number in an object", 1, function() {
 		jQuery( "<div />" ).css( {
 			"width": 14,
 			"height": "10px",
@@ -57,11 +96,11 @@ QUnit.test( "jQuery.css with numbers", function( assert) {
 		} );
 	} );
 
-	expectNoWarning( assert, "Number value direct", function() {
-		jQuery( "<div />" ).css( "height", 10 );
+	expectNoWarning( assert, "String value direct", function() {
+		jQuery( "<div />" ).css( "line-height", "10px" );
 	} );
 
-	expectNoWarning( assert, "Number in an object", function() {
+	expectNoWarning( assert, "String in an object", function() {
 		jQuery( "<div />" ).css( {
 			"width": "14em",
 			"height": "10px",
@@ -69,17 +108,25 @@ QUnit.test( "jQuery.css with numbers", function( assert) {
 		} );
 	} );
 
+	expectNoWarning( assert, "Number value (whitelisted props)", function() {
+		whitelist.forEach( function( prop ) {
+			jQuery( "<div />" ).css( prop, 1 );
+			jQuery( "<div />" ).css( kebabCase( prop ), 1 );
+		} );
+	} );
+
 } );
 
-QUnit.test( "jQuery.cssNumber", function( assert) {
-	assert.expect( 2 );
+QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.cssNumber",
+		function( assert ) {
+	assert.expect( 3 );
 
 	expectWarning( assert, "Setting cssNumber value", 1, function() {
 		jQuery.cssNumber.blart = true;
 	} );
 
 
-	expectWarning( assert, "Getting cssNumber value", function() {
+	expectWarning( assert, "Getting cssNumber value", 1, function() {
 		assert.ok( jQuery.cssNumber.blart, "blart was set" );
 	} );
 

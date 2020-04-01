@@ -1,5 +1,35 @@
 
-var internalSwapCall = false;
+var internalSwapCall = false,
+	ralphaStart = /^[a-z]/,
+
+	// The regex visualized:
+	//
+	//                         /----------\
+	//                        |            |    /-------\
+	//                        |  / Top  \  |   |         |
+	//         /--- Border ---+-| Right  |-+---+- Width -+---\
+	//        |                 | Bottom |                    |
+	//        |                  \ Left /                     |
+	//        |                                               |
+	//        |                              /----------\     |
+	//        |          /-------------\    |            |    |- END
+	//        |         |               |   |  / Top  \  |    |
+	//        |         |  / Margin  \  |   | | Right  | |    |
+	//        |---------+-|           |-+---+-| Bottom |-+----|
+	//        |            \ Padding /         \ Left /       |
+	// BEGIN -|                                               |
+	//        |                /---------\                    |
+	//        |               |           |                   |
+	//        |               |  / Min \  |    / Width  \     |
+	//         \--------------+-|       |-+---|          |---/
+	//                           \ Max /       \ Height /
+	rautoPx = /^(?:Border(?:Top|Right|Bottom|Left)?(?:Width|)|(?:Margin|Padding)?(?:Top|Right|Bottom|Left)?|(?:Min|Max)?(?:Width|Height))$/;
+
+function camelCaseString( string ) {
+	return string.replace( /-([a-z])/g, function( _, letter ) {
+		return letter.toUpperCase();
+	} );
+}
 
 // If this version of jQuery has .swap(), don't false-alarm on internal uses
 if ( jQuery.swap ) {
@@ -56,8 +86,21 @@ if ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) {
 if ( !jQuery.cssNumber ) {
 	jQuery.cssNumber = {};
 }
-migrateWarnProp( jQuery, "cssNumber", jQuery.cssNumber,
-	"jQuery.cssNumber is deprecated" );
+
+// jQuery 3.x uses jQuery.cssNumber internally so we can't warn on access there.
+if ( jQueryVersionSince( "4.0.0" ) ) {
+	migrateWarnProp( jQuery, "cssNumber", jQuery.cssNumber,
+		"jQuery.cssNumber is deprecated" );
+}
+
+function isAutoPx( prop ) {
+
+	// The first test is used to ensure that:
+	// 1. The prop starts with a lowercase letter (as we uppercase it for the second regex).
+	// 2. The prop is not empty.
+	return ralphaStart.test( prop ) &&
+		rautoPx.test( prop[ 0 ].toUpperCase() + prop.slice( 1 ) );
+}
 
 var oldFnCss = jQuery.fn.css;
 
@@ -68,7 +111,7 @@ jQuery.fn.css = function( name, value ) {
 			jQuery.fn.css.call( origThis, n, v );
 		} );
 	}
-	if ( typeof value === "number" ) {
+	if ( typeof value === "number" && !isAutoPx( camelCaseString( name ) ) ) {
 		migrateWarn( "Use of number-typed values is deprecated in jQuery.fn.css" );
 	}
 
