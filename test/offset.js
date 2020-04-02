@@ -25,9 +25,9 @@ QUnit.test( ".offset()", function( assert ) {
 	} );
 
 	expectWarning( assert, ".offset() on window", function() {
-		assert.deepEqual(
+		assert.strictEqual(
 			jQuery( window ).offset(),
-			bogus, "window bogus top/left 0"
+			undefined, "window undefined"
 		);
 	} );
 
@@ -38,10 +38,10 @@ QUnit.test( ".offset()", function( assert ) {
 		);
 	} );
 
-	expectWarning( assert, ".offset() on plain object", function() {
-		assert.deepEqual(
+	expectWarning(assert, ".offset() on plain object", function () {
+		assert.strictEqual(
 			jQuery( { space: "junk", zero: 0 } ).offset(),
-			bogus, "plain object bogus top/left 0"
+			undefined, "plain object undefined"
 		);
 	} );
 } );
