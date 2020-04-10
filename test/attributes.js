@@ -47,12 +47,12 @@ QUnit.test( ".toggleClass( boolean )", function( assert ) {
 
 	var e = jQuery( "<div />" ).appendTo( "#qunit-fixture" );
 
-	expectWarning( assert, "toggling initially empty class", function() {
+	expectWarning( assert, "toggling initially empty class", 1, function() {
 		e.toggleClass( true );
 		assert.equal( e[ 0 ].className, "", "Assert class is empty (data was empty)" );
 	} );
 
-	expectNoWarning( assert, ".toggleClass( string ) not full className", function() {
+	expectNoWarning( assert, ".toggleClass( string ) not full className", 1, function() {
 		e.attr( "class", "" );
 		e.toggleClass( "classy" );
 		assert.equal( e.attr( "class" ), "classy", "class was toggle-set" );
@@ -74,7 +74,7 @@ QUnit.test( ".toggleClass( boolean )", function( assert ) {
 		assert.ok( e.is( ".testD.testE" ), "Assert class present (restored from data)" );
 	} );
 
-	expectWarning( assert, ".toggleClass( boolean )", 1, function() {
+	expectWarning( assert, ".toggleClass( boolean )", 5, function() {
 		e.toggleClass( false );
 		assert.ok( !e.is( ".testD.testE" ), "Assert class not present" );
 		e.toggleClass( true );

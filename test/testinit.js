@@ -108,7 +108,7 @@ TestManager = {
 	iframeCallback: undefined,
 	baseURL: window.__karma__ ? "base/test/" : "./",
 	init: function( projects ) {
-		var p, project;
+		var p, project, originalDeduplicateWarnings;
 
 		this.projects = projects;
 		this.loaded = [];
@@ -134,6 +134,24 @@ TestManager = {
 				value: project.choices.split( "," )
 			} );
 		}
+
+
+		QUnit.begin( function( details ) {
+			originalDeduplicateWarnings = jQuery.migrateDeduplicateWarnings;
+		} );
+
+		// If only the first warning is reported, tests using `expectWarning`
+		// with multiple function calls would pass even if some of them didn't
+		// warn. Because of that, by default don't deduplicate warnings in tests.
+		QUnit.testStart( function( details ) {
+			if ( details.name !== "jQuery.migrateDeduplicateWarnings" ) {
+				jQuery.migrateDeduplicateWarnings = false;
+			} else {
+
+				// When testing this API, we want to start with its default value.
+				jQuery.migrateDeduplicateWarnings = originalDeduplicateWarnings;
+			}
+		} );
 	}
 };
 TestManager.init( {

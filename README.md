@@ -54,6 +54,8 @@ This plugin adds some properties to the `jQuery` object that can be used to prog
 
 `jQuery.migrateVersion`: This string property indicates the version of Migrate in use.
 
+`jQuery.migrateDeduplicateWarnings`: By default, Migrate only gives a specific warning once. If you set this property to `false` it will give a warning for every occurrence each time it happens. Note that this can generate a lot of output, for example when a warning occurs in a loop.
+
 ## Reporting problems
 
 Bugs that only occur when the jQuery Migrate plugin is used should be reported in the [jQuery Migrate Issue Tracker](https://github.com/jquery/jquery-migrate/issues) and should be accompanied by an executable test case that demonstrates the bug. The easiest way to do this is via an online test tool such as [jsFiddle.net](https://jsFiddle.net/) or [jsbin.com](https://jsbin.com). Use the development version when you are reporting bugs.
