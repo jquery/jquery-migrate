@@ -26,6 +26,9 @@
 
 var warnedAbout = {};
 
+// By default each warning is only reported once.
+jQuery.migrateDeduplicateWarnings = true;
+
 // List of warnings already given; public read only
 jQuery.migrateWarnings = [];
 
@@ -42,7 +45,7 @@ jQuery.migrateReset = function() {
 
 function migrateWarn( msg ) {
 	var console = window.console;
-	if ( !warnedAbout[ msg ] ) {
+	if ( !jQuery.migrateDeduplicateWarnings || !warnedAbout[ msg ] ) {
 		warnedAbout[ msg ] = true;
 		jQuery.migrateWarnings.push( msg );
 		if ( console && console.warn && !jQuery.migrateMute ) {

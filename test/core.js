@@ -24,6 +24,27 @@ QUnit.test( "compareVersions and jQueryVersionSince", function( assert ) {
 	assert.equal( jQueryVersionSince( jQuery.fn.jquery ), true, "since - equal" );
 } );
 
+QUnit.test( "jQuery.migrateDeduplicateWarnings", function( assert ) {
+	assert.expect( 3 );
+
+	var origValue = jQuery.migrateDeduplicateWarnings;
+	assert.strictEqual( origValue, true, "true by default" );
+
+	jQuery.migrateDeduplicateWarnings = true;
+	expectWarning( assert, "jQuery.migrateDeduplicateWarnings === true", 1, function() {
+		jQuery( "#" );
+		jQuery( "#" );
+	} );
+
+	jQuery.migrateDeduplicateWarnings = false;
+	expectWarning( assert, "jQuery.migrateDeduplicateWarnings === false", 2, function() {
+		jQuery( "#" );
+		jQuery( "#" );
+	} );
+
+	jQuery.migrateDeduplicateWarnings = origValue;
+} );
+
 QUnit.test( "jQuery(html, props)", function( assert ) {
 	assert.expect( 3 );
 
@@ -97,21 +118,21 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 		} );
 	} );
 
-	expectWarning( assert, "Values with unquoted hashes are quoted", fixables.length, function() {
+	expectWarning( assert, "Values with unquoted hashes are quoted", fixables.length * 2, function() {
 		fixables.forEach( function( fixable ) {
 			assert.equal( jQuery( fixable, markup ).length, 1, fixable );
 			assert.equal( markup.find( fixable ).length, 1, fixable );
 		} );
 	} );
 
-	expectWarning( assert, "False positives", positives.length, function() {
+	expectWarning( assert, "False positives", positives.length * 2, function() {
 		positives.forEach( function( positive ) {
 			assert.equal( jQuery( positive, markup ).length, 1,  positive );
 			assert.equal( markup.find( positive ).length, 1, positive );
 		} );
 	} );
 
-	expectWarning( assert, "Unfixable cases", failures.length, function() {
+	expectWarning( assert, "Unfixable cases", failures.length * 2, function() {
 		failures.forEach( function( failure ) {
 			try {
 				jQuery( failure, markup );
@@ -313,7 +334,7 @@ QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( ".isNumeric (warn)", f
 QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.isWindow", function( assert ) {
 	assert.expect( 3 );
 
-	expectWarning( assert, "isWindow", 1, function() {
+	expectWarning( assert, "isWindow", 2, function() {
 		assert.equal( jQuery.isWindow( [] ), false, "array" );
 		assert.equal( jQuery.isWindow( window ), true, "window" );
 	} );
@@ -364,56 +385,32 @@ QUnit.test( "jQuery.expr.pseudos aliases", function( assert ) {
 QUnit.test( "jQuery.holdReady (warn only)", function( assert ) {
 	assert.expect( 1 );
 
-	expectWarning( assert, "jQuery.holdReady", 1, function() {
+	expectWarning( assert, "jQuery.holdReady", 2, function() {
 		jQuery.holdReady( true );
 		jQuery.holdReady( false );
 	} );
 } );
 
 QUnit[ jQueryVersionSince( "3.1.1" ) ? "test" : "skip" ]( "jQuery.trim", function( assert ) {
-	assert.expect( 26 );
+	assert.expect( 14 );
 
 	var nbsp = String.fromCharCode( 160 );
 
-	expectWarning( assert, "jQuery.trim", 1, function() {
+	expectWarning( assert, "jQuery.trim", 13, function() {
 		assert.equal( jQuery.trim( "hello  " ), "hello", "trailing space" );
-	} );
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim( "  hello" ), "hello", "leading space" );
-	} );
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim( "  hello   " ), "hello", "space on both sides" );
-	} );
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim( "  " + nbsp + "hello  " + nbsp + " " ), "hello", "&nbsp;" );
-	} );
 
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim(), "", "Nothing in." );
-	} );
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim( undefined ), "", "Undefined" );
-	} );
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim( null ), "", "Null" );
-	} );
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim( 5 ), "5", "Number" );
-	} );
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim( false ), "false", "Boolean" );
-	} );
 
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim( " " ), "", "space should be trimmed" );
-	} );
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim( "ipad\xA0" ), "ipad", "nbsp should be trimmed" );
-	} );
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim( "\uFEFF" ), "", "zwsp should be trimmed" );
-	} );
-	expectWarning( assert, "jQuery.trim", 1, function() {
 		assert.equal( jQuery.trim( "\uFEFF \xA0! | \uFEFF" ), "! |", "leading/trailing should be trimmed" );
 	} );
 } );
@@ -481,7 +478,7 @@ QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.type (warn)", 
 QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.isArray", function( assert ) {
 	assert.expect( 4 );
 
-	expectWarning( assert, "isArray", 1, function() {
+	expectWarning( assert, "isArray", 3, function() {
 		assert.equal( jQuery.isArray( [] ), true, "empty array" );
 		assert.equal( jQuery.isArray( "" ), false, "empty string" );
 		assert.equal( jQuery.isArray( jQuery().toArray() ), true, "toArray" );
