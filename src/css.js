@@ -83,14 +83,10 @@ if ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) {
 	} );
 }
 
+// Create a dummy jQuery.cssNumber if missing. It won't be used by jQuery but
+// it will prevent code adding new keys to it unconditionally from crashing.
 if ( !jQuery.cssNumber ) {
 	jQuery.cssNumber = {};
-}
-
-// jQuery 3.x uses jQuery.cssNumber internally so we can't warn on access there.
-if ( jQueryVersionSince( "4.0.0" ) ) {
-	migrateWarnProp( jQuery, "cssNumber", jQuery.cssNumber,
-		"jQuery.cssNumber is deprecated" );
 }
 
 function isAutoPx( prop ) {

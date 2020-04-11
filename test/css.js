@@ -117,19 +117,8 @@ QUnit.test( "jQuery.css with numbers", function( assert ) {
 
 } );
 
-QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.cssNumber",
-		function( assert ) {
-	assert.expect( 3 );
+QUnit.test( "jQuery.cssNumber", function( assert ) {
+	assert.expect( 1 );
 
-	expectWarning( assert, "Setting cssNumber value", 1, function() {
-		jQuery.cssNumber.blart = true;
-	} );
-
-
-	expectWarning( assert, "Getting cssNumber value", 1, function() {
-		assert.ok( jQuery.cssNumber.blart, "blart was set" );
-	} );
-
-	delete jQuery.cssNumber.blart;
-
+	assert.ok( jQuery.cssNumber, "jQuery.cssNumber exists" );
 } );
