@@ -19,7 +19,9 @@ module.exports = function( grunt ) {
 			browserSets = JSON.parse( browserSets );
 		}
 		timeout = timeout || 1000 * 60 * 15;
-		tests = grunt.config( "tests" ).jquery;
+		tests = grunt.config( "tests" )[
+			Array.isArray( browserSets ) ? browserSets[ 0 ] : browserSets ||
+				"jquery" ];
 
 		if ( pull ) {
 			jobName = "Pull <a href='https://github.com/jquery/jquery-migrate/pull/" +
