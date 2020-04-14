@@ -3,6 +3,7 @@
 	"root": true,
 	"rules": {
 		// That is okay for the built version
-		"no-multiple-empty-lines": "off"
+		"no-multiple-empty-lines": "off",
+		"one-var": "off"
 	}
 }

@@ -38,7 +38,7 @@ QUnit.test( ".offset()", function( assert ) {
 		);
 	} );
 
-	expectWarning(assert, ".offset() on plain object", function () {
+	expectWarning( assert, ".offset() on plain object", function() {
 		assert.strictEqual(
 			jQuery( { space: "junk", zero: 0 } ).offset(),
 			undefined, "plain object undefined"

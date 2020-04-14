@@ -16,8 +16,9 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 			} )
 			.complete( function() {
 				assert.ok( true, "ajax complete" );
+
 				// Wait for expectWarning to complete
-				setTimeout(done, 1);
+				setTimeout( done, 1 );
 			} );
 	} );
 

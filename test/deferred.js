@@ -5,7 +5,7 @@ QUnit.test( "jQuery.Deferred.exceptionHook", function( assert ) {
 	assert.expect( 1 );
 
 	// Make sure our shimming didn't clobber the default hook
-	assert.ok ( typeof jQuery.Deferred.exceptionHook === "function", "hook is present" );
+	assert.ok( typeof jQuery.Deferred.exceptionHook === "function", "hook is present" );
 } );
 
 QUnit.test( ".pipe() warnings", function( assert ) {

@@ -1,8 +1,5 @@
 {
-	"extends": "jquery",
 	"root": true,
-	"env": {
-		"browser": false,
-		"node": true
-	}
+
+	"extends": "./.eslintrc-node.json"
 }

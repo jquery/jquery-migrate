@@ -1,19 +1,19 @@
-var oldData = jQuery.data;
+var oldData = jQuery.data,
 
-var camelCase = function( string ) {
-	return string.replace( /-([a-z])/g, function( _, letter ) {
-		return letter.toUpperCase();
-	} );
-};
+	camelCase = function( string ) {
+		return string.replace( /-([a-z])/g, function( _, letter ) {
+			return letter.toUpperCase();
+		} );
+	};
 
 jQuery.data = function( elem, name, value ) {
-	var curData;
+	var curData, sameKeys, key;
 
 	// Name can be an object, and each entry in the object is meant to be set as data
 	if ( name && typeof name === "object" && arguments.length === 2 ) {
 		curData = jQuery.hasData( elem ) && oldData.call( this, elem );
-		var sameKeys = {};
-		for ( var key in name ) {
+		sameKeys = {};
+		for ( key in name ) {
 			if ( key !== camelCase( key ) ) {
 				migrateWarn( "jQuery.data() always sets/gets camelCased names: " + key );
 				curData[ key ] = name[ key ];

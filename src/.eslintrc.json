@@ -1,21 +1,16 @@
 {
-	"env": {
-		"browser": false,
-		"node": false
+	"root": true,
+
+	"extends": "../.eslintrc-browser.json",
+
+	"rules": {
+		// Strict mode is only enabled in the built file.
+		"strict": "off"
 	},
-	// Support: IE <=9 only, Android <=4.0 only
-	// The above browsers are failing a lot of tests in the ES5
-	// test suite at http://test262.ecmascript.org.
-	"parserOptions": {
-		"ecmaVersion": 3
-	},
+
 	"globals": {
-		"window": true,
 		"Proxy": true,
 		"Reflect": true,
-
-		"define": true,
-		"module": true,
 
 		"jQuery": true,
 		"migrateWarn": true,
@@ -24,5 +19,14 @@
 		"jQueryVersionSince": true,
 
 		"noGlobal": true
-	}
+	},
+
+	"overrides": [
+		{
+			"files": "wrapper.js",
+			"globals": {
+				"jQuery": false
+			}
+		}
+	]
 }
