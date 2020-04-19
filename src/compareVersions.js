@@ -2,11 +2,12 @@
 
 // Returns 0 if v1 == v2, -1 if v1 < v2, 1 if v1 > v2
 function compareVersions( v1, v2 ) {
-	var rVersionParts = /^(\d+)\.(\d+)\.(\d+)/,
+	var i,
+		rVersionParts = /^(\d+)\.(\d+)\.(\d+)/,
 		v1p = rVersionParts.exec( v1 ) || [ ],
 		v2p = rVersionParts.exec( v2 ) || [ ];
 
-	for ( var i = 1; i <= 3; i++ ) {
+	for ( i = 1; i <= 3; i++ ) {
 		if ( +v1p[ i ] > +v2p[ i ] ) {
 			return 1;
 		}

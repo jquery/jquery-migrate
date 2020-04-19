@@ -1,6 +1,9 @@
 
-var oldInit = jQuery.fn.init,
+var findProp,
+	class2type = {},
+	oldInit = jQuery.fn.init,
 	oldFind = jQuery.find,
+
 	rattrHashTest = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]*?#[-\w#]*)\s*\]/,
 	rattrHashGlob = /\[(\s*[-\w]+\s*)([~|^$*]?=)\s*([-\w#]*?#[-\w#]*)\s*\]/g,
 
@@ -56,7 +59,6 @@ jQuery.find = function( selector ) {
 };
 
 // Copy properties attached to original jQuery.find method (e.g. .attr, .isXML)
-var findProp;
 for ( findProp in oldFind ) {
 	if ( Object.prototype.hasOwnProperty.call( oldFind, findProp ) ) {
 		jQuery.find[ findProp ] = oldFind[ findProp ];
@@ -123,7 +125,6 @@ if ( jQueryVersionSince( "3.3.0" ) ) {
 	);
 
 	// Populate the class2type map
-	var class2type = {};
 	jQuery.each( "Boolean Number String Function Array Date RegExp Object Error Symbol".
 		split( " " ),
 	function( _, name ) {

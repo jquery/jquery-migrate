@@ -3,6 +3,8 @@
  * JQuery Migrate Plugin Release Management
  */
 
+"use strict";
+
 // Debugging variables
 var	dryrun = false,
 	skipRemote = false;

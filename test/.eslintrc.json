@@ -1,20 +1,38 @@
 {
-	"extends": "../src/.eslintrc.json",
 	"root": true,
+
+	"extends": "../.eslintrc-browser.json",
+
 	"env": {
-		"browser": true,
-		"node": false
+
+		// In source the browser env is not enabled but unit tests rely on them
+		// too much and we don't run them in non-browser environments anyway.
+		"browser": true
 	},
-	// Support: IE <=9 only, Android <=4.0 only
-	// The above browsers are failing a lot of tests in the ES5
-	// test suite at http://test262.ecmascript.org.
-	"parserOptions": {
-		"ecmaVersion": 3
+
+	"rules": {
+		// Too many errors
+//		"max-len": "off",
+//		"brace-style": "off",
+//		"key-spacing": "off",
+//		"camelcase": "off",
+		"no-unused-vars": "off",
+		"one-var": "off",
+		"strict": "off"
+//
+//		// Not really too many - waiting for autofix features for these rules
+//		"lines-around-comment": "off",
+//		"dot-notation": "off"
 	},
+
 	"globals": {
 		"expectWarning": true,
 		"expectNoWarning": true,
+		"compareVersions": true,
+		"jQueryVersionSince": true,
 		"TestManager": true,
+
+		"Symbol": false,
 
 		"jQuery": true,
 		"QUnit": true,

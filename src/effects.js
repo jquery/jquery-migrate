@@ -1,5 +1,6 @@
-var oldTweenRun = jQuery.Tween.prototype.run;
-var linearEasing = function( pct ) {
+var intervalValue, intervalMsg,
+	oldTweenRun = jQuery.Tween.prototype.run,
+	linearEasing = function( pct ) {
 		return pct;
 	};
 
@@ -15,8 +16,8 @@ jQuery.Tween.prototype.run = function( ) {
 	oldTweenRun.apply( this, arguments );
 };
 
-var intervalValue = jQuery.fx.interval || 13,
-	intervalMsg = "jQuery.fx.interval is deprecated";
+intervalValue = jQuery.fx.interval || 13;
+intervalMsg = "jQuery.fx.interval is deprecated";
 
 // Support: IE9, Android <=4.4
 // Avoid false positives on browsers that lack rAF

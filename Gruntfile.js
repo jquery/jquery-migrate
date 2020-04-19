@@ -1,7 +1,8 @@
-/*global module:false*/
-module.exports = function( grunt ) {
+"use strict";
 
-	"use strict";
+/* global module:false */
+
+module.exports = function( grunt ) {
 
 	var isTravis = process.env.TRAVIS;
 
