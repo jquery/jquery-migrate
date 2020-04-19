@@ -130,7 +130,7 @@ QUnit.test( "Event aliases", function( assert ) {
 QUnit.test( "custom ready", function( assert ) {
 	assert.expect( 2 );
 
-	jQuery("#qunit-fixture").append("<div id='foo'>bar</div>");
+	jQuery( "#qunit-fixture" ).append( "<div id='foo'>bar</div>" );
 
 	expectNoWarning( assert, "Custom ready event not on document", 1, function() {
 		jQuery( "#foo" ).on( "ready", function() {
@@ -157,7 +157,7 @@ TestManager.runIframeTest( "jQuery.event.props.concat", "event-props-concat.html
 
 		assert.equal( jQuery.migrateWarnings.length, 1, "one warning" );
 		assert.ok( warns.indexOf( "props.concat" ) >= 0, "warnings: " + warns );
-		assert.equal( props[0], "TESTING", "used the empty props" )
+		assert.equal( props[ 0 ], "TESTING", "used the empty props" );
 	} );
 
 // Do this as iframe because there is no way to undo prop addition

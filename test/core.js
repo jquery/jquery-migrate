@@ -14,7 +14,7 @@ QUnit.test( "compareVersions and jQueryVersionSince", function( assert ) {
 	assert.equal( compareVersions( "3.0.1", "2.10.0" ), 1, "greater than 2" );
 	assert.equal( compareVersions( "3.2.1", "3.3.0" ), -1, "less than 1" );
 	assert.equal( compareVersions( "3.2.1", "4.1.3" ), -1, "less than 2" );
-	assert.equal( compareVersions( "3.2.2", "3.11.1" ), -1, "less than 3");
+	assert.equal( compareVersions( "3.2.2", "3.11.1" ), -1, "less than 3" );
 	assert.equal( compareVersions( "3.4.1", "3.4.1" ), 0, "equal" );
 
 
@@ -59,7 +59,8 @@ QUnit.test( "jQuery(html, props)", function( assert ) {
 QUnit.test( "jQuery( '#' )", function( assert ) {
 	assert.expect( 2 );
 
-	expectWarning( assert, "Selector, through the jQuery constructor, nothing but hash", function() {
+	expectWarning( assert, "Selector, through the jQuery constructor, nothing but hash",
+			function() {
 		var set = jQuery( "#" );
 		assert.equal( set.length, 0, "empty set" );
 	} );
@@ -118,7 +119,8 @@ QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
 		} );
 	} );
 
-	expectWarning( assert, "Values with unquoted hashes are quoted", fixables.length * 2, function() {
+	expectWarning( assert, "Values with unquoted hashes are quoted",
+			fixables.length * 2, function() {
 		fixables.forEach( function( fixable ) {
 			assert.equal( jQuery( fixable, markup ).length, 1, fixable );
 			assert.equal( markup.find( fixable ).length, 1, fixable );
@@ -411,7 +413,8 @@ QUnit[ jQueryVersionSince( "3.1.1" ) ? "test" : "skip" ]( "jQuery.trim", functio
 		assert.equal( jQuery.trim( " " ), "", "space should be trimmed" );
 		assert.equal( jQuery.trim( "ipad\xA0" ), "ipad", "nbsp should be trimmed" );
 		assert.equal( jQuery.trim( "\uFEFF" ), "", "zwsp should be trimmed" );
-		assert.equal( jQuery.trim( "\uFEFF \xA0! | \uFEFF" ), "! |", "leading/trailing should be trimmed" );
+		assert.equal( jQuery.trim( "\uFEFF \xA0! | \uFEFF" ), "! |",
+			"leading/trailing should be trimmed" );
 	} );
 } );
 
@@ -429,7 +432,7 @@ QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.isFunction", f
 	assert.expect( 4 );
 
 	expectWarning( assert, "jQuery.isFunction", function() {
-		assert.equal( jQuery.isFunction( function(){} ), true, "function is function" );
+		assert.equal( jQuery.isFunction( function() {} ), true, "function is function" );
 		assert.equal( jQuery.isFunction( {} ), false, "object not function" );
 		assert.equal( jQuery.isFunction( 1 ), false, "number not function" );
 	} );

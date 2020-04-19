@@ -30,7 +30,6 @@ QUnit.test( "jQuery.easing", function( assert ) {
 			.appendTo( "#qunit-fixture" );
 
 	// Can't use expectWarning since this is async
-	div;
 	jQuery.migrateReset();
 	div.animate( { width: "20px" }, {
 		duration: 50,

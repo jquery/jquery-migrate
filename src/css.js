@@ -1,5 +1,6 @@
 
-var internalSwapCall = false,
+var oldFnCss,
+	internalSwapCall = false,
 	ralphaStart = /^[a-z]/,
 
 	// The regex visualized:
@@ -98,7 +99,7 @@ function isAutoPx( prop ) {
 		rautoPx.test( prop[ 0 ].toUpperCase() + prop.slice( 1 ) );
 }
 
-var oldFnCss = jQuery.fn.css;
+oldFnCss = jQuery.fn.css;
 
 jQuery.fn.css = function( name, value ) {
 	var origThis = this;

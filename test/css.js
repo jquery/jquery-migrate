@@ -26,8 +26,8 @@ QUnit.test( "jQuery.swap()", function( assert ) {
 
 } );
 
-QUnit[ ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) ? "test" : "skip" ]
-		( "jQuery.cssProps", function( assert ) {
+QUnit[ ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) ? "test" : "skip"
+	]( "jQuery.cssProps", function( assert ) {
 	assert.expect( 2 );
 
 	expectWarning( assert, "Write to cssProps", function() {
@@ -35,7 +35,9 @@ QUnit[ ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) ? "test
 	} );
 
 	expectNoWarning( assert, "Read from cssProps", function() {
+		// eslint-disable-next-line no-unused-expressions
 		jQuery.cssProps.devoHat;
+		// eslint-disable-next-line no-unused-expressions
 		jQuery.cssProps.unknownProp;
 	} );
 

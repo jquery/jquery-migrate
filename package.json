@@ -34,7 +34,7 @@
 		"grunt-contrib-concat": "1.0.1",
 		"grunt-contrib-uglify": "4.0.1",
 		"grunt-contrib-watch": "1.1.0",
-		"grunt-eslint": "21.0.0",
+		"grunt-eslint": "22.0.0",
 		"grunt-karma": "3.0.2",
 		"jquery": "3.5.0",
 		"karma": "4.1.0",
