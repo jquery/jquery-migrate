@@ -16,6 +16,6 @@ function compareVersions( v1, v2 ) {
 	return 0;
 }
 
-export function jQueryVersionSince( version ) {
+function jQueryVersionSince( version ) {
 	return compareVersions( jQuery.fn.jquery, version ) >= 0;
 }

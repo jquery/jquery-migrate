@@ -1,3 +1,4 @@
+import { migrateWarnFunc } from "../main.js";
 
 var oldAjax = jQuery.ajax;
 

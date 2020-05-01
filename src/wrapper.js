@@ -1,4 +1,10 @@
-;( function( factory ) {
+/*!
+ * jQuery Migrate - v@VERSION - @DATE
+ * Copyright OpenJS Foundation and other contributors
+ */
+( function( factory ) {
+	"use strict";
+
 	if ( typeof define === "function" && define.amd ) {
 
 		// AMD. Register as an anonymous module.
@@ -17,3 +23,9 @@
 	}
 } )( function( jQuery, window ) {
 "use strict";
+
+// @CODE
+// build.js inserts compiled jQuery here
+
+return jQuery;
+} );
