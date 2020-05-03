@@ -42,9 +42,14 @@ QUnit.test( "Improperly closed elements", function( assert ) {
 TestManager.runIframeTest( "jQuery.UNSAFE_restoreLegacyHtmlPrefilter",
 	"manipulation-UNSAFE_restoreLegacyHtmlPrefilter.html",
 	function( assert, jQuery, window, document, log, childCount, firstNodeName, secondNodeName ) {
-		assert.expect( 3 );
+		assert.expect( 5 );
+
+		var warns = jQuery.migrateWarnings;
 
 		assert.strictEqual( childCount, 2, "Proper child count" );
 		assert.strictEqual( firstNodeName, "div", "Proper first element" );
 		assert.strictEqual( secondNodeName, "span", "Proper second element" );
+
+		assert.equal( warns.length, 1, "Proper warning length" );
+		assert.ok( warns[ 0 ].indexOf( "HTML tags" ) >= 0, warns[ 0 ] );
 	} );
