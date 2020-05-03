@@ -4,30 +4,23 @@
 
 module.exports = function( grunt ) {
 
-	var isTravis = process.env.TRAVIS;
+	const gzip = require( "gzip-js" );
+	const isTravis = process.env.TRAVIS;
 
 	// Project configuration.
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( "package.json" ),
-		files: [
-			"src/intro.js",
-			"src/version.js",
-			"src/compareVersions.js",
-			"src/migrate.js",
-			"src/core.js",
-			"src/ajax.js",
-			"src/attributes.js",
-			"src/css.js",
-			"src/data.js",
-			"src/effects.js",
-			"src/event.js",
-			"src/manipulation.js",
-			"src/offset.js",
-			"src/serialize.js",
-			"src/traversing.js",
-			"src/deferred.js",
-			"src/outro.js"
-		],
+		compare_size: {
+			files: [ "dist/jquery-migrate.js", "dist/jquery-migrate.min.js" ],
+			options: {
+				compress: {
+					gz: function( contents ) {
+						return gzip.zip( contents, {} ).length;
+					}
+				},
+				cache: "build/.sizecache.json"
+			}
+		},
 		tests: {
 			jquery: [
 				"dev+git",
@@ -56,6 +49,12 @@ module.exports = function( grunt ) {
 			dist: {
 				src: "<%= files %>",
 				dest: "dist/<%= pkg.name %>.js"
+			}
+		},
+		build: {
+			all: {
+				src: "src/migrate.js",
+				dest: "dist/jquery-migrate.js"
 			}
 		},
 		qunit: {
@@ -125,7 +124,7 @@ module.exports = function( grunt ) {
 				files: [
 					"https://code.jquery.com/jquery-3.x-git.min.js",
 					"dist/jquery-migrate.min.js",
-					"src/compareVersions.js",
+					"test/data/compareVersions.js",
 
 					"test/testinit.js",
 					"test/migrate.js",
@@ -203,10 +202,15 @@ module.exports = function( grunt ) {
 		"eslint:dev",
 		"eslint:dist"
 	] );
-	grunt.registerTask( "build", [ "concat", "uglify", "lint" ] );
 
-	grunt.registerTask( "default", [ "build", "test" ] );
+	grunt.registerTask( "default", [
+		"build",
+		"uglify",
+		"lint",
+		"compare_size",
+		"test"
+	] );
 
 	// For CI
-	grunt.registerTask( "ci", [ "build", "test" ] );
+	grunt.registerTask( "ci", [ "default" ] );
 };

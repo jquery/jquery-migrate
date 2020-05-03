@@ -1,3 +1,5 @@
+import { jQueryVersionSince } from "../compareVersions.js";
+import { migrateWarn, migrateWarnFunc, migrateWarnProp } from "../main.js";
 
 var findProp,
 	class2type = {},

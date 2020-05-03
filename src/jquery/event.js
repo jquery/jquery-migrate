@@ -1,3 +1,5 @@
+import { migrateWarn, migrateWarnProp } from "../main.js";
+
 var oldLoad = jQuery.fn.load,
 	oldEventAdd = jQuery.event.add,
 	originalFix = jQuery.event.fix;

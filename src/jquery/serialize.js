@@ -1,3 +1,4 @@
+import { migrateWarn } from "../main.js";
 
 var oldParam = jQuery.param;
 

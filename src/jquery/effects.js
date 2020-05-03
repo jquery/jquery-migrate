@@ -1,3 +1,5 @@
+import { migrateWarn } from "../main.js";
+
 var intervalValue, intervalMsg,
 	oldTweenRun = jQuery.Tween.prototype.run,
 	linearEasing = function( pct ) {

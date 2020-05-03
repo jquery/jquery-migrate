@@ -1,3 +1,4 @@
+import { migrateWarn } from "../main.js";
 
 var oldRemoveAttr = jQuery.fn.removeAttr,
 	oldToggleClass = jQuery.fn.toggleClass,
