@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>jQuery Migrate late load event binding test</title>
+	<script src="../node_modules/native-promise-only/lib/npo.src.js"></script>
 
 	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
 	<script src="testinit.js"></script>
@@ -15,14 +16,17 @@
 		TestManager.loadProject( "jquery-migrate", "dev", true );
 	</script>
 	<script>
-		var loaded = jQuery.Deferred();
+		var resolve,
+			loaded = new Promise( function ( _resolve ) {
+				resolve = _resolve;
+			} );
 
 		// No warning here, document isn't yet loaded
 		jQuery( window ).on( "load", function() {
-			loaded.resolve();
+			resolve();
 		});
 
-		jQuery.when( jQuery.ready, loaded ).then( function() {
+		Promise.all( [ jQuery.ready, loaded ] ).then( function() {
 
 			// This .on() call should warn
 			jQuery( window ).on( "load", jQuery.noop );

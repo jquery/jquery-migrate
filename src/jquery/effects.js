@@ -1,5 +1,8 @@
 import { migrateWarn } from "../main.js";
 
+// Support jQuery slim which excludes the effects module
+if ( jQuery.fx ) {
+
 var intervalValue, intervalMsg,
 	oldTweenRun = jQuery.Tween.prototype.run,
 	linearEasing = function( pct ) {
@@ -39,4 +42,6 @@ if ( window.requestAnimationFrame ) {
 			intervalValue = newValue;
 		}
 	} );
+}
+
 }

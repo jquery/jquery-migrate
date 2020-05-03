@@ -1,5 +1,8 @@
 import { migrateWarnFunc } from "../main.js";
 
+// Support jQuery slim which excludes the ajax module
+if ( jQuery.ajax ) {
+
 var oldAjax = jQuery.ajax;
 
 jQuery.ajax = function( ) {
@@ -17,3 +20,5 @@ jQuery.ajax = function( ) {
 
 	return jQXHR;
 };
+
+}

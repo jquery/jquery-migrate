@@ -1,5 +1,10 @@
 import { migrateWarn } from "../main.js";
 
+// Support jQuery slim which excludes the ajax module
+// The jQuery.param patch is about respecting `jQuery.ajaxSettings.traditional`
+// so it doesn't make sense for the slim build.
+if ( jQuery.ajax ) {
+
 var oldParam = jQuery.param;
 
 jQuery.param = function( data, traditional ) {
@@ -13,3 +18,5 @@ jQuery.param = function( data, traditional ) {
 
 	return oldParam.call( this, data, traditional );
 };
+
+}
