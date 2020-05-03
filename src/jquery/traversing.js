@@ -1,3 +1,5 @@
+import { migrateWarn } from "../main.js";
+
 var oldSelf = jQuery.fn.andSelf || jQuery.fn.addBack;
 
 jQuery.fn.andSelf = function() {

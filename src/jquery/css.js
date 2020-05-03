@@ -1,3 +1,6 @@
+import { jQueryVersionSince } from "../compareVersions.js";
+import { migrateWarn } from "../main.js";
+import { camelCase } from "../utils.js";
 
 var oldFnCss,
 	internalSwapCall = false,
@@ -25,12 +28,6 @@ var oldFnCss,
 	//         \--------------+-|       |-+---|          |---/
 	//                           \ Max /       \ Height /
 	rautoPx = /^(?:Border(?:Top|Right|Bottom|Left)?(?:Width|)|(?:Margin|Padding)?(?:Top|Right|Bottom|Left)?|(?:Min|Max)?(?:Width|Height))$/;
-
-function camelCaseString( string ) {
-	return string.replace( /-([a-z])/g, function( _, letter ) {
-		return letter.toUpperCase();
-	} );
-}
 
 // If this version of jQuery has .swap(), don't false-alarm on internal uses
 if ( jQuery.swap ) {
@@ -108,7 +105,7 @@ jQuery.fn.css = function( name, value ) {
 			jQuery.fn.css.call( origThis, n, v );
 		} );
 	}
-	if ( typeof value === "number" && !isAutoPx( camelCaseString( name ) ) ) {
+	if ( typeof value === "number" && !isAutoPx( camelCase( name ) ) ) {
 		migrateWarn( "Use of number-typed values is deprecated in jQuery.fn.css" );
 	}
 

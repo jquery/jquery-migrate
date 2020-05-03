@@ -1,3 +1,4 @@
+import { migrateWarn } from "../main.js";
 
 var oldOffset = jQuery.fn.offset;
 

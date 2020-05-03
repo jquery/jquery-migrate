@@ -1,10 +1,7 @@
-var oldData = jQuery.data,
+import { migrateWarn } from "../main.js";
+import { camelCase } from "../utils.js";
 
-	camelCase = function( string ) {
-		return string.replace( /-([a-z])/g, function( _, letter ) {
-			return letter.toUpperCase();
-		} );
-	};
+var oldData = jQuery.data;
 
 jQuery.data = function( elem, name, value ) {
 	var curData, sameKeys, key;
