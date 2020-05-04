@@ -233,11 +233,15 @@ module.exports = function( grunt ) {
 		"eslint:dist"
 	] );
 
-	grunt.registerTask( "default", [
+	grunt.registerTask( "default-no-test", [
 		"build",
 		"uglify",
 		"lint",
-		"compare_size",
+		"compare_size"
+	] );
+
+	grunt.registerTask( "default", [
+		"default-no-test",
 		"test"
 	] );
 
