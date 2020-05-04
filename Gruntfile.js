@@ -7,6 +7,29 @@ module.exports = function( grunt ) {
 	const gzip = require( "gzip-js" );
 	const isTravis = process.env.TRAVIS;
 
+	const karmaFilesExceptJQuery = [
+		"dist/jquery-migrate.min.js",
+		"test/data/compareVersions.js",
+
+		"test/testinit.js",
+		"test/migrate.js",
+		"test/core.js",
+		"test/ajax.js",
+		"test/attributes.js",
+		"test/css.js",
+		"test/data.js",
+		"test/deferred.js",
+		"test/effects.js",
+		"test/event.js",
+		"test/manipulation.js",
+		"test/offset.js",
+		"test/serialize.js",
+		"test/traversing.js",
+
+		{ pattern: "dist/jquery-migrate.js", included: false, served: true },
+		{ pattern: "test/**/*.@(js|css|jpg|html|xml)", included: false, served: true }
+	];
+
 	// Project configuration.
 	grunt.initConfig( {
 		pkg: grunt.file.readJSON( "package.json" ),
@@ -24,17 +47,27 @@ module.exports = function( grunt ) {
 		tests: {
 			jquery: [
 				"dev+git",
-				"min+git.min"
+				"min+git.min",
+				"dev+git.slim",
+				"min+git.slim.min"
 			],
 			"jquery-3": [
 				"dev+3.x-git",
 				"min+3.x-git.min",
+				"dev+3.x-git.slim",
+				"min+3.x-git.slim.min",
 				"dev+3.5.0",
+				"dev+3.5.0.slim",
 				"dev+3.4.1",
+				"dev+3.4.1.slim",
 				"dev+3.3.1",
+				"dev+3.3.1.slim",
 				"dev+3.2.1",
+				"dev+3.2.1.slim",
 				"dev+3.1.1",
-				"dev+3.0.0"
+				"dev+3.1.1.slim",
+				"dev+3.0.0",
+				"dev+3.0.0.slim"
 			]
 		},
 		banners: {
@@ -123,26 +156,7 @@ module.exports = function( grunt ) {
 				frameworks: [ "qunit" ],
 				files: [
 					"https://code.jquery.com/jquery-3.x-git.min.js",
-					"dist/jquery-migrate.min.js",
-					"test/data/compareVersions.js",
-
-					"test/testinit.js",
-					"test/migrate.js",
-					"test/core.js",
-					"test/ajax.js",
-					"test/attributes.js",
-					"test/css.js",
-					"test/data.js",
-					"test/deferred.js",
-					"test/effects.js",
-					"test/event.js",
-					"test/manipulation.js",
-					"test/offset.js",
-					"test/serialize.js",
-					"test/traversing.js",
-
-					{ pattern: "dist/jquery-migrate.js", included: false, served: true },
-					{ pattern: "test/**/*.@(js|css|jpg|html|xml)", included: false, served: true }
+					...karmaFilesExceptJQuery
 				],
 				client: {
 					clearContext: false,
@@ -161,6 +175,19 @@ module.exports = function( grunt ) {
 
 				// The Chrome sandbox doesn't work on Travis.
 				browsers: [ isTravis ? "ChromeHeadlessNoSandbox" : "ChromeHeadless" ]
+			},
+
+			"jquery-slim": {
+
+				// The Chrome sandbox doesn't work on Travis.
+				browsers: [ isTravis ? "ChromeHeadlessNoSandbox" : "ChromeHeadless" ],
+
+				options: {
+					files: [
+						"https://code.jquery.com/jquery-3.x-git.slim.min.js",
+						...karmaFilesExceptJQuery
+					]
+				}
 			},
 
 			// To debug tests with Karma:
@@ -191,7 +218,10 @@ module.exports = function( grunt ) {
 	grunt.loadTasks( "build/tasks" );
 
 	// Just an alias
-	grunt.registerTask( "test", [ "karma:main" ] );
+	grunt.registerTask( "test", [
+		"karma:main",
+		"karma:jquery-slim"
+	] );
 
 	grunt.registerTask( "lint", [
 

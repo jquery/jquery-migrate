@@ -1,3 +1,6 @@
+// Support jQuery slim which excludes the ajax module
+if ( jQuery.ajax ) {
+
 QUnit.module( "ajax" );
 
 QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
@@ -23,3 +26,5 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 	} );
 
 } );
+
+}

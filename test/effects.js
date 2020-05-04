@@ -1,3 +1,6 @@
+// Support jQuery slim which excludes the effects module
+if ( jQuery.fx ) {
+
 QUnit.module( "effects" );
 
 QUnit.test( "jQuery.easing", function( assert ) {
@@ -83,3 +86,5 @@ QUnit.test( "jQuery.fx.interval - user change", function( assert ) {
 
 	jQuery.fx.interval = oldInterval;
 } );
+
+}

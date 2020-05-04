@@ -17,7 +17,7 @@ QUnit.test( "error() event method", function( assert ) {
 } );
 
 QUnit.test( "load() and unload() event methods", function( assert ) {
-	assert.expect( 5 );
+	assert.expect( jQuery.ajax ? 5 : 4 );
 
 	expectWarning( assert, "jQuery.fn.load()", function() {
 		jQuery( "<img />" )
@@ -41,15 +41,17 @@ QUnit.test( "load() and unload() event methods", function( assert ) {
 			.remove();
 	} );
 
-	expectNoWarning( assert, "ajax load", function() {
-		var start = assert.async();
-		jQuery( "<div id=load138></div>" )
-			.appendTo( "#qunit-fixture" )
-			.load( "not-found.file", function() {
-				jQuery( "#load138" ).remove();
-				start();
-			} );
-	} );
+	if ( jQuery.ajax ) {
+		expectNoWarning( assert, "ajax load", function() {
+			var start = assert.async();
+			jQuery( "<div id=load138></div>" )
+				.appendTo( "#qunit-fixture" )
+				.load( "not-found.file", function() {
+					jQuery( "#load138" ).remove();
+					start();
+				} );
+		} );
+	}
 } );
 
 QUnit.test( ".bind() and .unbind()", function( assert ) {
