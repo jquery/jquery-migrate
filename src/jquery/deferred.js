@@ -1,5 +1,8 @@
 import { migrateWarn } from "../main.js";
 
+// Support jQuery slim which excludes the deferred module in jQuery 4.0+
+if ( jQuery.Deferred ) {
+
 var oldDeferred = jQuery.Deferred,
 	tuples = [
 
@@ -57,3 +60,5 @@ jQuery.Deferred = function( func ) {
 
 // Preserve handler of uncaught exceptions in promise chains
 jQuery.Deferred.exceptionHook = oldDeferred.exceptionHook;
+
+}

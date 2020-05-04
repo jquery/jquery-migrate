@@ -1,6 +1,11 @@
 
 QUnit.module( "serialize" );
 
+// Support jQuery slim which excludes the ajax module
+// The jQuery.param patch is about respecting `jQuery.ajaxSettings.traditional`
+// so it doesn't make sense for the slim build.
+if ( jQuery.ajax ) {
+
 QUnit.test( "jQuery.param( x, traditional)", function( assert ) {
 	assert.expect( 12 );
 
@@ -49,3 +54,5 @@ QUnit.test( "jQuery.param( x, traditional)", function( assert ) {
 
 	jQuery.ajaxSettings.traditional = savedTraditional;
 } );
+
+}

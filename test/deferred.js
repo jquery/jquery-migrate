@@ -1,3 +1,5 @@
+// Support jQuery slim which excludes the deferred module in jQuery 4.0+
+if ( jQuery.Deferred ) {
 
 QUnit.module( "deferred" );
 
@@ -155,3 +157,5 @@ QUnit.test( "[PIPE ONLY] jQuery.Deferred.pipe - context", function( assert ) {
 		done.pop().call();
 	} );
 } );
+
+}
