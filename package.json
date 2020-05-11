@@ -39,7 +39,6 @@
 		"grunt-eslint": "22.0.0",
 		"grunt-karma": "3.0.2",
 		"gzip-js": "0.3.2",
-		"jquery": "3.5.0",
 		"karma": "4.1.0",
 		"karma-browserstack-launcher": "1.5.1",
 		"karma-chrome-launcher": "2.2.0",
