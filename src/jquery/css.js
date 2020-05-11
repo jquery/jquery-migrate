@@ -99,14 +99,19 @@ function isAutoPx( prop ) {
 oldFnCss = jQuery.fn.css;
 
 jQuery.fn.css = function( name, value ) {
-	var origThis = this;
+	var camelName,
+		origThis = this;
 	if ( typeof name !== "string" ) {
 		jQuery.each( name, function( n, v ) {
 			jQuery.fn.css.call( origThis, n, v );
 		} );
 	}
-	if ( typeof value === "number" && !isAutoPx( camelCase( name ) ) ) {
-		migrateWarn( "Use of number-typed values is deprecated in jQuery.fn.css" );
+	if ( typeof value === "number" ) {
+		camelName = camelCase( name );
+		if ( !isAutoPx( camelName ) && !jQuery.cssNumber[ camelName ] ) {
+			migrateWarn( "Number-typed values are deprecated for jQuery.fn.css( \"" +
+				name + "\", value )" );
+		}
 	}
 
 	return oldFnCss.apply( this, arguments );
