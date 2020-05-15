@@ -45,40 +45,41 @@ QUnit[ ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) ? "test
 } );
 
 QUnit.test( "jQuery.css with numbers", function( assert ) {
-	assert.expect( 5 );
+	var jQuery3OrOlder = compareVersions( jQuery.fn.jquery, "4.0.0" ) < 0,
+		whitelist = [
+			"margin",
+			"marginTop",
+			"marginRight",
+			"marginBottom",
+			"marginLeft",
+			"padding",
+			"paddingTop",
+			"paddingRight",
+			"paddingBottom",
+			"paddingLeft",
+			"top",
+			"right",
+			"bottom",
+			"left",
+			"width",
+			"height",
+			"minWidth",
+			"minHeight",
+			"maxWidth",
+			"maxHeight",
+			"border",
+			"borderWidth",
+			"borderTop",
+			"borderTopWidth",
+			"borderRight",
+			"borderRightWidth",
+			"borderBottom",
+			"borderBottomWidth",
+			"borderLeft",
+			"borderLeftWidth"
+		];
 
-	var whitelist = [
-		"margin",
-		"marginTop",
-		"marginRight",
-		"marginBottom",
-		"marginLeft",
-		"padding",
-		"paddingTop",
-		"paddingRight",
-		"paddingBottom",
-		"paddingLeft",
-		"top",
-		"right",
-		"bottom",
-		"left",
-		"width",
-		"height",
-		"minWidth",
-		"minHeight",
-		"maxWidth",
-		"maxHeight",
-		"border",
-		"borderWidth",
-		"borderTop",
-		"borderTopWidth",
-		"borderRight",
-		"borderRightWidth",
-		"borderBottom",
-		"borderBottomWidth",
-		"borderLeft",
-		"borderLeftWidth"
-	];
+	assert.expect( jQuery3OrOlder ?  7 : 6 );
 
 	function kebabCase( string ) {
 		return string.replace( /[A-Z]/g, function( match ) {
@@ -87,26 +88,26 @@ QUnit.test( "jQuery.css with numbers", function( assert ) {
 	}
 
 	expectWarning( assert, "Number value direct", function() {
-		jQuery( "<div />" ).css( "line-height", 10 );
+		jQuery( "<div />" ).css( "fake-property", 10 );
 	} );
 
 	expectWarning( assert, "Number in an object", 1, function() {
 		jQuery( "<div />" ).css( {
 			"width": 14,
 			"height": "10px",
-			"line-height": 2
+			"fake-property": 2
 		} );
 	} );
 
 	expectNoWarning( assert, "String value direct", function() {
-		jQuery( "<div />" ).css( "line-height", "10px" );
+		jQuery( "<div />" ).css( "fake-property", "10px" );
 	} );
 
 	expectNoWarning( assert, "String in an object", function() {
 		jQuery( "<div />" ).css( {
 			"width": "14em",
 			"height": "10px",
-			"line-height": "2"
+			"fake-property": "2"
 		} );
 	} );
 
@@ -115,6 +116,19 @@ QUnit.test( "jQuery.css with numbers", function( assert ) {
 			jQuery( "<div />" ).css( prop, 1 );
 			jQuery( "<div />" ).css( kebabCase( prop ), 1 );
 		} );
+	} );
+
+	expectNoWarning( assert, "Props from jQuery.cssNumber", function() {
+		var prop,
+			assertionFired = false;
+		for ( prop in jQuery.cssNumber ) {
+			assertionFired = true;
+			jQuery( "<div />" ).css( prop, 1 );
+			jQuery( "<div />" ).css( kebabCase( prop ), 1 );
+		}
+		if ( jQuery3OrOlder ) {
+			assert.strictEqual( assertionFired, true, "jQuery.cssNumber property was accessed" );
+		}
 	} );
 
 } );
