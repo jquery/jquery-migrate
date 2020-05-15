@@ -2,7 +2,7 @@
 QUnit.module( "offset" );
 
 QUnit.test( ".offset()", function( assert ) {
-	assert.expect( 12 );
+	assert.expect( 20 );
 
 	var bogus = { top: 0, left: 0 };
 
@@ -38,10 +38,39 @@ QUnit.test( ".offset()", function( assert ) {
 		);
 	} );
 
+	expectWarning( assert, ".offset() as setter on disconnected node", 2,
+			function() {
+		var $elemInitial = jQuery( "<div />" )
+				.css( "position", "fixed" ),
+			$elem = $elemInitial
+				.offset( { top: 42, left: 99 } );
+
+		assert.strictEqual( $elem[ 0 ], $elemInitial[ 0 ],
+			".offset() returns a proper jQuery object" );
+
+		$elem.appendTo( "#qunit-fixture" );
+		assert.deepEqual( $elem.offset(), { top: 42, left: 99 } );
+	} );
+
+	expectWarning( assert, ".offset() on empty set", 2, function() {
+		var $empty = jQuery();
+
+		assert.strictEqual( $empty.offset(), undefined, ".offset() returns undefined" );
+		assert.strictEqual( $empty.offset( { top: 42, left: 99 } ), $empty,
+			".offset( coords ) returns the jQuery object" );
+	} );
+
 	expectWarning( assert, ".offset() on plain object", function() {
 		assert.strictEqual(
 			jQuery( { space: "junk", zero: 0 } ).offset(),
 			undefined, "plain object undefined"
+		);
+	} );
+
+	expectNoWarning( assert, ".offset() on documentElement", function() {
+		assert.deepEqual(
+			jQuery( document.documentElement ).offset(),
+			{ top: 0, left: 0 }, "no crash"
 		);
 	} );
 } );
