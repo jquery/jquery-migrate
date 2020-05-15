@@ -37,7 +37,6 @@ module.exports = function( grunt ) {
 				pluginjQuery[ 0 ] + "&jquery=" + pluginjQuery[ 1 ];
 		} );
 
-		// TODO: create separate job for git so we can do different browsersets
 		testswarm.createClient( {
 			url: config.swarmUrl
 		} )
