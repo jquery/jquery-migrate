@@ -1,10 +1,5 @@
 /* exported expectWarning, expectNoWarning */
 
-// Don't spew on in the console window when we build
-if ( navigator.userAgent.indexOf( "PhantomJS" ) >= 0 ) {
-	jQuery.migrateMute = true;
-}
-
 function expectWarning( assert, name, expected, fn ) {
 	if ( !fn ) {
 		fn = expected;
