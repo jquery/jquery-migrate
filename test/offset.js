@@ -2,7 +2,7 @@
 QUnit.module( "offset" );
 
 QUnit.test( ".offset()", function( assert ) {
-	assert.expect( 20 );
+	assert.expect( 21 );
 
 	var bogus = { top: 0, left: 0 };
 
@@ -40,7 +40,8 @@ QUnit.test( ".offset()", function( assert ) {
 
 	expectWarning( assert, ".offset() as setter on disconnected node", 2,
 			function() {
-		var $elemInitial = jQuery( "<div />" )
+		var offset,
+			$elemInitial = jQuery( "<div />" )
 				.css( "position", "fixed" ),
 			$elem = $elemInitial
 				.offset( { top: 42, left: 99 } );
@@ -49,7 +50,9 @@ QUnit.test( ".offset()", function( assert ) {
 			".offset() returns a proper jQuery object" );
 
 		$elem.appendTo( "#qunit-fixture" );
-		assert.deepEqual( $elem.offset(), { top: 42, left: 99 } );
+		offset = $elem.offset();
+		assert.strictEqual( offset.top, 42, "proper top offset" );
+		assert.strictEqual( offset.left, 99, "proper left offset" );
 	} );
 
 	expectWarning( assert, ".offset() on empty set", 2, function() {
