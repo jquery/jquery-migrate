@@ -101,7 +101,7 @@ oldFnCss = jQuery.fn.css;
 jQuery.fn.css = function( name, value ) {
 	var camelName,
 		origThis = this;
-	if ( typeof name !== "string" ) {
+	if ( name && typeof name === "object" && !Array.isArray( name ) ) {
 		jQuery.each( name, function( n, v ) {
 			jQuery.fn.css.call( origThis, n, v );
 		} );

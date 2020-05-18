@@ -44,6 +44,22 @@ QUnit[ ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) ? "test
 	delete jQuery.cssProps.devoHat;
 } );
 
+QUnit.test( "jQuery.css with arrays", function( assert ) {
+	assert.expect( 2 );
+
+	expectNoWarning( assert, "String value direct", function() {
+		var cssValues = jQuery( "<div />" )
+			.css( {
+				lineHeight: "1",
+				fontSize: "16px"
+			} )
+			.css( [ "font-size", "lineHeight" ] );
+
+		assert.deepEqual( cssValues, { "font-size": "16px", lineHeight: "1" },
+			".css( array ) works" );
+	} );
+} );
+
 QUnit.test( "jQuery.css with numbers", function( assert ) {
 	var jQuery3OrOlder = compareVersions( jQuery.fn.jquery, "4.0.0" ) < 0,
 		whitelist = [
