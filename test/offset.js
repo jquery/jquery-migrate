@@ -31,14 +31,14 @@ QUnit.test( ".offset()", function( assert ) {
 		);
 	} );
 
-	expectWarning( assert, ".offset() on disconnected node", function() {
+	expectNoWarning( assert, ".offset() on disconnected node", function() {
 		assert.deepEqual(
 			jQuery( document.createElement( "div" ) ).offset(),
 			bogus, "disconnected bogus top/left 0"
 		);
 	} );
 
-	expectWarning( assert, ".offset() as setter on disconnected node", 2,
+	expectNoWarning( assert, ".offset() as setter on disconnected node",
 			function() {
 		var offset,
 			$elemInitial = jQuery( "<div />" )
@@ -55,7 +55,7 @@ QUnit.test( ".offset()", function( assert ) {
 		assert.strictEqual( offset.left, 99, "proper left offset" );
 	} );
 
-	expectWarning( assert, ".offset() on empty set", 2, function() {
+	expectNoWarning( assert, ".offset() on empty set", function() {
 		var $empty = jQuery();
 
 		assert.strictEqual( $empty.offset(), undefined, ".offset() returns undefined" );
