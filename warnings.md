@@ -98,9 +98,8 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 **Solution**: It is almost always a mistake to use `.removeAttr( "checked" )` on a DOM element. The only time it might be useful is if the DOM is later going to be serialized back to an HTML string. In all other cases, `.prop( "checked", false )` should be used instead.
 
 ### JQMIGRATE: jQuery.fn.offset() requires a valid DOM element
-### JQMIGRATE: jQuery.fn.offset() requires an element connected to a document
 
-**Cause:** In earlier versions of jQuery, the `.offset()` method would return a value of `{ top: 0, left: 0 }` for some cases of invalid input. jQuery 3.0 throws errors in some of these cases. The selected element in the jQuery collection must be a DOM element that is currently in a document. Text nodes, the `window` object, plain JavaScript objects, and disconnected elements are not valid input to the `.offset()` method. jQuery *may* throw an error in those cases but in general does not guarantee specific results with invalid inputs.
+**Cause:** In earlier versions of jQuery, the `.offset()` method would return a value of `{ top: 0, left: 0 }` for some cases of invalid input. jQuery 3.0 throws errors in some of these cases. The selected element in the jQuery collection must be a DOM element that has a `getBoundingClientRect` method. Text nodes, the `window` object, and plain JavaScript objects are not valid input to the `.offset()` method. jQuery *may* throw an error in those cases but in general does not guarantee specific results with invalid inputs.
 
 **Solution**: Do not attempt to get or set the offset information of invalid input.
 
@@ -264,4 +263,4 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Cause:** jQuery 3.5.0 changed the way it processes HTML strings. Previously, jQuery would attempt to fix self-closed tags like `<i class="test" />` that the HTML5 specification says are not self-closed, turning it into `<i class="test"></i>`. This processing can create a [security problem](https://nvd.nist.gov/vuln/detail/CVE-2020-11022) with malicious strings, so the functionality had to be removed.
 
-**Solution:** Search for the reported HTML strings and edit the tags to close them explicitly. In some cases the strings passed to jQuery may be created inside the program and thus not searchable. Migrate warning messages include a stack trace that can be used to find the location of the usage in the code. 
+**Solution:** Search for the reported HTML strings and edit the tags to close them explicitly. In some cases the strings passed to jQuery may be created inside the program and thus not searchable. Migrate warning messages include a stack trace that can be used to find the location of the usage in the code.
