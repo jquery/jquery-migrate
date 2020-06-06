@@ -50,12 +50,12 @@ QUnit.test( "jQuery.css with arrays", function( assert ) {
 	expectNoWarning( assert, "String value direct", function() {
 		var cssValues = jQuery( "<div />" )
 			.css( {
-				lineHeight: "1",
+				"z-index": "2",
 				fontSize: "16px"
 			} )
-			.css( [ "font-size", "lineHeight" ] );
+			.css( [ "font-size", "zIndex" ] );
 
-		assert.deepEqual( cssValues, { "font-size": "16px", lineHeight: "1" },
+		assert.deepEqual( cssValues, { "font-size": "16px", zIndex: "2" },
 			".css( array ) works" );
 	} );
 } );
