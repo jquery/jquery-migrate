@@ -5,7 +5,6 @@
 module.exports = function( grunt ) {
 
 	const gzip = require( "gzip-js" );
-	const isTravis = process.env.TRAVIS;
 
 	const karmaFilesExceptJQuery = [
 		"dist/jquery-migrate.min.js",
@@ -172,15 +171,11 @@ module.exports = function( grunt ) {
 				singleRun: true
 			},
 			main: {
-
-				// The Chrome sandbox doesn't work on Travis.
-				browsers: [ isTravis ? "ChromeHeadlessNoSandbox" : "ChromeHeadless" ]
+				browsers: [ "ChromeHeadless", "FirefoxHeadless" ]
 			},
 
 			"jquery-slim": {
-
-				// The Chrome sandbox doesn't work on Travis.
-				browsers: [ isTravis ? "ChromeHeadlessNoSandbox" : "ChromeHeadless" ],
+				browsers: [ "ChromeHeadless", "FirefoxHeadless" ],
 
 				options: {
 					files: [
