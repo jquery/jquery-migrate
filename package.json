@@ -48,7 +48,7 @@
 		"native-promise-only": "0.8.1",
 		"qunit": "2.10.0",
 		"rollup": "2.15.0",
-		"testswarm": "1.1.1"
+		"testswarm": "1.1.2"
 	},
 	"keywords": [
 		"jquery",
