@@ -478,7 +478,7 @@ QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.type (warn)", 
 
 } );
 
-QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.isArray", function( assert ) {
+QUnit[ jQueryVersionSince( "3.2.0" ) ? "test" : "skip" ]( "jQuery.isArray", function( assert ) {
 	assert.expect( 4 );
 
 	expectWarning( assert, "isArray", 3, function() {
