@@ -26,7 +26,7 @@ module.exports = function( grunt ) {
 		"test/traversing.js",
 
 		{ pattern: "dist/jquery-migrate.js", included: false, served: true },
-		{ pattern: "test/**/*.@(js|css|jpg|html|xml)", included: false, served: true }
+		{ pattern: "test/**/*.@(js|json|css|jpg|html|xml)", included: false, served: true }
 	];
 
 	// Project configuration.

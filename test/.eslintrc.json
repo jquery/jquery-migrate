@@ -12,17 +12,9 @@
 
 	"rules": {
 		// Too many errors
-//		"max-len": "off",
-//		"brace-style": "off",
-//		"key-spacing": "off",
-//		"camelcase": "off",
 		"no-unused-vars": "off",
 		"one-var": "off",
 		"strict": "off"
-//
-//		// Not really too many - waiting for autofix features for these rules
-//		"lines-around-comment": "off",
-//		"dot-notation": "off"
 	},
 
 	"globals": {
@@ -31,22 +23,12 @@
 		"compareVersions": true,
 		"jQueryVersionSince": true,
 		"TestManager": true,
+		"url": true,
 
 		"Symbol": false,
 
 		"jQuery": true,
 		"QUnit": true,
-		"module": true,
-		"ok": true,
-		"equal": true,
-		"test": true,
-		"asyncTest": true,
-		"notEqual": true,
-		"deepEqual": true,
-		"strictEqual": true,
-		"notStrictEqual": true,
-		"start": true,
-		"stop": true,
-		"expect": true
+		"module": true
 	}
 }

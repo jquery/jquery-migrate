@@ -64,7 +64,7 @@ See: [jQuery Core Style Guide](http://docs.jquery.com/JQuery_Core_Style_Guidelin
 ## Tips For Bug Patching
 
 
-### Environment: localhost 
+### Environment: localhost
 
 To test the plugin you will need:
 
@@ -188,7 +188,7 @@ $ git checkout master
 
 ### Test Suite Tips...
 
-By default the plugin runs against the current (jquery-git WIP) version of jQuery. You can select a different version by specifying it in the URL. Files are always retrieved from code.jquery.com. 
+By default the plugin runs against the current (jquery-3.x-git WIP) version of jQuery. You can select a different version by specifying it in the URL. Files are always retrieved from code.jquery.com.
 
 Example:
 
