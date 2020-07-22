@@ -107,9 +107,9 @@ if ( jQueryVersionSince( "3.2.0" ) ) {
 	},
 	"jQuery.nodeName is deprecated" );
 
-        migrateWarnFunc( jQuery, "isArray", Array.isArray,
-                "jQuery.isArray is deprecated; use Array.isArray"
-        );
+	migrateWarnFunc( jQuery, "isArray", Array.isArray,
+		"jQuery.isArray is deprecated; use Array.isArray"
+	);
 }
 
 if ( jQueryVersionSince( "3.3.0" ) ) {
