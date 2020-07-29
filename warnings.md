@@ -253,7 +253,7 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution:** Replace any calls to `jQuery.trim( text )` with `text.trim()` if you know `text` is a string; otherwise, you can replace it with `String.prototype.trim.call( text == null ? "" : text )`.
 
-### JQMIGRATE: Use of number-typed values is deprecated in jQuery.fn.css
+### JQMIGRATE: Number-typed values are deprecated for jQuery.fn.css( _(property name)_, value )
 
 **Cause:** In past versions, when a number-typed value was passed to `.css()` jQuery converted it to a string and added `"px"` to the end. As the CSS standard has evolved, an increasingly large set of CSS properties now accept values that are unitless numbers, where this behavior is incorrect. It has become impractical to manage these exceptions in the `jQuery.cssNumber` object. In addition, some CSS properties like `line-height` can accept both a bare number `2` or a pixel value `2px`. jQuery cannot know the correct way to interpret `$.css("line-height", 2)` and currently treats it as `"2px"`.
 
