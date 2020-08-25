@@ -25,6 +25,7 @@
 		"TestManager": true,
 		"url": true,
 
+		"Promise": false,
 		"Symbol": false,
 
 		"jQuery": true,

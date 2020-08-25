@@ -32,14 +32,14 @@ function expectWarning( assert, name, expected, fn ) {
 	}
 
 	if ( result && result.then ) {
-		return jQuery.when(
+		return Promise.resolve(
 			result.then( function() {
 				check();
 			} )
 		);
 	} else {
 		check();
-		return jQuery.when();
+		return Promise.resolve();
 	}
 }
 

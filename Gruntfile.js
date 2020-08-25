@@ -7,6 +7,7 @@ module.exports = function( grunt ) {
 	const gzip = require( "gzip-js" );
 
 	const karmaFilesExceptJQuery = [
+		"node_modules/native-promise-only/lib/npo.src.js",
 		"dist/jquery-migrate.min.js",
 		"test/data/compareVersions.js",
 
