@@ -106,6 +106,10 @@ if ( jQueryVersionSince( "3.2.0" ) ) {
 		return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
 	},
 	"jQuery.nodeName is deprecated" );
+
+	migrateWarnFunc( jQuery, "isArray", Array.isArray,
+		"jQuery.isArray is deprecated; use Array.isArray"
+	);
 }
 
 if ( jQueryVersionSince( "3.3.0" ) ) {
@@ -156,9 +160,5 @@ if ( jQueryVersionSince( "3.3.0" ) ) {
 			return obj != null && obj === obj.window;
 		},
 		"jQuery.isWindow() is deprecated"
-	);
-
-	migrateWarnFunc( jQuery, "isArray", Array.isArray,
-		"jQuery.isArray is deprecated; use Array.isArray"
 	);
 }
