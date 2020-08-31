@@ -108,7 +108,13 @@ TestManager = {
 	iframeCallback: undefined,
 	baseURL: window.__karma__ ? "base/test/" : "./",
 	init: function( projects ) {
-		var p, project, originalDeduplicateWarnings;
+		var p, project, originalDeduplicateWarnings,
+			FILEPATH = "/test/testinit.js",
+			activeScript = [].slice.call( document.getElementsByTagName( "script" ), -1 )[ 0 ],
+			parentUrl = activeScript && activeScript.src ?
+				activeScript.src.replace( /[?#].*/, "" ) + FILEPATH.replace( /[^/]+/g, ".." ) + "/" :
+				"../",
+			baseURL = parentUrl + "test/";
 
 		this.projects = projects;
 		this.loaded = [];
@@ -135,6 +141,21 @@ TestManager = {
 			} );
 		}
 
+		/**
+		 * Add random number to url to stop caching
+		 *
+		 * Also prefixes with baseURL automatically.
+		 *
+		 * @example url("index.html")
+		 * @result "data/index.html?10538358428943"
+		 *
+		 * @example url("mock.php?foo=bar")
+		 * @result "data/mock.php?foo=bar&10538358345554"
+		 */
+		window.url = function url( value ) {
+			return baseURL + value + ( /\?/.test( value ) ? "&" : "?" ) +
+				new Date().getTime() + "" + parseInt( Math.random() * 100000, 10 );
+		};
 
 		QUnit.begin( function( details ) {
 			originalDeduplicateWarnings = jQuery.migrateDeduplicateWarnings;

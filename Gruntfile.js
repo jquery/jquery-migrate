@@ -7,6 +7,7 @@ module.exports = function( grunt ) {
 	const gzip = require( "gzip-js" );
 
 	const karmaFilesExceptJQuery = [
+		"node_modules/native-promise-only/lib/npo.src.js",
 		"dist/jquery-migrate.min.js",
 		"test/data/compareVersions.js",
 
@@ -26,7 +27,7 @@ module.exports = function( grunt ) {
 		"test/traversing.js",
 
 		{ pattern: "dist/jquery-migrate.js", included: false, served: true },
-		{ pattern: "test/**/*.@(js|css|jpg|html|xml)", included: false, served: true }
+		{ pattern: "test/**/*.@(js|json|css|jpg|html|xml)", included: false, served: true }
 	];
 
 	// Project configuration.
