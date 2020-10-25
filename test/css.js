@@ -156,10 +156,6 @@ QUnit.test( "jQuery.cssNumber", function( assert ) {
 } );
 
 QUnit.test( "jQuery.css with object as name and number as value", function( assert ) {
-	assert.expect( 2 );
-	expectWarning( assert, "Object as name, number as value", function() {
-		( jQuery( "<div/>" ).css( { left: "100%" }, 300 ) );
-	} );
-
+	assert.expect( 1 );
 	assert.ok( ( jQuery( "<div/>" ).css( { left: "100%" }, 300 ) ) );
 } );

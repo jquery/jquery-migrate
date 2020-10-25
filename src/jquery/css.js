@@ -105,17 +105,13 @@ jQuery.fn.css = function( name, value ) {
 		jQuery.each( name, function( n, v ) {
 			jQuery.fn.css.call( origThis, n, v );
 		} );
+		return this;
 	}
 	if ( typeof value === "number" ) {
-		if ( typeof name === "object" ) {
+		camelName = camelCase( name );
+		if ( !isAutoPx( camelName ) && !jQuery.cssNumber[ camelName ] ) {
 			migrateWarn( "Number-typed values are deprecated for jQuery.fn.css( \"" +
-					JSON.stringify( name ) + "\", value )" );
-		} else {
-			camelName = camelCase( name );
-			if ( !isAutoPx( camelName ) && !jQuery.cssNumber[ camelName ] ) {
-				migrateWarn( "Number-typed values are deprecated for jQuery.fn.css( \"" +
-					name + "\", value )" );
-			}
+				name + "\", value )" );
 		}
 	}
 
