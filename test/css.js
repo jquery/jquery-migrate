@@ -157,5 +157,5 @@ QUnit.test( "jQuery.cssNumber", function( assert ) {
 
 QUnit.test( "An unsupported jQuery.fn.css(Object,Number) signature", function( assert ) {
 	assert.expect( 1 );
-	assert.ok( ( jQuery( "<div/>" ).css( { left: "100%" }, 300 ) ) );
+	assert.ok( ( jQuery( "<div/>" ).css( { left: "100%" }, 300 ), "No crash" ) );
 } );
