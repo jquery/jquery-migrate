@@ -105,6 +105,7 @@ jQuery.fn.css = function( name, value ) {
 		jQuery.each( name, function( n, v ) {
 			jQuery.fn.css.call( origThis, n, v );
 		} );
+		return this;
 	}
 	if ( typeof value === "number" ) {
 		camelName = camelCase( name );
