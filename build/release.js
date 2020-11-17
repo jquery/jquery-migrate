@@ -204,12 +204,12 @@ async function publishToNPM( next ) {
 			"publish",
 			"--tag",
 			"beta",
-			...( otp ? [ `--otp ${ otp }` ] : [] )
+			...( otp ? [ "--otp", otp ] : [] )
 		], next, skipRemote );
 	} else {
 		exec( npmCmd, [
 			"publish",
-			...( otp ? [ `--otp ${ otp }` ] : [] )
+			...( otp ? [ "--otp", otp ] : [] )
 		], next, skipRemote );
 	}
 }
