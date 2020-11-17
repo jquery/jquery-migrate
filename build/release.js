@@ -12,7 +12,8 @@ var	dryrun = false,
 var fs = require( "fs" ),
 	child = require( "child_process" ),
 	path = require( "path" ),
-	chalk = require( "chalk" );
+	chalk = require( "chalk" ),
+	{ prompt } = require( "enquirer" );
 
 var releaseVersion,
 	nextVersion,
@@ -189,13 +190,27 @@ function makeReleaseCopies( next ) {
 	next();
 }
 
-function publishToNPM( next ) {
+async function publishToNPM( next ) {
+	const { input: otp } = await prompt( {
+		type: "input",
+		name: "input",
+		message: "Enter one-time password if you have 2FA enabled and press Enter.\n" +
+			"Otherwise, just press Enter."
+	} );
 
 	// Don't update "latest" if this is a beta
 	if ( isBeta ) {
-		exec( npmCmd, [ "publish", "--tag", "beta" ], next, skipRemote );
+		exec( npmCmd, [
+			"publish",
+			"--tag",
+			"beta",
+			...( otp ? [ `--otp ${ otp }` ] : [] )
+		], next, skipRemote );
 	} else {
-		exec( npmCmd, [ "publish" ], next, skipRemote );
+		exec( npmCmd, [
+			"publish",
+			...( otp ? [ `--otp ${ otp }` ] : [] )
+		], next, skipRemote );
 	}
 }
 
