@@ -13,7 +13,7 @@ In your web page, load this plugin *after* the script tag for jQuery, for exampl
 
 ```html
 <script src="https://code.jquery.com/jquery-3.0.0.js"></script>
-<script src="https://code.jquery.com/jquery-migrate-3.3.1.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-3.3.2.js"></script>
 ```
 
 ## Download
@@ -26,7 +26,7 @@ The production build is minified and does not generate console warnings. It will
 |--|-------------|------------|
 | Debugging enabled | <p align="center">✓</p> |  |
 | Minified |  | <p align="center">✓</p> |
-| Latest release (*may be hotlinked if desired*) | [jquery-migrate-3.3.1.js](https://code.jquery.com/jquery-migrate-3.3.1.js) | [jquery-migrate-3.3.1.min.js](https://code.jquery.com/jquery-migrate-3.3.1.min.js) |
+| Latest release (*may be hotlinked if desired*) | [jquery-migrate-3.3.2.js](https://code.jquery.com/jquery-migrate-3.3.2.js) | [jquery-migrate-3.3.2.min.js](https://code.jquery.com/jquery-migrate-3.3.2.min.js) |
 | \* Latest work-in-progress build | [jquery-migrate-git.js](https://code.jquery.com/jquery-migrate-git.js) | [jquery-migrate-git.min.js](https://code.jquery.com/jquery-migrate-git.min.js) |
 
 
