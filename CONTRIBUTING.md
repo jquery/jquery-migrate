@@ -84,28 +84,28 @@ Change directory to your web root directory, whatever that might be:
 $ cd /path/to/your/www/root/
 ```
 
-Clone your plugin fork to work locally
+Clone your plugin fork to work locally:
 
 ```bash
 $ git clone git@github.com:username/jquery-migrate.git
 ```
 
-Change directory to the newly created dir jquery-migrate/
+Change directory to the newly created dir `jquery-migrate/`:
 
 ```bash
 $ cd jquery-migrate
 ```
 
-Add the jquery-migrate master as a remote. I label mine "upstream"
+Add the jquery-migrate repository as a remote; I label mine "upstream":
 
 ```bash
 $ git remote add upstream git://github.com/jquery/jquery-migrate.git
 ```
 
-Get in the habit of pulling in the "upstream" master to stay up to date as jQuery receives new commits
+Get in the habit of pulling in the "upstream" `main` branch to stay up to date as jQuery Migrate receives new commits:
 
 ```bash
-$ git pull upstream master
+$ git pull upstream main
 ```
 
 Run the Grunt tools:
@@ -121,14 +121,14 @@ Success! You just built and tested jQuery!
 
 ### Fix a bug from a ticket filed at bugs.jquery.com:
 
-**NEVER write your patches to the master branch**
+**NEVER write your patches to the `main` branch**
 
 **ALWAYS USE A "TOPIC" BRANCH!** Like so (#### = the ticket #)...
 
-Make sure you start with your up-to-date master:
+Make sure you start with your up-to-date `main` branch:
 
 ```bash
-$ git checkout master
+$ git checkout main
 ```
 
 Create and checkout a new branch that includes the ticket #
@@ -179,10 +179,10 @@ Then, push your branch with the bug fix commits to your github fork
 $ git push origin -u bug_####
 ```
 
-Before you tackle your next bug patch, return to the master:
+Before you tackle your next bug patch, return to the `main` branch:
 
 ```bash
-$ git checkout master
+$ git checkout main
 ```
 
 
