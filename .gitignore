@@ -13,4 +13,5 @@ CDN
 /dist/*
 !/dist/.eslintrc.json
 
-node_modules
+/external
+/node_modules
