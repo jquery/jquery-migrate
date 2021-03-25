@@ -7,4 +7,5 @@ coverage
 *.patch
 /*.html
 .DS_Store
+external
 node_modules

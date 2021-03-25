@@ -7,7 +7,7 @@ module.exports = function( grunt ) {
 	const gzip = require( "gzip-js" );
 
 	const karmaFilesExceptJQuery = [
-		"node_modules/native-promise-only/lib/npo.src.js",
+		"external/npo/npo.js",
 		"dist/jquery-migrate.min.js",
 		"test/data/compareVersions.js",
 
@@ -110,6 +110,20 @@ module.exports = function( grunt ) {
 					"src/**/*.js",
 					"test/**/*.js"
 				]
+			}
+		},
+		npmcopy: {
+			all: {
+				options: {
+					destPrefix: "external"
+				},
+				files: {
+					"npo/npo.js": "native-promise-only/lib/npo.src.js",
+
+					"qunit/qunit.js": "qunit/qunit/qunit.js",
+					"qunit/qunit.css": "qunit/qunit/qunit.css",
+					"qunit/LICENSE.txt": "qunit/LICENSE.txt"
+				}
 			}
 		},
 		uglify: {
@@ -230,6 +244,7 @@ module.exports = function( grunt ) {
 	] );
 
 	grunt.registerTask( "default-no-test", [
+		"npmcopy",
 		"build",
 		"uglify",
 		"lint",
