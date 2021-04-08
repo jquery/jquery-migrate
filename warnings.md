@@ -241,13 +241,13 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution:** Remove any uses of `jQuery.cssProps` in application code.
 
-#### JQMIGRATE: jQuery.isArray is deprecated; use Array.isArray
+### JQMIGRATE: jQuery.isArray is deprecated; use Array.isArray
 
 **Cause:** Older versions of JavaScript made it difficult to determine if a particular object was a true Array, so jQuery provided a cross-browser function to do the work. The browsers supported by jQuery 3.0 all provide a standard method for this purpose.
 
 **Solution:** Replace any calls to `jQuery.isArray` with `Array.isArray`.
 
-#### JQMIGRATE: jQuery.trim is deprecated; use String.prototype.trim
+### JQMIGRATE: jQuery.trim is deprecated; use String.prototype.trim
 
 **Cause:** Older versions of IE & Android Browser didn't implement a method to `trim` strings so jQuery provided a cross-browser implementation. The browsers supported by jQuery 3.0 all provide a standard method for this purpose.
 
@@ -259,7 +259,7 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution:** Always pass string values to `.css()`, and explicitly add units where required. For example, use `$.css("line-height", "2")` to specify 200% of the current line height or `$.css("line-height", "2px")` to specify pixels. When the numeric value is in a variable, ensure the value is converted to string, e.g. `$.css("line-height", String(height))` and `$.css("line-height", height+"px")`.
 
-#### JQMIGRATE: HTML tags must be properly nested and closed: _(HTML string)_
+### JQMIGRATE: HTML tags must be properly nested and closed: _(HTML string)_
 
 **Cause:** jQuery 3.5.0 changed the way it processes HTML strings. Previously, jQuery would attempt to fix self-closed tags like `<i class="test" />` that the HTML5 specification says are not self-closed, turning it into `<i class="test"></i>`. This processing can create a [security problem](https://nvd.nist.gov/vuln/detail/CVE-2020-11022) with malicious strings, so the functionality had to be removed.
 
