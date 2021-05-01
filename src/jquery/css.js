@@ -75,7 +75,7 @@ if ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) {
 
 	jQuery.cssProps = new Proxy( jQuery.cssProps || {}, {
 		set: function() {
-			migrateWarn( "JQMIGRATE: jQuery.cssProps is deprecated" );
+			migrateWarn( "jQuery.cssProps is deprecated" );
 			return Reflect.set.apply( this, arguments );
 		}
 	} );
