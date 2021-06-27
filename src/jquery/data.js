@@ -1,8 +1,8 @@
 import { migrateWarn } from "../main.js";
 import { camelCase } from "../utils.js";
 
-var oldData = jQuery.data;
-var oldFnData = jQuery.fn.data;
+var oldData = jQuery.data,
+ oldFnData = jQuery.fn.data;
 
 jQuery.data = function( elem, name, value ) {
 	var curData, sameKeys, key;
@@ -40,36 +40,37 @@ jQuery.data = function( elem, name, value ) {
 	return oldData.apply( this, arguments );
 };
 
-jQuery.fn.extend({
-    data: function(key, value) {
-        if (arguments.length === 0 && typeof Proxy !== 'undefined') {
-            var result = oldFnData.call(this);
-            return new Proxy(result, {
-                get: function(target, prop) {
+jQuery.fn.extend( {
+    data: function( key, value ) {
+        var args, result;
+        if ( arguments.length === 0 && typeof Proxy !== "undefined" ) {
+            result = oldFnData.call( this );
+            return new Proxy( result, {
+                get: function( target, prop ) {
                     if (
-                        prop !== camelCase(prop) &&
-                        target[prop] === undefined
+                        prop !== camelCase( prop ) &&
+                        target[ prop ] === undefined
                     ) {
                         migrateWarn(
-                            'jQuery.data() always sets/gets camelCased names: ' +
+                            "jQuery.data() always sets/gets camelCased names: " +
                                 prop
                         );
-                        return target[camelCase(prop)];
+                        return target[ camelCase( prop ) ];
                     }
-                    return target[prop];
+                    return target[ prop ];
                 }
-            });
+            } );
         }
-        if (arguments.length > 0 && typeof key === 'string' && key !== camelCase(key)) {
+        if ( arguments.length > 0 && typeof key === "string" && key !== camelCase( key ) ) {
             migrateWarn(
-                'jQuery.data() always sets/gets camelCased names: ' + key
+                "jQuery.data() always sets/gets camelCased names: " + key
             );
-            var args =
-                arguments.length > 1
-                    ? [camelCase(key), value]
-                    : [camelCase(key)];
-            return oldFnData.apply(this, args);
+            args =
+                arguments.length > 1 ?
+                    [ camelCase( key ), value ] :
+                    [ camelCase( key ) ];
+            return oldFnData.apply( this, args );
         }
-        return oldFnData.apply(this, arguments);
+        return oldFnData.apply( this, arguments );
     }
-});
+} );
