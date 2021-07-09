@@ -81,10 +81,33 @@ if ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) {
 	} );
 }
 
-// Create a dummy jQuery.cssNumber if missing. It won't be used by jQuery but
-// it will prevent code adding new keys to it unconditionally from crashing.
+// In jQuery >=4 where jQuery.cssNumber is missing fill it with the latest 3.x version:
+// https://github.com/jquery/jquery/blob/3.6.0/src/css.js#L212-L233
+// This way, number values for the CSS properties below won't start triggering
+// Migrate warnings when jQuery gets updated to >=4.0.0 (gh-438).
 if ( !jQuery.cssNumber ) {
-	jQuery.cssNumber = {};
+	jQuery.cssNumber = {
+		animationIterationCount: true,
+		columnCount: true,
+		fillOpacity: true,
+		flexGrow: true,
+		flexShrink: true,
+		fontWeight: true,
+		gridArea: true,
+		gridColumn: true,
+		gridColumnEnd: true,
+		gridColumnStart: true,
+		gridRow: true,
+		gridRowEnd: true,
+		gridRowStart: true,
+		lineHeight: true,
+		opacity: true,
+		order: true,
+		orphans: true,
+		widows: true,
+		zIndex: true,
+		zoom: true
+	};
 }
 
 function isAutoPx( prop ) {

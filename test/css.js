@@ -62,7 +62,7 @@ QUnit.test( "jQuery.css with arrays", function( assert ) {
 
 QUnit.test( "jQuery.css with numbers", function( assert ) {
 	var jQuery3OrOlder = compareVersions( jQuery.fn.jquery, "4.0.0" ) < 0,
-		whitelist = [
+		allowlist = [
 			"margin",
 			"marginTop",
 			"marginRight",
@@ -95,7 +95,7 @@ QUnit.test( "jQuery.css with numbers", function( assert ) {
 			"borderLeftWidth"
 		];
 
-	assert.expect( jQuery3OrOlder ?  7 : 6 );
+	assert.expect( jQuery3OrOlder ?  8 : 7 );
 
 	function kebabCase( string ) {
 		return string.replace( /[A-Z]/g, function( match ) {
@@ -127,8 +127,8 @@ QUnit.test( "jQuery.css with numbers", function( assert ) {
 		} );
 	} );
 
-	expectNoWarning( assert, "Number value (whitelisted props)", function() {
-		whitelist.forEach( function( prop ) {
+	expectNoWarning( assert, "Number value (allowlisted props)", function() {
+		allowlist.forEach( function( prop ) {
 			jQuery( "<div />" ).css( prop, 1 );
 			jQuery( "<div />" ).css( kebabCase( prop ), 1 );
 		} );
@@ -145,6 +145,14 @@ QUnit.test( "jQuery.css with numbers", function( assert ) {
 		if ( jQuery3OrOlder ) {
 			assert.strictEqual( assertionFired, true, "jQuery.cssNumber property was accessed" );
 		}
+	} );
+
+	// z-index is tested explicitly as raw jQuery 4.0 will not have `jQuery.cssNumber`
+	// so iterating over it won't find anything and we'd like to ensure number values
+	// are not warned against for safe CSS props like z-index (gh-438).
+	expectNoWarning( assert, "z-index", function() {
+		jQuery( "<div />" ).css( "z-index", 1 );
+		jQuery( "<div />" ).css( kebabCase( "zIndex" ), 1 );
 	} );
 
 } );
