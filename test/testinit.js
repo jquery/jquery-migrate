@@ -183,12 +183,12 @@ TestManager.init( {
 		urlTag: "jquery",
 		choices: "dev,min,git,git.min,git.slim,git.slim.min," +
 			"3.x-git,3.x-git.min,3.x-git.slim,3.x-git.slim.min," +
-			"3.5.1,3.5.1.slim,3.4.1,3.4.1.slim," +
+			"3.6.0,3.6.0.slim,3.5.1,3.5.1.slim,3.4.1,3.4.1.slim," +
 			"3.3.1,3.3.1.slim,3.2.1,3.2.1.slim,3.1.1,3.1.1.slim,3.0.0,3.0.0.slim"
 	},
 	"jquery-migrate": {
 		urlTag: "plugin",
-		choices: "dev,min,raw,git,3.3.0,3.2.0,3.1.0,3.0.1,3.0.0"
+		choices: "dev,min,raw,git,3.3.2,3.3.1,3.3.0,3.2.0,3.1.0,3.0.1,3.0.0"
 	}
 } );
 
