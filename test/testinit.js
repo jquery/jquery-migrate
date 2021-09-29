@@ -200,7 +200,7 @@ TestManager.init( {
 		return;
 	}
 
-	document.write( "<scr" + "ipt src='http://swarm.jquery.org/js/inject.js?" +
+	document.write( "<scr" + "ipt src='https://swarm.jquery.org/js/inject.js?" +
 		( new Date() ).getTime() + "'></scr" + "ipt>" );
 } )();
 
