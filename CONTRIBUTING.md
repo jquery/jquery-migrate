@@ -47,7 +47,7 @@ Make sure you have reproduced the bug with all browser extensions and add-ons di
 
 ### Try the latest version of jQuery
 
-Bugs in old versions of jQuery may have already been fixed. In order to avoid reporting known issues, make sure you are always testing against the [latest build](http://code.jquery.com/jquery.js).
+Bugs in old versions of jQuery may have already been fixed. In order to avoid reporting known issues, make sure you are always testing against the [latest jQuery version](https://releases.jquery.com/jquery/).
 
 ### Try an older version of jQuery
 
@@ -188,7 +188,7 @@ $ git checkout main
 
 ### Test Suite Tips...
 
-By default the plugin runs against the current (jquery-3.x-git WIP) version of jQuery. You can select a different version by specifying it in the URL. Files are always retrieved from code.jquery.com.
+By default the plugin runs against the current (jquery-3.x-git WIP) version of jQuery. You can select a different version by specifying it in the URL. Files are always retrieved from code.jquery.com or releases.jquery.com (the latter for development versions).
 
 Example:
 

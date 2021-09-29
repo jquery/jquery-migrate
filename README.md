@@ -27,7 +27,7 @@ The production build is minified and does not generate console warnings. It will
 | Debugging enabled | <p align="center">✓</p> |  |
 | Minified |  | <p align="center">✓</p> |
 | Latest release (*may be hotlinked if desired*) | [jquery-migrate-3.3.2.js](https://code.jquery.com/jquery-migrate-3.3.2.js) | [jquery-migrate-3.3.2.min.js](https://code.jquery.com/jquery-migrate-3.3.2.min.js) |
-| \* Latest work-in-progress build | [jquery-migrate-git.js](https://code.jquery.com/jquery-migrate-git.js) | [jquery-migrate-git.min.js](https://code.jquery.com/jquery-migrate-git.min.js) |
+| \* Latest work-in-progress build | [jquery-migrate-git.js](https://releases.jquery.com/git/jquery-migrate-git.js) | [jquery-migrate-git.min.js](https://releases.jquery.com/git/jquery-migrate-git.min.js) |
 
 
 \* **Work-in-progress build:** Although this file represents the most recent updates to the plugin, it may not have been thoroughly tested. We do not recommend using this file on production sites since it may be unstable; use the released production version instead.

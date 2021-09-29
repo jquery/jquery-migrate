@@ -46,6 +46,9 @@ TestManager = {
 			file = projectRoot + "/dist/" + projectName + ".js";
 		} else if ( version === "min" ) {
 			file = projectRoot + "/dist/" + projectName + ".min.js";
+		} else if ( version.indexOf( "git" ) === 0 ||
+			version.indexOf( "3.x-git" ) === 0 ) {
+			file = "https://releases.jquery.com/git/" + projectName + "-" + version + ".js";
 		} else if ( /^[\w\.\-]+$/.test( version ) ) {
 			file = "https://code.jquery.com/" + projectName + "-" + version + ".js";
 		} else {
