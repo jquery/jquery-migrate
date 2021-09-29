@@ -12,7 +12,7 @@ That way you can spot and fix what otherwise would have been errors, until you n
 In your web page, load this plugin *after* the script tag for jQuery, for example:
 
 ```html
-<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/jquery-migrate-3.3.2.js"></script>
 ```
 
