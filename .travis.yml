@@ -1,7 +1,0 @@
-language: node_js
-node_js:
-- "14"
-addons:
-  chrome: stable
-  firefox: latest
-script: "npm run ci"

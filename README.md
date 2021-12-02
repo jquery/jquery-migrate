@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jquery/jquery-migrate.svg?branch=main)](https://travis-ci.org/jquery/jquery-migrate)
+![CI Status](https://github.com/jquery/jquery-migrate/actions/workflows/node.js.yml/badge.svg?branch=main)
 
 #### NOTE: To upgrade to jQuery 3.0, you first need version 1.12.x or 2.2.x. If you're using an older version, first upgrade to one of these versions using [jQuery Migrate 1.x](https://github.com/jquery/jquery-migrate/tree/1.x-stable#readme), to resolve any compatibility issues. For more information about the changes made in jQuery 3.0, see the [upgrade guide](https://jquery.com/upgrade-guide/3.0/) and [blog post](https://blog.jquery.com/2016/06/09/jquery-3-0-final-released/).
 
