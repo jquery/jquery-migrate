@@ -87,7 +87,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### JQMIGRATE: jQuery.data() always sets/gets camelCased names
 
-**Cause:** The page is attempting to set or get a jQuery data item using kebab case, e.g. `my-data`, when a `my-data` item  has been set directly on the jQuery data object. jQuery 3.0 always exclusively uses camel case, e.g., `myData`, when it accesses data items via the `.data()` API and does not find kebab case data in that object.
+**Cause:** The page is attempting to set or get a jQuery data item using kebab case, e.g. `my-data`, when a `my-data` item has been set directly on the jQuery data object. jQuery 3.0 always exclusively uses camel case, e.g., `myData`, when it accesses data items via the `.data()` API and does not find kebab case data in that object.
 
 **Solution:** Either 1) Always use the `.data()` API to set or get data items, 2) Always use camelCase names when also setting properties directly on jQuery's data object, or 3) Always set properties directly on the data object without using the API call to set or get data by name. Never mix direct access to the data object and API calls with kebab case names.
 
@@ -225,7 +225,7 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 ### JQMIGRATE: jQuery.fn.hover() is deprecated
 
-**Cause:** The `.hover()` method is a shorthand for the use of the `mouseover`/`mouseout` events. It is often a poor user interface choice because it does not allow for any small amounts of delay between when the mouse enters or exits an area and when the event fires. This can make it quite difficult to use with UI widgets such as drop-down menus.  For more information on the problems of hovering, see the [hoverIntent plugin](http://cherne.net/brian/resources/jquery.hoverIntent.html).
+**Cause:** The `.hover()` method is a shorthand for the use of the `mouseover`/`mouseout` events. It is often a poor user interface choice because it does not allow for any small amounts of delay between when the mouse enters or exits an area and when the event fires. This can make it quite difficult to use with UI widgets such as drop-down menus. For more information on the problems of hovering, see the [hoverIntent plugin](http://cherne.net/brian/resources/jquery.hoverIntent.html).
 
 **Solution:** Review uses of `.hover()` to determine if they are appropriate, and consider use of plugins such as `hoverIntent` as an alternative. The direct replacement for `.hover(fn1, fn2)`, is `.on("mouseenter", fn1).on("mouseleave", fn2)`.
 
@@ -264,3 +264,9 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Cause:** jQuery 3.5.0 changed the way it processes HTML strings. Previously, jQuery would attempt to fix self-closed tags like `<i class="test" />` that the HTML5 specification says are not self-closed, turning it into `<i class="test"></i>`. This processing can create a [security problem](https://nvd.nist.gov/vuln/detail/CVE-2020-11022) with malicious strings, so the functionality had to be removed.
 
 **Solution:** Search for the reported HTML strings and edit the tags to close them explicitly. In some cases the strings passed to jQuery may be created inside the program and thus not searchable. Migrate warning messages include a stack trace that can be used to find the location of the usage in the code.
+
+### JQMIGRATE: JSON-to-JSONP auto-promotion is deprecated
+
+**Cause:** `jQuery.ajax` calls with `dataType: 'json'` with a provided callback are automatically converted by jQuery to JSONP requests unless one also specified `jsonp: false`. Auto-promoting JSON requests to JSONP ones introduces a security risk as the developer may be unaware they're not just downloading data but executing code from a remote domain. This auto-promoting behavior is deprecated and will be gone in jQuery 4.0.0.
+
+**Solution:** To trigger a JSONP request, specify the `dataType: "jsonp"` option.
