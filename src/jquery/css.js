@@ -132,6 +132,8 @@ jQuery.fn.css = function( name, value ) {
 	}
 	if ( typeof value === "number" ) {
 		camelName = camelCase( name );
+
+		// Tests fixed
 		if ( !isAutoPx( camelName ) && !jQuery.cssNumber[ camelName ] ) {
 			migrateWarn( "Number-typed values are deprecated for jQuery.fn.css( \"" +
 				name + "\", value )" );
