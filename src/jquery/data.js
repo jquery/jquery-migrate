@@ -53,7 +53,7 @@ jQuery.fn.extend( {
                         target[ prop ] === undefined
                     ) {
                         migrateWarn(
-                            "jQuery.data() always sets/gets camelCased names: " +
+                            "jQuery.fn.data() always sets/gets camelCased names: " +
                                 prop
                         );
                         return target[ camelCase( prop ) ];
@@ -64,7 +64,7 @@ jQuery.fn.extend( {
         }
         if ( arguments.length > 0 && typeof key === "string" && key !== camelCase( key ) ) {
             migrateWarn(
-                "jQuery.data() always sets/gets camelCased names: " + key
+                "jQuery.fn.data() always sets/gets camelCased names: " + key
             );
             args =
                 arguments.length > 1 ?
