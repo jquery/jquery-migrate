@@ -56,6 +56,8 @@ module.exports = function( grunt ) {
 				"min+3.x-git.min",
 				"dev+3.x-git.slim",
 				"min+3.x-git.slim.min",
+				"dev+3.6.0",
+				"dev+3.6.0.slim",
 				"dev+3.5.1",
 				"dev+3.5.1.slim",
 				"dev+3.4.1",
@@ -169,7 +171,7 @@ module.exports = function( grunt ) {
 				},
 				frameworks: [ "qunit" ],
 				files: [
-					"https://code.jquery.com/jquery-3.x-git.min.js",
+					"https://releases.jquery.com/git/jquery-3.x-git.min.js",
 					...karmaFilesExceptJQuery
 				],
 				client: {
@@ -194,7 +196,7 @@ module.exports = function( grunt ) {
 
 				options: {
 					files: [
-						"https://code.jquery.com/jquery-3.x-git.slim.min.js",
+						"https://releases.jquery.com/git/jquery-3.x-git.slim.min.js",
 						...karmaFilesExceptJQuery
 					]
 				}

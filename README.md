@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jquery/jquery-migrate.svg?branch=main)](https://travis-ci.org/jquery/jquery-migrate)
+![CI Status](https://github.com/jquery/jquery-migrate/actions/workflows/node.js.yml/badge.svg?branch=main)
 
 #### NOTE: To upgrade to jQuery 3.0, you first need version 1.12.x or 2.2.x. If you're using an older version, first upgrade to one of these versions using [jQuery Migrate 1.x](https://github.com/jquery/jquery-migrate/tree/1.x-stable#readme), to resolve any compatibility issues. For more information about the changes made in jQuery 3.0, see the [upgrade guide](https://jquery.com/upgrade-guide/3.0/) and [blog post](https://blog.jquery.com/2016/06/09/jquery-3-0-final-released/).
 
@@ -12,7 +12,7 @@ That way you can spot and fix what otherwise would have been errors, until you n
 In your web page, load this plugin *after* the script tag for jQuery, for example:
 
 ```html
-<script src="https://code.jquery.com/jquery-3.0.0.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://code.jquery.com/jquery-migrate-3.3.2.js"></script>
 ```
 
@@ -27,7 +27,7 @@ The production build is minified and does not generate console warnings. It will
 | Debugging enabled | <p align="center">✓</p> |  |
 | Minified |  | <p align="center">✓</p> |
 | Latest release (*may be hotlinked if desired*) | [jquery-migrate-3.3.2.js](https://code.jquery.com/jquery-migrate-3.3.2.js) | [jquery-migrate-3.3.2.min.js](https://code.jquery.com/jquery-migrate-3.3.2.min.js) |
-| \* Latest work-in-progress build | [jquery-migrate-git.js](https://code.jquery.com/jquery-migrate-git.js) | [jquery-migrate-git.min.js](https://code.jquery.com/jquery-migrate-git.min.js) |
+| \* Latest work-in-progress build | [jquery-migrate-git.js](https://releases.jquery.com/git/jquery-migrate-git.js) | [jquery-migrate-git.min.js](https://releases.jquery.com/git/jquery-migrate-git.min.js) |
 
 
 \* **Work-in-progress build:** Although this file represents the most recent updates to the plugin, it may not have been thoroughly tested. We do not recommend using this file on production sites since it may be unstable; use the released production version instead.
