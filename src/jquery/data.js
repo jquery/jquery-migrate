@@ -45,6 +45,9 @@ jQuery.fn.extend( {
         var args, result;
         if ( arguments.length === 0 && typeof Proxy !== "undefined" ) {
             result = oldFnData.call( this );
+	    if(!result) {
+ 	      return result;
+	    }
             // eslint-disable-next-line no-undef
             return new Proxy( result, {
                 get: function( target, prop ) {
