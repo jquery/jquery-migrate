@@ -267,6 +267,6 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 ### JQMIGRATE: JSON-to-JSONP auto-promotion is deprecated
 
-**Cause:** `jQuery.ajax` calls with `dataType: 'json'` with a provided callback are automatically converted by jQuery to JSONP requests unless one also specified `jsonp: false`. Auto-promoting JSON requests to JSONP ones introduces a security risk as the developer may be unaware they're not just downloading data but executing code from a remote domain. This auto-promoting behavior is deprecated and will be gone in jQuery 4.0.0.
+**Cause:** `jQuery.ajax` calls with `dataType: 'json'` with a provided callback are automatically converted by jQuery to JSONP requests unless the options also specify `jsonp: false`. Auto-promoting JSON requests to JSONP introduces a security risk as the developer may be unaware they're not just downloading data but executing code from a remote domain. This auto-promoting behavior is deprecated and will be removed in jQuery 4.0.0.
 
 **Solution:** To trigger a JSONP request, specify the `dataType: "jsonp"` option.
