@@ -1,8 +1,8 @@
 import { jQueryVersionSince } from "../compareVersions.js";
-import { migrateWarn } from "../main.js";
+import { migrateWarn, migratePatchFunc } from "../main.js";
 import { camelCase } from "../utils.js";
 
-var oldFnCss,
+var origFnCss,
 	internalSwapCall = false,
 	ralphaStart = /^[a-z]/,
 
@@ -47,12 +47,12 @@ if ( jQuery.swap ) {
 	} );
 }
 
-jQuery.swap = function( elem, options, callback, args ) {
+migratePatchFunc( jQuery, "swap", function( elem, options, callback, args ) {
 	var ret, name,
 		old = {};
 
 	if ( !internalSwapCall ) {
-		migrateWarn( "jQuery.swap() is undocumented and deprecated" );
+		migrateWarn( "swap", "jQuery.swap() is undocumented and deprecated" );
 	}
 
 	// Remember the old values, and insert the new ones
@@ -69,13 +69,12 @@ jQuery.swap = function( elem, options, callback, args ) {
 	}
 
 	return ret;
-};
+}, "swap" );
 
 if ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) {
-
 	jQuery.cssProps = new Proxy( jQuery.cssProps || {}, {
 		set: function() {
-			migrateWarn( "jQuery.cssProps is deprecated" );
+			migrateWarn( "cssProps", "jQuery.cssProps is deprecated" );
 			return Reflect.set.apply( this, arguments );
 		}
 	} );
@@ -85,8 +84,8 @@ if ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) {
 // https://github.com/jquery/jquery/blob/3.6.0/src/css.js#L212-L233
 // This way, number values for the CSS properties below won't start triggering
 // Migrate warnings when jQuery gets updated to >=4.0.0 (gh-438).
-if ( !jQuery.cssNumber ) {
-	jQuery.cssNumber = {
+if ( jQueryVersionSince( "4.0.0" ) && typeof Proxy !== "undefined" ) {
+	jQuery.cssNumber = new Proxy( {
 		animationIterationCount: true,
 		columnCount: true,
 		fillOpacity: true,
@@ -107,7 +106,16 @@ if ( !jQuery.cssNumber ) {
 		widows: true,
 		zIndex: true,
 		zoom: true
-	};
+	}, {
+		get: function() {
+			migrateWarn( "css-number", "jQuery.cssNumber is deprecated" );
+			return Reflect.get.apply( this, arguments );
+		},
+		set: function() {
+			migrateWarn( "css-number", "jQuery.cssNumber is deprecated" );
+			return Reflect.set.apply( this, arguments );
+		}
+	} );
 }
 
 function isAutoPx( prop ) {
@@ -119,24 +127,27 @@ function isAutoPx( prop ) {
 		rautoPx.test( prop[ 0 ].toUpperCase() + prop.slice( 1 ) );
 }
 
-oldFnCss = jQuery.fn.css;
+origFnCss = jQuery.fn.css;
 
-jQuery.fn.css = function( name, value ) {
+migratePatchFunc( jQuery.fn, "css", function( name, value ) {
 	var camelName,
 		origThis = this;
+
 	if ( name && typeof name === "object" && !Array.isArray( name ) ) {
 		jQuery.each( name, function( n, v ) {
 			jQuery.fn.css.call( origThis, n, v );
 		} );
 		return this;
 	}
+
 	if ( typeof value === "number" ) {
 		camelName = camelCase( name );
 		if ( !isAutoPx( camelName ) && !jQuery.cssNumber[ camelName ] ) {
-			migrateWarn( "Number-typed values are deprecated for jQuery.fn.css( \"" +
+			migrateWarn( "css-number",
+				"Number-typed values are deprecated for jQuery.fn.css( \"" +
 				name + "\", value )" );
 		}
 	}
 
-	return oldFnCss.apply( this, arguments );
-};
+	return origFnCss.apply( this, arguments );
+}, "css-number" );

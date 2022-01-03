@@ -8,7 +8,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 
 	var done = assert.async();
 
-	expectWarning( assert, ".success(), .error(), .compete() calls", 3, function() {
+	expectWarning( assert, ".success(), .error(), .complete() calls", 3, function() {
 
 		return jQuery.ajax( url( "not-found.404" ) )
 			.success( jQuery.noop )
@@ -42,7 +42,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 					return expectNoWarning( assert, "dataType: \"json\"",
 						function() {
 							return jQuery.ajax( {
-								url: url( "data/null.json" ),
+								url: url( "null.json" ),
 								crossDomain: crossDomain,
 								dataType: "json"
 							} ).catch( jQuery.noop );
@@ -54,7 +54,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 					return expectWarning( assert, "dataType: \"json\", URL callback", 1,
 						function() {
 							return jQuery.ajax( {
-								url: url( "data/null.json?callback=?" ),
+								url: url( "null.json?callback=?" ),
 								crossDomain: crossDomain,
 								dataType: "json"
 							} ).catch( jQuery.noop );
@@ -66,7 +66,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 					return expectWarning( assert, "dataType: \"json\", data callback", 1,
 						function() {
 							return jQuery.ajax( {
-								url: url( "data/null.json" ),
+								url: url( "null.json" ),
 								crossDomain: crossDomain,
 								data: "callback=?",
 								dataType: "json"
@@ -79,7 +79,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 					return expectNoWarning( assert, "dataType: \"jsonp\", URL callback",
 						function() {
 							return jQuery.ajax( {
-								url: url( "data/null.json?callback=?" ),
+								url: url( "null.json?callback=?" ),
 								crossDomain: crossDomain,
 								dataType: "jsonp"
 							} ).catch( jQuery.noop );
@@ -91,7 +91,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 					return expectNoWarning( assert, "dataType: \"jsonp\", data callback",
 						function() {
 							return jQuery.ajax( {
-								url: url( "data/null.json" ),
+								url: url( "null.json" ),
 								crossDomain: crossDomain,
 								data: "callback=?",
 								dataType: "jsonp"

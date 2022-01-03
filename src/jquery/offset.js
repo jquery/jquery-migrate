@@ -1,14 +1,14 @@
-import { migrateWarn } from "../main.js";
+import { migrateWarn, migratePatchFunc } from "../main.js";
 
-var oldOffset = jQuery.fn.offset;
+var origOffset = jQuery.fn.offset;
 
-jQuery.fn.offset = function() {
+migratePatchFunc( jQuery.fn, "offset", function() {
 	var elem = this[ 0 ];
 
 	if ( elem && ( !elem.nodeType || !elem.getBoundingClientRect ) ) {
-		migrateWarn( "jQuery.fn.offset() requires a valid DOM element" );
+		migrateWarn( "offset-valid-elem", "jQuery.fn.offset() requires a valid DOM element" );
 		return arguments.length ? this : undefined;
 	}
 
-	return oldOffset.apply( this, arguments );
-};
+	return origOffset.apply( this, arguments );
+}, "offset-valid-elem" );

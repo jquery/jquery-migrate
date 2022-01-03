@@ -14,7 +14,7 @@ TestManager = {
 			lines = "",
 			urlTag = this.projects[ projectName ].urlTag,
 			matcher = new RegExp( "\\b" + urlTag + "=([^&]+)" ),
-			projectRoot = this.baseURL + ( isSelf ? ".." : "../../" + projectName ),
+			projectRoot = this.baseURL + ( isSelf ? "../.." : "../../../" + projectName ),
 			version = ( matcher.exec( document.location.search ) || {} )[ 1 ] || defaultVersion;
 
 		if ( window.__karma__ && isSelf ) {
@@ -25,18 +25,19 @@ TestManager = {
 			// Order is important
 			file = [
 				"version",
-				"migrate",
-				"core",
-				"ajax",
-				"attributes",
-				"css",
-				"data",
-				"effects",
-				"event",
-				"offset",
-				"serialize",
-				"traversing",
-				"deferred"
+				"data/test-utils",
+				"unit/migrate",
+				"unit/jquery/core",
+				"unit/jquery/ajax",
+				"unit/jquery/attributes",
+				"unit/jquery/css",
+				"unit/jquery/data",
+				"unit/jquery/effects",
+				"unit/jquery/event",
+				"unit/jquery/offset",
+				"unit/jquery/serialize",
+				"unit/jquery/traversing",
+				"unit/jquery/deferred"
 			];
 
 			for ( i = 0; i < file.length; i++ ) {
@@ -103,7 +104,7 @@ TestManager = {
 			};
 			iframe = jQuery( "<div/>" )
 				.css( { position: "absolute", width: "500px", left: "-600px" } )
-				.append( jQuery( "<iframe/>" ).attr( "src", self.baseURL + url +
+				.append( jQuery( "<iframe/>" ).attr( "src", self.baseURL + "data/" + url +
 					( query && ( /\?/.test( url ) ? "&" : "?" ) ) + query ) )
 				.appendTo( "#qunit-fixture" );
 		} );
@@ -112,12 +113,13 @@ TestManager = {
 	baseURL: window.__karma__ ? "base/test/" : "./",
 	init: function( projects ) {
 		var p, project, originalDeduplicateWarnings,
-			FILEPATH = "/test/testinit.js",
+			disabledPatches, origMigrateDisablePatches,
+			FILEPATH = "/test/data/testinit.js",
 			activeScript = [].slice.call( document.getElementsByTagName( "script" ), -1 )[ 0 ],
 			parentUrl = activeScript && activeScript.src ?
 				activeScript.src.replace( /[?#].*/, "" ) + FILEPATH.replace( /[^/]+/g, ".." ) + "/" :
 				"../",
-			baseURL = parentUrl + "test/";
+			baseURL = parentUrl + "test/data/";
 
 		this.projects = projects;
 		this.loaded = [];
@@ -164,10 +166,11 @@ TestManager = {
 			originalDeduplicateWarnings = jQuery.migrateDeduplicateWarnings;
 		} );
 
-		// If only the first warning is reported, tests using `expectWarning`
-		// with multiple function calls would pass even if some of them didn't
-		// warn. Because of that, by default don't deduplicate warnings in tests.
 		QUnit.testStart( function( details ) {
+
+			// If only the first warning is reported, tests using `expectWarning`
+			// with multiple function calls would pass even if some of them didn't
+			// warn. Because of that, by default don't deduplicate warnings in tests.
 			if ( details.name !== "jQuery.migrateDeduplicateWarnings" ) {
 				jQuery.migrateDeduplicateWarnings = false;
 			} else {
@@ -175,6 +178,33 @@ TestManager = {
 				// When testing this API, we want to start with its default value.
 				jQuery.migrateDeduplicateWarnings = originalDeduplicateWarnings;
 			}
+
+			// Patch `jQuery.migrateDisablePatches` so that we keep a list of disabled
+			// patches that we can then re-enable. Some of those patches may have already
+			// been re-enabled later but if we do it here again it won't hurt.
+			disabledPatches = [];
+			origMigrateDisablePatches = jQuery.migrateDisablePatches;
+			jQuery.migrateDisablePatches = function customMigrateDisablePatches() {
+				var i;
+				for ( i = 0; i < arguments.length; i++ ) {
+					disabledPatches.push( arguments[ i ] );
+				}
+				return origMigrateDisablePatches.apply( this, arguments );
+			};
+		} );
+
+		QUnit.testDone( function() {
+			jQuery.migrateDisablePatches = origMigrateDisablePatches;
+
+			// Restore potentially disabled patches
+			var i, patch;
+			for ( i = 0; i < disabledPatches.length; i++ ) {
+				patch = disabledPatches[ i ];
+				jQuery.migrateEnablePatches( patch );
+			}
+
+			// Re-disable patches disabled by default
+			jQuery.migrateDisablePatches( "self-closed-tags" );
 		} );
 	}
 };
