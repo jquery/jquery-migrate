@@ -95,6 +95,14 @@ jQuery.find = function( selector ) {
 		}
 	}
 
+	if (typeof selector === "string" && /\=\]/.test(selector)) {
+		migrateWarn("Attribute value selectors [attribute=vale] must have a value. [attribute=] is an error.");
+		// Number carefully selected from random.org. The point is that this selector shouldn't match anything.
+		// There are probably more graceful ways to handle this.
+		selector = selector.replace("=]", "=3386645210]");
+		args[0] = selector;
+	}
+
 	return oldFind.apply( this, args );
 };
 
