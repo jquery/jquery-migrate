@@ -56,6 +56,14 @@ This plugin adds some properties to the `jQuery` object that can be used to prog
 
 `jQuery.migrateDeduplicateWarnings`: By default, Migrate only gives a specific warning once. If you set this property to `false` it will give a warning for every occurrence each time it happens. Note that this can generate a lot of output, for example when a warning occurs in a loop.
 
+`jQuery.migrateDisablePatches`: Disables patches by their codes. You can find a code for each patch in square brackets in [warnings.md](https://github.com/jquery/jquery-migrate/blob/main/warnings.md). A limited number of warnings doesn't have codes defined and cannot be disabled. These are mostly setup issues like using an incorrect version of jQuery or loading Migrate multiple times.
+
+`jQuery.migrateDisablePatches`: Disables patches by their codes.
+
+`jQuery.migrateIsPatchEnabled`: Returns `true` if a patch of a provided code is enabled and `false` otherwise.
+
+`jQuery.UNSAFE_restoreLegacyHtmlPrefilter`: A deprecated alias of `jQuery.migrateEnablePatches( "self-closed-tags" )`
+
 ## Reporting problems
 
 Bugs that only occur when the jQuery Migrate plugin is used should be reported in the [jQuery Migrate Issue Tracker](https://github.com/jquery/jquery-migrate/issues) and should be accompanied by an executable test case that demonstrates the bug. The easiest way to do this is via an online test tool such as [jsFiddle.net](https://jsFiddle.net/) or [jsbin.com](https://jsbin.com). Use the development version when you are reporting bugs.

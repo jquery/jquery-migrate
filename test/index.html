@@ -15,7 +15,7 @@
 	<script src="../external/npo/npo.js"></script>
 
 	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
-	<script src="testinit.js"></script>
+	<script src="data/testinit.js"></script>
 	<script>
 		TestManager.loadProject( "jquery", "3.x-git" );
 		// Close this script tag so file will load
@@ -29,19 +29,20 @@
 	<script src="data/compareVersions.js"></script>
 
 	<!-- Unit test files -->
-	<script src="migrate.js"></script>
-	<script src="core.js"></script>
-	<script src="ajax.js"></script>
-	<script src="attributes.js"></script>
-	<script src="css.js"></script>
-	<script src="data.js"></script>
-	<script src="effects.js"></script>
-	<script src="event.js"></script>
-	<script src="manipulation.js"></script>
-	<script src="offset.js"></script>
-	<script src="serialize.js"></script>
-	<script src="traversing.js"></script>
-	<script src="deferred.js"></script>
+	<script src="data/test-utils.js"></script>
+	<script src="unit/migrate.js"></script>
+	<script src="unit/jquery/core.js"></script>
+	<script src="unit/jquery/ajax.js"></script>
+	<script src="unit/jquery/attributes.js"></script>
+	<script src="unit/jquery/css.js"></script>
+	<script src="unit/jquery/data.js"></script>
+	<script src="unit/jquery/effects.js"></script>
+	<script src="unit/jquery/event.js"></script>
+	<script src="unit/jquery/manipulation.js"></script>
+	<script src="unit/jquery/offset.js"></script>
+	<script src="unit/jquery/serialize.js"></script>
+	<script src="unit/jquery/traversing.js"></script>
+	<script src="unit/jquery/deferred.js"></script>
 </head>
 <body>
 	<div id="qunit"></div>

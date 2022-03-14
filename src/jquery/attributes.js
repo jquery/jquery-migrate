@@ -1,30 +1,32 @@
-import { migrateWarn } from "../main.js";
+import { migratePatchFunc, migrateWarn } from "../main.js";
 
 var oldRemoveAttr = jQuery.fn.removeAttr,
 	oldToggleClass = jQuery.fn.toggleClass,
 	rmatchNonSpace = /\S+/g;
 
-jQuery.fn.removeAttr = function( name ) {
+migratePatchFunc( jQuery.fn, "removeAttr", function( name ) {
 	var self = this;
 
 	jQuery.each( name.match( rmatchNonSpace ), function( _i, attr ) {
 		if ( jQuery.expr.match.bool.test( attr ) ) {
-			migrateWarn( "jQuery.fn.removeAttr no longer sets boolean properties: " + attr );
+			migrateWarn( "removeAttr-bool",
+				"jQuery.fn.removeAttr no longer sets boolean properties: " + attr );
 			self.prop( attr, false );
 		}
 	} );
 
 	return oldRemoveAttr.apply( this, arguments );
-};
+}, "removeAttr-bool" );
 
-jQuery.fn.toggleClass = function( state ) {
+migratePatchFunc( jQuery.fn, "toggleClass", function( state ) {
 
 	// Only deprecating no-args or single boolean arg
 	if ( state !== undefined && typeof state !== "boolean" ) {
+
 		return oldToggleClass.apply( this, arguments );
 	}
 
-	migrateWarn( "jQuery.fn.toggleClass( boolean ) is deprecated" );
+	migrateWarn( "toggleClass-bool", "jQuery.fn.toggleClass( boolean ) is deprecated" );
 
 	// Toggle entire class name of each element
 	return this.each( function() {
@@ -46,4 +48,4 @@ jQuery.fn.toggleClass = function( state ) {
 			);
 		}
 	} );
-};
+}, "toggleClass-bool" );

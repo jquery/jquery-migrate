@@ -1,4 +1,5 @@
 import { jQueryVersionSince } from "./compareVersions.js";
+import "./disablePatches.js";
 
 ( function() {
 
@@ -24,7 +25,7 @@ import { jQueryVersionSince } from "./compareVersions.js";
 
 } )();
 
-export var warnedAbout = {};
+var warnedAbout = {};
 
 // By default each warning is only reported once.
 jQuery.migrateDeduplicateWarnings = true;
@@ -43,11 +44,12 @@ jQuery.migrateReset = function() {
 	jQuery.migrateWarnings.length = 0;
 };
 
-export function migrateWarn( msg ) {
+export function migrateWarn( code, msg ) {
 	var console = window.console;
-	if ( !jQuery.migrateDeduplicateWarnings || !warnedAbout[ msg ] ) {
+	if ( jQuery.migrateIsPatchEnabled( code ) &&
+		( !jQuery.migrateDeduplicateWarnings || !warnedAbout[ msg ] ) ) {
 		warnedAbout[ msg ] = true;
-		jQuery.migrateWarnings.push( msg );
+		jQuery.migrateWarnings.push( msg + " [" + code + "]" );
 		if ( console && console.warn && !jQuery.migrateMute ) {
 			console.warn( "JQMIGRATE: " + msg );
 			if ( jQuery.migrateTrace && console.trace ) {
@@ -57,30 +59,60 @@ export function migrateWarn( msg ) {
 	}
 }
 
-export function migrateWarnProp( obj, prop, value, msg ) {
+export function migrateWarnProp( obj, prop, value, code, msg ) {
 	Object.defineProperty( obj, prop, {
 		configurable: true,
 		enumerable: true,
 		get: function() {
-			migrateWarn( msg );
+			migrateWarn( code, msg );
 			return value;
 		},
 		set: function( newValue ) {
-			migrateWarn( msg );
+			migrateWarn( code, msg );
 			value = newValue;
 		}
 	} );
 }
 
-export function migrateWarnFunc( obj, prop, newFunc, msg ) {
+function migrateWarnFuncInternal( obj, prop, newFunc, code, msg ) {
+	var finalFunc,
+		origFunc = obj[ prop ];
+
 	obj[ prop ] = function() {
-		migrateWarn( msg );
-		return newFunc.apply( this, arguments );
+
+		// If `msg` not provided, do not warn; more sophisticated warnings
+		// logic is most likely embedded in `newFunc`, in that case here
+		// we just care about the logic choosing the proper implementation
+		// based on whether the patch is disabled or not.
+		if ( msg ) {
+			migrateWarn( code, msg );
+		}
+
+		// Since patches can be disabled & enabled dynamically, we
+		// need to decide which implementation to run on each invocation.
+		finalFunc = jQuery.migrateIsPatchEnabled( code ) ?
+			newFunc :
+
+			// The function may not have existed originally so we need a fallback.
+			( origFunc || jQuery.noop );
+
+		return finalFunc.apply( this, arguments );
 	};
+}
+
+export function migratePatchAndWarnFunc( obj, prop, newFunc, code, msg ) {
+	if ( !msg ) {
+		throw new Error( "No warning message provided" );
+	}
+	return migrateWarnFuncInternal( obj, prop, newFunc, code, msg );
+}
+
+export function migratePatchFunc( obj, prop, newFunc, code ) {
+	return migrateWarnFuncInternal( obj, prop, newFunc, code );
 }
 
 if ( window.document.compatMode === "BackCompat" ) {
 
-	// JQuery has never supported or tested Quirks Mode
-	migrateWarn( "jQuery is not compatible with Quirks Mode" );
+	// jQuery has never supported or tested Quirks Mode
+	migrateWarn( "quirks", "jQuery is not compatible with Quirks Mode" );
 }

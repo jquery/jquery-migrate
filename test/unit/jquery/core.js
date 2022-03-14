@@ -1,58 +1,12 @@
 
 QUnit.module( "core" );
 
-QUnit.test( "jQuery.migrateVersion", function( assert ) {
-	assert.expect( 1 );
-
-	assert.ok( /^\d+\.\d+\.[\w\-]+/.test( jQuery.migrateVersion ), "Version property" );
-} );
-
-QUnit.test( "compareVersions and jQueryVersionSince", function( assert ) {
-	assert.expect( 9 );
-
-	assert.equal( compareVersions( "3.0.1", "3.0.0" ), 1, "greater than 1" );
-	assert.equal( compareVersions( "3.0.1", "2.10.0" ), 1, "greater than 2" );
-	assert.equal( compareVersions( "3.2.1", "3.3.0" ), -1, "less than 1" );
-	assert.equal( compareVersions( "3.2.1", "4.1.3" ), -1, "less than 2" );
-	assert.equal( compareVersions( "3.2.2", "3.11.1" ), -1, "less than 3" );
-	assert.equal( compareVersions( "3.4.1", "3.4.1" ), 0, "equal" );
-
-
-	// Test against live jQuery version with suitably generous comparisons
-	assert.equal( jQueryVersionSince( "1.4.2" ), true, "since - past version" );
-	assert.equal( jQueryVersionSince( "8.0.3" ), false, "since - future version" );
-	assert.equal( jQueryVersionSince( jQuery.fn.jquery ), true, "since - equal" );
-} );
-
-QUnit.test( "jQuery.migrateDeduplicateWarnings", function( assert ) {
-	assert.expect( 3 );
-
-	var origValue = jQuery.migrateDeduplicateWarnings;
-	assert.strictEqual( origValue, true, "true by default" );
-
-	jQuery.migrateDeduplicateWarnings = true;
-	expectWarning( assert, "jQuery.migrateDeduplicateWarnings === true", 1, function() {
-		jQuery( "#" );
-		jQuery( "#" );
-	} );
-
-	jQuery.migrateDeduplicateWarnings = false;
-	expectWarning( assert, "jQuery.migrateDeduplicateWarnings === false", 2, function() {
-		jQuery( "#" );
-		jQuery( "#" );
-	} );
-
-	jQuery.migrateDeduplicateWarnings = origValue;
-} );
-
 QUnit.test( "jQuery(html, props)", function( assert ) {
-	assert.expect( 3 );
+	assert.expect( 2 );
 
-	var $el = jQuery( "<input/>", { name: "name", val: "value", size: 42 } );
+	var $el = jQuery( "<input/>", { name: "name", val: "value" } );
 
 	assert.equal( $el.attr( "name" ), "name", "Name attribute" );
-	assert.equal( $el.attr( "size" ),
-		jQuery.isEmptyObject( jQuery.attrFn ) ? undefined : "42", "Size attribute" );
 	assert.equal( $el.val(), "value", "Call setter method" );
 } );
 

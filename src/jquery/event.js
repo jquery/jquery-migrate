@@ -1,4 +1,10 @@
-import { migrateWarn, migrateWarnProp } from "../main.js";
+import {
+	migrateWarn,
+	migratePatchAndWarnFunc,
+	migratePatchFunc,
+	migrateWarnProp
+} from "../main.js";
+import "../disablePatches.js";
 
 var oldLoad = jQuery.fn.load,
 	oldEventAdd = jQuery.event.add,
@@ -8,16 +14,18 @@ jQuery.event.props = [];
 jQuery.event.fixHooks = {};
 
 migrateWarnProp( jQuery.event.props, "concat", jQuery.event.props.concat,
+	"event-old-patch",
 	"jQuery.event.props.concat() is deprecated and removed" );
 
-jQuery.event.fix = function( originalEvent ) {
+migratePatchFunc( jQuery.event, "fix", function( originalEvent ) {
 	var event,
 		type = originalEvent.type,
 		fixHook = this.fixHooks[ type ],
 		props = jQuery.event.props;
 
 	if ( props.length ) {
-		migrateWarn( "jQuery.event.props are deprecated and removed: " + props.join() );
+		migrateWarn( "event-old-patch",
+			"jQuery.event.props are deprecated and removed: " + props.join() );
 		while ( props.length ) {
 			jQuery.event.addProp( props.pop() );
 		}
@@ -25,7 +33,8 @@ jQuery.event.fix = function( originalEvent ) {
 
 	if ( fixHook && !fixHook._migrated_ ) {
 		fixHook._migrated_ = true;
-		migrateWarn( "jQuery.event.fixHooks are deprecated and removed: " + type );
+		migrateWarn( "event-old-patch",
+			"jQuery.event.fixHooks are deprecated and removed: " + type );
 		if ( ( props = fixHook.props ) && props.length ) {
 			while ( props.length ) {
 				jQuery.event.addProp( props.pop() );
@@ -35,21 +44,24 @@ jQuery.event.fix = function( originalEvent ) {
 
 	event = originalFix.call( this, originalEvent );
 
-	return fixHook && fixHook.filter ? fixHook.filter( event, originalEvent ) : event;
-};
+	return fixHook && fixHook.filter ?
+		fixHook.filter( event, originalEvent ) :
+		event;
+}, "event-old-patch" );
 
-jQuery.event.add = function( elem, types ) {
+migratePatchFunc( jQuery.event, "add", function( elem, types ) {
 
 	// This misses the multiple-types case but that seems awfully rare
 	if ( elem === window && types === "load" && window.document.readyState === "complete" ) {
-		migrateWarn( "jQuery(window).on('load'...) called after load event occurred" );
+		migrateWarn( "load-after-event",
+			"jQuery(window).on('load'...) called after load event occurred" );
 	}
 	return oldEventAdd.apply( this, arguments );
-};
+}, "load-after-event" );
 
 jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
 
-	jQuery.fn[ name ] = function() {
+	migratePatchFunc( jQuery.fn, name, function() {
 		var args = Array.prototype.slice.call( arguments, 0 );
 
 		// If this is an ajax load() the first arg should be the string URL;
@@ -60,7 +72,8 @@ jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
 			return oldLoad.apply( this, args );
 		}
 
-		migrateWarn( "jQuery.fn." + name + "() is deprecated" );
+		migrateWarn( "shorthand-removed-v3",
+			"jQuery.fn." + name + "() is deprecated" );
 
 		args.splice( 0, 0, name );
 		if ( arguments.length ) {
@@ -73,7 +86,7 @@ jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
 		// See http://bugs.jquery.com/ticket/11820
 		this.triggerHandler.apply( this, args );
 		return this;
-	};
+	}, "shorthand-removed-v3" );
 
 } );
 
@@ -83,12 +96,13 @@ jQuery.each( ( "blur focus focusin focusout resize scroll click dblclick " +
 	function( _i, name ) {
 
 	// Handle event binding
-	jQuery.fn[ name ] = function( data, fn ) {
-		migrateWarn( "jQuery.fn." + name + "() event shorthand is deprecated" );
+	migratePatchAndWarnFunc( jQuery.fn, name, function( data, fn ) {
 		return arguments.length > 0 ?
 			this.on( name, null, data, fn ) :
 			this.trigger( name );
-	};
+		},
+		"shorthand-deprecated-v3",
+		"jQuery.fn." + name + "() event shorthand is deprecated" );
 } );
 
 // Trigger "ready" event only once, on document ready
@@ -99,33 +113,25 @@ jQuery( function() {
 jQuery.event.special.ready = {
 	setup: function() {
 		if ( this === window.document ) {
-			migrateWarn( "'ready' event is deprecated" );
+			migrateWarn( "ready-event", "'ready' event is deprecated" );
 		}
 	}
 };
 
-jQuery.fn.extend( {
-
-	bind: function( types, data, fn ) {
-		migrateWarn( "jQuery.fn.bind() is deprecated" );
-		return this.on( types, null, data, fn );
-	},
-	unbind: function( types, fn ) {
-		migrateWarn( "jQuery.fn.unbind() is deprecated" );
-		return this.off( types, null, fn );
-	},
-	delegate: function( selector, types, data, fn ) {
-		migrateWarn( "jQuery.fn.delegate() is deprecated" );
-		return this.on( types, selector, data, fn );
-	},
-	undelegate: function( selector, types, fn ) {
-		migrateWarn( "jQuery.fn.undelegate() is deprecated" );
-		return arguments.length === 1 ?
-			this.off( selector, "**" ) :
-			this.off( types, selector || "**", fn );
-	},
-	hover: function( fnOver, fnOut ) {
-		migrateWarn( "jQuery.fn.hover() is deprecated" );
-		return this.on( "mouseenter", fnOver ).on( "mouseleave", fnOut || fnOver );
-	}
-} );
+migratePatchAndWarnFunc( jQuery.fn, "bind", function( types, data, fn ) {
+	return this.on( types, null, data, fn );
+}, "pre-on-methods", "jQuery.fn.bind() is deprecated" );
+migratePatchAndWarnFunc( jQuery.fn, "unbind", function( types, fn ) {
+	return this.off( types, null, fn );
+}, "pre-on-methods", "jQuery.fn.unbind() is deprecated" );
+migratePatchAndWarnFunc( jQuery.fn, "delegate", function( selector, types, data, fn ) {
+	return this.on( types, selector, data, fn );
+}, "pre-on-methods", "jQuery.fn.delegate() is deprecated" );
+migratePatchAndWarnFunc( jQuery.fn, "undelegate", function( selector, types, fn ) {
+	return arguments.length === 1 ?
+		this.off( selector, "**" ) :
+		this.off( types, selector || "**", fn );
+}, "pre-on-methods", "jQuery.fn.undelegate() is deprecated" );
+migratePatchAndWarnFunc( jQuery.fn, "hover", function( fnOver, fnOut ) {
+	return this.on( "mouseenter", fnOver ).on( "mouseleave", fnOut || fnOver );
+}, "pre-on-methods", "jQuery.fn.hover() is deprecated" );

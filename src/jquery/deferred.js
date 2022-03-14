@@ -1,4 +1,4 @@
-import { migrateWarn } from "../main.js";
+import { migratePatchFunc, migratePatchAndWarnFunc } from "../main.js";
 
 // Support jQuery slim which excludes the deferred module in jQuery 4.0+
 if ( jQuery.Deferred ) {
@@ -15,14 +15,12 @@ var oldDeferred = jQuery.Deferred,
 			jQuery.Callbacks( "memory" ) ]
 	];
 
-jQuery.Deferred = function( func ) {
+migratePatchFunc( jQuery, "Deferred", function( func ) {
 	var deferred = oldDeferred(),
 		promise = deferred.promise();
 
-	deferred.pipe = promise.pipe = function( /* fnDone, fnFail, fnProgress */ ) {
+	function newDeferredPipe( /* fnDone, fnFail, fnProgress */ ) {
 		var fns = arguments;
-
-		migrateWarn( "deferred.pipe() is deprecated" );
 
 		return jQuery.Deferred( function( newDefer ) {
 			jQuery.each( tuples, function( i, tuple ) {
@@ -48,15 +46,19 @@ jQuery.Deferred = function( func ) {
 			} );
 			fns = null;
 		} ).promise();
+	}
 
-	};
+	migratePatchAndWarnFunc( deferred, "pipe", newDeferredPipe, "deferred-pipe",
+		"deferred.pipe() is deprecated" );
+	migratePatchAndWarnFunc( promise, "pipe", newDeferredPipe, "deferred-pipe",
+		"deferred.pipe() is deprecated" );
 
 	if ( func ) {
 		func.call( deferred, deferred );
 	}
 
 	return deferred;
-};
+}, "deferred-pipe" );
 
 // Preserve handler of uncaught exceptions in promise chains
 jQuery.Deferred.exceptionHook = oldDeferred.exceptionHook;
