@@ -23,6 +23,10 @@
 
 	"rules": {
 		"one-var": [ "error", { "var": "always" } ],
-		"strict": [ "error", "function" ]
+		"strict": [ "error", "function" ],
+
+		// Support: IE <=9 only, Android <=4.0 only
+		// Allow square bracket notation for ES3 reserved words
+		"dot-notation": [ "error", { "allowKeywords": false } ]
 	}
 }
