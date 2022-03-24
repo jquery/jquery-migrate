@@ -9,16 +9,18 @@
 var	dryrun = false,
 	skipRemote = false;
 
-var fs = require( "fs" ),
-	child = require( "child_process" ),
-	path = require( "path" ),
-	chalk = require( "chalk" ),
-	{ prompt } = require( "enquirer" );
+import fs from "fs";
+import child from "child_process";
+import path from "path";
+import chalk from "chalk";
+import enquirer from "enquirer";
 
 var releaseVersion,
 	nextVersion,
 	isBeta,
 	pkg,
+
+	prompt = enquirer.prompt,
 
 	repoURL = "git@github.com:jquery/jquery-migrate.git",
 	branch = "main",
