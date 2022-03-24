@@ -6,6 +6,8 @@ module.exports = function( grunt ) {
 
 	const gzip = require( "gzip-js" );
 
+	const oldNode = /^v10\./.test( process.version );
+
 	const karmaFilesExceptJQuery = [
 		"external/npo/npo.js",
 		"dist/jquery-migrate.min.js",
@@ -30,6 +32,13 @@ module.exports = function( grunt ) {
 		{ pattern: "dist/jquery-migrate.js", included: false, served: true },
 		{ pattern: "test/**/*.@(js|json|css|jpg|html|xml)", included: false, served: true }
 	];
+
+	// Support: Node.js <12
+	// Skip running tasks that dropped support for Node.js 10
+	// in this Node version.
+	function runIfNewNode( task ) {
+		return oldNode ? "print_old_node_message:" + task : task;
+	}
 
 	// Project configuration.
 	grunt.initConfig( {
@@ -141,17 +150,17 @@ module.exports = function( grunt ) {
 					sourceMapName: "dist/jquery-migrate.min.map",
 					report: "min",
 					output: {
-						"ascii_only": true,
+						ascii_only: true,
 
 						// Support: Android 4.0 only
 						// UglifyJS 3 breaks Android 4.0 if this option is not enabled.
-						// This is in lieu of setting ie8 for all of mangle, compress, and output
-						"ie8": true
+						// This is in lieu of setting ie for all of mangle, compress, and output
+						ie: true
 					},
 					banner: "/*! jQuery Migrate v<%= pkg.version %>" +
 						" | (c) <%= pkg.author.name %> | jquery.org/license */",
 					compress: {
-						"hoist_funs": false,
+						hoist_funs: false,
 						loops: false,
 
 						// Support: IE <11
@@ -230,6 +239,11 @@ module.exports = function( grunt ) {
 	// Integrate jQuery migrate specific tasks
 	grunt.loadTasks( "build/tasks" );
 
+	grunt.registerTask( "print_old_node_message", ( ...args ) => {
+		var task = args.join( ":" );
+		grunt.log.writeln( "Old Node.js detected, running the task \"" + task + "\" skipped..." );
+	} );
+
 	// Just an alias
 	grunt.registerTask( "test", [
 		"karma:main",
@@ -242,8 +256,8 @@ module.exports = function( grunt ) {
 		// would run the dist target first which would point to errors in the built
 		// file, making it harder to fix them. We want to check the built file only
 		// if we already know the source files pass the linter.
-		"eslint:dev",
-		"eslint:dist"
+		runIfNewNode( "eslint:dev" ),
+		runIfNewNode( "eslint:dist" )
 	] );
 
 	grunt.registerTask( "default-no-test", [
