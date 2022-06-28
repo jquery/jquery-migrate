@@ -60,7 +60,9 @@ QUnit.test( "jQuery.css with arrays", function( assert ) {
 	} );
 } );
 
-QUnit.test( "jQuery.css with numbers", function( assert ) {
+QUnit[
+	typeof Proxy !== "undefined" ? "test" : "skip"
+]( "jQuery.css with numbers", function( assert ) {
 	var jQuery3OrOlder = compareVersions( jQuery.fn.jquery, "4.0.0" ) < 0,
 		allowlist = [
 			"margin",
