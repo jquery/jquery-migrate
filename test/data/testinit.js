@@ -25,19 +25,20 @@ TestManager = {
 			// Order is important
 			file = [
 				"version",
-				"data/test-utils",
-				"unit/migrate",
-				"unit/jquery/core",
-				"unit/jquery/ajax",
-				"unit/jquery/attributes",
-				"unit/jquery/css",
-				"unit/jquery/data",
-				"unit/jquery/effects",
-				"unit/jquery/event",
-				"unit/jquery/offset",
-				"unit/jquery/serialize",
-				"unit/jquery/traversing",
-				"unit/jquery/deferred"
+				"compareVersions",
+				"main",
+				"jquery/core",
+				"jquery/ajax",
+				"jquery/attributes",
+				"jquery/css",
+				"jquery/data",
+				"jquery/effects",
+				"jquery/event",
+				"jquery/manipulation",
+				"jquery/offset",
+				"jquery/serialize",
+				"jquery/traversing",
+				"jquery/deferred"
 			];
 
 			for ( i = 0; i < file.length; i++ ) {
@@ -81,19 +82,19 @@ TestManager = {
 	 * as appropriate (for example by calling TestManager.loadProject)
 	 */
 	runIframeTest: function( title, url, func ) {
-		var self = this;
+		var that = this;
 		QUnit.test( title, function( assert ) {
 			var iframe,
 				query = window.location.search.slice( 1 ),
 				done = assert.async();
 
-			self.iframeCallback = function() {
+			that.iframeCallback = function() {
 				var args = Array.prototype.slice.call( arguments );
 
 				args.unshift( assert );
 
 				setTimeout( function() {
-					self.iframeCallback = undefined;
+					that.iframeCallback = undefined;
 
 					func.apply( this, args );
 					func = function() {};
@@ -104,13 +105,12 @@ TestManager = {
 			};
 			iframe = jQuery( "<div/>" )
 				.css( { position: "absolute", width: "500px", left: "-600px" } )
-				.append( jQuery( "<iframe/>" ).attr( "src", self.baseURL + "data/" + url +
+				.append( jQuery( "<iframe/>" ).attr( "src", that.baseURL + url +
 					( query && ( /\?/.test( url ) ? "&" : "?" ) ) + query ) )
 				.appendTo( "#qunit-fixture" );
 		} );
 	},
 	iframeCallback: undefined,
-	baseURL: window.__karma__ ? "base/test/" : "./",
 	init: function( projects ) {
 		var p, project, originalDeduplicateWarnings,
 			disabledPatches, origMigrateDisablePatches,
@@ -118,8 +118,9 @@ TestManager = {
 			activeScript = [].slice.call( document.getElementsByTagName( "script" ), -1 )[ 0 ],
 			parentUrl = activeScript && activeScript.src ?
 				activeScript.src.replace( /[?#].*/, "" ) + FILEPATH.replace( /[^/]+/g, ".." ) + "/" :
-				"../",
-			baseURL = parentUrl + "test/data/";
+				"../";
+
+		this.baseURL = parentUrl + "test/data/";
 
 		this.projects = projects;
 		this.loaded = [];
@@ -154,11 +155,11 @@ TestManager = {
 		 * @example url("index.html")
 		 * @result "data/index.html?10538358428943"
 		 *
-		 * @example url("mock.php?foo=bar")
-		 * @result "data/mock.php?foo=bar&10538358345554"
+		 * @example url("xyz.php?foo=bar")
+		 * @result "data/xyz.php?foo=bar&10538358345554"
 		 */
 		window.url = function url( value ) {
-			return baseURL + value + ( /\?/.test( value ) ? "&" : "?" ) +
+			return TestManager.baseURL + value + ( /\?/.test( value ) ? "&" : "?" ) +
 				new Date().getTime() + "" + parseInt( Math.random() * 100000, 10 );
 		};
 
