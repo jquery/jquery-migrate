@@ -1,5 +1,5 @@
 // Returns 0 if v1 == v2, -1 if v1 < v2, 1 if v1 > v2
-function compareVersions( v1, v2 ) {
+window.compareVersions = function compareVersions( v1, v2 ) {
 	var i,
 		rVersionParts = /^(\d+)\.(\d+)\.(\d+)/,
 		v1p = rVersionParts.exec( v1 ) || [ ],
@@ -14,8 +14,8 @@ function compareVersions( v1, v2 ) {
 		}
 	}
 	return 0;
-}
+};
 
-function jQueryVersionSince( version ) {
+window.jQueryVersionSince = function jQueryVersionSince( version ) {
 	return compareVersions( jQuery.fn.jquery, version ) >= 0;
-}
+};

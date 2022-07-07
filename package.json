@@ -48,7 +48,7 @@
 		"karma-qunit": "4.1.2",
 		"load-grunt-tasks": "5.1.0",
 		"native-promise-only": "0.8.1",
-		"qunit": "2.18.0",
+		"qunit": "2.19.1",
 		"rollup": "2.70.1",
 		"testswarm": "1.1.2"
 	},

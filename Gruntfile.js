@@ -8,28 +8,43 @@ module.exports = function( grunt ) {
 
 	const oldNode = /^v10\./.test( process.version );
 
-	const karmaFilesExceptJQuery = [
+	const karmaQunitConfig = {
+		showUI: true,
+		testTimeout: 5000,
+
+		// We're running `QUnit.start()` ourselves in
+		// test/data/qunit-start.js
+		autostart: false
+	};
+
+	const karmaFilesExceptJQueryAndMigrate = [
+
+		// In esmodules mode only object entries of this array with `type: "js"`
+		// get the `type: "module"` tweak. npo is incompatible with being loaded as
+		// a module so leverage this hack to prevent loading it in this way.
 		"external/npo/npo.js",
-		"dist/jquery-migrate.min.js",
-		"test/data/compareVersions.js",
 
-		"test/data/testinit.js",
-		"test/data/test-utils.js",
-		"test/unit/migrate.js",
-		"test/unit/jquery/core.js",
-		"test/unit/jquery/ajax.js",
-		"test/unit/jquery/attributes.js",
-		"test/unit/jquery/css.js",
-		"test/unit/jquery/data.js",
-		"test/unit/jquery/deferred.js",
-		"test/unit/jquery/effects.js",
-		"test/unit/jquery/event.js",
-		"test/unit/jquery/manipulation.js",
-		"test/unit/jquery/offset.js",
-		"test/unit/jquery/serialize.js",
-		"test/unit/jquery/traversing.js",
+		{ pattern: "test/data/compareVersions.js", type: "js", nocache: true },
 
-		{ pattern: "dist/jquery-migrate.js", included: false, served: true },
+		{ pattern: "test/data/testinit.js", type: "js", nocache: true },
+		{ pattern: "test/data/test-utils.js", type: "js", nocache: true },
+		{ pattern: "test/unit/migrate.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/core.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/ajax.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/attributes.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/css.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/data.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/deferred.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/effects.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/event.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/manipulation.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/offset.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/serialize.js", type: "js", nocache: true },
+		{ pattern: "test/unit/jquery/traversing.js", type: "js", nocache: true },
+
+		{ pattern: "test/data/qunit-start.js", type: "js", nocache: true },
+
+		{ pattern: "dist/jquery-migrate.js", included: false, served: true, nocache: true },
 		{ pattern: "test/**/*.@(js|json|css|jpg|html|xml)", included: false, served: true }
 	];
 
@@ -182,14 +197,12 @@ module.exports = function( grunt ) {
 				frameworks: [ "qunit" ],
 				files: [
 					"https://releases.jquery.com/git/jquery-3.x-git.min.js",
-					...karmaFilesExceptJQuery
+					"dist/jquery-migrate.min.js",
+					...karmaFilesExceptJQueryAndMigrate
 				],
 				client: {
 					clearContext: false,
-					qunit: {
-						showUI: true,
-						testTimeout: 5000
-					}
+					qunit: karmaQunitConfig
 				},
 				reporters: [ "dots" ],
 				autoWatch: false,
@@ -207,8 +220,48 @@ module.exports = function( grunt ) {
 				options: {
 					files: [
 						"https://releases.jquery.com/git/jquery-3.x-git.slim.min.js",
-						...karmaFilesExceptJQuery
+						"dist/jquery-migrate.min.js",
+						...karmaFilesExceptJQueryAndMigrate
 					]
+				}
+			},
+
+			esmodules: {
+				browsers: [ "ChromeHeadless", "FirefoxHeadless" ],
+				options: {
+					files: [
+						"https://releases.jquery.com/git/jquery-3.x-git.slim.min.js",
+						{ pattern: "src/migrate.js", type: "module" },
+
+						// Silence console warnings to avoid flooding the console.
+						{ pattern: "src/migratemute.js", type: "module" },
+
+						// Only object entries with `type: "js"` get
+						// the `type: "module"` tweak.
+						...karmaFilesExceptJQueryAndMigrate.map( file => {
+							if ( file && typeof file === "object" && file.type === "js" ) {
+								return {
+									...file,
+									type: "module"
+								};
+							} else {
+								return file;
+							}
+						} ),
+
+						{
+							pattern: "src/**",
+							included: false,
+							type: "module",
+							served: true
+						}
+					],
+					client: {
+						qunit: {
+							...karmaQunitConfig,
+							plugin: "esmodules"
+						}
+					}
 				}
 			},
 
@@ -247,7 +300,8 @@ module.exports = function( grunt ) {
 	// Just an alias
 	grunt.registerTask( "test", [
 		"karma:main",
-		"karma:jquery-slim"
+		"karma:jquery-slim",
+		"karma:esmodules"
 	] );
 
 	grunt.registerTask( "lint", [
