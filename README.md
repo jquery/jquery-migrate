@@ -7,6 +7,19 @@ Upgrading libraries such as jQuery can be a lot of work, when breaking changes h
 
 That way you can spot and fix what otherwise would have been errors, until you no longer need jQuery Migrate and can remove it.
 
+## Version compatibility
+
+The following table indicates which jQuery Migrate versions can be used with which jQuery versions:
+
+| jQuery version | jQuery Migrate version  |
+|----------------|-------------------------|
+| 1.x            | 1.x                     |
+| 2.x            | 1.x                     |
+| 3.x            | 3.x / 4.x<sup>[1]</sup> |
+| 4.x            | 3.x / 4.x<sup>[1]</sup> |
+
+[1] NOTE: jQuery Migrate 4.x only supports the same browser as jQuery 4.x does. If you need to support Edge Legacy, Internet Explorer 9-10 or iOS 7+ (and not just 3 latest versions), use jQuery Migrate 3.x.
+
 ## Usage
 
 In your web page, load this plugin *after* the script tag for jQuery, for example:
