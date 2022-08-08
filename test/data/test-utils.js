@@ -1,6 +1,6 @@
 /* exported expectWarning, expectNoWarning */
 
-function expectWarning( assert, name, expected, fn ) {
+window.expectWarning = function expectWarning( assert, name, expected, fn ) {
 	var result;
 	if ( !fn ) {
 		fn = expected;
@@ -41,10 +41,10 @@ function expectWarning( assert, name, expected, fn ) {
 		check();
 		return Promise.resolve();
 	}
-}
+};
 
-function expectNoWarning( assert, name, expected, fn ) {
+window.expectNoWarning = function expectNoWarning( assert, name, expected, fn ) {
 
 	// Expected is present only for signature compatibility with expectWarning
 	return expectWarning( assert, name, 0, fn || expected );
-}
+};

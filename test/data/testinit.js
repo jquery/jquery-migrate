@@ -1,17 +1,19 @@
-TestManager = {
+// ESLint doesn't take the `typeof` check into account and still
+// complains about the `global` variable
+// eslint-disable-next-line no-undef
+( typeof global != "undefined" ? global : window ).TestManager = {
 
-	/*
+	/**
 	 * Load a version of a file based on URL parameters.
 	 *
-	 *	dev		Uncompressed development version: source files in the project /dist dir
-	 *	raw		Non-combined dev version: source files from the project /src dir
-	 *	min		Minified version in the project /dist dir
-	 *	VER		Version from code.jquery.com, e.g.: git, 1.8.2.min or 1.7rc1
-	 *	else	Full or relative path to be used for script src
+	 *	dev			Uncompressed development version: source files in the project /dist dir
+	 *	esmodules	Non-combined dev version: source files from the project /src dir
+	 *	min			Minified version in the project /dist dir
+	 *	VER			Version from code.jquery.com, e.g.: git, 1.8.2.min or 1.7rc1
+	 *	else		Full or relative path to be used for script src
 	 */
 	loadProject: function( projectName, defaultVersion, isSelf ) {
-		var file, i,
-			lines = "",
+		var file,
 			urlTag = this.projects[ projectName ].urlTag,
 			matcher = new RegExp( "\\b" + urlTag + "=([^&]+)" ),
 			projectRoot = this.baseURL + ( isSelf ? "../.." : "../../../" + projectName ),
@@ -20,30 +22,13 @@ TestManager = {
 		if ( window.__karma__ && isSelf ) {
 			projectRoot = "/base";
 		}
-		if ( version === "raw" ) {
 
-			// Order is important
-			file = [
-				"version",
-				"compareVersions",
-				"main",
-				"jquery/core",
-				"jquery/ajax",
-				"jquery/attributes",
-				"jquery/css",
-				"jquery/data",
-				"jquery/effects",
-				"jquery/event",
-				"jquery/manipulation",
-				"jquery/offset",
-				"jquery/serialize",
-				"jquery/traversing",
-				"jquery/deferred"
-			];
+		// The esmodules mode requires the browser to support ES modules
+		// so it won't run in IE.
+		if ( version === "esmodules" ) {
 
-			for ( i = 0; i < file.length; i++ ) {
-				file[ i ] = projectRoot + "/src/" + file[ i ] + ".js";
-			}
+			// This is the main source file that imports all the others.
+			file = projectRoot + "/src/migrate.js";
 		} else if ( version === "dev" ) {
 			file = projectRoot + "/dist/" + projectName + ".js";
 		} else if ( version === "min" ) {
@@ -62,16 +47,54 @@ TestManager = {
 			file: file
 		} );
 
-		if ( typeof file === "string" ) {
-			document.write( "<script src='" + file + "'></script>" );
-
+		if ( version === "esmodules" ) {
+			document.write( "<script type='module' src='" + file + "'></script>" );
 		} else {
-			for ( i = 0; i < file.length; i++ ) {
-				lines += "<script src='" + file[ i ] + "'></script>";
-			}
-
-			document.write( lines );
+			document.write( "<script src='" + file + "'></script>" );
 		}
+	},
+
+	/**
+	 * Load jQuery Migrate tests. In esmodules mode it loads all tests as
+	 * ES modules so that they get executed in the correct order.
+	 */
+	loadTests: function() {
+		var esmodules = QUnit.config.plugin === "esmodules" ||
+				QUnit.urlParams.plugin === "esmodules",
+			testFiles = [
+				"data/test-utils.js",
+				"unit/migrate.js",
+				"unit/jquery/core.js",
+				"unit/jquery/ajax.js",
+				"unit/jquery/attributes.js",
+				"unit/jquery/css.js",
+				"unit/jquery/data.js",
+				"unit/jquery/effects.js",
+				"unit/jquery/event.js",
+				"unit/jquery/manipulation.js",
+				"unit/jquery/offset.js",
+				"unit/jquery/serialize.js",
+				"unit/jquery/traversing.js",
+				"unit/jquery/deferred.js"
+			];
+
+		testFiles.forEach( function( testFile ) {
+			document.write( "<script " + ( esmodules ? "type='module'" : "" ) +
+				" src='" + testFile + "'></script>" );
+		} );
+
+		// Load the TestSwarm listener if swarmURL is in the address.
+		if ( QUnit.isSwarm ) {
+			document.write( "<scr" + "ipt " +
+				( esmodules ? "type='module' " : "" ) +
+				"src='https://swarm.jquery.org/js/inject.js?" + ( new Date() ).getTime() + "'" +
+			"></scr" + "ipt>" );
+		}
+
+		document.write( "<script " + ( esmodules ? "type='module'" : "" ) + ">" +
+			"	QUnit.start();\n" +
+		"</script>" );
+
 	},
 
 	/**
@@ -82,7 +105,17 @@ TestManager = {
 	 * as appropriate (for example by calling TestManager.loadProject)
 	 */
 	runIframeTest: function( title, url, func ) {
-		var that = this;
+		var that = this,
+			esmodules = QUnit.config.plugin === "esmodules" ||
+				QUnit.urlParams.plugin === "esmodules";
+
+		// Skip iframe tests in esmodules mode as that mode is not compatible with how
+		// they are written.
+		if ( esmodules ) {
+			QUnit.skip( title );
+			return;
+		}
+
 		QUnit.test( title, function( assert ) {
 			var iframe,
 				query = window.location.search.slice( 1 ),
@@ -130,12 +163,21 @@ TestManager = {
 			return;
 		}
 
+		// Tests are always loaded async
+		// except when running tests in Karma (See Gruntfile)
+		if ( !window.__karma__ ) {
+			QUnit.config.autostart = false;
+		}
+
 		// Max time for async tests until it aborts test
 		// and start()'s the next test.
 		QUnit.config.testTimeout = 20 * 1000; // 20 seconds
 
 		// Enforce an "expect" argument or expect() call in all test bodies.
 		QUnit.config.requireExpects = true;
+
+		// Leverage QUnit URL parsing to detect testSwarm environment
+		QUnit.isSwarm = ( QUnit.urlParams.swarmURL + "" ).indexOf( "http" ) === 0;
 
 		// Set the list of projects, including the project version choices.
 		for ( p in projects ) {
@@ -180,32 +222,37 @@ TestManager = {
 				jQuery.migrateDeduplicateWarnings = originalDeduplicateWarnings;
 			}
 
-			// Patch `jQuery.migrateDisablePatches` so that we keep a list of disabled
-			// patches that we can then re-enable. Some of those patches may have already
-			// been re-enabled later but if we do it here again it won't hurt.
-			disabledPatches = [];
-			origMigrateDisablePatches = jQuery.migrateDisablePatches;
-			jQuery.migrateDisablePatches = function customMigrateDisablePatches() {
-				var i;
-				for ( i = 0; i < arguments.length; i++ ) {
-					disabledPatches.push( arguments[ i ] );
-				}
-				return origMigrateDisablePatches.apply( this, arguments );
-			};
+			if ( jQuery.migrateDisablePatches ) {
+
+				// Patch `jQuery.migrateDisablePatches` so that we keep a list of disabled
+				// patches that we can then re-enable. Some of those patches may have already
+				// been re-enabled later but if we do it here again it won't hurt.
+				disabledPatches = [];
+				origMigrateDisablePatches = jQuery.migrateDisablePatches;
+				jQuery.migrateDisablePatches = function customMigrateDisablePatches() {
+					var i;
+					for ( i = 0; i < arguments.length; i++ ) {
+						disabledPatches.push( arguments[ i ] );
+					}
+					return origMigrateDisablePatches.apply( this, arguments );
+				};
+			}
 		} );
 
 		QUnit.testDone( function() {
-			jQuery.migrateDisablePatches = origMigrateDisablePatches;
+			if ( jQuery.migrateDisablePatches ) {
+				jQuery.migrateDisablePatches = origMigrateDisablePatches;
 
-			// Restore potentially disabled patches
-			var i, patch;
-			for ( i = 0; i < disabledPatches.length; i++ ) {
-				patch = disabledPatches[ i ];
-				jQuery.migrateEnablePatches( patch );
+				// Restore potentially disabled patches
+				var i, patch;
+				for ( i = 0; i < disabledPatches.length; i++ ) {
+					patch = disabledPatches[ i ];
+					jQuery.migrateEnablePatches( patch );
+				}
+
+				// Re-disable patches disabled by default
+				jQuery.migrateDisablePatches( "self-closed-tags" );
 			}
-
-			// Re-disable patches disabled by default
-			jQuery.migrateDisablePatches( "self-closed-tags" );
 		} );
 	}
 };
@@ -219,22 +266,6 @@ TestManager.init( {
 	},
 	"jquery-migrate": {
 		urlTag: "plugin",
-		choices: "dev,min,raw,git,3.3.2,3.3.1,3.3.0,3.2.0,3.1.0,3.0.1,3.0.0"
+		choices: "dev,min,esmodules,git,3.3.2,3.3.1,3.3.0,3.2.0,3.1.0,3.0.1,3.0.0"
 	}
 } );
-
-/**
- * Load the TestSwarm listener if swarmURL is in the address.
- */
-( function() {
-	var url = window.location.search;
-	url = decodeURIComponent( url.slice( url.indexOf( "swarmURL=" ) + "swarmURL=".length ) );
-
-	if ( !url || url.indexOf( "http" ) !== 0 ) {
-		return;
-	}
-
-	document.write( "<scr" + "ipt src='https://swarm.jquery.org/js/inject.js?" +
-		( new Date() ).getTime() + "'></scr" + "ipt>" );
-} )();
-
