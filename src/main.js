@@ -10,9 +10,10 @@ import "./disablePatches.js";
 		return;
 	}
 
-	// Need jQuery 3.0.0+ and no older Migrate loaded
-	if ( !jQuery || !jQueryVersionSince( "3.0.0" ) ) {
-		window.console.log( "JQMIGRATE: jQuery 3.0.0+ REQUIRED" );
+	// Need jQuery 3.x-4.x and no older Migrate loaded
+	if ( !jQuery || !jQueryVersionSince( "3.0.0" ) ||
+			jQueryVersionSince( "5.0.0" ) ) {
+		window.console.log( "JQMIGRATE: jQuery 3.x-4.x REQUIRED" );
 	}
 	if ( jQuery.migrateWarnings ) {
 		window.console.log( "JQMIGRATE: Migrate plugin loaded multiple times" );
