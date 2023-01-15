@@ -35,7 +35,7 @@
 		"grunt": "1.5.3",
 		"grunt-cli": "1.4.3",
 		"grunt-compare-size": "0.4.2",
-		"grunt-contrib-uglify": "5.0.1",
+		"grunt-contrib-uglify": "4.0.1",
 		"grunt-contrib-watch": "1.1.0",
 		"grunt-eslint": "24.0.0",
 		"grunt-karma": "4.0.2",

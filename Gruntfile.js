@@ -169,8 +169,8 @@ module.exports = function( grunt ) {
 
 						// Support: Android 4.0 only
 						// UglifyJS 3 breaks Android 4.0 if this option is not enabled.
-						// This is in lieu of setting ie for all of mangle, compress, and output
-						ie: true
+						// This is in lieu of setting ie8 for all of mangle, compress, and output
+						ie8: true
 					},
 					banner: "/*! jQuery Migrate v<%= pkg.version %>" +
 						" | (c) <%= pkg.author.name %> | jquery.org/license */",
