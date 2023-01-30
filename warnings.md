@@ -61,7 +61,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 **Solution:** Change any use of `$().error(fn)` to `$().on("error", fn)`.
 
 ### \[shorthand-removed-v3\] JQMIGRATE: jQuery.fn.load() is deprecated
-### \[shorthand-removed-v3\] JQMIGRATE: jQuery.fn.unload() is deprecated
+### \[shorthand-removed-v3\] JQMIGRATE: jQuery.fn.unload() is deprecated and removed
 
 **Cause:** The `.load()` and `.unload()` event methods attach a "load" and "unload" event, respectively, to an element. They were deprecated in 1.9 and removed in 3.0 to reduce confusion with the AJAX-related `.load()` method that loads HTML fragments and which has not been deprecated. Note that these two methods are used almost exclusively with a jQuery collection consisting of only the `window` element. Also note that attaching an "unload" or "beforeunload" event on a window via any means can impact performance on some browsers because it disables the document cache (bfcache). For that reason we strongly advise against it.
 
