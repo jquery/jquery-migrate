@@ -5,10 +5,24 @@ var oldRemoveAttr = jQuery.fn.removeAttr,
 	rmatchNonSpace = /\S+/g;
 
 migratePatchFunc( jQuery.fn, "removeAttr", function( name ) {
-	var self = this;
+	var self = this,
+		patchNeeded = false;
 
 	jQuery.each( name.match( rmatchNonSpace ), function( _i, attr ) {
 		if ( jQuery.expr.match.bool.test( attr ) ) {
+
+			// Only warn if at least a single node had the property set to
+			// something else than `false`. Otherwise, this Migrate patch
+			// doesn't influence the behavior and there's no need to set or warn.
+			self.each( function() {
+				if ( jQuery( this ).prop( attr ) !== false ) {
+					patchNeeded = true;
+					return false;
+				}
+			} );
+		}
+
+		if ( patchNeeded ) {
 			migrateWarn( "removeAttr-bool",
 				"jQuery.fn.removeAttr no longer sets boolean properties: " + attr );
 			self.prop( attr, false );
