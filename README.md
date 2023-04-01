@@ -25,7 +25,7 @@ The following table indicates which jQuery Migrate versions can be used with whi
 In your web page, load this plugin *after* the script tag for jQuery, for example:
 
 ```html
-<script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.js"></script>
 <script src="https://code.jquery.com/jquery-migrate-3.4.1.js"></script>
 ```
 
