@@ -81,7 +81,7 @@ if ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) {
 }
 
 // In jQuery >=4 where jQuery.cssNumber is missing fill it with the latest 3.x version:
-// https://github.com/jquery/jquery/blob/3.6.0/src/css.js#L212-L233
+// https://github.com/jquery/jquery/blob/3.7.0/src/css.js#L216-L246
 // This way, number values for the CSS properties below won't start triggering
 // Migrate warnings when jQuery gets updated to >=4.0.0 (gh-438).
 if ( jQueryVersionSince( "4.0.0" ) ) {
@@ -90,8 +90,9 @@ if ( jQueryVersionSince( "4.0.0" ) ) {
 	// in a `jQuery.fn.css` patch and this usage shouldn't warn.
 	internalCssNumber = {
 		animationIterationCount: true,
+		aspectRatio: true,
+		borderImageSlice: true,
 		columnCount: true,
-		fillOpacity: true,
 		flexGrow: true,
 		flexShrink: true,
 		fontWeight: true,
@@ -106,9 +107,17 @@ if ( jQueryVersionSince( "4.0.0" ) ) {
 		opacity: true,
 		order: true,
 		orphans: true,
+		scale: true,
 		widows: true,
 		zIndex: true,
-		zoom: true
+		zoom: true,
+
+		// SVG-related
+		fillOpacity: true,
+		floodOpacity: true,
+		stopOpacity: true,
+		strokeMiterlimit: true,
+		strokeOpacity: true
 	};
 
 	if ( typeof Proxy !== "undefined" ) {
