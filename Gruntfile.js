@@ -81,6 +81,8 @@ module.exports = function( grunt ) {
 				"min+3.x-git.min",
 				"dev+3.x-git.slim",
 				"min+3.x-git.slim.min",
+				"dev+3.7.0",
+				"dev+3.7.0.slim",
 				"dev+3.6.4",
 				"dev+3.6.4.slim",
 				"dev+3.5.1",
