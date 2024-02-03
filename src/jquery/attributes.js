@@ -2,6 +2,7 @@ import { migratePatchFunc, migrateWarn } from "../main.js";
 
 var oldRemoveAttr = jQuery.fn.removeAttr,
 	oldToggleClass = jQuery.fn.toggleClass,
+	rbooleans = /^(?:checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped)$/i,
 	rmatchNonSpace = /\S+/g;
 
 migratePatchFunc( jQuery.fn, "removeAttr", function( name ) {
@@ -9,7 +10,7 @@ migratePatchFunc( jQuery.fn, "removeAttr", function( name ) {
 		patchNeeded = false;
 
 	jQuery.each( name.match( rmatchNonSpace ), function( _i, attr ) {
-		if ( jQuery.expr.match.bool.test( attr ) ) {
+		if ( rbooleans.test( attr ) ) {
 
 			// Only warn if at least a single node had the property set to
 			// something else than `false`. Otherwise, this Migrate patch
