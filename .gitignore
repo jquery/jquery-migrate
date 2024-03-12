@@ -15,3 +15,7 @@ CDN
 
 /external
 /node_modules
+
+# Ignore BrowserStack files
+local.log
+browserstack.err
