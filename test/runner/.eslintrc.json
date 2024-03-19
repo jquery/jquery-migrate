@@ -6,29 +6,29 @@
 	"overrides": [
 		{
 			"files": ["**/*"],
-      "globals": {
-        "fetch": false
-      },
+			"globals": {
+				"fetch": false
+			},
 			"parserOptions": {
-        "ecmaVersion": 2022,
+				"ecmaVersion": 2022,
 				"sourceType": "module"
 			}
 		},
-    {
-      "files": ["./listeners.js"],
-      "env": {
-        "browser": true
-      },
-      "globals": {
-        "QUnit": false
-      },
-      "parserOptions": {
-        "ecmaVersion": 5,
-        "sourceType": "script"
-      },
-      "rules": {
-        "strict": ["error", "function"]
-      }
-    }
+		{
+			"files": ["./listeners.js"],
+			"env": {
+				"browser": true
+			},
+			"globals": {
+				"QUnit": false
+			},
+			"parserOptions": {
+				"ecmaVersion": 5,
+				"sourceType": "script"
+			},
+			"rules": {
+				"strict": ["error", "function"]
+			}
+		}
 	]
 }

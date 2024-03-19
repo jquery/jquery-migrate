@@ -16,7 +16,7 @@ jobs:
       fail-fast: false
       matrix:
         MIGRATE_VERSION: ["min"]
-        JQUERY_VERSION: ["3.x-git.min", "3.x-git.slim.min"]
+        JQUERY_VERSION: ["git.min", "git.slim.min", "3.x-git.min", "3.x-git.slim.min"]
         include:
           - MIGRATE_VERSION: "esmodules"
             JQUERY_VERSION: "3.x-git.slim.min"
@@ -50,7 +50,7 @@ jobs:
       fail-fast: false
       matrix:
         MIGRATE_VERSION: ["min"]
-        JQUERY_VERSION: ["3.x-git.min", "3.x-git.slim.min"]
+        JQUERY_VERSION: ["git.min", "git.slim.min", "3.x-git.min", "3.x-git.slim.min"]
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -72,4 +72,7 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm run test:safari -- --jquery-migrate=${{ matrix.MIGRATE_VERSION }} --jquery=${{ matrix.JQUERY_VERSION }}
+        run: |
+          npm run test:safari -- \
+          --jquery-migrate=${{ matrix.MIGRATE_VERSION }} \
+          --jquery=${{ matrix.JQUERY_VERSION }}

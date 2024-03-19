@@ -1,4 +1,4 @@
-name: Browserstack (git)
+name: Browserstack (Core git)
 
 on:
   push:

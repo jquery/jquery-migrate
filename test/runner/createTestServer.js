@@ -3,6 +3,8 @@ import express from "express";
 import bodyParserErrorHandler from "express-body-parser-error-handler";
 import { readFile } from "node:fs/promises";
 
+const jqueryDir = process.env.JQUERY_DIRECTORY || "../jquery";
+
 export async function createTestServer( report ) {
 	const indexHTML = await readFile( "./test/index.html", "utf8" );
 	const app = express();
@@ -58,8 +60,8 @@ export async function createTestServer( report ) {
 	app.use( "/external", express.static( "external" ) );
 
 	// Serve development jQuery, which is expected to be
-	// a sibling of the jquery-migrate repo.
-	app.use( "/jquery", express.static( "../jquery" ) );
+	// a sibling of the jquery-migrate repo by default.
+	app.use( "/jquery", express.static( jqueryDir ) );
 
 	return app;
 }
