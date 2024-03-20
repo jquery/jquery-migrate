@@ -1,0 +1,30 @@
+// Versions of jQuery listed in the QUnit select
+
+export const jquery = [
+	"dev",
+	"min",
+	"git",
+	"git.min",
+	"git.slim",
+	"git.slim.min",
+	"3.x-git",
+	"3.x-git.min",
+	"3.x-git.slim",
+	"3.x-git.slim.min",
+	"3.7.1",
+	"3.7.1.slim",
+	"3.6.4",
+	"3.6.4.slim",
+	"3.5.1",
+	"3.5.1.slim",
+	"3.4.1",
+	"3.4.1.slim",
+	"3.3.1",
+	"3.3.1.slim",
+	"3.2.1",
+	"3.2.1.slim",
+	"3.1.1",
+	"3.1.1.slim",
+	"3.0.0",
+	"3.0.0.slim"
+];

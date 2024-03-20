@@ -81,7 +81,7 @@ if ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) {
 }
 
 // In jQuery >=4 where jQuery.cssNumber is missing fill it with the latest 3.x version:
-// https://github.com/jquery/jquery/blob/3.7.0/src/css.js#L216-L246
+// https://github.com/jquery/jquery/blob/3.7.1/src/css.js#L216-L246
 // This way, number values for the CSS properties below won't start triggering
 // Migrate warnings when jQuery gets updated to >=4.0.0 (gh-438).
 if ( jQueryVersionSince( "4.0.0" ) ) {

@@ -19,10 +19,6 @@
 			projectRoot = this.baseURL + ( isSelf ? "../.." : "../../../" + projectName ),
 			version = ( matcher.exec( document.location.search ) || {} )[ 1 ] || defaultVersion;
 
-		if ( window.__karma__ && isSelf ) {
-			projectRoot = "/base";
-		}
-
 		// The esmodules mode requires the browser to support ES modules
 		// so it won't run in IE.
 		if ( version === "esmodules" ) {
@@ -82,14 +78,6 @@
 			document.write( "<script " + ( esmodules ? "type='module'" : "" ) +
 				" src='" + testFile + "'></script>" );
 		} );
-
-		// Load the TestSwarm listener if swarmURL is in the address.
-		if ( QUnit.isSwarm ) {
-			document.write( "<scr" + "ipt " +
-				( esmodules ? "type='module' " : "" ) +
-				"src='https://swarm.jquery.org/js/inject.js?" + ( new Date() ).getTime() + "'" +
-			"></scr" + "ipt>" );
-		}
 
 		document.write( "<script " + ( esmodules ? "type='module'" : "" ) + ">" +
 			"	QUnit.start();\n" +
@@ -164,10 +152,7 @@
 		}
 
 		// Tests are always loaded async
-		// except when running tests in Karma (See Gruntfile)
-		if ( !window.__karma__ ) {
-			QUnit.config.autostart = false;
-		}
+		QUnit.config.autostart = false;
 
 		// Max time for async tests until it aborts test
 		// and start()'s the next test.
@@ -176,16 +161,13 @@
 		// Enforce an "expect" argument or expect() call in all test bodies.
 		QUnit.config.requireExpects = true;
 
-		// Leverage QUnit URL parsing to detect testSwarm environment
-		QUnit.isSwarm = ( QUnit.urlParams.swarmURL + "" ).indexOf( "http" ) === 0;
-
 		// Set the list of projects, including the project version choices.
 		for ( p in projects ) {
 			project = projects[ p ];
 			QUnit.config.urlConfig.push( {
 				label: p,
 				id: project.urlTag,
-				value: project.choices.split( "," )
+				value: project.choices
 			} );
 		}
 
@@ -205,7 +187,7 @@
 				new Date().getTime() + "" + parseInt( Math.random() * 100000, 10 );
 		};
 
-		QUnit.begin( function( details ) {
+		QUnit.begin( function() {
 			originalDeduplicateWarnings = jQuery.migrateDeduplicateWarnings;
 		} );
 
@@ -259,14 +241,55 @@
 TestManager.init( {
 	"jquery": {
 		urlTag: "jquery",
-		choices: "dev,min,git,git.min,git.slim,git.slim.min," +
-			"3.x-git,3.x-git.min,3.x-git.slim,3.x-git.slim.min," +
-			"3.7.0,3.7.0.slim,3.6.4,3.6.4.slim,3.5.1,3.5.1.slim,3.4.1,3.4.1.slim," +
-			"3.3.1,3.3.1.slim,3.2.1,3.2.1.slim,3.1.1,3.1.1.slim,3.0.0,3.0.0.slim"
+
+		// Keep in sync with test/runner/jquery.js
+		choices: [
+			"dev",
+			"min",
+			"git",
+			"git.min",
+			"git.slim",
+			"git.slim.min",
+			"3.x-git",
+			"3.x-git.min",
+			"3.x-git.slim",
+			"3.x-git.slim.min",
+			"3.7.1",
+			"3.7.1.slim",
+			"3.6.4",
+			"3.6.4.slim",
+			"3.5.1",
+			"3.5.1.slim",
+			"3.4.1",
+			"3.4.1.slim",
+			"3.3.1",
+			"3.3.1.slim",
+			"3.2.1",
+			"3.2.1.slim",
+			"3.1.1",
+			"3.1.1.slim",
+			"3.0.0",
+			"3.0.0.slim"
+		]
 	},
 	"jquery-migrate": {
 		urlTag: "plugin",
-		choices: "dev,min,esmodules,git," +
-			"3.4.1,3.4.0,3.3.2,3.3.1,3.3.0,3.2.0,3.1.0,3.0.1,3.0.0"
+
+		// Keep in sync with test/runner/jquery-migrate.js
+		choices: [
+			"dev",
+			"min",
+			"git",
+			"3.4.1",
+			"3.4.0",
+			"3.3.2",
+			"3.3.1",
+			"3.3.0",
+			"3.2.0",
+			"3.1.0",
+			"3.0.1",
+			"3.0.0",
+			"esmodules"
+		]
 	}
 } );
