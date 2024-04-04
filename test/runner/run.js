@@ -8,16 +8,15 @@ import { createTestServer } from "./createTestServer.js";
 import { buildTestUrl } from "./lib/buildTestUrl.js";
 import { generateHash, printModuleHashes } from "./lib/generateHash.js";
 import { getBrowserString } from "./lib/getBrowserString.js";
-import { modules as allModules } from "./modules.js";
-import { cleanupAllBrowsers, touchBrowser } from "./browserstack/browsers.js";
+import { modules as allModules } from "./flags/modules.js";
+import { cleanupAllBrowsers, touchBrowser } from "./browsers.js";
 import {
-	addBrowserStackRun,
+	addRun,
 	getNextBrowserTest,
 	hardRetryTest,
 	retryTest,
-	runAllBrowserStack
-} from "./browserstack/queue.js";
-import { addSeleniumRun, runAllSelenium } from "./selenium/queue.js";
+	runAll
+} from "./queue.js";
 
 const EXIT_HOOK_WAIT_TIMEOUT = 60 * 1000;
 
@@ -271,6 +270,8 @@ export async function run( {
 				} );
 
 				const options = {
+					browserstack,
+					concurrency,
 					debug,
 					headless,
 					jquery,
@@ -282,11 +283,7 @@ export async function run( {
 					verbose
 				};
 
-				if ( browserstack ) {
-					addBrowserStackRun( url, browser, options );
-				} else {
-					addSeleniumRun( url, browser, options );
-				}
+				addRun( url, browser, options );
 			}
 		}
 	}
@@ -303,11 +300,7 @@ export async function run( {
 
 	try {
 		console.log( `Starting Run ${ runId }...` );
-		if ( browserstack ) {
-			await runAllBrowserStack( { verbose } );
-		} else {
-			await runAllSelenium( { concurrency, verbose } );
-		}
+		await runAll();
 	} catch ( error ) {
 		console.error( error );
 		if ( !debug ) {
