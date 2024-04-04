@@ -1,5 +1,5 @@
 import yargs from "yargs/yargs";
-import { browsers } from "./browsers.js";
+import { browsers } from "./flags/browsers.js";
 import { getPlan, listBrowsers, stopWorkers } from "./browserstack/api.js";
 import { buildBrowserFromString } from "./browserstack/buildBrowserFromString.js";
 import { modules } from "./modules.js";
