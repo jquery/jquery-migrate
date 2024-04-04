@@ -1,7 +1,7 @@
 // This list is static, so no requests are required
 // in the command help menu.
 
-import { getBrowsers } from "./browserstack/api.js";
+import { getBrowsers } from "../browserstack/api.js";
 
 export const browsers = [
 	"chrome",
