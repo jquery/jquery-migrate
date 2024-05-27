@@ -19,7 +19,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 			} )
 			.complete( function() {
 				assert.ok( true, "ajax complete" );
-			} )[ "catch" ]( jQuery.noop );
+			} ).catch( jQuery.noop );
 	} ).then( function() {
 		done();
 	} );
@@ -44,7 +44,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 								url: url( "null.json" ),
 								crossDomain: crossDomain,
 								dataType: "json"
-							} )[ "catch" ]( jQuery.noop );
+							} ).catch( jQuery.noop );
 						}
 					);
 				},
@@ -56,7 +56,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 								url: url( "null.json?callback=?" ),
 								crossDomain: crossDomain,
 								dataType: "json"
-							} )[ "catch" ]( jQuery.noop );
+							} ).catch( jQuery.noop );
 						}
 					);
 				},
@@ -69,7 +69,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 								crossDomain: crossDomain,
 								data: "callback=?",
 								dataType: "json"
-							} )[ "catch" ]( jQuery.noop );
+							} ).catch( jQuery.noop );
 						}
 					);
 				},
@@ -81,7 +81,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 								url: url( "null.json?callback=?" ),
 								crossDomain: crossDomain,
 								dataType: "jsonp"
-							} )[ "catch" ]( jQuery.noop );
+							} ).catch( jQuery.noop );
 						}
 					);
 				},
@@ -94,7 +94,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 								crossDomain: crossDomain,
 								data: "callback=?",
 								dataType: "jsonp"
-							} )[ "catch" ]( jQuery.noop );
+							} ).catch( jQuery.noop );
 						}
 					);
 				}

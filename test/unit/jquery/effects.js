@@ -10,7 +10,9 @@ QUnit.test( "jQuery.easing", function( assert ) {
 
 	assert.expect( 4 );
 
-	jQuery.easing.testOld = function( p, n, firstNum, diff ) {
+	// Keep the unused arguments.
+	// The number is important for the test.
+	jQuery.easing.testOld = function( _p, _n, _firstNum, _diff ) {
 		assert.ok( false, "should not have been called" );
 	};
 

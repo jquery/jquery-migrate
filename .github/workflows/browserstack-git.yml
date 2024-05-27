@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  # Once a week every Tuesday
+  schedule:
+    - cron: "42 1 * * 2"
 
 jobs:
   test:
@@ -55,8 +58,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build
-        run: npm run build
+      - name: Pretest script
+        run: npm run pretest
 
       - name: Test
         run: |

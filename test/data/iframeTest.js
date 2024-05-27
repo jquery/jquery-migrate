@@ -1,3 +1,5 @@
+"use strict";
+
 /*
  * Iframe-based unit tests support
  * Load this file immediately after jQuery, before jQuery Migrate

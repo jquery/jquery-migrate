@@ -128,7 +128,8 @@ if ( jQueryVersionSince( "3.2.0" ) ) {
 
 if ( jQueryVersionSince( "3.3.0" ) ) {
 
-	migratePatchAndWarnFunc( jQuery, "isNumeric", function( obj ) {
+	migratePatchAndWarnFunc( jQuery, "isNumeric",
+		function( obj ) {
 
 			// As of jQuery 3.0, isNumeric is limited to
 			// strings and numbers (primitives or objects)

@@ -1,3 +1,5 @@
+"use strict";
+
 /* exported expectWarning, expectNoWarning */
 
 window.expectWarning = function expectWarning( assert, name, expected, fn ) {

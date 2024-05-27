@@ -68,11 +68,8 @@ See: [jQuery Core Style Guide](http://docs.jquery.com/JQuery_Core_Style_Guidelin
 
 To test the plugin you will need:
 
-* Some kind of localhost server(any will do)
 * Node.js
 * NPM (comes with the latest version of Node.js)
-* Grunt (install with: `npm install grunt -g`)
-
 
 ### Build a Local Copy of the plugin
 
@@ -108,13 +105,19 @@ Get in the habit of pulling in the "upstream" `main` branch to stay up to date a
 $ git pull upstream main
 ```
 
-Run the Grunt tools:
+Run the build and rebuild when source files change:
 
 ```bash
-$ grunt && grunt watch
+$ npm start
 ```
 
-Now open the jQuery test suite in a browser at http://localhost/test. If there is a port, be sure to include it.
+In another terminal, run the test server:
+
+```bash
+$ npm run test:server
+```
+
+Now open the jQuery test suite in a browser at http://localhost:3000/test/.
 
 Success! You just built and tested jQuery!
 
