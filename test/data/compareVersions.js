@@ -1,3 +1,5 @@
+"use strict";
+
 // Returns 0 if v1 == v2, -1 if v1 < v2, 1 if v1 > v2
 window.compareVersions = function compareVersions( v1, v2 ) {
 	var i,

@@ -1,6 +1,5 @@
-// ESLint doesn't take the `typeof` check into account and still
-// complains about the `global` variable
-// eslint-disable-next-line no-undef
+"use strict";
+
 ( typeof global != "undefined" ? global : window ).TestManager = {
 
 	/**

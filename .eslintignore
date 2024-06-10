@@ -1,6 +1,0 @@
-coverage
-external
-node_modules
-*.min.js
-test/data/jquery-*.js
-test/data/jquery.mobile-*.js

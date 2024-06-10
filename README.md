@@ -89,21 +89,12 @@ Build and run tests:
 ====================================================
 
 ## Build with `npm` commands
+
 ```sh
 $ git clone git://github.com/jquery/jquery-migrate.git
 $ cd jquery-migrate
 $ npm install
 $ npm run build
-```
-
-## Build with [`grunt`](http://gruntjs.com/)
-
-```sh
-$ git clone git://github.com/jquery/jquery-migrate.git
-$ cd jquery-migrate
-$ npm install
-$ npm install -g grunt-cli
-$ grunt build
 ```
 
 ### Run tests
@@ -115,5 +106,7 @@ $ npm test
 ### Or
 
 ```sh
-$ grunt test
+$ npm run test:server
 ```
+
+and open http://localhost:3000/test/ in your browser.

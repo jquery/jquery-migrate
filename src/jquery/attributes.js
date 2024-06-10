@@ -58,8 +58,8 @@ migratePatchFunc( jQuery.fn, "toggleClass", function( state ) {
 		if ( this.setAttribute ) {
 			this.setAttribute( "class",
 				className || state === false ?
-				"" :
-				jQuery.data( this, "__className__" ) || ""
+					"" :
+					jQuery.data( this, "__className__" ) || ""
 			);
 		}
 	} );

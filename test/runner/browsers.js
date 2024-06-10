@@ -64,7 +64,7 @@ export async function createBrowserWorker( url, browser, options, restarts = 0 )
 		worker = await createWorker( {
 			...browser,
 			url: encodeURI( url ),
-			project: "jquery",
+			project: "jquery-migrate",
 			build: `Run ${ runId }`,
 
 			// This is the maximum timeout allowed

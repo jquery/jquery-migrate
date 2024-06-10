@@ -3,8 +3,6 @@
  * JQuery Migrate Plugin Release Management
  */
 
-"use strict";
-
 // Debugging variables
 var	dryrun = false,
 	skipRemote = false;
@@ -14,6 +12,7 @@ import child from "child_process";
 import path from "path";
 import chalk from "chalk";
 import enquirer from "enquirer";
+import { build } from "./tasks/build";
 
 var releaseVersion,
 	nextVersion,
@@ -27,7 +26,6 @@ var releaseVersion,
 
 	// Windows needs the .cmd version but will find the non-.cmd
 	// On Windows, also ensure the HOME environment variable is set
-	gruntCmd = process.platform === "win32" ? "grunt.cmd" : "grunt",
 	npmCmd = process.platform === "win32" ? "npm.cmd" : "npm",
 
 	readmeFile = "README.md",
@@ -40,10 +38,10 @@ var releaseVersion,
 steps(
 	initialize,
 	checkGitStatus,
-	gruntBuild,
+	buildRelease,
 	updateVersions,
 	tagReleaseVersion,
-	gruntBuild,
+	buildRelease,
 	makeReleaseCopies,
 	publishToNPM,
 	setNextVersion,
@@ -64,7 +62,7 @@ function initialize( next ) {
 
 	// -r skip remote mode, no remote commands are executed
 	// (git push, npm publish, cdn copy)
-	// Reset with `git reset --hard HEAD~2 && git tag -d (version) && grunt`
+	// Reset with `git reset --hard HEAD~2 && git tag -d (version) && npm run build`
 	if ( process.argv[ 2 ] === "-r" ) {
 		process.argv.shift();
 		skipRemote = true;
@@ -153,14 +151,9 @@ function updateVersions( next ) {
 	next();
 }
 
-function gruntBuild( next ) {
-	exec( gruntCmd, [], function( error, stdout, stderr ) {
-		if ( error ) {
-			die( error + stderr );
-		}
-		log( stdout || "(no output)" );
-		next();
-	} );
+async function buildRelease( next ) {
+	await build( { version: releaseVersion } );
+	next();
 }
 
 function makeReleaseCopies( next ) {

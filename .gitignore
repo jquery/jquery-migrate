@@ -8,11 +8,9 @@ CDN
 /*.html
 .DS_Store
 .sizecache.json
+.eslintcache
 
-# Ignore everything in dist folder except for eslint config
-/dist/*
-!/dist/.eslintrc.json
-
+/dist
 /external
 /node_modules
 

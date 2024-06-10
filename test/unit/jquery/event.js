@@ -152,7 +152,7 @@ TestManager.runIframeTest( "document ready", "event-ready.html",
 	} );
 
 TestManager.runIframeTest( "jQuery.event.props.concat", "event-props-concat.html",
-	function( assert, jQuery,  window, document, log, props ) {
+	function( assert, jQuery, _window, _document, _log, props ) {
 		assert.expect( 3 );
 
 		var warns = JSON.stringify( jQuery.migrateWarnings );
@@ -183,7 +183,7 @@ TestManager.runIframeTest( "jQuery.event.fixHooks", "event-fixHooks.html",
 	} );
 
 TestManager.runIframeTest( "Load within a ready handler", "event-lateload.html",
-	function( assert, jQuery, window, document, log ) {
+	function( assert, jQuery ) {
 		assert.expect( 2 );
 
 		assert.equal( jQuery.migrateWarnings.length, 1, "warnings: " +

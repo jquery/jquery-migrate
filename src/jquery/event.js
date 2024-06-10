@@ -93,16 +93,16 @@ jQuery.each( [ "load", "unload", "error" ], function( _, name ) {
 jQuery.each( ( "blur focus focusin focusout resize scroll click dblclick " +
 	"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
 	"change select submit keydown keypress keyup contextmenu" ).split( " " ),
-	function( _i, name ) {
+function( _i, name ) {
 
 	// Handle event binding
 	migratePatchAndWarnFunc( jQuery.fn, name, function( data, fn ) {
 		return arguments.length > 0 ?
 			this.on( name, null, data, fn ) :
 			this.trigger( name );
-		},
-		"shorthand-deprecated-v3",
-		"jQuery.fn." + name + "() event shorthand is deprecated" );
+	},
+	"shorthand-deprecated-v3",
+	"jQuery.fn." + name + "() event shorthand is deprecated" );
 } );
 
 // Trigger "ready" event only once, on document ready
