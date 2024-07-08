@@ -1,4 +1,4 @@
-import { migratePatchFunc, migrateWarn } from "../main.js";
+import { migratePatchAndWarnFunc, migratePatchFunc, migrateWarn } from "../main.js";
 import "../disablePatches.js";
 
 var rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([a-z][^\/\0>\x20\t\r\n\f]*)[^>]*)\/>/gi,
@@ -19,9 +19,11 @@ var rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([a-z][^\/\
  * Deprecated, please use `jQuery.migrateDisablePatches( "self-closed-tags" )` instead.
  * @deprecated
  */
-jQuery.UNSAFE_restoreLegacyHtmlPrefilter = function() {
+migratePatchAndWarnFunc( jQuery, "UNSAFE_restoreLegacyHtmlPrefilter", function() {
 	jQuery.migrateEnablePatches( "self-closed-tags" );
-};
+}, "legacy-self-closed-tags",
+"jQuery.UNSAFE_restoreLegacyHtmlPrefilter deprecated; use " +
+	"`jQuery.migrateEnablePatches( \"self-closed-tags\" )`" );
 
 migratePatchFunc( jQuery, "htmlPrefilter", function( html ) {
 	warnIfChanged( html );

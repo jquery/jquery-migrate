@@ -41,9 +41,11 @@ QUnit.test( "Improperly closed elements", function( assert ) {
 } );
 
 QUnit.test( "jQuery.UNSAFE_restoreLegacyHtmlPrefilter (deprecated)", function( assert ) {
-	assert.expect( 5 );
+	assert.expect( 7 );
 
-	jQuery.UNSAFE_restoreLegacyHtmlPrefilter();
+	expectWarning( assert, "jQuery.UNSAFE_restoreLegacyHtmlPrefilter()", 1, function() {
+		jQuery.UNSAFE_restoreLegacyHtmlPrefilter();
+	} );
 
 	var warns = jQuery.migrateWarnings,
 		elem = jQuery( "<div/><span/>" ),
@@ -55,6 +57,7 @@ QUnit.test( "jQuery.UNSAFE_restoreLegacyHtmlPrefilter (deprecated)", function( a
 	assert.strictEqual( firstNodeName, "div", "Proper first element" );
 	assert.strictEqual( secondNodeName, "span", "Proper second element" );
 
-	assert.equal( warns.length, 1, "Proper warning length" );
-	assert.ok( warns[ 0 ].indexOf( "HTML tags" ) >= 0, warns[ 0 ] );
+	assert.equal( warns.length, 2, "Proper warning length" );
+	assert.ok( warns[ 0 ].indexOf( "jQuery.UNSAFE_restoreLegacyHtmlPrefilter" ) >= 0, warns[ 0 ] );
+	assert.ok( warns[ 1 ].indexOf( "HTML tags" ) >= 0, warns[ 1 ] );
 } );
