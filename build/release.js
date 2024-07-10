@@ -7,9 +7,9 @@
 var	dryrun = false,
 	skipRemote = false;
 
-import fs from "fs";
-import child from "child_process";
-import path from "path";
+import fs from "node:fs";
+import child from "node:child_process";
+import path from "node:path";
 import chalk from "chalk";
 import enquirer from "enquirer";
 import { build } from "./tasks/build";
@@ -98,7 +98,7 @@ function initialize( next ) {
 	if ( !( fs.existsSync || path.existsSync )( packageFile ) ) {
 		die( "No " + packageFile + " in this directory" );
 	}
-	pkg = JSON.parse( fs.readFileSync( packageFile ) );
+	pkg = JSON.parse( fs.readFileSync( packageFile, "utf8" ) );
 
 	status( "Current version is " + pkg.version + "; generating release " + releaseVersion );
 	version = rsemver.exec( pkg.version );
