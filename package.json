@@ -3,7 +3,7 @@
 	"title": "jQuery Migrate",
 	"description": "Migrate older jQuery code to jQuery 3.0+",
 	"main": "dist/jquery-migrate.js",
-	"version": "3.4.2-pre",
+	"version": "3.5.0",
 	"type": "module",
 	"homepage": "https://github.com/jquery/jquery-migrate",
 	"author": {
