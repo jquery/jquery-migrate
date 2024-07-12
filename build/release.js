@@ -12,7 +12,7 @@ import child from "node:child_process";
 import path from "node:path";
 import chalk from "chalk";
 import enquirer from "enquirer";
-import { build } from "./tasks/build";
+import { build } from "./tasks/build.js";
 
 var releaseVersion,
 	nextVersion,
