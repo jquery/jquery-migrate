@@ -26,10 +26,11 @@
 		"pretest": "npm run npmcopy && npm run build && npm run lint",
 		"start": "npm run npmcopy && node build/tasks/build-watch.js",
 		"test:browser": "npm run pretest && npm run test:unit -- -b chrome -b firefox -h",
+		"test:node_smoke_tests": "npm run pretest && node test/node_smoke_tests/smoke_tests.cjs",
 		"test:safari": "npm run pretest && npm run test:unit -- -v -b safari",
 		"test:server": "node test/runner/server.js",
 		"test:unit": "node test/runner/command.js",
-		"test": "npm run test:browser"
+		"test": "npm run test:node_smoke_tests && npm run test:browser"
 	},
 	"peerDependencies": {
 		"jquery": ">=3 <4"
@@ -50,6 +51,8 @@
 		"express-body-parser-error-handler": "1.0.7",
 		"globals": "15.3.0",
 		"husky": "9.0.11",
+		"jquery": "3.7.1",
+		"jsdom": "24.1.0",
 		"native-promise-only": "0.8.1",
 		"qunit": "2.21.0",
 		"rollup": "4.18.0",

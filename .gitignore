@@ -10,7 +10,11 @@ CDN
 .sizecache.json
 .eslintcache
 
-/dist
+# Ignore built files in `dist` folder
+# Leave package.json
+/dist/*
+!/dist/package.json
+
 /external
 /node_modules
 
