@@ -273,7 +273,7 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 ### \[legacy-self-closed-tags\] JQMIGRATE: jQuery.UNSAFE_restoreLegacyHtmlPrefilter is deprecated
 
-**Cause:** jQuery Migrate 3.4.0 introduced a `jQuery.migrateEnablePatches` method used to enable any previously disabled patch. Since this method is more generic, it replaces the previous specialized `jQuery.UNSAFE_restoreLegacyHtmlPrefilter`. This warning is exceptional as it applies to jQuery Migrate and not to jQuery itself.
+**Cause:** jQuery Migrate 3.4.0 introduced a `jQuery.migrateEnablePatches` method used to enable any previously disabled patches. It should be used in place of the specialized `jQuery.UNSAFE_restoreLegacyHtmlPrefilter`. This warning is different as it applies to jQuery Migrate and not to jQuery itself.
 
 **Solution:** Search for the `jQuery.UNSAFE_restoreLegacyHtmlPrefilter()` calls in the code base and replace all occurrences with `jQuery.migrateEnablePatches( "self-closed-tags" )`.
 
