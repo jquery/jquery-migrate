@@ -271,6 +271,12 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution:** Always pass string values to `.css()`, and explicitly add units where required. For example, use `$.css("line-height", "2")` to specify 200% of the current line height or `$.css("line-height", "2px")` to specify pixels. When the numeric value is in a variable, ensure the value is converted to string, e.g. `$.css("line-height", String(height))` and `$.css("line-height", height+"px")`.
 
+### \[legacy-self-closed-tags\] JQMIGRATE: jQuery.UNSAFE_restoreLegacyHtmlPrefilter is deprecated
+
+**Cause:** jQuery Migrate 3.4.0 introduced a `jQuery.migrateEnablePatches` method used to enable any previously disabled patches. It should be used in place of the specialized `jQuery.UNSAFE_restoreLegacyHtmlPrefilter`. This warning is different as it applies to jQuery Migrate and not to jQuery itself.
+
+**Solution:** Search for the `jQuery.UNSAFE_restoreLegacyHtmlPrefilter()` calls in the code base and replace all occurrences with `jQuery.migrateEnablePatches( "self-closed-tags" )`.
+
 ### \[self-closed-tags\] JQMIGRATE: HTML tags must be properly nested and closed: _(HTML string)_
 
 **Cause:** jQuery 3.5.0 changed the way it processes HTML strings. Previously, jQuery would attempt to fix self-closed tags like `<i class="test" />` that the HTML5 specification says are not self-closed, turning it into `<i class="test"></i>`. This processing can create a [security problem](https://nvd.nist.gov/vuln/detail/CVE-2020-11022) with malicious strings, so the functionality had to be removed.
