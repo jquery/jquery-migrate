@@ -95,6 +95,7 @@ export default [
 				...globals.browser,
 				jQuery: false,
 				QUnit: false,
+				sinon: false,
 				url: false,
 				expectWarning: false,
 				expectNoWarning: false,

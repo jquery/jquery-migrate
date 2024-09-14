@@ -1,13 +1,253 @@
 // Support jQuery slim which excludes the deferred module in jQuery 4.0+
 if ( jQuery.Deferred ) {
 
-QUnit.module( "deferred" );
+QUnit.module( "deferred", {
+	beforeEach: function() {
+		this.sandbox = sinon.createSandbox();
+	},
+	afterEach: function() {
+		this.sandbox.restore();
+		jQuery.Deferred.getErrorHook = jQuery.Deferred.getStackHook = undefined;
+	}
+} );
 
 QUnit.test( "jQuery.Deferred.exceptionHook", function( assert ) {
 	assert.expect( 1 );
 
 	// Make sure our shimming didn't clobber the default hook
 	assert.ok( typeof jQuery.Deferred.exceptionHook === "function", "hook is present" );
+} );
+
+QUnit.test( "jQuery.Deferred.getStackHook - getter", function( assert ) {
+	assert.expect( 5 );
+
+	var exceptionHookSpy,
+		done = assert.async();
+
+	// Source: https://github.com/dmethvin/jquery-deferred-reporter
+	function getErrorHook() {
+
+		// Throw an error as IE doesn't capture `stack` of non-thrown ones.
+		try {
+			throw new Error( "Test exception in jQuery.Deferred" );
+		} catch ( err ) {
+			return err;
+		}
+	}
+
+	jQuery.Deferred.getErrorHook = getErrorHook;
+
+	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
+
+	expectWarning( assert, "jQuery.Deferred.getStackHook - getter",
+
+		// The getter only warns in jQuery 4+ as jQuery 3.x reads it internally.
+		jQueryVersionSince( "4.0.0" ) ? 1 : 0,
+		function() {
+		assert.strictEqual( jQuery.Deferred.getStackHook, jQuery.Deferred.getErrorHook,
+			"getStackHook mirrors getErrorHook (getter)" );
+	} );
+
+	expectNoWarning( assert, "asyncHook reported in jQuery.Deferred.exceptionHook", function() {
+		jQuery
+			.when()
+			.then( function() {
+				throw new ReferenceError( "Test ReferenceError" );
+			} )
+			.catch( function() {
+				var asyncError = exceptionHookSpy.lastCall.args[ 1 ];
+				assert.ok( asyncError instanceof Error,
+					"Error passed to exceptionHook (instance)" );
+				assert.strictEqual( asyncError.message, "Test exception in jQuery.Deferred",
+					"Error passed to exceptionHook (message)" );
+				done();
+			} );
+	} );
+} );
+
+QUnit.test( "jQuery.Deferred.getStackHook - getter, no getErrorHook", function( assert ) {
+	assert.expect( 1 );
+
+	var done = assert.async();
+
+	expectNoWarning( assert, "No Migrate warning in a regular `then`", function() {
+		jQuery
+			.when()
+			.then( function() {
+				done();
+			} );
+	} );
+} );
+
+QUnit.test( "jQuery.Deferred.getStackHook - setter", function( assert ) {
+	assert.expect( 5 );
+
+	var exceptionHookSpy,
+		done = assert.async();
+
+	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
+
+	expectWarning( assert, "jQuery.Deferred.getStackHook - setter", 1, function() {
+		var mockFn = function() {};
+		jQuery.Deferred.getStackHook = mockFn;
+		assert.strictEqual( jQuery.Deferred.getErrorHook, mockFn,
+			"getStackHook mirrors getErrorHook (setter)" );
+	} );
+
+	expectWarning( assert, "asyncHook from jQuery.Deferred.getStackHook reported",
+			1, function() {
+		jQuery.Deferred.getStackHook = function() {
+
+			// Throw an error as IE doesn't capture `stack` of non-thrown ones.
+			try {
+				throw new SyntaxError( "Different exception in jQuery.Deferred" );
+			} catch ( err ) {
+				return err;
+			}
+		};
+
+		jQuery
+			.when()
+			.then( function() {
+				throw new ReferenceError( "Test ReferenceError" );
+			} )
+			.catch( function() {
+				var asyncError = exceptionHookSpy.lastCall.args[ 1 ];
+				assert.ok( asyncError instanceof SyntaxError,
+					"Error passed to exceptionHook (instance)" );
+				assert.strictEqual( asyncError.message, "Different exception in jQuery.Deferred",
+					"Error passed to exceptionHook (message)" );
+
+				done();
+			} );
+	} );
+} );
+
+QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, getter", function( assert ) {
+	assert.expect( 5 );
+
+	var exceptionHookSpy,
+		done = assert.async();
+
+	// Source: https://github.com/dmethvin/jquery-deferred-reporter
+	function getErrorHook() {
+
+		// Throw an error as IE doesn't capture `stack` of non-thrown ones.
+		try {
+			throw new Error( "Test exception in jQuery.Deferred" );
+		} catch ( err ) {
+			return err;
+		}
+	}
+
+	jQuery.migrateDisablePatches( "deferred-getStackHook" );
+
+	jQuery.Deferred.getErrorHook = getErrorHook;
+
+	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
+
+	expectNoWarning( assert, "jQuery.Deferred.getStackHook - getter", function() {
+		assert.strictEqual( jQuery.Deferred.getStackHook, undefined,
+			"getStackHook does not mirror getErrorHook (getter)" );
+	} );
+
+	expectNoWarning( assert, "asyncHook reported in jQuery.Deferred.exceptionHook", function() {
+		jQuery
+			.when()
+			.then( function() {
+				throw new ReferenceError( "Test ReferenceError" );
+			} )
+			.catch( function() {
+				var asyncError = exceptionHookSpy.lastCall.args[ 1 ];
+				assert.ok( asyncError instanceof Error,
+					"Error passed to exceptionHook (instance)" );
+				assert.strictEqual( asyncError.message, "Test exception in jQuery.Deferred",
+					"Error passed to exceptionHook (message)" );
+				done();
+			} );
+	} );
+} );
+
+QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, setter", function( assert ) {
+	assert.expect( jQueryVersionSince( "4.0.0" ) ? 4 : 5 );
+
+	var exceptionHookSpy,
+		done = assert.async();
+
+	// Source: https://github.com/dmethvin/jquery-deferred-reporter
+	function getErrorHook() {
+
+		// Throw an error as IE doesn't capture `stack` of non-thrown ones.
+		try {
+			throw new Error( "Test exception in jQuery.Deferred" );
+		} catch ( err ) {
+			return err;
+		}
+	}
+
+	jQuery.migrateDisablePatches( "deferred-getStackHook" );
+
+	jQuery.Deferred.getErrorHook = getErrorHook;
+
+	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
+
+	expectNoWarning( assert, "jQuery.Deferred.getStackHook - setter", function() {
+		var mockFn = function() {};
+		jQuery.Deferred.getStackHook = mockFn;
+		assert.strictEqual( jQuery.Deferred.getErrorHook, getErrorHook,
+			"getStackHook does not mirror getErrorHook (setter)" );
+	} );
+
+	expectNoWarning( assert, "asyncHook from jQuery.Deferred.getStackHook reported", function() {
+			jQuery.Deferred.getErrorHook = undefined;
+			jQuery.Deferred.getStackHook = function() {
+
+			// Throw an error as IE doesn't capture `stack` of non-thrown ones.
+			try {
+				throw new SyntaxError( "Different exception in jQuery.Deferred" );
+			} catch ( err ) {
+				return err;
+			}
+		};
+
+		jQuery
+			.when()
+			.then( function() {
+				throw new ReferenceError( "Test ReferenceError" );
+			} )
+			.catch( function() {
+				var asyncError = exceptionHookSpy.lastCall.args[ 1 ];
+
+				if ( jQueryVersionSince( "4.0.0" ) ) {
+					assert.strictEqual( asyncError, undefined,
+						"Error not passed to exceptionHook" );
+				} else {
+					assert.ok( asyncError instanceof Error,
+						"Error passed to exceptionHook (instance)" );
+					assert.strictEqual( asyncError.message,
+						"Different exception in jQuery.Deferred",
+						"Error passed to exceptionHook (message)" );
+				}
+
+				done();
+			} );
+	} );
+} );
+
+QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, getter + setter interaction",
+		function( assert ) {
+	assert.expect( 3 );
+
+	jQuery.migrateDisablePatches( "deferred-getStackHook" );
+
+	expectNoWarning( assert, "jQuery.Deferred.getStackHook - setter & getter", function() {
+		var mockFn = function() {};
+		assert.strictEqual( jQuery.Deferred.getStackHook, undefined,
+			"getStackHook is `undefined` by default" );
+		jQuery.Deferred.getStackHook = mockFn;
+		assert.strictEqual( jQuery.Deferred.getStackHook, mockFn,
+			"getStackHook getter reports what the setter set" );
+	} );
 } );
 
 QUnit.test( ".pipe() warnings", function( assert ) {
