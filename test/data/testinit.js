@@ -233,6 +233,9 @@
 
 				// Re-disable patches disabled by default
 				jQuery.migrateDisablePatches( "self-closed-tags" );
+				if ( jQueryVersionSince( "4.0.0" ) ) {
+					jQuery.migrateDisablePatches( "jsonp-promotion" );
+				}
 			}
 		} );
 	}
