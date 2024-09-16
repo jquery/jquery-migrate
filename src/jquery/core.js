@@ -8,6 +8,10 @@ import {
 import "../disablePatches.js";
 
 var findProp,
+	arr = [],
+	push = arr.push,
+	sort = arr.sort,
+	splice = arr.splice,
 	class2type = {},
 	oldInit = jQuery.fn.init,
 	oldFind = jQuery.find,
@@ -176,4 +180,16 @@ if ( jQueryVersionSince( "3.3.0" ) ) {
 		}, "isWindow",
 		"jQuery.isWindow() is deprecated"
 	);
+}
+
+if ( jQueryVersionSince( "4.0.0" ) ) {
+
+	// `push`, `sort` & `splice` are used internally by jQuery <4, so we only
+	// warn in jQuery 4+.
+	migrateWarnProp( jQuery.fn, "push", push, "push",
+		"jQuery.fn.push() is deprecated and removed; use .add or convert to an array" );
+	migrateWarnProp( jQuery.fn, "sort", sort, "sort",
+		"jQuery.fn.sort() is deprecated and removed; convert to an array before sorting" );
+	migrateWarnProp( jQuery.fn, "splice", splice, "splice",
+		"jQuery.fn.splice() is deprecated and removed; use .slice or .not with .eq" );
 }
