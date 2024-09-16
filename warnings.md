@@ -237,6 +237,12 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution:** Remove any use of `jQuery.isWindow()` from code. If it is truly needed it can be replaced with a check for `obj != null && obj === obj.window` which was the test used inside this method.
 
+### \[proxy\] JQMIGRATE: jQuery.proxy() is deprecated
+
+**Cause:** This method, while having some differences, is similar to native `Function.prototype.bind` so it got deprecated to promote usage of native `bind`.
+
+**Solution:** Replace any calls to `jQuery.proxy(fn, context, param1, param2)` with `fn.bind(context, param1, param2)`. Be careful if you use a proxied function for event handling as jQuery matches a proxied function to its original when removing event handlers which is not the case when native `bind` is used.
+
 ### \[shorthand-deprecated-v3\] JQMIGRATE: jQuery.fn.click() event shorthand is deprecated
 
 **Cause:** The `.on()` and `.trigger()` methods can set an event handler or generate an event for any event type, and should be used instead of the shortcut methods. This message also applies to the other event shorthands, including: blur, focus, focusin, focusout, resize, scroll, dblclick, mousedown, mouseup, mousemove, mouseover, mouseout, mouseenter, mouseleave, change, select, submit, keydown, keypress, keyup, and contextmenu.

@@ -10,6 +10,7 @@ import "../disablePatches.js";
 var findProp,
 	arr = [],
 	push = arr.push,
+	slice = arr.slice,
 	sort = arr.sort,
 	splice = arr.splice,
 	class2type = {},
@@ -22,6 +23,19 @@ var findProp,
 	// Require that the "whitespace run" starts from a non-whitespace
 	// to avoid O(N^2) behavior when the engine would try matching "\s+$" at each space position.
 	rtrim = /^[\s\uFEFF\xA0]+|([^\s\uFEFF\xA0])[\s\uFEFF\xA0]+$/g;
+
+function isFunction( obj ) {
+
+	// Support: Chrome <=57, Firefox <=52
+	// In some browsers, typeof returns "function" for HTML <object> elements
+	// (i.e., `typeof document.createElement( "object" ) === "function"`).
+	// We don't want to classify *any* DOM node as a function.
+	// Support: QtWeb <=3.8.5, WebKit <=534.34, wkhtmltopdf tool <=0.12.5
+	// Plus for old WebKit, typeof returns "function" for HTML collections
+	// (e.g., `typeof document.getElementsByTagName("div") === "function"`). (gh-4756)
+	return typeof obj === "function" && typeof obj.nodeType !== "number" &&
+		typeof obj.item !== "function";
+}
 
 migratePatchFunc( jQuery.fn, "init", function( arg1 ) {
 	var args = Array.prototype.slice.call( arguments );
@@ -180,6 +194,41 @@ if ( jQueryVersionSince( "3.3.0" ) ) {
 		}, "isWindow",
 		"jQuery.isWindow() is deprecated"
 	);
+
+	// Bind a function to a context, optionally partially applying any
+	// arguments.
+	// jQuery.proxy is deprecated to promote standards (specifically Function#bind)
+	// However, it is not slated for removal any time soon
+	migratePatchAndWarnFunc( jQuery, "proxy",
+		function( fn, context ) {
+			var tmp, args, proxy;
+
+			if ( typeof context === "string" ) {
+				tmp = fn[ context ];
+				context = fn;
+				fn = tmp;
+			}
+
+			// Quick check to determine if target is callable, in the spec
+			// this throws a TypeError, but we will just return undefined.
+			if ( !isFunction( fn ) ) {
+				return undefined;
+			}
+
+			// Simulated bind
+			args = slice.call( arguments, 2 );
+			proxy = function() {
+				return fn.apply( context || this, args.concat( slice.call( arguments ) ) );
+			};
+
+			// Set the guid of unique handler to the same of original handler, so it can be removed
+			proxy.guid = fn.guid = fn.guid || jQuery.guid++;
+
+			return proxy;
+		}, "proxy",
+		"jQuery.proxy() is deprecated"
+	);
+
 }
 
 if ( jQueryVersionSince( "4.0.0" ) ) {
