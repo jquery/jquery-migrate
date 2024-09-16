@@ -178,6 +178,14 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution**: Review code that uses `jQuery.type()` and use a type check that is appropriate for the situation. For example. if the code expects a plain function, check for `typeof arg === "function"`.
 
+### \[push\] JQMIGRATE: jQuery.fn.push() is deprecated and removed; use .add or convert to an array
+### \[sort\] JQMIGRATE: jQuery.fn.sort() is deprecated and removed; convert to an array before sorting
+### \[splice\] JQMIGRATE: jQuery.fn.splice() is deprecated and removed; use .slice or .not with .eq
+
+**Cause**: jQuery used to add the Array `push`, `sort` & `splice` methods to the jQuery prototype. They behaved differently to other jQuery APIs - they modify the jQuery collections in place, they don't play nice with APIs like `.end()`, they were also never documented.
+
+**Solution**: Replace `.push( node )` with `.add( node )`, `.splice( index )` with `.not( elem.eq( index ) )`. In more complex cases, call `.toArray()` first, manipulate the resulting array and convert back to the jQuery object by passing the resulting array to `$()`.
+
 ### \[unique\] JQMIGRATE: jQuery.unique is deprecated; use jQuery.uniqueSort
 
 **Cause**: The fact that `jQuery.unique` sorted its results in DOM order was surprising to many who did not read the documentation carefully. As of jQuery 3.0 this function is being renamed to make it clear.
