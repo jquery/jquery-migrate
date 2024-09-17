@@ -477,8 +477,8 @@ QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.fn.sort", func
 		var elem = jQuery( "<span></span><div></div><p></p>" );
 
 		elem.sort( function( node1, node2 ) {
-			const tag1 = node1.tagName.toLowerCase();
-			const tag2 = node2.tagName.toLowerCase();
+			var tag1 = node1.tagName.toLowerCase(),
+				tag2 = node2.tagName.toLowerCase();
 			if ( tag1 < tag2 ) {
 				return -1;
 			}
