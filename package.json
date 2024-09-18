@@ -47,7 +47,7 @@
 		"eslint-config-jquery": "3.0.2",
 		"eslint-plugin-import": "2.29.1",
 		"exit-hook": "4.0.0",
-		"express": "4.19.2",
+		"express": "4.20.0",
 		"express-body-parser-error-handler": "1.0.7",
 		"globals": "15.3.0",
 		"husky": "9.0.11",
