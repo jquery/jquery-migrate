@@ -89,10 +89,12 @@ export default [
 	{
 		files: [ "test/unit/**" ],
 		languageOptions: {
-			ecmaVersion: 2015,
+			ecmaVersion: 5,
 			sourceType: "script",
 			globals: {
 				...globals.browser,
+				Promise: false,
+				Symbol: false,
 				jQuery: false,
 				QUnit: false,
 				url: false,
@@ -117,10 +119,12 @@ export default [
 		files: [ "test/data/**" ],
 		ignores: [ "test/data/jquery-*.js", "test/data/qunit-start.js" ],
 		languageOptions: {
-			ecmaVersion: 2015,
+			ecmaVersion: 5,
 			sourceType: "script",
 			globals: {
 				...globals.browser,
+				Promise: false,
+				Symbol: false,
 				global: false,
 				jQuery: false,
 				QUnit: false,
