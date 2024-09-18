@@ -35,9 +35,9 @@ jobs:
           - 'Firefox_latest'
           - 'Firefox_latest-1'
           - 'Firefox_115'
+          - '__iOS_18'
           - '__iOS_17'
           - '__iOS_16'
-          - '__iOS_15'
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
