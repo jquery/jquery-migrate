@@ -130,6 +130,7 @@ export default [
 				QUnit: false,
 				url: true,
 				compareVersions: true,
+				jQueryVersionSince: false,
 				expectWarning: true,
 				expectNoWarning: true,
 				startIframeTest: true,
