@@ -103,6 +103,19 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: It is almost always a mistake to use `.removeAttr( "checked" )` on a DOM element. The only time it might be useful is if the DOM is later going to be serialized back to an HTML string. In all other cases, `.prop( "checked", false )` should be used instead.
 
+### \[boolean-attributes\] JQMIGRATE: Boolean attribute 'NAME' value is different from its lowercased name
+### \[boolean-attributes\] JQMIGRATE: Boolean attribute 'NAME' value is not set to its lowercased name
+
+**Cause**: Prior to jQuery 4.0, when calling `.attr( name, value )` with any non-`false` non-`null` `value`, jQuery would actually set it to `name`. Similarly, regardless of the actual value, `.attr( name )` used to return `name` lowercased. jQuery 4.0 removes this special behavior.
+
+**Solution**: Always set boolean attributes to their names, whether when using jQuery (`.attr( name, name )`), native APIs (`.setAttribute( name, name )`) or directly in HTML (`<input checked="checked">`).
+
+### \[attr-false\] JQMIGRATE: Setting the non-ARIA non-boolean attribute 'NAME' to false
+
+**Cause**: Prior to jQuery 4.0, calling `.attr( name, false )` was only removing the attribute when `name` was a boolean attribute; otherwise, it was setting the attribute value to `"false"`. In jQuery 4.x, it will remove any non-ARIA attribute.
+
+**Solution**: If you want to set the value of an attribute to `"false"`, wrap it in quotes: `.attr( name, "false" )`.
+
 ### \[offset-valid-elem\] JQMIGRATE: jQuery.fn.offset() requires a valid DOM element
 
 **Cause:** In earlier versions of jQuery, the `.offset()` method would return a value of `{ top: 0, left: 0 }` for some cases of invalid input. jQuery 3.0 throws errors in some of these cases. The selected element in the jQuery collection must be a DOM element that has a `getBoundingClientRect` method. Text nodes, the `window` object, and plain JavaScript objects are not valid input to the `.offset()` method. jQuery *may* throw an error in those cases but in general does not guarantee specific results with invalid inputs.
