@@ -1,87 +1,72 @@
-# Contributing to jQuery
+# Contributing to jQuery Migrate
 
 1. [Getting Involved](#getting-involved)
-2. [Discussion](#discussion)
+2. [Questions and Discussion](#questions-and-discussion)
 3. [How To Report Bugs](#how-to-report-bugs)
-4. [Core Style Guide](#jquery-core-style-guide)
-5. [Tips For Bug Patching](#tips-for-jquery-bug-patching)
-
+4. [Tips for Bug Patching](#tips-for-bug-patching)
 
 
 ## Getting Involved
 
-There are a number of ways to get involved with the development of jQuery core. Even if you've never contributed code to an Open Source project before, we're always looking for help identifying bugs, writing and reducing test cases and documentation.
+[API design principles](https://github.com/jquery/jquery/wiki/API-design-guidelines)
 
-This is the best way to contribute to jQuery core. Please read through the full guide detailing [How to Report Bugs](#How-to-Report-Bugs).
+We're always looking for help [identifying bugs](#how-to-report-bugs), writing and reducing test cases, and improving documentation. And although new features are rare, anything passing our [guidelines](https://github.com/jquery/jquery/wiki/Adding-new-features) will be considered.
 
-## Discussion
+More information on how to contribute to this and other jQuery organization projects is at [contribute.jquery.org](https://contribute.jquery.org), including a short guide with tips, tricks, and ideas on [getting started with open source](https://contribute.jquery.org/open-source/). Please review our [commit & pull request guide](https://contribute.jquery.org/commits-and-pull-requests/) and [style guides](https://contribute.jquery.org/style-guide/) for instructions on how to maintain a fork and submit patches.
 
-### Forum and IRC
+When opening a pull request, you'll be asked to sign our Contributor License Agreement. Both the Corporate and Individual agreements can be [previewed on GitHub](https://github.com/openjs-foundation/easycla).
 
-The jQuery core development team frequently tracks posts on the [jQuery Development Forum](http://forum.jquery.com/developing-jquery-core). If you have longer posts or questions please feel free to post them there. If you think you've found a bug please [file it in the bug tracker](#How-to-Report-Bugs).
+If you're looking for some good issues to start with, [here are some issues labeled "help wanted" or "patch welcome"](https://github.com/jquery/jquery-migrate/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22%2C%22Patch+Welcome%22).
 
-Additionally most of the jQuery core development team can be found in the [#jquery-dev](http://webchat.freenode.net/?channels=jquery-dev) IRC channel on irc.freenode.net.
+## Questions and Discussion
+
+### Looking for help?
+
+jQuery is so popular that many developers have knowledge of its capabilities and limitations. Most questions about using jQuery can be answered on popular forums such as [Stack Overflow](https://stackoverflow.com). Please start there when you have questions, even if you think you've found a bug.
+
+The jQuery Core team watches [jQuery GitHub Discussions](https://github.com/jquery/jquery/discussions). If you have longer posts or questions that can't be answered in places such as Stack Overflow, please feel free to post them there. If you think you've found a bug, please [file it in the bug tracker](#how-to-report-bugs). The Core team can be found in the [#jquery/dev](https://matrix.to/#/#jquery_dev:gitter.im) Matrix channel on gitter.im.
 
 ### Weekly Status Meetings
 
-Every week (unless otherwise noted) the jQuery core dev team has a meeting to discuss the progress of current work and to bring forward possible new blocker bugs for discussion.
+The jQuery Core team has a weekly meeting to discuss the progress of current work. The meeting is held in the [#jquery/meeting](hhttps://matrix.to/#/#jquery_meeting:gitter.im) Matrix channel on gitter.im at [Noon EST](https://www.timeanddate.com/worldclock/fixedtime.html?month=10&day=7&year=2024&hour=12&min=0&sec=0&p1=43) on Mondays.
 
-The meeting is held in the [#jquery-meeting](http://webchat.freenode.net/?channels=jquery-meeting) IRC channel on irc.freenode.net at [Noon EST](http://www.timeanddate.com/worldclock/fixedtime.html?month=1&day=17&year=2011&hour=12&min=0&sec=0&p1=43) on Mondays.
-
-[Past Meeting Notes](https://docs.google.com/document/d/1MrLFvoxW7GMlH9KK-bwypn77cC98jUnz7sMW1rg_TP4/edit?hl=en)
+[jQuery Core Meeting Notes](https://meetings.jquery.org/category/core/)
 
 
 ## How to Report Bugs
 
-### Make sure it is a jQuery bug
+### Make sure it is a jQuery Migrate bug
 
-Many bugs reported to our bug tracker are actually bugs in user code, not in jQuery code. Keep in mind that just because your code throws an error and the console points to a line number inside of jQuery, this does *not* mean the bug is a jQuery bug; more often than not, these errors result from providing incorrect arguments when calling a jQuery function.
+Most bugs reported to our bug tracker are actually bugs in user code, not in jQuery Migrate code. Keep in mind that just because your code throws an error inside of jQuery Migrate, this does *not* mean the bug is a jQuery Migrate bug.
 
-If you are new to jQuery, it is usually a much better idea to ask for help first in the [Using jQuery Forum](http://forum.jquery.com/using-jquery) or the [jQuery IRC channel](http://webchat.freenode.net/?channels=%23jquery). You will get much quicker support, and you will help avoid tying up the jQuery team with invalid bug reports. These same resources can also be useful if you want to confirm that your bug is indeed a bug in jQuery before filing any tickets.
+Ask for help first on a discussion forum like [Stack Overflow](https://stackoverflow.com/). You will get much quicker support, and you will help avoid tying up the jQuery team with invalid bug reports.
 
-
-### Disable any browser extensions
+### Disable browser extensions
 
 Make sure you have reproduced the bug with all browser extensions and add-ons disabled, as these can sometimes cause things to break in interesting and unpredictable ways. Try using incognito, stealth or anonymous browsing modes.
 
+### Try the latest version of jQuery Migrate
 
-### Try the latest version of jQuery
+Bugs in old versions of jQuery Migrate may have already been fixed. In order to avoid reporting known issues, make sure you are always testing against the [latest build](https://releases.jquery.com/git/jquery-migrate-git.js). We cannot fix bugs in older released files, if a bug has been fixed in a subsequent version of jQuery Migrate the site should upgrade.
 
-Bugs in old versions of jQuery may have already been fixed. In order to avoid reporting known issues, make sure you are always testing against the [latest jQuery version](https://releases.jquery.com/jquery/).
+### Simplify the test case
 
-### Try an older version of jQuery
+When experiencing a problem, [reduce your code](https://webkit.org/test-case-reduction/) to the bare minimum required to reproduce the issue. This makes it *much* easier to isolate and fix the offending code. Bugs reported without reduced test cases take on average 9001% longer to fix than bugs that are submitted with them, so you really should try to do this if at all possible.
 
-Sometimes, bugs are introduced in newer versions of jQuery that do not exist in previous versions. When possible, it can be useful to try testing with an older release.
+### Search for related or duplicate issues
 
-### Reduce, reduce, reduce!
+Go to the [jQuery Migrate issue tracker](https://github.com/jquery/jquery-migrate/issues) and make sure the problem hasn't already been reported. If not, create a new issue there and include your test case.
 
-When you are experiencing a problem, the most useful thing you can possibly do is to [reduce your code](https://webkit.org/test-case-reduction/) to the bare minimum required to reproduce the issue. This makes it *much* easier to isolate and fix the offending code. Bugs that are reported without reduced test cases take on average 9001% longer to fix than bugs that are submitted with them, so you really should try to do this if at all possible.
-
-## jQuery Core Style Guide
-
-See: [jQuery Core Style Guide](http://docs.jquery.com/JQuery_Core_Style_Guidelines)
 
 ## Tips For Bug Patching
 
+We *love* when people contribute back to the project by patching the bugs they find. Since jQuery is used by so many people, we are cautious about the patches we accept and want to be sure they don't have a negative impact on the millions of people using jQuery each day. For that reason it can take a while for any suggested patch to work its way through the review and release process. The reward for you is knowing that the problem you fixed will improve things for millions of sites and billions of visits per day.
 
-### Environment: localhost
+### Build a Local Copy of jQuery Migrate
 
-To test the plugin you will need:
+Create a fork of the jQuery Migrate repo on GitHub at https://github.com/jquery/jquery-migrate
 
-* Node.js
-* NPM (comes with the latest version of Node.js)
-
-### Build a Local Copy of the plugin
-
-Create a fork of the plugin repo on github at http://github.com/jquery/jquery-migrate
-
-Change directory to your web root directory, whatever that might be:
-
-```bash
-$ cd /path/to/your/www/root/
-```
-
-Clone your plugin fork to work locally:
+Clone your jQuery fork to work locally:
 
 ```bash
 $ git clone git@github.com:username/jquery-migrate.git
@@ -93,25 +78,31 @@ Change directory to the newly created dir `jquery-migrate/`:
 $ cd jquery-migrate
 ```
 
-Add the jquery-migrate repository as a remote; I label mine "upstream":
+Add the jQuery Migrate `main` as a remote. I label mine `upstream`:
 
 ```bash
-$ git remote add upstream git://github.com/jquery/jquery-migrate.git
+$ git remote add upstream git@github.com:jquery/jquery-migrate.git
 ```
 
-Get in the habit of pulling in the "upstream" `main` branch to stay up to date as jQuery Migrate receives new commits:
+Get in the habit of pulling in the "upstream" main to stay up to date as jQuery Migrate receives new commits:
 
 ```bash
 $ git pull upstream main
 ```
 
-Run the build and rebuild when source files change:
+Install the necessary dependencies:
 
 ```bash
-$ npm start
+$ npm install
 ```
 
-In another terminal, run the test server:
+Build all jQuery Migrate files:
+
+```bash
+$ npm run build
+```
+
+Start a test server:
 
 ```bash
 $ npm run test:server
@@ -119,85 +110,68 @@ $ npm run test:server
 
 Now open the jQuery test suite in a browser at http://localhost:3000/test/.
 
-Success! You just built and tested jQuery!
-
-
-### Fix a bug from a ticket filed at bugs.jquery.com:
-
-**NEVER write your patches to the `main` branch**
-
-**ALWAYS USE A "TOPIC" BRANCH!** Like so (#### = the ticket #)...
-
-Make sure you start with your up-to-date `main` branch:
-
-```bash
-$ git checkout main
-```
-
-Create and checkout a new branch that includes the ticket #
-
-```bash
-$ git checkout -b bug_####
-
-# ( Explanation: this useful command will:
-# "checkout" a "-b" (branch) by the name of "bug_####"
-# or create it if it doesn't exist )
-```
-
-Now you're on branch: bug_####
-
-Determine the module/file you'll be working in...
-
-Open up the corresponding /test/unit/?????.js and add the initial failing unit tests. This may seem awkward at first, but in the long run it will make sense. To truly and efficiently patch a bug, you need to be working against that bug.
-
-Next, open the module files and make your changes
-
-Run http://localhost/test --> **ALL TESTS MUST PASS**
-
-Once you're satisfied with your patch...
-
-Stage the files to be tracked:
-
-```bash
-$ git add filename
-# (you can use "git status" to list the files you've changed)
-```
-
-
-( I recommend NEVER, EVER using "git add . " )
-
-Once you've staged all of your changed files, go ahead and commit them
-
-```bash
-$ git commit -m "Brief description of fix. Fixes #0000"
-```
-
-For a multiple line commit message, leave off the `-m "description"`.
-
-You will then be led into vi (or the text editor that you have set up) to complete your commit message.
-
-Then, push your branch with the bug fix commits to your github fork
-
-```bash
-$ git push origin -u bug_####
-```
-
-Before you tackle your next bug patch, return to the `main` branch:
-
-```bash
-$ git checkout main
-```
-
+Success! You just built and tested jQuery Migrate!
 
 ### Test Suite Tips...
 
-By default the plugin runs against the current (jquery-3.x-git WIP) version of jQuery. You can select a different version by specifying it in the URL. Files are always retrieved from code.jquery.com or releases.jquery.com (the latter for development versions).
+During the process of writing your patch, you will run the test suite MANY times. You can speed up the process by narrowing the running test suite down to the module you are testing by either double-clicking the title of the test or appending it to the url. The following examples assume you're working on a local repo, hosted on your localhost server.
 
 Example:
 
-http://localhost/jquery-migrate/test/?jquery=1.7.2
+http://localhost:3000/test/?module=css
 
-This will run the plugin with version 1.7.2 of jQuery, taken from http://code.jquery.com/jquery-1.7.2.js.
+This will only run the "css" module tests. This will significantly speed up your development and debugging.
 
-**ALWAYS RUN THE FULL TEST SUITE BEFORE COMMITTING AND PUSHING A PATCH!**
+**ALWAYS RUN THE FULL SUITE BEFORE COMMITTING AND PUSHING A PATCH!**
 
+#### Change the test server port
+
+The default port for the test server is 3000. You can change the port by setting the `PORT` environment variable.
+
+```bash
+$ PORT=3001 npm run test:server
+```
+
+#### Loading changes on the test page
+
+Rather than rebuilding jQuery Migrate with `npm run build` every time you make a change, you can use the included watch task to rebuild distribution files whenever a file is saved.
+
+```bash
+$ npm start
+```
+
+Alternatively, you can **load tests as ECMAScript modules** to avoid the need for rebuilding altogether.
+
+Set the `jquery-migrate:` field to `esmodules` after loading the test page.
+
+#### Running the test suite from the command line
+
+You can also run the test suite from the command line.
+
+First, prepare the tests:
+
+```bash
+$ npm run pretest
+```
+
+Make sure jQuery Migrate is built (`npm run build`) and run the tests:
+
+```bash
+$ npm run test:unit
+```
+
+This will run each module in its own browser instance and report the results in the terminal.
+
+View the full help for the test suite for more info on running the tests from the command line:
+
+```bash
+$ npm run test:unit -- --help
+```
+
+### Repo organization
+
+The jQuery Migrate source is organized with ECMAScript modules and then compiled into one file at build time.
+
+### Browser support
+
+Remember that jQuery Migrate supports multiple browsers and their versions; any contributed code must work in all of them. You can refer to the ["Version compatibility" section in Migrate README](https://github.com/jquery/jquery-migrate/blob/main/README.md#version-compatibility) for the current list of supported browsers.
