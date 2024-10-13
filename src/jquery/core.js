@@ -102,12 +102,6 @@ migratePatchAndWarnFunc( jQuery, "holdReady", jQuery.holdReady,
 migratePatchAndWarnFunc( jQuery, "unique", jQuery.uniqueSort,
 	"unique", "jQuery.unique is deprecated; use jQuery.uniqueSort" );
 
-// Now jQuery.expr.pseudos is the standard incantation
-migrateWarnProp( jQuery.expr, "filters", jQuery.expr.pseudos, "expr-pre-pseudos",
-	"jQuery.expr.filters is deprecated; use jQuery.expr.pseudos" );
-migrateWarnProp( jQuery.expr, ":", jQuery.expr.pseudos, "expr-pre-pseudos",
-	"jQuery.expr[':'] is deprecated; use jQuery.expr.pseudos" );
-
 // Prior to jQuery 3.1.1 there were internal refs so we don't warn there
 if ( jQueryVersionSince( "3.1.1" ) ) {
 	migratePatchAndWarnFunc( jQuery, "trim", function( text ) {
