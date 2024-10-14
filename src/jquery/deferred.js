@@ -1,9 +1,15 @@
-import { migratePatchFunc, migratePatchAndWarnFunc } from "../main.js";
+import {
+	migratePatchFunc,
+	migratePatchAndWarnFunc,
+	migrateWarn
+} from "../main.js";
+import { jQueryVersionSince } from "../compareVersions.js";
 
 // Support jQuery slim which excludes the deferred module in jQuery 4.0+
 if ( jQuery.Deferred ) {
 
-var oldDeferred = jQuery.Deferred,
+var unpatchedGetStackHookValue,
+	oldDeferred = jQuery.Deferred,
 	tuples = [
 
 		// Action, add listener, callbacks, .then handlers, final state
@@ -62,5 +68,40 @@ migratePatchFunc( jQuery, "Deferred", function( func ) {
 
 // Preserve handler of uncaught exceptions in promise chains
 jQuery.Deferred.exceptionHook = oldDeferred.exceptionHook;
+
+// Preserve the optional hook to record the error, if defined
+jQuery.Deferred.getErrorHook = oldDeferred.getErrorHook;
+
+// We want to mirror jQuery.Deferred.getErrorHook here, so we cannot use
+// existing Migrate utils.
+Object.defineProperty( jQuery.Deferred, "getStackHook", {
+	configurable: true,
+	enumerable: true,
+	get: function() {
+		if ( jQuery.migrateIsPatchEnabled( "deferred-getStackHook" ) ) {
+
+			// jQuery 3.x checks `getStackHook` if `getErrorHook` missing;
+			// don't warn on the getter there.
+			if ( jQueryVersionSince( "4.0.0" ) ) {
+				migrateWarn( "deferred-getStackHook",
+					"jQuery.Deferred.getStackHook is deprecated; " +
+					"use jQuery.Deferred.getErrorHook" );
+			}
+			return jQuery.Deferred.getErrorHook;
+		} else {
+			return unpatchedGetStackHookValue;
+		}
+	},
+	set: function( newValue ) {
+		if ( jQuery.migrateIsPatchEnabled( "deferred-getStackHook" ) ) {
+			migrateWarn( "deferred-getStackHook",
+				"jQuery.Deferred.getStackHook is deprecated; " +
+					"use jQuery.Deferred.getErrorHook" );
+			jQuery.Deferred.getErrorHook = newValue;
+		} else {
+			unpatchedGetStackHookValue = newValue;
+		}
+	}
+} );
 
 }
