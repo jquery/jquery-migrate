@@ -14,6 +14,9 @@
 	<!-- A promise polyfill -->
 	<script src="../external/npo/npo.js"></script>
 
+	<!-- Version comparisons -->
+	<script src="data/compareVersions.js"></script>
+
 	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
 	<script src="data/testinit.js"></script>
 	<script>
@@ -24,9 +27,6 @@
 		jQuery.noConflict();
 		TestManager.loadProject( "jquery-migrate", "min", true );
 	</script>
-
-	<!-- Version comparisons -->
-	<script src="data/compareVersions.js"></script>
 
 	<!-- Unit test files -->
 	<script>

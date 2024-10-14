@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>jQuery Migrate test for re-using JSONP callback name with `dataType: "json"`</title>
+
+	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
+	<script src="testinit.js"></script>
+	<script>
+		TestManager.loadProject( "jquery", "git" );
+	</script>
+	<script src="iframeTest.js"></script>
+	<script>
+		jQuery.noConflict();
+		TestManager.loadProject( "jquery-migrate", "dev", true );
+	</script>
+	<script>
+		var thisCallbackInWindow1, thisCallbackInWindow2,
+			previousCallback, previousJsonpCallback,
+			nextJsonpCallback, error,
+			requestSucceeded = true;
+
+		jQuery.migrateEnablePatches( "jsonp-promotion" )
+
+		jQuery.ajaxTransport( "script", function( options ) {
+			if ( options.url.indexOf( 'fakeScript' ) === -1 ) {
+				return;
+			}
+			return {
+				abort: function () {},
+				send: function ( headers, completeCallback ) {
+					var script = options.jsonpCallback + "( { answer: 42 } )";
+					setTimeout( function() {
+						completeCallback( 200, 'OK', { text: script }, [] );
+					} );
+				}
+			};
+		} );
+
+		jQuery.ajax( {
+			url: "fakeScript1.js?callback=?",
+			dataType: "json",
+			beforeSend: function( jqXHR, s ) {
+				s.callback = s.jsonpCallback;
+
+				thisCallbackInWindow1 = this.callback in window;
+			}
+		} ).then( function() {
+			var previous = this;
+
+			previousJsonpCallback = previous.jsonpCallback;
+			thisCallbackInWindow2 = this.callback in window;
+
+			return jQuery.ajax( {
+				url: "fakeScript2.js?callback=?",
+				dataType: "json",
+				beforeSend: function() {
+					previousCallback = previous.callback;
+					nextJsonpCallback = this.jsonpCallback;
+
+					// Test cleanup
+					delete window.customJsonpCallback;
+				}
+			} );
+		} ).catch( function( _jqXHR, _textStatus, err ) {
+
+			if ( !( err instanceof Error ) && _jqXHR instanceof Error ) {
+				err = _jqXHR;
+			}
+
+			// Test cleanup in case of an error
+			delete window.customJsonpCallback;
+			requestSucceeded = false;
+			error = err;
+		} ).then( function() {
+			startIframeTest(
+				thisCallbackInWindow1, thisCallbackInWindow2,
+				previousJsonpCallback, previousCallback,
+				nextJsonpCallback, requestSucceeded, error
+			);
+		} );
+	</script>
+</head>
+<body>
+<p>jQuery Migrate test for re-using JSONP callback name</p>
+</body>
+</html>
