@@ -63,6 +63,7 @@
 				"unit/jquery/attributes.js",
 				"unit/jquery/css.js",
 				"unit/jquery/data.js",
+				"unit/jquery/data-jquery-compat.js",
 				"unit/jquery/deferred.js",
 				"unit/jquery/effects.js",
 				"unit/jquery/event.js",
