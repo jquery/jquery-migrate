@@ -5,11 +5,12 @@ export const modules = [
 	"attributes",
 	"css",
 	"data",
+	"deferred",
 	"effects",
 	"event",
 	"manipulation",
 	"offset",
+	"selector",
 	"serialize",
-	"traversing",
-	"deferred"
+	"traversing"
 ];
