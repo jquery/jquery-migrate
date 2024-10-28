@@ -8,7 +8,10 @@ const files = {
 
 	"qunit/qunit.js": "qunit/qunit/qunit.js",
 	"qunit/qunit.css": "qunit/qunit/qunit.css",
-	"qunit/LICENSE.txt": "qunit/LICENSE.txt"
+	"qunit/LICENSE.txt": "qunit/LICENSE.txt",
+
+	"sinon/sinon.js": "sinon/pkg/sinon.js",
+	"sinon/LICENSE.txt": "sinon/LICENSE"
 };
 
 async function npmcopy() {

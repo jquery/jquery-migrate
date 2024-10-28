@@ -97,6 +97,7 @@ export default [
 				Symbol: false,
 				jQuery: false,
 				QUnit: false,
+				sinon: false,
 				url: false,
 				expectWarning: false,
 				expectNoWarning: false,

@@ -302,3 +302,9 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Cause:** `jQuery.ajax` calls with `dataType: 'json'` with a provided callback are automatically converted by jQuery to JSONP requests unless the options also specify `jsonp: false`. Auto-promoting JSON requests to JSONP introduces a security risk as the developer may be unaware they're not just downloading data but executing code from a remote domain. This auto-promoting behavior is deprecated and will be removed in jQuery 4.0.0.
 
 **Solution:** To trigger a JSONP request, specify the `dataType: "jsonp"` option.
+
+### \[deferred-getStackHook\] JQMIGRATE: jQuery.Deferred.getStackHook is deprecated; use jQuery.Deferred.getErrorHook
+
+**Cause:** `jQuery.Deferred.getStackHook` was originally created to pass the stack trace from before an async barrier to report when a user error (like calling a non-existing function) causes a promise to be rejected. However, passing a stack trace doesn't take source maps into account, so we started advising to pass the whole error object. To make it clearer, we also renamed the API to `jQuery.Deferred.getErrorHook`. The legacy alias will be removed in jQuery 4.0.0
+
+**Solution:** Rename all usage of `jQuery.Deferred.getStackHook` to `jQuery.Deferred.getErrorHook`. If you previously assigned a function returning an error stack to `jQuery.Deferred.getStackHook` or `jQuery.Deferred.getErrorHook`, change it to return a full error object.

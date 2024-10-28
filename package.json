@@ -57,6 +57,7 @@
 		"qunit": "2.21.0",
 		"rollup": "4.22.4",
 		"selenium-webdriver": "4.21.0",
+		"sinon": "9.2.4",
 		"uglify-js": "3.9.4",
 		"yargs": "17.7.2"
 	},
