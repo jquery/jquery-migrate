@@ -78,7 +78,7 @@ Change directory to the newly created dir `jquery-migrate/`:
 $ cd jquery-migrate
 ```
 
-Add the jQuery Migrate `main` as a remote. I label mine `upstream`:
+Add the jQuery Migrate `main` as a remote (e.g. `upstream`):
 
 ```bash
 $ git remote add upstream git@github.com:jquery/jquery-migrate.git
