@@ -30,7 +30,8 @@ jQuery.each( booleans.split( "|" ), function( _i, name ) {
 				attrValue = elem.getAttribute( name );
 
 				if ( attrValue !== name && attrValue != null &&
-					( extraBoolAttrValues[ name ] || [] ).indexOf( attrValue ) === -1
+					( extraBoolAttrValues[ name ] || [] )
+						.indexOf( String( attrValue ).toLowerCase() ) === -1
 				) {
 					migrateWarn( "boolean-attributes",
 						"Boolean attribute '" + name +
@@ -53,7 +54,8 @@ jQuery.each( booleans.split( "|" ), function( _i, name ) {
 		set: origAttrHooks.set || function( elem, value, name ) {
 			if ( jQuery.migrateIsPatchEnabled( "boolean-attributes" ) ) {
 				if ( value !== name &&
-					( extraBoolAttrValues[ name ] || [] ).indexOf( value ) === -1
+					( extraBoolAttrValues[ name ] || [] )
+						.indexOf( String( value ).toLowerCase() ) === -1
 				) {
 					if ( value !== false ) {
 						migrateWarn( "boolean-attributes",

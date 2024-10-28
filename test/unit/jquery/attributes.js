@@ -12,7 +12,7 @@ QUnit.module( "attributes" );
 		QUnit.test( ".attr( boolean attribute ) - patch " +
 				( patchEnabled ? "enabled" : "disabled" ),
 				function( assert ) {
-			assert.expect( 31 );
+			assert.expect( 33 );
 
 			if ( !patchEnabled ) {
 				jQuery.migrateDisablePatches( "boolean-attributes" );
@@ -186,6 +186,23 @@ QUnit.module( "attributes" );
 					"false",
 					"Setting aria attributes to false is not affected by boolean settings"
 				);
+			} );
+
+			expectNoWarning( assert, "extra ex-boolean attrs values", function() {
+				var $input = jQuery( "<input />" );
+
+				$input.attr( "hidden", "until-found" );
+
+				if ( jQueryVersionSince( "4.0.0" ) ) {
+					assert.equal(
+						$input.attr( "hidden" ),
+						"until-found",
+						"Extra values of ex-boolean attributes are not changed"
+					);
+				} else {
+					assert.ok( true,
+						"Extra ex-boolean attrs values not supported under jQuery 3.x" );
+				}
 			} );
 		} );
 	}
