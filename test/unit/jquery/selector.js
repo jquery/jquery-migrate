@@ -189,11 +189,20 @@ QUnit.test( "custom pseudos", function( assert ) {
 	} );
 } );
 
-QUnit.test( "backwards-compatible custom pseudos", function( assert ) {
+QUnit[
+	jQueryVersionSince( "3.7.0" ) ? "test" : "skip"
+]( "backwards-compatible custom pseudos", function( assert ) {
 	assert.expect( 7 );
 
+	var expectWarningWithProxy = typeof Proxy !== "undefined" ?
+		expectWarning :
+		function( _assert, _title, fn ) {
+			fn();
+			assert.ok( true, "No Proxy => warnings not expected" );
+		};
+
 	try {
-		expectWarning( assert, "Custom element filter with argument - setter", function() {
+		expectWarningWithProxy( assert, "Custom element filter with argument - setter", function() {
 			jQuery.expr.pseudos.icontains = function( elem, i, match ) {
 				return jQuery
 					.text( elem )
@@ -214,7 +223,7 @@ QUnit.test( "backwards-compatible custom pseudos", function( assert ) {
 	}
 
 	try {
-		expectWarning( assert, "Custom setFilter pseudo - setter", function() {
+		expectWarningWithProxy( assert, "Custom setFilter pseudo - setter", function() {
 			jQuery.expr.setFilters.podium = function( elements, argument ) {
 				var count = argument == null || argument === "" ? 3 : +argument;
 				return elements.slice( 0, count );

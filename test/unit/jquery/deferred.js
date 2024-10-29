@@ -123,7 +123,11 @@ QUnit.test( "jQuery.Deferred.getStackHook - setter", function( assert ) {
 	} );
 } );
 
-QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, getter", function( assert ) {
+// jQuery.Deferred.getErrorHook was introduced in jQuery 3.7.0 and this test
+// depends on it.
+QUnit[
+	jQueryVersionSince( "3.7.0" ) ? "test" : "skip"
+]( "jQuery.Deferred.getStackHook - disabled patch, getter", function( assert ) {
 	assert.expect( 5 );
 
 	var exceptionHookSpy,
