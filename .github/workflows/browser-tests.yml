@@ -1,0 +1,128 @@
+name: Browser Tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+env:
+  NODE_VERSION: 20.x
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: ${{ matrix.BROWSER }} (${{ matrix.MIGRATE_VERSION }} Migrate)
+    strategy:
+      fail-fast: false
+      matrix:
+        BROWSER: ["chrome", "firefox"]
+        MIGRATE_VERSION: ["min"]
+        include:
+          - NAME: "Node"
+            BROWSER: "chrome"
+            MIGRATE_VERSION: "esmodules"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ env.NODE_VERSION }}-npm-lock-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ env.NODE_VERSION }}-npm-lock-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: |
+          npm run pretest
+          npm run test:unit -- -b ${{ matrix.BROWSER }} -h \
+            --jquery-migrate ${{ matrix.MIGRATE_VERSION }} \
+            --jquery git --jquery git.min --jquery git.slim --jquery git.slim.min \
+            --jquery 3.x-git --jquery 3.x-git.min --jquery 3.x-git.slim --jquery 3.x-git.slim.min \
+            --jquery 3.7.1 --jquery 3.7.1.slim \
+            --jquery 3.6.4 --jquery 3.5.1 --jquery 3.4.1 \
+            --jquery 3.3.1 --jquery 3.2.1 --jquery 3.1.1 --jquery 3.0.0 \
+            --retries 1
+
+  ie:
+    runs-on: windows-latest
+    name: Edge in IE mode (min Migrate)
+    env:
+      MIGRATE_VERSION: "min"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ env.NODE_VERSION }}-npm-lock-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ env.NODE_VERSION }}-npm-lock-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        shell: cmd
+        run: |
+          npm run test:ie -- ^
+            --jquery-migrate ${{ env.MIGRATE_VERSION }} ^
+            --jquery git --jquery git.min --jquery git.slim --jquery git.slim.min ^
+            --jquery 3.x-git --jquery 3.x-git.min --jquery 3.x-git.slim --jquery 3.x-git.slim.min ^
+            --jquery 3.7.1 --jquery 3.7.1.slim ^
+            --jquery 3.6.4 --jquery 3.5.1 --jquery 3.4.1 ^
+            --jquery 3.3.1 --jquery 3.2.1 --jquery 3.1.1 --jquery 3.0.0 ^
+            --retries 1
+
+  safari:
+    runs-on: macos-latest
+    name: Safari (min Migrate)
+    env:
+      MIGRATE_VERSION: "min"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@0a44ba7841725637a19e28fa30b79a866c81b0a6 # v4.0.4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Cache
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ env.NODE_VERSION }}-npm-lock-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ env.NODE_VERSION }}-npm-lock-
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: |
+          npm run test:safari -- \
+            --jquery-migrate ${{ env.MIGRATE_VERSION }} \
+            --jquery git --jquery git.min --jquery git.slim --jquery git.slim.min \
+            --jquery 3.x-git --jquery 3.x-git.min --jquery 3.x-git.slim --jquery 3.x-git.slim.min \
+            --jquery 3.7.1 --jquery 3.7.1.slim \
+            --jquery 3.6.4 --jquery 3.5.1 --jquery 3.4.1 \
+            --jquery 3.3.1 --jquery 3.2.1 --jquery 3.1.1 --jquery 3.0.0 \
+            --retries 1
