@@ -30,7 +30,11 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 	function runTests( options ) {
 		var forceEnablePatch = ( options || {} ).forceEnablePatch || false;
 
-		QUnit.test( "jQuery.ajax() JSON-to-JSONP auto-promotion" + label + (
+		// Support: IE <10 only
+		// IE 9 doesn't support CORS, skip cross-domain tests there.
+		QUnit[
+			document.documentMode < 10 && crossDomain ? "skip" : "test"
+		]( "jQuery.ajax() JSON-to-JSONP auto-promotion" + label + (
 			forceEnablePatch ? ", patch force-enabled" : ""
 		), function( assert ) {
 
