@@ -3,7 +3,6 @@ QUnit.module( "attributes" );
 ( function() {
 	function runTests( options ) {
 		var patchEnabled = options.patchEnabled;
-		var stockJq4 = jQueryVersionSince( "4.0.0" ) && !patchEnabled;
 
 		function ifOn( warningsCount ) {
 			return patchEnabled ? warningsCount : 0;
@@ -12,7 +11,7 @@ QUnit.module( "attributes" );
 		QUnit.test( ".attr( boolean attribute ) - patch " +
 				( patchEnabled ? "enabled" : "disabled" ),
 				function( assert ) {
-			assert.expect( 33 );
+			assert.expect( 32 );
 
 			if ( !patchEnabled ) {
 				jQuery.migrateDisablePatches( "boolean-attributes" );
@@ -35,7 +34,7 @@ QUnit.module( "attributes" );
 				$checkbox.prop( "checked", true ).prop( "checked", false ).attr( "checked", true );
 				assert.equal(
 					$checkbox.attr( "checked" ),
-					stockJq4 ? "true" : "checked",
+					"checked",
 					"Set checked (verified by .attr)"
 				);
 			} );
@@ -51,10 +50,8 @@ QUnit.module( "attributes" );
 					try {
 						assert.strictEqual(
 							$checkbox.attr( original ),
-							stockJq4 ? "" : lowercased,
-							"The '" + this +
-								"' attribute getter should return " +
-								( stockJq4 ? "an empty string" : "the lowercased name" )
+							lowercased,
+							"The '" + this + "' attribute getter should return the lowercased name"
 						);
 					} catch ( _ ) {
 						assert.ok( false, "The '" + this + "' attribute getter threw" );
@@ -70,7 +67,7 @@ QUnit.module( "attributes" );
 					.attr( "checked", true );
 				assert.equal(
 					$checkbox.attr( "checked" ),
-					stockJq4 ? "true" : "checked",
+					"checked",
 					"Set checked (verified by .attr)"
 				);
 			} );
@@ -95,7 +92,7 @@ QUnit.module( "attributes" );
 					.attr( "readonly", true );
 				assert.equal(
 					$input.attr( "readonly" ),
-					stockJq4 ? "true" : "readonly",
+					"readonly",
 					"Set readonly (verified by .attr)"
 				);
 			} );
@@ -137,7 +134,7 @@ QUnit.module( "attributes" );
 					"Clear checked property (verified by .prop)" );
 				assert.equal(
 					$checkbox.attr( "checked" ),
-					stockJq4 ? "true" : "checked",
+					"checked",
 					"Clearing checked property doesn't affect checked attribute"
 				);
 			} );
@@ -150,7 +147,7 @@ QUnit.module( "attributes" );
 				} );
 				assert.equal(
 					$input.attr( "autofocus" ),
-					stockJq4 ? "true" : "autofocus",
+					"autofocus",
 					"Reading autofocus attribute yields 'autofocus'"
 				);
 				assert.equal(
@@ -160,7 +157,7 @@ QUnit.module( "attributes" );
 				);
 				assert.equal(
 					$input.attr( "required" ),
-					stockJq4 ? "true" : "required",
+					"required",
 					"Reading required attribute yields 'required'"
 				);
 				assert.equal(
@@ -191,18 +188,12 @@ QUnit.module( "attributes" );
 			expectNoWarning( assert, "extra ex-boolean attrs values", function() {
 				var $input = jQuery( "<input />" );
 
+				// Extra ex-boolean attrs values not supported under jQuery 3.x;
+				// just make sure this setter doesn't warn. We do not want to warn
+				// here as under jQuery 3.x this value would be changed to "hidden"
+				// which is most likely a bug for such code. Updating to jQuery 4.x
+				// will fix it.
 				$input.attr( "hidden", "until-found" );
-
-				if ( jQueryVersionSince( "4.0.0" ) ) {
-					assert.equal(
-						$input.attr( "hidden" ),
-						"until-found",
-						"Extra values of ex-boolean attributes are not changed"
-					);
-				} else {
-					assert.ok( true,
-						"Extra ex-boolean attrs values not supported under jQuery 3.x" );
-				}
 			} );
 		} );
 	}

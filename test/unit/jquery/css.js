@@ -63,8 +63,7 @@ QUnit.test( "jQuery.css with arrays", function( assert ) {
 QUnit[
 	typeof Proxy !== "undefined" ? "test" : "skip"
 ]( "jQuery.css with numbers", function( assert ) {
-	var jQuery3OrOlder = compareVersions( jQuery.fn.jquery, "4.0.0" ) < 0,
-		allowlist = [
+	var  allowlist = [
 			"margin",
 			"marginTop",
 			"marginRight",
@@ -97,7 +96,7 @@ QUnit[
 			"borderLeftWidth"
 		];
 
-	assert.expect( jQuery3OrOlder ?  8 : 7 );
+	assert.expect( 8 );
 
 	function kebabCase( string ) {
 		return string.replace( /[A-Z]/g, function( match ) {
@@ -144,9 +143,7 @@ QUnit[
 			jQuery( "<div />" ).css( prop, 1 );
 			jQuery( "<div />" ).css( kebabCase( prop ), 1 );
 		}
-		if ( jQuery3OrOlder ) {
-			assert.strictEqual( assertionFired, true, "jQuery.cssNumber property was accessed" );
-		}
+		assert.strictEqual( assertionFired, true, "jQuery.cssNumber property was accessed" );
 	} );
 
 	// z-index is tested explicitly as raw jQuery 4.0 will not have `jQuery.cssNumber`

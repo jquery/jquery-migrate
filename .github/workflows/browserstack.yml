@@ -1,4 +1,4 @@
-name: Browserstack (Core git)
+name: Browserstack
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
   # Once a week every Tuesday
   schedule:
-    - cron: "42 1 * * 2"
+    - cron: "12 2 * * 2"
 
 jobs:
   test:
@@ -25,6 +25,8 @@ jobs:
       matrix:
         BROWSER:
           - 'IE_11'
+          - 'IE_10'
+          - 'IE_9'
           - 'Safari_latest'
           - 'Safari_latest-1'
           - 'Chrome_latest'
@@ -32,12 +34,26 @@ jobs:
           - 'Opera_latest'
           - 'Edge_latest'
           - 'Edge_latest-1'
+          - 'Edge_18'
           - 'Firefox_latest'
           - 'Firefox_latest-1'
           - 'Firefox_115'
+          - 'Firefox_102'
+          - 'Firefox_91'
+          - 'Firefox_78'
+          - 'Firefox_60'
+          - 'Firefox_48'
           - '__iOS_18'
           - '__iOS_17'
           - '__iOS_16'
+          - '__iOS_15'
+          - '__iOS_14'
+          - '__iOS_13'
+          - '__iOS_12'
+          - '__iOS_11'
+          - '__iOS_10'
+          - '__iOS_9'
+          - '__iOS_8'
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -63,6 +79,6 @@ jobs:
 
       - name: Test
         run: |
-          npm run test:unit -- -v -c jtr-git.yml \
+          npm run test:unit -- -v -c jtr-ci.yml \
             --browserstack "${{ matrix.BROWSER }}" \
             --run-id ${{ github.run_id }} \

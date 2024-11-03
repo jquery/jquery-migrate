@@ -8,7 +8,7 @@
 	 *	dev			Uncompressed development version: source files in the project /dist dir
 	 *	esmodules	Non-combined dev version: source files from the project /src dir
 	 *	min			Minified version in the project /dist dir
-	 *	VER			Version from code.jquery.com, e.g.: git, 1.8.2.min or 1.7rc1
+	 *	VER			Version from code.jquery.com, e.g.: 3.x-git, 3.7.1.min or 3.0.0-rc1
 	 *	else		Full or relative path to be used for script src
 	 */
 	loadProject: function( projectName, defaultVersion, isSelf ) {
@@ -28,8 +28,7 @@
 			file = projectRoot + "/dist/" + projectName + ".js";
 		} else if ( version === "min" ) {
 			file = projectRoot + "/dist/" + projectName + ".min.js";
-		} else if ( version.indexOf( "git" ) === 0 ||
-			version.indexOf( "3.x-git" ) === 0 ) {
+		} else if ( version.indexOf( "3.x-git" ) === 0 ) {
 			file = "https://releases.jquery.com/git/" + projectName + "-" + version + ".js";
 		} else if ( /^[\w\.\-]+$/.test( version ) ) {
 			file = "https://code.jquery.com/" + projectName + "-" + version + ".js";
@@ -234,9 +233,6 @@
 
 				// Re-disable patches disabled by default
 				jQuery.migrateDisablePatches( "self-closed-tags" );
-				if ( jQueryVersionSince( "4.0.0" ) ) {
-					jQuery.migrateDisablePatches( "jsonp-promotion" );
-				}
 			}
 		} );
 	}
@@ -247,10 +243,6 @@ TestManager.init( {
 		choices: [
 			"dev",
 			"min",
-			"git",
-			"git.min",
-			"git.slim",
-			"git.slim.min",
 			"3.x-git",
 			"3.x-git.min",
 			"3.x-git.slim",
@@ -278,7 +270,9 @@ TestManager.init( {
 		choices: [
 			"dev",
 			"min",
-			"git",
+			"3.x-git",
+			"3.5.2",
+			"3.5.0",
 			"3.4.1",
 			"3.4.0",
 			"3.3.2",
