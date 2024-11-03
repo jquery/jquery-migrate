@@ -11,14 +11,14 @@ That way you can spot and fix what otherwise would have been errors, until you n
 
 The following table indicates which jQuery Migrate versions can be used with which jQuery versions:
 
-| jQuery version | jQuery Migrate version  |
-|----------------|-------------------------|
-| 1.x            | 1.x                     |
-| 2.x            | 1.x                     |
-| 3.x            | 3.x / 4.x<sup>[1]</sup> |
-| 4.x            | 3.x / 4.x<sup>[1]</sup> |
+| jQuery version | jQuery Migrate version |
+|----------------|------------------------|
+| 1.x            | 1.x                    |
+| 2.x            | 1.x                    |
+| 3.x            | 3.x                    |
+| 4.x            | 4.x                    |
 
-[1] NOTE: jQuery Migrate 4.x only supports the same browser as jQuery 4.x does. If you need to support Edge Legacy, Internet Explorer 9-10 or iOS 7+ (and not just 3 latest versions), use jQuery Migrate 3.x.
+Each jQuery Migrate version supports the same browsers that the jQuery version used with it.
 
 ## Usage
 
@@ -40,7 +40,7 @@ The production build is minified and does not generate console warnings. It will
 | Debugging enabled | <p align="center">✓</p> |  |
 | Minified |  | <p align="center">✓</p> |
 | Latest release (*may be hotlinked if desired*) | [jquery-migrate-3.5.2.js](https://code.jquery.com/jquery-migrate-3.5.2.js) | [jquery-migrate-3.5.2.min.js](https://code.jquery.com/jquery-migrate-3.5.2.min.js) |
-| \* Latest work-in-progress build | [jquery-migrate-git.js](https://releases.jquery.com/git/jquery-migrate-git.js) | [jquery-migrate-git.min.js](https://releases.jquery.com/git/jquery-migrate-git.min.js) |
+| \* Latest work-in-progress build | [jquery-migrate-3.x-git.js](https://releases.jquery.com/git/jquery-migrate-3.x-git.js) | [jquery-migrate-3.x-git.min.js](https://releases.jquery.com/git/jquery-migrate-3.x-git.min.js) |
 
 
 \* **Work-in-progress build:** Although this file represents the most recent updates to the plugin, it may not have been thoroughly tested. We do not recommend using this file on production sites since it may be unstable; use the released production version instead.
