@@ -16,109 +16,6 @@ QUnit.test( "jQuery(html, props)", function( assert ) {
 	assert.equal( $el.val(), "value", "Call setter method" );
 } );
 
-QUnit.test( "jQuery( '#' )", function( assert ) {
-	assert.expect( 2 );
-
-	expectWarning( assert, "Selector, through the jQuery constructor, nothing but hash",
-			function() {
-		var set = jQuery( "#" );
-		assert.equal( set.length, 0, "empty set" );
-	} );
-} );
-
-QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
-	assert.expect( 31 );
-
-	var markup = jQuery(
-			"<div>" +
-				"<div data-selector='a[href=#main]'></div>" +
-				"<a href='space#junk'>test</a>" +
-				"<link rel='good#stuff' />" +
-				"<p class='space #junk'>" +
-					"<a href='#some-anchor'>anchor2</a>" +
-					"<input value='[strange*=#stuff]' />" +
-					"<a href='#' data-id='#junk'>anchor</a>" +
-				"</p>" +
-			"</div>" ).appendTo( "#qunit-fixture" ),
-
-		// No warning, no need to fix
-		okays = [
-			"a[href='#some-anchor']",
-			"[data-id=\"#junk\"]",
-			"div[data-selector='a[href=#main]']",
-			"input[value~= '[strange*=#stuff]']"
-		],
-
-		// Fixable, and gives warning
-		fixables = [
-			"a[href=#]",
-			"a[href*=#]:not([href=#]):first-child",
-			".space a[href=#]",
-			"a[href=#some-anchor]",
-			"link[rel*=#stuff]",
-			"p[class *= #junk]",
-			"a[href=space#junk]"
-		],
-
-		// False positives that still work
-		positives = [
-			"div[data-selector='a[href=#main]']:first",
-			"input[value= '[strange*=#stuff]']:eq(0)"
-		],
-
-		// Failures due to quotes and jQuery extensions combined
-		failures = [
-			"p[class ^= #junk]:first",
-			"a[href=space#junk]:eq(1)"
-		];
-
-	expectNoWarning( assert, "Perfectly cromulent selectors are unchanged", function() {
-		okays.forEach( function( okay ) {
-			assert.equal( jQuery( okay, markup ).length, 1, okay );
-			assert.equal( markup.find( okay ).length, 1, okay );
-		} );
-	} );
-
-	expectWarning( assert, "Values with unquoted hashes are quoted",
-			fixables.length * 2, function() {
-		fixables.forEach( function( fixable ) {
-			assert.equal( jQuery( fixable, markup ).length, 1, fixable );
-			assert.equal( markup.find( fixable ).length, 1, fixable );
-		} );
-	} );
-
-	expectWarning( assert, "False positives", positives.length * 2, function() {
-		positives.forEach( function( positive ) {
-			assert.equal( jQuery( positive, markup ).length, 1,  positive );
-			assert.equal( markup.find( positive ).length, 1, positive );
-		} );
-	} );
-
-	expectWarning( assert, "Unfixable cases", failures.length * 2, function() {
-		failures.forEach( function( failure ) {
-			try {
-				jQuery( failure, markup );
-				assert.ok( false, "Expected jQuery() to die!" );
-			} catch ( err1 ) { }
-			try {
-				markup.find( failure );
-				assert.ok( false, "Expected .find() to die!" );
-			} catch ( err2 ) { }
-		} );
-	} );
-
-	// Ensure we don't process jQuery( x ) when x is a function
-	expectNoWarning( assert, "ready function with attribute selector", function() {
-		try {
-			jQuery( function() {
-				if ( jQuery.thisIsNeverTrue ) {
-					jQuery( "a[href=#]" );
-				}
-			} );
-		} catch ( e ) {}
-	} );
-} );
-
 QUnit.test( "XSS injection (leading hash)", function( assert ) {
 	assert.expect( 1 );
 
@@ -284,7 +181,7 @@ QUnit[ typeof Symbol === "function" ? "test" : "skip" ]( "isNumeric(Symbol)", fu
 	assert.equal( jQuery.isNumeric( Object( Symbol() ) ), false, "Symbol inside an object" );
 } );
 
-QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( ".isNumeric (warn)", function( assert ) {
+QUnit.test( ".isNumeric (warn)", function( assert ) {
     assert.expect( 3 );
 
     expectWarning( assert, "warning on isNumeric (and possibly type)", function() {
@@ -293,7 +190,7 @@ QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( ".isNumeric (warn)", f
     } );
 } );
 
-QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.isWindow", function( assert ) {
+QUnit.test( "jQuery.isWindow", function( assert ) {
 	assert.expect( 3 );
 
 	expectWarning( assert, "isWindow", 2, function() {
@@ -324,7 +221,7 @@ QUnit.test( "jQuery.holdReady (warn only)", function( assert ) {
 	} );
 } );
 
-QUnit[ jQueryVersionSince( "3.1.1" ) ? "test" : "skip" ]( "jQuery.trim", function( assert ) {
+QUnit.test( "jQuery.trim", function( assert ) {
 	assert.expect( 14 );
 
 	var nbsp = String.fromCharCode( 160 );
@@ -349,7 +246,7 @@ QUnit[ jQueryVersionSince( "3.1.1" ) ? "test" : "skip" ]( "jQuery.trim", functio
 	} );
 } );
 
-QUnit[ jQueryVersionSince( "3.2.0" ) ? "test" : "skip" ]( "jQuery.nodeName", function( assert ) {
+QUnit.test( "jQuery.nodeName", function( assert ) {
 	assert.expect( 2 );
 
 	expectWarning( assert, "jQuery.nodeName", function() {
@@ -359,7 +256,7 @@ QUnit[ jQueryVersionSince( "3.2.0" ) ? "test" : "skip" ]( "jQuery.nodeName", fun
 	} );
 } );
 
-QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.isFunction", function( assert ) {
+QUnit.test( "jQuery.isFunction", function( assert ) {
 	assert.expect( 4 );
 
 	expectWarning( assert, "jQuery.isFunction", function() {
@@ -369,7 +266,7 @@ QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.isFunction", f
 	} );
 } );
 
-QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.type (warn)", function( assert ) {
+QUnit.test( "jQuery.type (warn)", function( assert ) {
 	assert.expect( 28 );
 
 	assert.equal( jQuery.type( null ), "null", "null" );
@@ -409,7 +306,7 @@ QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.type (warn)", 
 
 } );
 
-QUnit[ jQueryVersionSince( "3.2.0" ) ? "test" : "skip" ]( "jQuery.isArray", function( assert ) {
+QUnit.test( "jQuery.isArray", function( assert ) {
 	assert.expect( 4 );
 
 	expectWarning( assert, "isArray", 3, function() {
@@ -420,14 +317,14 @@ QUnit[ jQueryVersionSince( "3.2.0" ) ? "test" : "skip" ]( "jQuery.isArray", func
 
 } );
 
-TestManager.runIframeTest( "old pre-3.0 jQuery", "core-jquery2.html",
+TestManager.runIframeTest( "old pre-4.0 jQuery", "core-jquery3.html",
 	function( assert, jQuery, window, document, log ) {
 		assert.expect( 1 );
 
-		assert.ok( /jQuery 3/.test( log ), "logged: " + log );
+		assert.ok( /jQuery 4/.test( log ), "logged: " + log );
 } );
 
-QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.fn.push", function( assert ) {
+QUnit.test( "jQuery.fn.push", function( assert ) {
 	assert.expect( 2 );
 
 	expectWarning( assert, "jQuery.fn.push", 1, function() {
@@ -441,7 +338,7 @@ QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.fn.push", func
 	} );
 } );
 
-QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.fn.sort", function( assert ) {
+QUnit.test( "jQuery.fn.sort", function( assert ) {
 	assert.expect( 2 );
 
 	expectWarning( assert, "jQuery.fn.sort", 1, function() {
@@ -464,7 +361,7 @@ QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.fn.sort", func
 	} );
 } );
 
-QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.fn.splice", function( assert ) {
+QUnit.test( "jQuery.fn.splice", function( assert ) {
 	assert.expect( 2 );
 
 	expectWarning( assert, "jQuery.fn.splice", 1, function() {
@@ -477,7 +374,7 @@ QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.fn.splice", fu
 	} );
 } );
 
-QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.proxy", function( assert ) {
+QUnit.test( "jQuery.proxy", function( assert ) {
 	assert.expect( 10 );
 
 	var test2, test3, test4, fn, cb,

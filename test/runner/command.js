@@ -25,7 +25,7 @@ const argv = yargs( process.argv.slice( 2 ) )
 		type: "array",
 		choices: jquery,
 		description: "Versions of jQuery to test.",
-		default: [ "3.x-git.min" ]
+		default: [ "git.min" ]
 	} )
 	.option( "module", {
 		alias: "m",

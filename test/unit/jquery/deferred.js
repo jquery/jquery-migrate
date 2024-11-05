@@ -39,11 +39,7 @@ QUnit.test( "jQuery.Deferred.getStackHook - getter", function( assert ) {
 
 	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
 
-	expectWarning( assert, "jQuery.Deferred.getStackHook - getter",
-
-		// The getter only warns in jQuery 4+ as jQuery 3.x reads it internally.
-		jQueryVersionSince( "4.0.0" ) ? 1 : 0,
-		function() {
+	expectWarning( assert, "jQuery.Deferred.getStackHook - getter", 1, function() {
 		assert.strictEqual( jQuery.Deferred.getStackHook, jQuery.Deferred.getErrorHook,
 			"getStackHook mirrors getErrorHook (getter)" );
 	} );
@@ -123,11 +119,7 @@ QUnit.test( "jQuery.Deferred.getStackHook - setter", function( assert ) {
 	} );
 } );
 
-// jQuery.Deferred.getErrorHook was introduced in jQuery 3.7.0 and this test
-// depends on it.
-QUnit[
-	jQueryVersionSince( "3.7.0" ) ? "test" : "skip"
-]( "jQuery.Deferred.getStackHook - disabled patch, getter", function( assert ) {
+QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, getter", function( assert ) {
 	assert.expect( 5 );
 
 	var exceptionHookSpy,
@@ -173,7 +165,7 @@ QUnit[
 } );
 
 QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, setter", function( assert ) {
-	assert.expect( jQueryVersionSince( "4.0.0" ) ? 4 : 5 );
+	assert.expect( 4 );
 
 	var exceptionHookSpy,
 		done = assert.async();
@@ -222,16 +214,8 @@ QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, setter", function( a
 			.catch( function() {
 				var asyncError = exceptionHookSpy.lastCall.args[ 1 ];
 
-				if ( jQueryVersionSince( "4.0.0" ) ) {
-					assert.strictEqual( asyncError, undefined,
-						"Error not passed to exceptionHook" );
-				} else {
-					assert.ok( asyncError instanceof Error,
-						"Error passed to exceptionHook (instance)" );
-					assert.strictEqual( asyncError.message,
-						"Different exception in jQuery.Deferred",
-						"Error passed to exceptionHook (message)" );
-				}
+				assert.strictEqual( asyncError, undefined,
+					"Error not passed to exceptionHook" );
 
 				done();
 			} );

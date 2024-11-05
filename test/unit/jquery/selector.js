@@ -189,9 +189,7 @@ QUnit.test( "custom pseudos", function( assert ) {
 	} );
 } );
 
-QUnit[
-	jQueryVersionSince( "3.7.0" ) ? "test" : "skip"
-]( "backwards-compatible custom pseudos", function( assert ) {
+QUnit.test( "backwards-compatible custom pseudos", function( assert ) {
 	assert.expect( 7 );
 
 	var expectWarningWithProxy = typeof Proxy !== "undefined" ?

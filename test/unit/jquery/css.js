@@ -26,8 +26,9 @@ QUnit.test( "jQuery.swap()", function( assert ) {
 
 } );
 
-QUnit[ ( jQueryVersionSince( "3.4.0" ) && typeof Proxy !== "undefined" ) ? "test" : "skip"
-	]( "jQuery.cssProps", function( assert ) {
+QUnit[
+	typeof Proxy !== "undefined" ? "test" : "skip"
+]( "jQuery.cssProps", function( assert ) {
 	assert.expect( 2 );
 
 	expectWarning( assert, "Write to cssProps", function() {
@@ -63,41 +64,40 @@ QUnit.test( "jQuery.css with arrays", function( assert ) {
 QUnit[
 	typeof Proxy !== "undefined" ? "test" : "skip"
 ]( "jQuery.css with numbers", function( assert ) {
-	var jQuery3OrOlder = compareVersions( jQuery.fn.jquery, "4.0.0" ) < 0,
-		allowlist = [
-			"margin",
-			"marginTop",
-			"marginRight",
-			"marginBottom",
-			"marginLeft",
-			"padding",
-			"paddingTop",
-			"paddingRight",
-			"paddingBottom",
-			"paddingLeft",
-			"top",
-			"right",
-			"bottom",
-			"left",
-			"width",
-			"height",
-			"minWidth",
-			"minHeight",
-			"maxWidth",
-			"maxHeight",
-			"border",
-			"borderWidth",
-			"borderTop",
-			"borderTopWidth",
-			"borderRight",
-			"borderRightWidth",
-			"borderBottom",
-			"borderBottomWidth",
-			"borderLeft",
-			"borderLeftWidth"
-		];
+	var allowlist = [
+		"margin",
+		"marginTop",
+		"marginRight",
+		"marginBottom",
+		"marginLeft",
+		"padding",
+		"paddingTop",
+		"paddingRight",
+		"paddingBottom",
+		"paddingLeft",
+		"top",
+		"right",
+		"bottom",
+		"left",
+		"width",
+		"height",
+		"minWidth",
+		"minHeight",
+		"maxWidth",
+		"maxHeight",
+		"border",
+		"borderWidth",
+		"borderTop",
+		"borderTopWidth",
+		"borderRight",
+		"borderRightWidth",
+		"borderBottom",
+		"borderBottomWidth",
+		"borderLeft",
+		"borderLeftWidth"
+	];
 
-	assert.expect( jQuery3OrOlder ?  8 : 7 );
+	assert.expect( 7 );
 
 	function kebabCase( string ) {
 		return string.replace( /[A-Z]/g, function( match ) {
@@ -137,15 +137,10 @@ QUnit[
 	} );
 
 	expectNoWarning( assert, "Props from jQuery.cssNumber", function() {
-		var prop,
-			assertionFired = false;
+		var prop;
 		for ( prop in jQuery.cssNumber ) {
-			assertionFired = true;
 			jQuery( "<div />" ).css( prop, 1 );
 			jQuery( "<div />" ).css( kebabCase( prop ), 1 );
-		}
-		if ( jQuery3OrOlder ) {
-			assert.strictEqual( assertionFired, true, "jQuery.cssNumber property was accessed" );
 		}
 	} );
 
