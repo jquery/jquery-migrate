@@ -1,5 +1,4 @@
 import { migratePatchFunc, migrateWarn } from "../main.js";
-import { jQueryVersionSince } from "../compareVersions.js";
 
 var oldRemoveAttr = jQuery.fn.removeAttr,
 	oldJQueryAttr = jQuery.attr,
@@ -37,14 +36,7 @@ jQuery.each( booleans.split( "|" ), function( _i, name ) {
 						"Boolean attribute '" + name +
 							"' value is different from its lowercased name" );
 
-					// jQuery <4 attr hooks setup is complex: there are attr
-					// hooks, bool hooks and selector attr handles. Only
-					// implement the logic in jQuery >=4 where it's missing
-					// and there are only attr hooks.
-					if ( jQueryVersionSince( "4.0.0" ) ) {
-						return name.toLowerCase();
-					}
-					return null;
+					return name.toLowerCase();
 				}
 			}
 
@@ -72,20 +64,6 @@ jQuery.each( booleans.split( "|" ), function( _i, name ) {
 					}
 					return name;
 				}
-			} else if ( !jQueryVersionSince( "4.0.0" ) ) {
-
-				// jQuery <4 uses a private `boolHook` for the boolean attribute
-				// setter. It's only activated if `attrHook` is not set, but we set
-				// it here in Migrate. Since we cannot access it, let's just repeat
-				// its contents here.
-				if ( value === false ) {
-
-					// Remove boolean attributes when set to false
-					jQuery.removeAttr( elem, name );
-				} else {
-					elem.setAttribute( name, name );
-				}
-				return name;
 			}
 		}
 	};

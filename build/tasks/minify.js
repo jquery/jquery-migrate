@@ -34,19 +34,10 @@ export async function minify( { dir, filename, version } ) {
 		{
 			compress: {
 				hoist_funs: false,
-				loops: false,
-
-				// Support: IE <11
-				// typeofs transformation is unsafe for IE9-10
-				// See https://github.com/mishoo/UglifyJS2/issues/2198
-				typeofs: false
+				loops: false
 			},
 			output: {
 				ascii_only: true,
-
-				// Support: Android 4.0 only, IE 9 only
-				// This is in lieu of setting ie for all of mangle, compress, and output
-				ie8: true,
 				preamble: banner
 			},
 			sourceMap: {

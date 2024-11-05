@@ -32,14 +32,14 @@ QUnit.test( "jQuery.migrateDeduplicateWarnings", function( assert ) {
 
 	jQuery.migrateDeduplicateWarnings = true;
 	expectWarning( assert, "jQuery.migrateDeduplicateWarnings === true", 1, function() {
-		jQuery( "#" );
-		jQuery( "#" );
+		jQuery.trim( " a " );
+		jQuery.trim( "a" );
 	} );
 
 	jQuery.migrateDeduplicateWarnings = false;
 	expectWarning( assert, "jQuery.migrateDeduplicateWarnings === false", 2, function() {
-		jQuery( "#" );
-		jQuery( "#" );
+		jQuery.trim( " a " );
+		jQuery.trim( "a" );
 	} );
 
 	jQuery.migrateDeduplicateWarnings = origValue;

@@ -11,14 +11,14 @@ That way you can spot and fix what otherwise would have been errors, until you n
 
 The following table indicates which jQuery Migrate versions can be used with which jQuery versions:
 
-| jQuery version | jQuery Migrate version  |
-|----------------|-------------------------|
-| 1.x            | 1.x                     |
-| 2.x            | 1.x                     |
-| 3.x            | 3.x / 4.x<sup>[1]</sup> |
-| 4.x            | 3.x / 4.x<sup>[1]</sup> |
+| jQuery version | jQuery Migrate version |
+|----------------|------------------------|
+| 1.x            | 1.x                    |
+| 2.x            | 1.x                    |
+| 3.x            | 3.x                    |
+| 4.x            | 4.x                    |
 
-[1] NOTE: jQuery Migrate 4.x only supports the same browser as jQuery 4.x does. If you need to support Edge Legacy, Internet Explorer 9-10 or iOS 7+ (and not just 3 latest versions), use jQuery Migrate 3.x.
+Each jQuery Migrate version supports the same browsers that the jQuery version used with it.
 
 ## Usage
 
