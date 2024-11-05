@@ -35,7 +35,6 @@ module.exports = function(grunt) {
 		],
 		tests: {
 			"jquery-1": [
-				"dev+1.x-git",
 				"dev+1.12.4",
 				"dev+1.11.3",
 				"dev+1.10.2",
@@ -45,9 +44,8 @@ module.exports = function(grunt) {
 				"dev+1.6.4"
 			],
 			"jquery-2": [
-				"dev+2.x-git",
-				"min+2.x-git.min",
 				"dev+2.2.4",
+				"min+2.2.4.min",
 				"dev+2.1.4",
 				"dev+2.0.3"
 			]
