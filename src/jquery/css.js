@@ -30,7 +30,7 @@ var origFnCss, internalCssNumber,
 if ( typeof Proxy !== "undefined" ) {
 	jQuery.cssProps = new Proxy( jQuery.cssProps || {}, {
 		set: function() {
-			migrateWarn( "cssProps", "jQuery.cssProps is deprecated and removed" );
+			migrateWarn( "cssProps", "jQuery.cssProps is removed" );
 			return Reflect.set.apply( this, arguments );
 		}
 	} );
@@ -123,8 +123,8 @@ migratePatchFunc( jQuery.fn, "css", function( name, value ) {
 		// internal check.
 		if ( !isAutoPx( camelName ) && !internalCssNumber[ camelName ] ) {
 			migrateWarn( "css-number",
-				"Auto-appending 'px' to number-typed values is deprecated and removed " +
-					"for jQuery.fn.css( \"" + name + "\", value )" );
+				"Auto-appending 'px' to number-typed values " +
+					"for jQuery.fn.css( \"" + name + "\", value ) is removed" );
 		}
 	}
 

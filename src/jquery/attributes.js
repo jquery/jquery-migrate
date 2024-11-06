@@ -98,7 +98,7 @@ migratePatchFunc( jQuery.fn, "toggleClass", function( state ) {
 		return oldToggleClass.apply( this, arguments );
 	}
 
-	migrateWarn( "toggleClass-bool", "jQuery.fn.toggleClass( boolean ) is deprecated and removed" );
+	migrateWarn( "toggleClass-bool", "jQuery.fn.toggleClass( [ boolean ] ) is removed" );
 
 	// Toggle entire class name of each element
 	return this.each( function() {

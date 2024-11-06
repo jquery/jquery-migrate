@@ -1,9 +1,9 @@
-import { migratePatchFunc, migrateWarnProp, migrateWarn } from "../main.js";
+import { migratePatchFunc, migrateInfoProp, migrateInfo } from "../main.js";
 
 // Now jQuery.expr.pseudos is the standard incantation
-migrateWarnProp( jQuery.expr, "filters", jQuery.expr.pseudos, "expr-pre-pseudos",
+migrateInfoProp( jQuery.expr, "filters", jQuery.expr.pseudos, "expr-pre-pseudos",
 	"jQuery.expr.filters is deprecated; use jQuery.expr.pseudos" );
-migrateWarnProp( jQuery.expr, ":", jQuery.expr.pseudos, "expr-pre-pseudos",
+migrateInfoProp( jQuery.expr, ":", jQuery.expr.pseudos, "expr-pre-pseudos",
 	"jQuery.expr[':'] is deprecated; use jQuery.expr.pseudos" );
 
 function markFunction( fn ) {
@@ -33,7 +33,7 @@ migratePatchFunc( jQuery.expr.filter, "PSEUDO", function( pseudo, argument ) {
 
 	// But maintain support for old signatures
 	if ( fn.length > 1 ) {
-		migrateWarn( "legacy-custom-pseudos",
+		migrateInfo( "legacy-custom-pseudos",
 			"Pseudos with multiple arguments are deprecated; " +
 				"use jQuery.expr.createPseudo()" );
 		args = [ pseudo, pseudo, "", argument ];
@@ -60,7 +60,7 @@ if ( typeof Proxy !== "undefined" ) {
 		jQuery.expr[ api ] = new Proxy( jQuery.expr[ api ], {
 			set: function( _target, _prop, fn ) {
 				if ( typeof fn === "function" && !fn[ jQuery.expando ] && fn.length > 1 ) {
-					migrateWarn( "legacy-custom-pseudos",
+					migrateInfo( "legacy-custom-pseudos",
 						"Pseudos with multiple arguments are deprecated; " +
 							"use jQuery.expr.createPseudo()" );
 				}

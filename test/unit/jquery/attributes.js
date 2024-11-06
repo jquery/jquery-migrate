@@ -17,7 +17,7 @@ QUnit.module( "attributes" );
 				jQuery.migrateDisablePatches( "boolean-attributes" );
 			}
 
-			expectNoWarning( assert, "setting value to null", function() {
+			expectNoMessage( assert, "setting value to null", function() {
 				var $checkbox = jQuery( "<input type='checkbox' checked='checked' />" );
 
 				$checkbox.attr( "checked", null );
@@ -28,7 +28,7 @@ QUnit.module( "attributes" );
 				);
 			} );
 
-			expectWarning( assert, "setting value to true", ifOn( 1 ), function() {
+			expectMessage( assert, "setting value to true", ifOn( 1 ), function() {
 				var $checkbox = jQuery( "<input type='checkbox' />" );
 
 				$checkbox.prop( "checked", true ).prop( "checked", false ).attr( "checked", true );
@@ -39,7 +39,7 @@ QUnit.module( "attributes" );
 				);
 			} );
 
-			expectWarning( assert, "value-less inline attributes", ifOn( 3 ), function() {
+			expectMessage( assert, "value-less inline attributes", ifOn( 3 ), function() {
 				var $checkbox = jQuery( "<input checked required autofocus type='checkbox'>" );
 
 				jQuery.each( {
@@ -61,7 +61,7 @@ QUnit.module( "attributes" );
 				} );
 			} );
 
-			expectWarning( assert, "checked: true", ifOn( 1 ), function() {
+			expectMessage( assert, "checked: true", ifOn( 1 ), function() {
 				var $checkbox = jQuery( "<input type='checkbox' />" );
 				$checkbox
 					.prop( "checked", true )
@@ -73,7 +73,7 @@ QUnit.module( "attributes" );
 					"Set checked (verified by .attr)"
 				);
 			} );
-			expectNoWarning( assert, "checked: false", function() {
+			expectNoMessage( assert, "checked: false", function() {
 				var $checkbox = jQuery( "<input type='checkbox' />" );
 				$checkbox
 					.prop( "checked", false )
@@ -86,7 +86,7 @@ QUnit.module( "attributes" );
 				);
 			} );
 
-			expectWarning( assert, "readonly: true", ifOn( 1 ), function() {
+			expectMessage( assert, "readonly: true", ifOn( 1 ), function() {
 				var $input = jQuery( "<input />" );
 				$input
 					.prop( "readOnly", true )
@@ -98,7 +98,7 @@ QUnit.module( "attributes" );
 					"Set readonly (verified by .attr)"
 				);
 			} );
-			expectNoWarning( assert, "readonly: false", function() {
+			expectNoMessage( assert, "readonly: false", function() {
 				var $input = jQuery( "<input />" );
 				$input
 					.prop( "readOnly", false )
@@ -111,7 +111,7 @@ QUnit.module( "attributes" );
 				);
 			} );
 
-			expectWarning( assert, "attribute/property interop", ifOn( 2 ), function() {
+			expectMessage( assert, "attribute/property interop", ifOn( 2 ), function() {
 				var $checkbox = jQuery( "<input type='checkbox' />" );
 				$checkbox
 					.attr( "checked", true )
@@ -141,7 +141,7 @@ QUnit.module( "attributes" );
 				);
 			} );
 
-			expectWarning( assert, "HTML5 boolean attributes", ifOn( 2 ), function() {
+			expectMessage( assert, "HTML5 boolean attributes", ifOn( 2 ), function() {
 				var $input = jQuery( "<input />" );
 				$input.attr( {
 					"autofocus": true,
@@ -169,7 +169,7 @@ QUnit.module( "attributes" );
 				);
 			} );
 
-			expectNoWarning( assert, "aria-* attributes", function() {
+			expectNoMessage( assert, "aria-* attributes", function() {
 				var $input = jQuery( "<input />" );
 
 				$input.attr( "aria-disabled", true );
@@ -187,7 +187,7 @@ QUnit.module( "attributes" );
 				);
 			} );
 
-			expectNoWarning( assert, "extra ex-boolean attrs values", function() {
+			expectNoMessage( assert, "extra ex-boolean attrs values", function() {
 				var $input = jQuery( "<input />" );
 
 				$input.attr( "hidden", "until-found" );
@@ -207,7 +207,7 @@ QUnit.module( "attributes" );
 QUnit.test( ".attr( data-* attribute )", function( assert ) {
 	assert.expect( 6 );
 
-	expectNoWarning( assert, "value: true", function() {
+	expectNoMessage( assert, "value: true", function() {
 		var $input = jQuery( "<input />" );
 		$input.attr( "data-something", true );
 		assert.equal( $input.attr( "data-something" ), "true", "Set data attributes" );
@@ -215,7 +215,7 @@ QUnit.test( ".attr( data-* attribute )", function( assert ) {
 			"Setting data attributes are not affected by boolean settings" );
 	} );
 
-	expectWarning( assert, "value: false", 1, function() {
+	expectMessage( assert, "value: false", 1, function() {
 		var $input = jQuery( "<input />" );
 		$input.attr( "data-another", false );
 		assert.equal( $input.attr( "data-another" ), "false", "Set data attributes" );
@@ -229,12 +229,12 @@ QUnit.test( ".toggleClass( boolean )", function( assert ) {
 
 	var e = jQuery( "<div />" ).appendTo( "#qunit-fixture" );
 
-	expectWarning( assert, "toggling initially empty class", 1, function() {
+	expectMessage( assert, "toggling initially empty class", 1, function() {
 		e.toggleClass( true );
 		assert.equal( e[ 0 ].className, "", "Assert class is empty (data was empty)" );
 	} );
 
-	expectNoWarning( assert, ".toggleClass( string ) not full className", 1, function() {
+	expectNoMessage( assert, ".toggleClass( string ) not full className", 1, function() {
 		e.attr( "class", "" );
 		e.toggleClass( "classy" );
 		assert.equal( e.attr( "class" ), "classy", "class was toggle-set" );
@@ -242,7 +242,7 @@ QUnit.test( ".toggleClass( boolean )", function( assert ) {
 		assert.equal( e.attr( "class" ), "", "class was toggle-removed" );
 	} );
 
-	expectWarning( assert, ".toggleClass() save and clear", 1, function() {
+	expectMessage( assert, ".toggleClass() save and clear", 1, function() {
 		e.addClass( "testD testE" );
 		assert.ok( e.is( ".testD.testE" ), "Assert class present" );
 		e.toggleClass();
@@ -251,12 +251,12 @@ QUnit.test( ".toggleClass( boolean )", function( assert ) {
 		// N.B.: Store should have "testD testE" now, next test will assert that
 	} );
 
-	expectWarning( assert, ".toggleClass() restore", 1, function() {
+	expectMessage( assert, ".toggleClass() restore", 1, function() {
 		e.toggleClass();
 		assert.ok( e.is( ".testD.testE" ), "Assert class present (restored from data)" );
 	} );
 
-	expectWarning( assert, ".toggleClass( boolean )", 5, function() {
+	expectMessage( assert, ".toggleClass( boolean )", 5, function() {
 		e.toggleClass( false );
 		assert.ok( !e.is( ".testD.testE" ), "Assert class not present" );
 		e.toggleClass( true );

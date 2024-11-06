@@ -183,20 +183,20 @@
 		};
 
 		QUnit.begin( function() {
-			originalDeduplicateWarnings = jQuery.migrateDeduplicateWarnings;
+			originalDeduplicateWarnings = jQuery.migrateDeduplicateMessages;
 		} );
 
 		QUnit.testStart( function( details ) {
 
-			// If only the first warning is reported, tests using `expectWarning`
+			// If only the first warning is reported, tests using `expectMessage`
 			// with multiple function calls would pass even if some of them didn't
 			// warn. Because of that, by default don't deduplicate warnings in tests.
-			if ( details.name !== "jQuery.migrateDeduplicateWarnings" ) {
-				jQuery.migrateDeduplicateWarnings = false;
+			if ( details.name !== "jQuery.migrateDeduplicateMessages" ) {
+				jQuery.migrateDeduplicateMessages = false;
 			} else {
 
 				// When testing this API, we want to start with its default value.
-				jQuery.migrateDeduplicateWarnings = originalDeduplicateWarnings;
+				jQuery.migrateDeduplicateMessages = originalDeduplicateWarnings;
 			}
 
 			if ( jQuery.migrateDisablePatches ) {

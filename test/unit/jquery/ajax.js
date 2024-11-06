@@ -21,7 +21,7 @@ QUnit.module( "ajax" );
 				tests = [
 					function() {
 						var testName = "dataType: \"json\"";
-						return expectNoWarning( assert, testName, function() {
+						return expectNoMessage( assert, testName, function() {
 							return jQuery.ajax( {
 								url: url( "null.json" ),
 								context: { testName: testName },
@@ -38,7 +38,7 @@ QUnit.module( "ajax" );
 
 					function() {
 						var testName = "dataType: \"json\", URL callback";
-						return expectWarning( assert, testName, forceEnablePatch ? 1 : 0,
+						return expectMessage( assert, testName, forceEnablePatch ? 1 : 0,
 								function() {
 							return jQuery.ajax( {
 								url: url( "jsonpScript.js?callback=?" ),
@@ -56,7 +56,7 @@ QUnit.module( "ajax" );
 
 					function() {
 						var testName = "dataType: \"json\", data callback";
-						return expectWarning( assert, testName, forceEnablePatch ? 1 : 0,
+						return expectMessage( assert, testName, forceEnablePatch ? 1 : 0,
 								function() {
 							return jQuery.ajax( {
 								url: url( "jsonpScript.js" ),
@@ -75,7 +75,7 @@ QUnit.module( "ajax" );
 
 					function() {
 						var testName = "dataType: \"jsonp\", URL callback";
-						return expectNoWarning( assert, testName, function() {
+						return expectNoMessage( assert, testName, function() {
 							return jQuery.ajax( {
 								url: url( "jsonpScript.js?callback=?" ),
 								context: { testName: testName },
@@ -92,7 +92,7 @@ QUnit.module( "ajax" );
 
 					function() {
 						var testName = "dataType: \"jsonp\", data callback";
-						return expectNoWarning( assert, testName, function() {
+						return expectNoMessage( assert, testName, function() {
 							return jQuery.ajax( {
 								url: url( "jsonpScript.js" ),
 								context: { testName: testName },

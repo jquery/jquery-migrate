@@ -5,7 +5,7 @@ import "../disablePatches.js";
 if ( jQuery.fx ) {
 
 var intervalValue = jQuery.fx.interval,
-	intervalMsg = "jQuery.fx.interval is deprecated and removed";
+	intervalMsg = "jQuery.fx.interval is removed";
 
 // Don't warn if document is hidden, jQuery uses setTimeout (gh-292)
 Object.defineProperty( jQuery.fx, "interval", {

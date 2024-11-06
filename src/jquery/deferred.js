@@ -1,6 +1,6 @@
 import {
 	migratePatchFunc,
-	migratePatchAndWarnFunc,
+	migratePatchAndInfoFunc,
 	migrateWarn
 } from "../main.js";
 
@@ -14,9 +14,9 @@ migratePatchFunc( jQuery, "Deferred", function( func ) {
 	var deferred = oldDeferred(),
 		promise = deferred.promise();
 
-	migratePatchAndWarnFunc( deferred, "pipe", deferred.pipe, "deferred-pipe",
+	migratePatchAndInfoFunc( deferred, "pipe", deferred.pipe, "deferred-pipe",
 		"deferred.pipe() is deprecated" );
-	migratePatchAndWarnFunc( promise, "pipe", promise.pipe, "deferred-pipe",
+	migratePatchAndInfoFunc( promise, "pipe", promise.pipe, "deferred-pipe",
 		"deferred.pipe() is deprecated" );
 
 	if ( func ) {
@@ -40,8 +40,7 @@ Object.defineProperty( jQuery.Deferred, "getStackHook", {
 	get: function() {
 		if ( jQuery.migrateIsPatchEnabled( "deferred-getStackHook" ) ) {
 			migrateWarn( "deferred-getStackHook",
-				"jQuery.Deferred.getStackHook is deprecated and removed; " +
-				"use jQuery.Deferred.getErrorHook" );
+				"jQuery.Deferred.getStackHook is removed; use jQuery.Deferred.getErrorHook" );
 			return jQuery.Deferred.getErrorHook;
 		} else {
 			return unpatchedGetStackHookValue;
@@ -50,8 +49,7 @@ Object.defineProperty( jQuery.Deferred, "getStackHook", {
 	set: function( newValue ) {
 		if ( jQuery.migrateIsPatchEnabled( "deferred-getStackHook" ) ) {
 			migrateWarn( "deferred-getStackHook",
-				"jQuery.Deferred.getStackHook is deprecated and removed; " +
-					"use jQuery.Deferred.getErrorHook" );
+				"jQuery.Deferred.getStackHook is removed; use jQuery.Deferred.getErrorHook" );
 			jQuery.Deferred.getErrorHook = newValue;
 		} else {
 			unpatchedGetStackHookValue = newValue;

@@ -89,7 +89,7 @@ QUnit.test( "jQuery( '<element>' ) usable on detached elements (#128)", function
 QUnit.test( "jQuery.parseJSON", function( assert ) {
     assert.expect( 2 );
 
-    expectWarning( assert, "jQuery.parseJSON", function() {
+    expectMessage( assert, "jQuery.parseJSON", function() {
 		assert.deepEqual(
 			jQuery.parseJSON( "{\"a\":1}" ),
 			{ a: 1 },
@@ -176,7 +176,7 @@ QUnit[ typeof Symbol === "function" ? "test" : "skip" ]( "isNumeric(Symbol)", fu
 QUnit.test( ".isNumeric (warn)", function( assert ) {
     assert.expect( 3 );
 
-    expectWarning( assert, "warning on isNumeric (and possibly type)", function() {
+    expectMessage( assert, "warning on isNumeric (and possibly type)", function() {
 		assert.equal( jQuery.isNumeric( 42 ), true, "isNumeric number" );
 		assert.equal( jQuery.isNumeric( "nope" ), false, "isNumeric non number" );
     } );
@@ -185,7 +185,7 @@ QUnit.test( ".isNumeric (warn)", function( assert ) {
 QUnit.test( "jQuery.isWindow", function( assert ) {
 	assert.expect( 3 );
 
-	expectWarning( assert, "isWindow", 2, function() {
+	expectMessage( assert, "isWindow", 2, function() {
 		assert.equal( jQuery.isWindow( [] ), false, "array" );
 		assert.equal( jQuery.isWindow( window ), true, "window" );
 	} );
@@ -194,7 +194,7 @@ QUnit.test( "jQuery.isWindow", function( assert ) {
 QUnit.test( "jQuery.unique", function( assert ) {
 	assert.expect( 2 );
 
-	expectWarning( assert, "jQuery.unique", function() {
+	expectMessage( assert, "jQuery.unique", function() {
 		var body = jQuery( "body" )[ 0 ],
 			head = jQuery( "head" )[ 0 ];
 		assert.deepEqual(
@@ -207,7 +207,7 @@ QUnit.test( "jQuery.unique", function( assert ) {
 QUnit.test( "jQuery.holdReady (warn only)", function( assert ) {
 	assert.expect( 1 );
 
-	expectWarning( assert, "jQuery.holdReady", 2, function() {
+	expectMessage( assert, "jQuery.holdReady", 2, function() {
 		jQuery.holdReady( true );
 		jQuery.holdReady( false );
 	} );
@@ -218,7 +218,7 @@ QUnit.test( "jQuery.trim", function( assert ) {
 
 	var nbsp = String.fromCharCode( 160 );
 
-	expectWarning( assert, "jQuery.trim", 13, function() {
+	expectMessage( assert, "jQuery.trim", 13, function() {
 		assert.equal( jQuery.trim( "hello  " ), "hello", "trailing space" );
 		assert.equal( jQuery.trim( "  hello" ), "hello", "leading space" );
 		assert.equal( jQuery.trim( "  hello   " ), "hello", "space on both sides" );
@@ -241,7 +241,7 @@ QUnit.test( "jQuery.trim", function( assert ) {
 QUnit.test( "jQuery.nodeName", function( assert ) {
 	assert.expect( 2 );
 
-	expectWarning( assert, "jQuery.nodeName", function() {
+	expectMessage( assert, "jQuery.nodeName", function() {
 		var div = document.createElement( "div" );
 
 		assert.equal( jQuery.nodeName( div, "div" ), true, "it's a div" );
@@ -251,7 +251,7 @@ QUnit.test( "jQuery.nodeName", function( assert ) {
 QUnit.test( "jQuery.isFunction", function( assert ) {
 	assert.expect( 4 );
 
-	expectWarning( assert, "jQuery.isFunction", function() {
+	expectMessage( assert, "jQuery.isFunction", function() {
 		assert.equal( jQuery.isFunction( function() {} ), true, "function is function" );
 		assert.equal( jQuery.isFunction( {} ), false, "object not function" );
 		assert.equal( jQuery.isFunction( 1 ), false, "number not function" );
@@ -301,7 +301,7 @@ QUnit.test( "jQuery.type (warn)", function( assert ) {
 QUnit.test( "jQuery.isArray", function( assert ) {
 	assert.expect( 4 );
 
-	expectWarning( assert, "isArray", 3, function() {
+	expectMessage( assert, "isArray", 3, function() {
 		assert.equal( jQuery.isArray( [] ), true, "empty array" );
 		assert.equal( jQuery.isArray( "" ), false, "empty string" );
 		assert.equal( jQuery.isArray( jQuery().toArray() ), true, "toArray" );
@@ -319,7 +319,7 @@ TestManager.runIframeTest( "old pre-4.0 jQuery", "core-jquery3.html",
 QUnit.test( "jQuery.fn.push", function( assert ) {
 	assert.expect( 2 );
 
-	expectWarning( assert, "jQuery.fn.push", 1, function() {
+	expectMessage( assert, "jQuery.fn.push", 1, function() {
 		var node = jQuery( "<div></div>" )[ 0 ],
 			elem = jQuery( "<p></p><span></span>" );
 
@@ -333,7 +333,7 @@ QUnit.test( "jQuery.fn.push", function( assert ) {
 QUnit.test( "jQuery.fn.sort", function( assert ) {
 	assert.expect( 2 );
 
-	expectWarning( assert, "jQuery.fn.sort", 1, function() {
+	expectMessage( assert, "jQuery.fn.sort", 1, function() {
 		var elem = jQuery( "<span></span><div></div><p></p>" );
 
 		elem.sort( function( node1, node2 ) {
@@ -356,7 +356,7 @@ QUnit.test( "jQuery.fn.sort", function( assert ) {
 QUnit.test( "jQuery.fn.splice", function( assert ) {
 	assert.expect( 2 );
 
-	expectWarning( assert, "jQuery.fn.splice", 1, function() {
+	expectMessage( assert, "jQuery.fn.splice", 1, function() {
 		var elem = jQuery( "<span></span><div></div><p></p>" );
 
 		elem.splice( 1, 1, jQuery( "<i></i>" )[ 0 ], jQuery( "<b></b>" )[ 0 ] );
@@ -375,7 +375,7 @@ QUnit.test( "jQuery.proxy", function( assert ) {
 		},
 		thisObject = { foo: "bar", method: test };
 
-	expectWarning( assert, "jQuery.proxy", 7, function() {
+	expectMessage( assert, "jQuery.proxy", 7, function() {
 
 		// Make sure normal works
 		test.call( thisObject );

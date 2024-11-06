@@ -24,25 +24,25 @@ QUnit.test( "compareVersions and jQueryVersionSince", function( assert ) {
 	assert.equal( jQueryVersionSince( jQuery.fn.jquery ), true, "since - equal" );
 } );
 
-QUnit.test( "jQuery.migrateDeduplicateWarnings", function( assert ) {
+QUnit.test( "jQuery.migrateDeduplicateMessages", function( assert ) {
 	assert.expect( 3 );
 
-	var origValue = jQuery.migrateDeduplicateWarnings;
+	var origValue = jQuery.migrateDeduplicateMessages;
 	assert.strictEqual( origValue, true, "true by default" );
 
-	jQuery.migrateDeduplicateWarnings = true;
-	expectWarning( assert, "jQuery.migrateDeduplicateWarnings === true", 1, function() {
+	jQuery.migrateDeduplicateMessages = true;
+	expectMessage( assert, "jQuery.migrateDeduplicateMessages === true", 1, function() {
 		jQuery.trim( " a " );
 		jQuery.trim( "a" );
 	} );
 
-	jQuery.migrateDeduplicateWarnings = false;
-	expectWarning( assert, "jQuery.migrateDeduplicateWarnings === false", 2, function() {
+	jQuery.migrateDeduplicateMessages = false;
+	expectMessage( assert, "jQuery.migrateDeduplicateMessages === false", 2, function() {
 		jQuery.trim( " a " );
 		jQuery.trim( "a" );
 	} );
 
-	jQuery.migrateDeduplicateWarnings = origValue;
+	jQuery.migrateDeduplicateMessages = origValue;
 } );
 
 QUnit.test( "disabling/enabling patches", function( assert ) {
@@ -63,13 +63,13 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
 		true, "patch enabled by default (shorthand-deprecated-v3)" );
 
-	expectWarning( assert, "pre-on-methods (default)", function() {
+	expectMessage( assert, "pre-on-methods (default)", function() {
 		jQuery().bind();
 	} );
-	expectWarning( assert, "proxy (default)", function() {
+	expectMessage( assert, "proxy (default)", function() {
 		jQuery.proxy( jQuery.noop );
 	} );
-	expectWarning( assert, "shorthand-deprecated-v3 (default)", function() {
+	expectMessage( assert, "shorthand-deprecated-v3 (default)", function() {
 		jQuery().click();
 	} );
 
@@ -81,13 +81,13 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
 		true, "patch still enabled (shorthand-deprecated-v3)" );
 
-	expectNoWarning( assert, "pre-on-methods (default)", function() {
+	expectNoMessage( assert, "pre-on-methods (default)", function() {
 		jQuery().bind();
 	} );
-	expectNoWarning( assert, "proxy (default)", function() {
+	expectNoMessage( assert, "proxy (default)", function() {
 		jQuery.proxy( jQuery.noop );
 	} );
-	expectWarning( assert, "shorthand-deprecated-v3 (default)", function() {
+	expectMessage( assert, "shorthand-deprecated-v3 (default)", function() {
 		jQuery().click();
 	} );
 
@@ -95,7 +95,7 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
 		false, "patch disabled (shorthand-deprecated-v3)" );
 
-	expectNoWarning( assert, "shorthand-deprecated-v3 (disabled)", function() {
+	expectNoMessage( assert, "shorthand-deprecated-v3 (disabled)", function() {
 		jQuery().click();
 	} );
 } );
