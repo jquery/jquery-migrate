@@ -9,12 +9,12 @@ QUnit.test( "jQuery.fx.interval - no warning on animations", function( assert ) 
 
 	var start = assert.async();
 
-	// Can't use expectNoWarning since this is async
+	// Can't use expectNoMessage since this is async
 	jQuery.migrateReset();
 	jQuery( "<div />" )
 		.appendTo( "#qunit-fixture" )
 		.animate( { opacity: 0.5 }, 50, function() {
-			assert.equal( jQuery.migrateWarnings.length, 0, "no warning" );
+			assert.equal( jQuery.migrateMessages.length, 0, "no warning" );
 			start();
 		} );
 } );
@@ -24,7 +24,7 @@ QUnit.test( "jQuery.fx.interval - user change", function( assert ) {
 	assert.expect( 3 );
 
 	var oldInterval,
-		warner = window.requestAnimationFrame ? expectWarning : expectNoWarning;
+		warner = window.requestAnimationFrame ? expectMessage : expectNoMessage;
 
 	assert.ok( true, "requestAnimationFrame is " +
 		( window.requestAnimationFrame ? "present" : "absent" ) );

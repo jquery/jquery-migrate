@@ -39,12 +39,12 @@ QUnit.test( "jQuery.Deferred.getStackHook - getter", function( assert ) {
 
 	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
 
-	expectWarning( assert, "jQuery.Deferred.getStackHook - getter", 1, function() {
+	expectMessage( assert, "jQuery.Deferred.getStackHook - getter", 1, function() {
 		assert.strictEqual( jQuery.Deferred.getStackHook, jQuery.Deferred.getErrorHook,
 			"getStackHook mirrors getErrorHook (getter)" );
 	} );
 
-	expectNoWarning( assert, "asyncHook reported in jQuery.Deferred.exceptionHook", function() {
+	expectNoMessage( assert, "asyncHook reported in jQuery.Deferred.exceptionHook", function() {
 		jQuery
 			.when()
 			.then( function() {
@@ -66,7 +66,7 @@ QUnit.test( "jQuery.Deferred.getStackHook - getter, no getErrorHook", function( 
 
 	var done = assert.async();
 
-	expectNoWarning( assert, "No Migrate warning in a regular `then`", function() {
+	expectNoMessage( assert, "No Migrate warning in a regular `then`", function() {
 		jQuery
 			.when()
 			.then( function() {
@@ -83,14 +83,14 @@ QUnit.test( "jQuery.Deferred.getStackHook - setter", function( assert ) {
 
 	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
 
-	expectWarning( assert, "jQuery.Deferred.getStackHook - setter", 1, function() {
+	expectMessage( assert, "jQuery.Deferred.getStackHook - setter", 1, function() {
 		var mockFn = function() {};
 		jQuery.Deferred.getStackHook = mockFn;
 		assert.strictEqual( jQuery.Deferred.getErrorHook, mockFn,
 			"getStackHook mirrors getErrorHook (setter)" );
 	} );
 
-	expectWarning( assert, "asyncHook from jQuery.Deferred.getStackHook reported",
+	expectMessage( assert, "asyncHook from jQuery.Deferred.getStackHook reported",
 			1, function() {
 		jQuery.Deferred.getStackHook = function() {
 
@@ -142,12 +142,12 @@ QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, getter", function( a
 
 	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
 
-	expectNoWarning( assert, "jQuery.Deferred.getStackHook - getter", function() {
+	expectNoMessage( assert, "jQuery.Deferred.getStackHook - getter", function() {
 		assert.strictEqual( jQuery.Deferred.getStackHook, undefined,
 			"getStackHook does not mirror getErrorHook (getter)" );
 	} );
 
-	expectNoWarning( assert, "asyncHook reported in jQuery.Deferred.exceptionHook", function() {
+	expectNoMessage( assert, "asyncHook reported in jQuery.Deferred.exceptionHook", function() {
 		jQuery
 			.when()
 			.then( function() {
@@ -187,14 +187,14 @@ QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, setter", function( a
 
 	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
 
-	expectNoWarning( assert, "jQuery.Deferred.getStackHook - setter", function() {
+	expectNoMessage( assert, "jQuery.Deferred.getStackHook - setter", function() {
 		var mockFn = function() {};
 		jQuery.Deferred.getStackHook = mockFn;
 		assert.strictEqual( jQuery.Deferred.getErrorHook, getErrorHook,
 			"getStackHook does not mirror getErrorHook (setter)" );
 	} );
 
-	expectNoWarning( assert, "asyncHook from jQuery.Deferred.getStackHook reported", function() {
+	expectNoMessage( assert, "asyncHook from jQuery.Deferred.getStackHook reported", function() {
 			jQuery.Deferred.getErrorHook = undefined;
 			jQuery.Deferred.getStackHook = function() {
 
@@ -228,7 +228,7 @@ QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, getter + setter inte
 
 	jQuery.migrateDisablePatches( "deferred-getStackHook" );
 
-	expectNoWarning( assert, "jQuery.Deferred.getStackHook - setter & getter", function() {
+	expectNoMessage( assert, "jQuery.Deferred.getStackHook - setter & getter", function() {
 		var mockFn = function() {};
 		assert.strictEqual( jQuery.Deferred.getStackHook, undefined,
 			"getStackHook is `undefined` by default" );
@@ -249,12 +249,12 @@ QUnit.test( ".pipe() warnings", function( assert ) {
 	}
 
 	// Deferred
-	expectWarning( assert, "pipe", function() {
+	expectMessage( assert, "pipe", function() {
 		d.pipe( checkValue );
 	} );
 
 	// Deferred's promise object
-	expectWarning( assert, "pipe", function() {
+	expectMessage( assert, "pipe", function() {
 		p.pipe( checkValue );
 	} );
 

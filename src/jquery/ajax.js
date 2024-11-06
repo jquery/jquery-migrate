@@ -47,7 +47,7 @@ jQuery.ajaxPrefilter( "+json", function( s, originalSettings, jqXHR ) {
 
 	// Handle iff the expected data type is "jsonp" or we have a parameter to set
 	if ( jsonProp || s.dataTypes[ 0 ] === "jsonp" ) {
-		migrateWarn( "jsonp-promotion", "JSON-to-JSONP auto-promotion is deprecated and removed" );
+		migrateWarn( "jsonp-promotion", "JSON-to-JSONP auto-promotion is removed" );
 
 		// Get callback name, remembering preexisting value associated with it
 		callbackName = s.jsonpCallback = typeof s.jsonpCallback === "function" ?
