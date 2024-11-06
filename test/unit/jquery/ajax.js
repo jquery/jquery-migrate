@@ -3,29 +3,6 @@ if ( jQuery.ajax ) {
 
 QUnit.module( "ajax" );
 
-QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
-	assert.expect( 3 );
-
-	var done = assert.async();
-
-	expectWarning( assert, ".success(), .error(), .complete() calls", 3, function() {
-
-		return jQuery.ajax( url( "not-found.404" ) )
-			.success( jQuery.noop )
-			.error( function( jQXHR ) {
-
-				// Local file errors returns 0, pretend it's a 404
-				assert.equal( jQXHR.status || 404, 404, "ajax error" );
-			} )
-			.complete( function() {
-				assert.ok( true, "ajax complete" );
-			} ).catch( jQuery.noop );
-	} ).then( function() {
-		done();
-	} );
-
-} );
-
 [ " - Same Domain", " - Cross Domain" ].forEach( function( label, crossDomain ) {
 	function runTests( options ) {
 		var forceEnablePatch = ( options || {} ).forceEnablePatch || false;

@@ -62,15 +62,11 @@
 				"unit/jquery/ajax.js",
 				"unit/jquery/attributes.js",
 				"unit/jquery/css.js",
-				"unit/jquery/data.js",
 				"unit/jquery/deferred.js",
 				"unit/jquery/effects.js",
 				"unit/jquery/event.js",
 				"unit/jquery/manipulation.js",
-				"unit/jquery/offset.js",
-				"unit/jquery/selector.js",
-				"unit/jquery/serialize.js",
-				"unit/jquery/traversing.js"
+				"unit/jquery/selector.js"
 			];
 
 		testFiles.forEach( function( testFile ) {

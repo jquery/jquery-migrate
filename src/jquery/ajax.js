@@ -1,30 +1,13 @@
-import { migrateWarn, migratePatchAndWarnFunc, migratePatchFunc } from "../main.js";
+import { migrateWarn } from "../main.js";
 
 // Support jQuery slim which excludes the ajax module
 if ( jQuery.ajax ) {
 
-var oldAjax = jQuery.ajax,
-	oldCallbacks = [],
+var oldCallbacks = [],
 	guid = "migrate-" + Date.now(),
 	origJsonpCallback = jQuery.ajaxSettings.jsonpCallback,
 	rjsonp = /(=)\?(?=&|$)|\?\?/,
 	rquery = /\?/;
-
-migratePatchFunc( jQuery, "ajax", function() {
-	var jQXHR = oldAjax.apply( this, arguments );
-
-	// Be sure we got a jQXHR (e.g., not sync)
-	if ( jQXHR.promise ) {
-		migratePatchAndWarnFunc( jQXHR, "success", jQXHR.done, "jqXHR-methods",
-			"jQXHR.success is deprecated and removed" );
-		migratePatchAndWarnFunc( jQXHR, "error", jQXHR.fail, "jqXHR-methods",
-			"jQXHR.error is deprecated and removed" );
-		migratePatchAndWarnFunc( jQXHR, "complete", jQXHR.always, "jqXHR-methods",
-			"jQXHR.complete is deprecated and removed" );
-	}
-
-	return jQXHR;
-}, "jqXHR-methods" );
 
 jQuery.ajaxSetup( {
 	jsonpCallback: function() {
@@ -64,7 +47,7 @@ jQuery.ajaxPrefilter( "+json", function( s, originalSettings, jqXHR ) {
 
 	// Handle iff the expected data type is "jsonp" or we have a parameter to set
 	if ( jsonProp || s.dataTypes[ 0 ] === "jsonp" ) {
-		migrateWarn( "jsonp-promotion", "JSON-to-JSONP auto-promotion is deprecated" );
+		migrateWarn( "jsonp-promotion", "JSON-to-JSONP auto-promotion is deprecated and removed" );
 
 		// Get callback name, remembering preexisting value associated with it
 		callbackName = s.jsonpCallback = typeof s.jsonpCallback === "function" ?

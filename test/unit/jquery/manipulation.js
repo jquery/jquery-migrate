@@ -39,25 +39,3 @@ QUnit.test( "Improperly closed elements", function( assert ) {
 
 	window.alert = oldWindowAlert;
 } );
-
-QUnit.test( "jQuery.UNSAFE_restoreLegacyHtmlPrefilter (deprecated)", function( assert ) {
-	assert.expect( 7 );
-
-	expectWarning( assert, "jQuery.UNSAFE_restoreLegacyHtmlPrefilter()", 1, function() {
-		jQuery.UNSAFE_restoreLegacyHtmlPrefilter();
-	} );
-
-	var warns = jQuery.migrateWarnings,
-		elem = jQuery( "<div/><span/>" ),
-		childCount = elem.length,
-		firstNodeName = elem[ 0 ] && elem[ 0 ].nodeName.toLowerCase(),
-		secondNodeName = elem[ 1 ] && elem[ 1 ].nodeName.toLowerCase();
-
-	assert.strictEqual( childCount, 2, "Proper child count" );
-	assert.strictEqual( firstNodeName, "div", "Proper first element" );
-	assert.strictEqual( secondNodeName, "span", "Proper second element" );
-
-	assert.equal( warns.length, 2, "Proper warning length" );
-	assert.ok( warns[ 0 ].indexOf( "jQuery.UNSAFE_restoreLegacyHtmlPrefilter" ) >= 0, warns[ 0 ] );
-	assert.ok( warns[ 1 ].indexOf( "HTML tags" ) >= 0, warns[ 1 ] );
-} );

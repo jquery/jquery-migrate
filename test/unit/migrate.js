@@ -56,46 +56,46 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 	// existing warnings. If the ones we rely on here get removed,
 	// replace them with ones that still exist.
 
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "size" ),
-		true, "patch enabled by default (size)" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "parseJSON" ),
-		true, "patch enabled by default (parseJSON)" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "toggleClass-bool" ),
-		true, "patch enabled by default (toggleClass-bool)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "pre-on-methods" ),
+		true, "patch enabled by default (pre-on-methods)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "proxy" ),
+		true, "patch enabled by default (proxy)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
+		true, "patch enabled by default (shorthand-deprecated-v3)" );
 
-	expectWarning( assert, "size (default)", function() {
-		jQuery().size();
+	expectWarning( assert, "pre-on-methods (default)", function() {
+		jQuery().bind();
 	} );
-	expectWarning( assert, "parseJSON (default)", function() {
-		jQuery.parseJSON( "{}" );
+	expectWarning( assert, "proxy (default)", function() {
+		jQuery.proxy( jQuery.noop );
 	} );
-	expectWarning( assert, "toggleClass-bool (default)", function() {
-		elem.toggleClass();
-	} );
-
-	jQuery.migrateDisablePatches( "size", "parseJSON" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "size" ),
-		false, "patch disabled (size)" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "parseJSON" ),
-		false, "patch disabled (parseJSON)" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "toggleClass-bool" ),
-		true, "patch still enabled (toggleClass)" );
-
-	expectNoWarning( assert, "size (disabled)", function() {
-		jQuery().size();
-	} );
-	expectNoWarning( assert, "parseJSON (disabled)", function() {
-		jQuery.parseJSON( "{}" );
-	} );
-	expectWarning( assert, "toggleClass-bool (still enabled)", function() {
-		elem.toggleClass();
+	expectWarning( assert, "shorthand-deprecated-v3 (default)", function() {
+		jQuery().click();
 	} );
 
-	jQuery.migrateDisablePatches( "toggleClass-bool" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "toggleClass-bool" ),
-		false, "patch disabled (toggleClass)" );
+	jQuery.migrateDisablePatches( "pre-on-methods", "proxy" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "pre-on-methods" ),
+		false, "patch disabled (pre-on-methods)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "proxy" ),
+		false, "patch disabled (proxy)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
+		true, "patch still enabled (shorthand-deprecated-v3)" );
 
-	expectNoWarning( assert, "toggleClass-bool (disabled)", function() {
-		elem.toggleClass();
+	expectNoWarning( assert, "pre-on-methods (default)", function() {
+		jQuery().bind();
+	} );
+	expectNoWarning( assert, "proxy (default)", function() {
+		jQuery.proxy( jQuery.noop );
+	} );
+	expectWarning( assert, "shorthand-deprecated-v3 (default)", function() {
+		jQuery().click();
+	} );
+
+	jQuery.migrateDisablePatches( "shorthand-deprecated-v3" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
+		false, "patch disabled (shorthand-deprecated-v3)" );
+
+	expectNoWarning( assert, "shorthand-deprecated-v3 (disabled)", function() {
+		jQuery().click();
 	} );
 } );

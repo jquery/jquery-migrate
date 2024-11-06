@@ -224,69 +224,6 @@ QUnit.test( ".attr( data-* attribute )", function( assert ) {
 	} );
 } );
 
-QUnit.test( ".removeAttr( boolean attribute )", function( assert ) {
-	assert.expect( 14 );
-
-	expectNoWarning( assert, "non-boolean attr", function() {
-		var $div = jQuery( "<div />" )
-			.attr( "quack", "duck" )
-			.removeAttr( "quack" );
-
-		assert.equal( $div.attr( "quack" ), null, "non-boolean attribute was removed" );
-		assert.equal( $div.prop( "quack" ), undefined, "property was not set" );
-	} );
-
-	expectWarning( assert, "boolean attr", function() {
-		var $inp = jQuery( "<input type='checkbox' />" )
-			.attr( "checked", "checked" )
-			.prop( "checked", true )
-			.removeAttr( "checked" );
-
-		assert.equal( $inp.attr( "checked" ), null, "boolean attribute was removed" );
-		assert.equal( $inp.prop( "checked" ), false, "property was changed" );
-	} );
-
-	// One warning per attribute name
-	expectWarning( assert, "multiple boolean attr", 2, function() {
-		jQuery( "<input type='checkbox' />" )
-			.attr( "checked", "checked" )
-			.attr( "readonly", "readonly" )
-			.removeAttr( "checked readonly" );
-	} );
-
-	expectWarning( assert, "mixed attr, one boolean", function() {
-		jQuery( "<input />" )
-			.attr( "type", "text" )
-			.attr( "size", "15" )
-			.attr( "disabled", "disabled" )
-			.removeAttr( "disabled" )
-			.removeAttr( "size" );
-	} );
-
-	expectNoWarning( assert, "boolean attr when prop false", function() {
-		var $inp = jQuery( "<input type='checkbox' />" )
-			.attr( "checked", "checked" )
-			.prop( "checked", false )
-			.removeAttr( "checked" );
-
-		assert.equal( $inp.attr( "checked" ), null, "boolean attribute was removed" );
-		assert.equal( $inp.prop( "checked" ), false, "property was not changed" );
-	} );
-
-	expectWarning( assert, "boolean attr when only some props false", 1, function() {
-		var $inp = jQuery(
-				"<input type='checkbox' /><input type='checkbox' /><input type='checkbox' />"
-			)
-			.attr( "checked", "checked" )
-			.prop( "checked", false )
-			.eq( 1 ).prop( "checked", true ).end()
-			.removeAttr( "checked" );
-
-		assert.equal( $inp.attr( "checked" ), null, "boolean attribute was removed" );
-		assert.equal( $inp.eq( 1 ).prop( "checked" ), false, "property was changed" );
-	} );
-} );
-
 QUnit.test( ".toggleClass( boolean )", function( assert ) {
 	assert.expect( 14 );
 
