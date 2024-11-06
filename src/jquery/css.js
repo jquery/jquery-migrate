@@ -2,7 +2,6 @@ import { migrateWarn, migratePatchFunc } from "../main.js";
 import { camelCase } from "../utils.js";
 
 var origFnCss, internalCssNumber,
-	internalSwapCall = false,
 	ralphaStart = /^[a-z]/,
 
 	// The regex visualized:
@@ -28,52 +27,10 @@ var origFnCss, internalCssNumber,
 	//                           \ Max /       \ Height /
 	rautoPx = /^(?:Border(?:Top|Right|Bottom|Left)?(?:Width|)|(?:Margin|Padding)?(?:Top|Right|Bottom|Left)?|(?:Min|Max)?(?:Width|Height))$/;
 
-// If this version of jQuery has .swap(), don't false-alarm on internal uses
-if ( jQuery.swap ) {
-	jQuery.each( [ "height", "width", "reliableMarginRight" ], function( _, name ) {
-		var oldHook = jQuery.cssHooks[ name ] && jQuery.cssHooks[ name ].get;
-
-		if ( oldHook ) {
-			jQuery.cssHooks[ name ].get = function() {
-				var ret;
-
-				internalSwapCall = true;
-				ret = oldHook.apply( this, arguments );
-				internalSwapCall = false;
-				return ret;
-			};
-		}
-	} );
-}
-
-migratePatchFunc( jQuery, "swap", function( elem, options, callback, args ) {
-	var ret, name,
-		old = {};
-
-	if ( !internalSwapCall ) {
-		migrateWarn( "swap", "jQuery.swap() is undocumented and deprecated" );
-	}
-
-	// Remember the old values, and insert the new ones
-	for ( name in options ) {
-		old[ name ] = elem.style[ name ];
-		elem.style[ name ] = options[ name ];
-	}
-
-	ret = callback.apply( elem, args || [] );
-
-	// Revert the old values
-	for ( name in options ) {
-		elem.style[ name ] = old[ name ];
-	}
-
-	return ret;
-}, "swap" );
-
 if ( typeof Proxy !== "undefined" ) {
 	jQuery.cssProps = new Proxy( jQuery.cssProps || {}, {
 		set: function() {
-			migrateWarn( "cssProps", "jQuery.cssProps is deprecated" );
+			migrateWarn( "cssProps", "jQuery.cssProps is deprecated and removed" );
 			return Reflect.set.apply( this, arguments );
 		}
 	} );
@@ -166,8 +123,8 @@ migratePatchFunc( jQuery.fn, "css", function( name, value ) {
 		// internal check.
 		if ( !isAutoPx( camelName ) && !internalCssNumber[ camelName ] ) {
 			migrateWarn( "css-number",
-				"Number-typed values are deprecated for jQuery.fn.css( \"" +
-				name + "\", value )" );
+				"Auto-appending 'px' to number-typed values is deprecated and removed " +
+					"for jQuery.fn.css( \"" + name + "\", value )" );
 		}
 	}
 

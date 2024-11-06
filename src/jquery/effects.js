@@ -1,30 +1,11 @@
-import { migratePatchFunc, migrateWarn } from "../main.js";
+import { migrateWarn } from "../main.js";
 import "../disablePatches.js";
 
 // Support jQuery slim which excludes the effects module
 if ( jQuery.fx ) {
 
-var intervalValue, intervalMsg,
-	oldTweenRun = jQuery.Tween.prototype.run,
-	linearEasing = function( pct ) {
-		return pct;
-	};
-
-migratePatchFunc( jQuery.Tween.prototype, "run", function( ) {
-	if ( jQuery.easing[ this.easing ].length > 1 ) {
-		migrateWarn(
-			"easing-one-arg",
-			"'jQuery.easing." + this.easing.toString() + "' should use only one argument"
-		);
-
-		jQuery.easing[ this.easing ] = linearEasing;
-	}
-
-	oldTweenRun.apply( this, arguments );
-}, "easing-one-arg" );
-
-intervalValue = jQuery.fx.interval;
-intervalMsg = "jQuery.fx.interval is deprecated";
+var intervalValue = jQuery.fx.interval,
+	intervalMsg = "jQuery.fx.interval is deprecated and removed";
 
 // Don't warn if document is hidden, jQuery uses setTimeout (gh-292)
 Object.defineProperty( jQuery.fx, "interval", {

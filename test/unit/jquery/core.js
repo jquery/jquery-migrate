@@ -86,14 +86,6 @@ QUnit.test( "jQuery( '<element>' ) usable on detached elements (#128)", function
 	assert.ok( true, "No crash when operating on detached elements with window" );
 } );
 
-QUnit.test( ".size", function( assert ) {
-    assert.expect( 1 );
-
-    expectWarning( assert, "size", function() {
-        jQuery( "<div />" ).size();
-    } );
-} );
-
 QUnit.test( "jQuery.parseJSON", function( assert ) {
     assert.expect( 2 );
 

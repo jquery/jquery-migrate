@@ -1,6 +1,6 @@
 # jQuery Migrate Plugin - Warning Messages
 
-**NOTE: This page lists the messages for jQuery Migrate 3.0. If you are using an earlier version, see the documentation on [the 1.x-stable branch](https://github.com/jquery/jquery-migrate/blob/1.x-stable/warnings.md).**
+**NOTE: This page lists the messages for jQuery Migrate 4.x. If you are using an earlier version, see the documentation on [the 1.x-stable branch](https://github.com/jquery/jquery-migrate/blob/1.x-stable/warnings.md) or [the 3.x-stable branch](https://github.com/jquery/jquery-migrate/blob/3.x-stable/warnings.md).**
 
 To allow developers to identify and fix compatibility issues when migrating older jQuery code, the development (uncompressed) version of the plugin generates console warning messages whenever any of its functionality is called. The messages only appear once on the console for each unique message.
 
@@ -17,7 +17,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### JQMIGRATE: jQuery 4.x REQUIRED
 
-**Cause:** The page does not have a version of jQuery installed, or is using a version of jQuery older than 4.0.0 or 5.0.0 or newer. The jQuery Migrate plugin is not intended to be used for those cases. Any messages that follow this one may not be accurate, or the page may not run properly at all.
+**Cause:** The page does not have a version of jQuery installed, or is using a version of jQuery 5.0.0 or newer or older than 4.0.0. The jQuery Migrate plugin is not intended to be used for those cases. Any messages that follow this one may not be accurate, or the page may not run properly at all.
 
 **Solution:** See the [README](https://github.com/jquery/jquery-migrate/#readme) for more information on usage and upgrading from older versions.
 
@@ -33,62 +33,17 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Put a [valid doctype](http://www.w3.org/QA/2002/04/valid-dtd-list.html) in the document and ensure that the document is rendering in standards mode. The simplest valid doctype is the HTML5 one, which we highly recommend: `<!doctype html>` . The jQuery Migrate plugin does not attempt to fix issues related to quirks mode.
 
-### \[jqXHR-methods\] JQMIGRATE: jQXHR.success is deprecated and removed
-### \[jqXHR-methods\] JQMIGRATE: jQXHR.error is deprecated and removed
-### \[jqXHR-methods\] JQMIGRATE: jQXHR.complete is deprecated and removed
-
-**Cause:** The `.success()`, `.error()`, and `.complete()` methods of the `jQXHR` object returned from `jQuery.ajax()` have been deprecated since jQuery 1.8 and were removed in jQuery 3.0.
-
-**Solution:** Replace the use of these methods with the standard Deferred methods: `.success()` becomes `.done()`, `.error()` becomes `.fail()`, and `.complete()` becomes `.always()`.
-
-### \[shorthand-removed-v3\] JQMIGRATE: jQuery.fn.error() is deprecated
-
-**Cause:** The `$().error()` method was used to attach an "error" event to an element but has been removed in 1.9 to reduce confusion with the `$.error()` method which is unrelated and has not been deprecated. It also serves to discourage the temptation to use `$(window).error()` which does not work because `window.onerror` does not follow standard event handler conventions. The `$().error()` method was removed in jQuery 3.0.
-
-**Solution:** Change any use of `$().error(fn)` to `$().on("error", fn)`.
-
-### \[shorthand-removed-v3\] JQMIGRATE: jQuery.fn.load( [ eventData ], handler ) is deprecated and removed
-### \[shorthand-removed-v3\] JQMIGRATE: jQuery.fn.unload() is deprecated and removed
-
-**Cause:** The `.load()` and `.unload()` event methods attach a "load" and "unload" event, respectively, to an element. They were deprecated in 1.9 and removed in 3.0 to reduce confusion with the AJAX-related `.load()` method that loads HTML fragments and which has not been deprecated. Note that these two methods are used almost exclusively with a jQuery collection consisting of only the `window` element. Also note that attaching an "unload" or "beforeunload" event on a window via any means can impact performance on some browsers because it disables the document cache (bfcache). For that reason we strongly advise against it.
-
-**Solution:** Change any use of `$().load(fn)` to `$().on("load", fn)` and `$().unload(fn)` to `$().on("unload", fn)`.
-
 ### \[deferred-pipe\] JQMIGRATE: deferred.pipe() is deprecated
 
 **Cause**: The `.pipe()` method on a `jQuery.Deferred` object was deprecated as of jQuery 1.8, when the `.then()` method was changed to perform the same function.
 
 **Solution**: In most cases it is sufficient to change all occurrences of `.pipe()` to `.then()`. Ensure that you aren't relying on context/state propagation (e.g., using `this`) or synchronous callback invocation, which were dropped from `.then()` for Promises/A+ interoperability as of jQuery 3.0.
 
-### \[fx-interval\] JQMIGRATE: jQuery.fx.interval is deprecated
+### \[fx-interval\] JQMIGRATE: jQuery.fx.interval is deprecated and removed
 
-**Cause**: As of jQuery 3.0 the `jQuery.fx.interval` property can be used to change the animation interval _only_ on browsers that do not support the `window.requestAnimationFrame()` method. That is currently only Internet Explorer 9 and the Android Browser. Once support is dropped for these browsers, the property will serve no purpose and it will be removed.
+**Cause**: As of jQuery 4.0, the `jQuery.fx.interval` property is no longer consulted and it's no longer possible to change the animation interval on browsers that do not support the `window.requestAnimationFrame()` method.
 
 **Solution**: Find and remove code that changes or uses `jQuery.fx.interval`. If the value is being used by code in your page or a plugin, the code may be making assumptions that are no longer valid. The default value of `jQuery.fx.interval` is `13` (milliseconds), which could be used instead of accessing this property.
-
-### \[andSelf\] JQMIGRATE: jQuery.fn.andSelf() is deprecated and removed, use jQuery.fn.addBack()
-
-**Cause**: The `.andSelf()` method has been renamed to `.addBack()` as of jQuery 1.9 to better reflect its purpose of adding back the previous set of results. The old alias was removed in jQuery 3.0.
-
-**Solution**: Replace any use of `.andSelf()` with `.addBack()`.
-
-### \[size\] JQMIGRATE: jQuery.fn.size() is deprecated and removed; use the .length property
-
-**Cause**: The `.size()` method returns the number of elements in the current jQuery object, but duplicates the more-efficient `.length` property which provides the same functionality. As of jQuery 1.9 the `.length` property is the preferred way to retrieve this value. jQuery 3.0 no longer contains the `.size()` method.
-
-**Solution**: Replace any use of `.size()` with `.length`.
-
-### \[data-camelCase\] JQMIGRATE: jQuery.data() always sets/gets camelCased names
-
-**Cause:** The page is attempting to set or get a jQuery data item using kebab case, e.g. `my-data`, when a `my-data` item has been set directly on the jQuery data object. jQuery 3.0 always exclusively uses camel case, e.g., `myData`, when it accesses data items via the `.data()` API and does not find kebab case data in that object.
-
-**Solution:** Either 1) Always use the `.data()` API to set or get data items, 2) Always use camelCase names when also setting properties directly on jQuery's data object, or 3) Always set properties directly on the data object without using the API call to set or get data by name. Never mix direct access to the data object and API calls with kebab case names.
-
-### \[removeAttr-bool\] JQMIGRATE: jQuery.fn.removeAttr no longer sets boolean properties
-
-**Cause**: Prior to jQuery 3.0, using `.removeAttr()` on a boolean attribute such as `checked`, `selected`, or `readonly` would also set the corresponding named *property* to `false`. This behavior was required for ancient versions of Internet Explorer but is not correct for modern browsers because the attribute represents the initial value and the property represents the current (dynamic) value.
-
-**Solution**: It is almost always a mistake to use `.removeAttr( "checked" )` on a DOM element. The only time it might be useful is if the DOM is later going to be serialized back to an HTML string. In all other cases, `.prop( "checked", false )` should be used instead.
 
 ### \[boolean-attributes\] JQMIGRATE: Boolean attribute 'NAME' value is different from its lowercased name
 ### \[boolean-attributes\] JQMIGRATE: Boolean attribute 'NAME' value is not set to its lowercased name
@@ -103,76 +58,28 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: If you want to set the value of an attribute to `"false"`, wrap it in quotes: `.attr( name, "false" )`.
 
-### \[offset-valid-elem\] JQMIGRATE: jQuery.fn.offset() requires a valid DOM element
-
-**Cause:** In earlier versions of jQuery, the `.offset()` method would return a value of `{ top: 0, left: 0 }` for some cases of invalid input. jQuery 3.0 throws errors in some of these cases. The selected element in the jQuery collection must be a DOM element that has a `getBoundingClientRect` method. Text nodes, the `window` object, and plain JavaScript objects are not valid input to the `.offset()` method. jQuery *may* throw an error in those cases but in general does not guarantee specific results with invalid inputs.
-
-**Solution**: Do not attempt to get or set the offset information of invalid input.
-
-### \[param-ajax-traditional\] JQMIGRATE: jQuery.param() no longer uses jQuery.ajaxSettings.traditional
-
-**Cause:** As of jQuery 3.0, the serialization method `jQuery.param` is fully independent of jQuery's ajax module. As a result, it does not look at the `jQuery.ajaxSettings.traditional` flag that affects how form data is encoded. Note that the `jQuery.ajax()` method still honors this flag if you make a request through it.
-
-**Solution:** To continue using the `traditional` flag, pass it explicitly: `jQuery.param( myData, jQuery.ajaxSettings.traditional )`.
-
-### \[swap\] JQMIGRATE: jQuery.swap() is undocumented and deprecated
-
-**Cause**: The `jQuery.swap()` method temporarily exchanges a set of CSS properties. It was never documented as part of jQuery's public API and should not be used because it can cause performance problems due to forced layout. This method has been removed in jQuery 3.0.
-
-**Solution**: Rework the code to avoid calling `jQuery.swap()`, or explicitly set and restore the properties you need to change.
-
 ### \[pre-on-methods\] JQMIGRATE: jQuery.fn.bind() is deprecated
 ### \[pre-on-methods\] JQMIGRATE: jQuery.fn.unbind() is deprecated
 ### \[pre-on-methods\] JQMIGRATE: jQuery.fn.delegate() is deprecated
 ### \[pre-on-methods\] JQMIGRATE: jQuery.fn.undelegate() is deprecated
 
-**Cause:**: These event binding methods have been deprecated in favor of the `.on()` and `.off()` methods which can handle both delegated and direct event binding. Although the older methods are still present in jQuery 3.0, they may be removed as early as the next major-version update.
+**Cause:**: These event binding methods have been deprecated in favor of the `.on()` and `.off()` methods which can handle both delegated and direct event binding. Although the older methods are still present in jQuery 4.x, they may be removed as early as the next major-version update.
 
 **Solution**: Change the method call to use `.on()` or `.off()`, the documentation for the old methods include specific instructions. In general, the `.bind()` and `.unbind()` methods can be renamed directly to `.on()` and `.off()` respectively since the argument orders are identical.
 
-### \[ready-event\] JQMIGRATE: 'ready' event is deprecated
+### \[parseJSON\] JQMIGRATE: jQuery.parseJSON is deprecated and removed; use JSON.parse
 
-**Cause**: Using one of jQuery's API methods to bind a "ready" event, e.g. `$( document ).on( "ready", fn )`, will cause the function to be called when the document is ready, but only if it is attached before the browser fires its own `DOMContentLoaded` event. That makes it unreliable for many uses, particularly ones where jQuery or its plugins are loaded asynchronously after page load.
-
-**Solution**: Replace any use of `$( document ).on( "ready", fn )` with `$( fn )`. This approach works reliably even when the document is already loaded.
-
-### \[easing-one-arg\] JQMIGRATE: 'jQuery.easing.NAME' should use only one argument
-
-**Cause**: Additional arguments for `jQuery.easing` methods were never documented and are redundant since the same behavior can be easily achieved without them. When Migrate detects this case, the specified easing function is not used and `"linear"` easing is used instead for the animation.
-
-**Solution**: Rewrite the easing function to only use one argument. If you are using the [jQuery Easing plugin](http://gsgd.co.uk/sandbox/jquery/easing), upgrade to [version 1.4.0 or higher](https://github.com/gdsmith/jquery.easing/releases).
-
-For example, to implement [Cubic](https://en.wikipedia.org/wiki/Cubic_function) easing, the old function might be:
-
-```js
-jQuery.easing.easeInCubic = function ( p, t, b, c, d ) {
-	return c * ( t /= d ) * t * t + b;
-}
-```
-
-You can achive same effect with this:
-
-```js
-jQuery.easing.easeInCubic = function ( p ) {
-	return Math.pow( p, 3 );
-}
-```
-
-See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58b6ad122ab425c4cc1a4da4a520#diff-9cd789a170c765edcf0f4854db386e1a) for other possible cases.
-
-### \[parseJSON\] JQMIGRATE: jQuery.parseJSON is deprecated; use JSON.parse
-
-**Cause**: The `jQuery.parseJSON` method in recent jQuery is identical to the native `JSON.parse`. As of jQuery 3.0 `jQuery.parseJSON` is deprecated.
+**Cause**: The `jQuery.parseJSON` method in recent jQuery is identical to the native `JSON.parse`. As of jQuery 4.0 `jQuery.parseJSON` is removed.
 
 **Solution**: Replace any use of `jQuery.parseJSON` with `JSON.parse`.
 
-### \[isNumeric\] JQMIGRATE: jQuery.isNumeric() is deprecated
+### \[isNumeric\] JQMIGRATE: jQuery.isNumeric() is deprecated and removed
 
 **Cause**: This method was used by jQuery to determine if certain string arguments could be converted to numbers, but the name led people to apply their own interpretations to what the method means. As a result, it often doesn't meet the needs of specific cases. For example, a 25-character string of only digits is technically a valid number, but JavaScript cannot represent it accurately. The string `"0x251D"` is a valid hexadecimal number but may not be acceptable numeric input to a web form.
 
 **Solution**: Use a test for being numeric that makes sense for the specific situation. For example, instead of `jQuery.isNumeric(string)`, use `isNan(parseFloat(string))` if a floating point number is expected, or `string.test(/^[0-9]{1,8}$/)` if a sequence of 1 to 8 digits is expected.
 
-### \[type\] JQMIGRATE: jQuery.type() is deprecated
+### \[type\] JQMIGRATE: jQuery.type() is deprecated and removed
 
 **Cause**: This method returns a string that indicates the type of the argument, for example `"number"` or `"function"`. However, as the JavaScript language evolves this method has become problematic because new language constructs might require this function to either return a new string (potentially breaking existing code) or somehow map new constructs into existing strings (again, potentially breaking existing code). Examples of new recent JavaScript features include asynchronous functions, class constructors, `Symbol`s, or functions that act as iterators.
 
@@ -186,9 +93,9 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution**: Replace `.push( node )` with `.add( node )`, `.splice( index )` with `.not( elem.eq( index ) )`. In more complex cases, call `.toArray()` first, manipulate the resulting array and convert back to the jQuery object by passing the resulting array to `$()`.
 
-### \[unique\] JQMIGRATE: jQuery.unique is deprecated; use jQuery.uniqueSort
+### \[unique\] JQMIGRATE: jQuery.unique() is deprecated and removed; use jQuery.uniqueSort()
 
-**Cause**: The fact that `jQuery.unique` sorted its results in DOM order was surprising to many who did not read the documentation carefully. As of jQuery 3.0 this function is being renamed to make it clear.
+**Cause**: The fact that `jQuery.unique` sorted its results in DOM order was surprising to many who did not read the documentation carefully. As of jQuery 3.0 this function is being renamed to make it clear. As of jQuery 4.0, the old alias no longer exists.
 
 **Solution**: Replace all uses of `jQuery.unique` with `jQuery.uniqueSort` which is the same function with a better name.
 
@@ -199,25 +106,17 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution:** Rename any of the older usage to `jQuery.expr.pseudos`. The functionality is identical.
 
-### \[toggleClass-bool\] JQMIGRATE: jQuery.fn.toggleClass( \[ boolean \] ) is deprecated
+### \[toggleClass-bool\] JQMIGRATE: jQuery.fn.toggleClass( \[ boolean \] ) is deprecated and removed
 
 **Cause:** Calling `.toggleClass()` with no arguments, or with a single Boolean `true` or `false` argument, has been deprecated. Its behavior was poorly documented, but essentially the method saved away the current `class` value in a data item when the class was removed and restored the saved value when it was toggled back. If you do not believe you are specificially trying to use this form of the method, it is possible you are accidentally doing so via an inadvertent undefined value, as `.toggleClass( undefined )` toggles all classes.
 
 **Solution:** If this functionality is still needed, save the current full `.attr( "class" )` value in a data item and restore it when required.
 
-### \[event-old-patch\] JQMIGRATE: jQuery.event.props are deprecated and removed
-### \[event-old-patch\] JQMIGRATE: jQuery.event.props.concat() is deprecated and removed
-### \[event-old-patch\] JQMIGRATE: jQuery.event.fixHooks are deprecated and removed
-
-**Cause:** The code on the page has used the `jQuery.event.props` or `jQuery.event.fixHooks` data structures. These were used in previous versions to affect the properties that are copied from the native event to the jQuery event each time an event is delivered, but they had the potential to create performance issues. Versions of jQuery Mobile before 1.5 make use of this API and require jQuery Migrate to run properly.
-
-**Solution:** The most popular use of these data structures are to add properties for touch or pointer events, and those properties are now supported by default with a newer high-performance approach in jQuery 3.0 that only retrieves the properties on first access. If you are using jQuery Mobile, check the [jquerymobile.com](https://jquerymobile.com) site for updates. If you are using plugins such as [pointerTouch](https://github.com/timmywil/jquery.event.pointertouch) or [touchHooks](https://github.com/aarongloege/jquery.touchHooks), simply remove them as they are no longer needed.
-
 ### \[load-after-event\] JQMIGRATE: jQuery(window).on('load'...) called after load event occurred
 
 **Cause:** The calling code has attempted to attach a `load` event to `window` after the page has already loaded. That means the handler will never run and so is probably not what the caller intended. This can occur when the event attachment is made too late, for example, in a jQuery ready handler. It can also occur when a file is loaded dynamically with jQuery after the page has loaded, for example using the `$.getScript()` method.
 
-**Solution:** If a function `fn` does not actually depend on all page assets being fully loaded, switch to a ready handler `$( fn )` which runs earlier and will aways run `fn` even if the script that contains the code loads long after the page has fully loaded. If `fn` actually does depend on the script being fully loaded, check `document.readyState`. If the value is `"complete"` run the function immediately, otherwise use `$(window).on( "load", fn )`.
+**Solution:** If a function `fn` does not actually depend on all page assets being fully loaded, switch to a ready handler `$( fn )` which runs earlier and will always run `fn` even if the script that contains the code loads long after the page has fully loaded. If `fn` actually does depend on the script being fully loaded, check `document.readyState`. If the value is `"complete"` run the function immediately, otherwise use `$(window).on( "load", fn )`.
 
 ### \[holdReady\] JQMIGRATE: jQuery.holdReady() is deprecated
 
@@ -225,13 +124,13 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution:** Rewrite the page so that it does not require all jQuery ready handlers to be delayed. This might be accomplished, for example, by late-loading only the code that requires the delay when it is safe to run. Due to the complexity of this method, jQuery Migrate does not attempt to fill the functionality. If the underlying version of jQuery used with jQuery Migrate no longer contains `jQuery.holdReady()` the code will fail shortly after this warning appears.
 
-### \[isFunction\] JQMIGRATE: jQuery.isFunction() is deprecated
+### \[isFunction\] JQMIGRATE: jQuery.isFunction() is deprecated and removed
 
 **Cause:** This method returns `true` if its argument is thought to be a function. It was created to work around bugs in `typeof` implementations in legacy browsers.
 
 **Solution:** Replace any use of `jQuery.isFunction( x )` with `typeof x === "function"`.
 
-### \[isWindow\] JQMIGRATE: jQuery.isWindow() is deprecated
+### \[isWindow\] JQMIGRATE: jQuery.isWindow() is deprecated and removed
 
 **Cause:** This method returns `true` if its argument is thought to be a `window` element. It was created for internal use and is not a reliable way of detecting `window` for public needs.
 
@@ -249,7 +148,7 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution:** Instead of `.click(fn)` use `.on("click", fn)`. Instead of `.click()` use `.trigger("click")`.
 
-### \[pre-on-methods\] JQMIGRATE: jQuery.fn.hover() is deprecated
+### \[hover\] JQMIGRATE: jQuery.fn.hover() is deprecated
 
 **Cause:** The `.hover()` method is a shorthand for the use of the `mouseover`/`mouseout` events. It is often a poor user interface choice because it does not allow for any small amounts of delay between when the mouse enters or exits an area and when the event fires. This can make it quite difficult to use with UI widgets such as drop-down menus. For more information on the problems of hovering, see the [hoverIntent plugin](http://cherne.net/brian/resources/jquery.hoverIntent.html).
 
@@ -257,39 +156,33 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 ### \[nodeName\] JQMIGRATE: jQuery.nodeName() is deprecated
 
-**Cause:** This public but never-documented method has been deprecated as of jQuery 3.2.0.
+**Cause:** This public but never-documented method has been deprecated as of jQuery 3.2.0 and removed as of jQuery 4.0.0.
 
 **Solution:** Replace calls such as `jQuery.nodeName( elem, "div" )` with a test such as `elem.nodeName.toLowerCase() === "div"`.
 
-### \[cssProps\] JQMIGRATE: jQuery.cssProps is deprecated
+### \[cssProps\] JQMIGRATE: jQuery.cssProps is deprecated and removed
 
 **Cause:** The `jQuery.cssProps` property is a public but undocumented object that allows CSS properties with one name to be mapped into another name. It was used for legacy browsers like IE8 that used non-standard names. This object is no longer used inside jQuery since all supported browsers now use the standard CSS property names.
 
 **Solution:** Remove any uses of `jQuery.cssProps` in application code.
 
-### \[isArray\] JQMIGRATE: jQuery.isArray is deprecated; use Array.isArray
+### \[isArray\] JQMIGRATE: jQuery.isArray() is deprecated and removed; use Array.isArray()
 
 **Cause:** Older versions of JavaScript made it difficult to determine if a particular object was a true Array, so jQuery provided a cross-browser function to do the work. The browsers supported by jQuery 3.0 all provide a standard method for this purpose.
 
 **Solution:** Replace any calls to `jQuery.isArray` with `Array.isArray`.
 
-### \[trim\] JQMIGRATE: jQuery.trim is deprecated; use String.prototype.trim
+### \[trim\] JQMIGRATE: jQuery.trim() is deprecated; use String.prototype.trim
 
 **Cause:** Older versions of IE & Android Browser didn't implement a method to `trim` strings so jQuery provided a cross-browser implementation. The browsers supported by jQuery 3.0 all provide a standard method for this purpose.
 
 **Solution:** Replace any calls to `jQuery.trim( text )` with `text.trim()` if you know `text` is a string; otherwise, you can replace it with `String.prototype.trim.call( text == null ? "" : text )`.
 
-### \[css-number\] JQMIGRATE: Number-typed values are deprecated for jQuery.fn.css( _(property name)_, value )
+### \[css-number\] JQMIGRATE: Auto-appending 'px' to number-typed values is deprecated and removed for jQuery.fn.css( _(property name)_, value )
 
 **Cause:** In past versions, when a number-typed value was passed to `.css()` jQuery converted it to a string and added `"px"` to the end. As the CSS standard has evolved, an increasingly large set of CSS properties now accept values that are unitless numbers, where this behavior is incorrect. It has become impractical to manage these exceptions in the `jQuery.cssNumber` object. In addition, some CSS properties like `line-height` can accept both a bare number `2` or a pixel value `2px`. jQuery cannot know the correct way to interpret `$.css("line-height", 2)` and currently treats it as `"2px"`.
 
 **Solution:** Always pass string values to `.css()`, and explicitly add units where required. For example, use `$.css("line-height", "2")` to specify 200% of the current line height or `$.css("line-height", "2px")` to specify pixels. When the numeric value is in a variable, ensure the value is converted to string, e.g. `$.css("line-height", String(height))` and `$.css("line-height", height+"px")`.
-
-### \[legacy-self-closed-tags\] JQMIGRATE: jQuery.UNSAFE_restoreLegacyHtmlPrefilter is deprecated
-
-**Cause:** jQuery Migrate 3.4.0 introduced a `jQuery.migrateEnablePatches` method used to enable any previously disabled patches. It should be used in place of the specialized `jQuery.UNSAFE_restoreLegacyHtmlPrefilter`. This warning is different as it applies to jQuery Migrate and not to jQuery itself.
-
-**Solution:** Search for the `jQuery.UNSAFE_restoreLegacyHtmlPrefilter()` calls in the code base and replace all occurrences with `jQuery.migrateEnablePatches( "self-closed-tags" )`.
 
 ### \[self-closed-tags\] JQMIGRATE: HTML tags must be properly nested and closed: _(HTML string)_
 
@@ -297,13 +190,13 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 **Solution:** Search for the reported HTML strings and edit the tags to close them explicitly. In some cases the strings passed to jQuery may be created inside the program and thus not searchable. Migrate warning messages include a stack trace that can be used to find the location of the usage in the code.
 
-### \[jsonp-promotion\] JQMIGRATE: JSON-to-JSONP auto-promotion is deprecated
+### \[jsonp-promotion\] JQMIGRATE: JSON-to-JSONP auto-promotion is deprecated and removed
 
 **Cause:** `jQuery.ajax` calls with `dataType: 'json'` with a provided callback are automatically converted by jQuery to JSONP requests unless the options also specify `jsonp: false`. Auto-promoting JSON requests to JSONP introduces a security risk as the developer may be unaware they're not just downloading data but executing code from a remote domain. This auto-promoting behavior is deprecated and will be removed in jQuery 4.0.0.
 
 **Solution:** To trigger a JSONP request, specify the `dataType: "jsonp"` option.
 
-### \[deferred-getStackHook\] JQMIGRATE: jQuery.Deferred.getStackHook is deprecated; use jQuery.Deferred.getErrorHook
+### \[deferred-getStackHook\] JQMIGRATE: jQuery.Deferred.getStackHook is deprecated and removed; use jQuery.Deferred.getErrorHook
 
 **Cause:** `jQuery.Deferred.getStackHook` was originally created to pass the stack trace from before an async barrier to report when a user error (like calling a non-existing function) causes a promise to be rejected. However, passing a stack trace doesn't take source maps into account, so we started advising to pass the whole error object. To make it clearer, we also renamed the API to `jQuery.Deferred.getErrorHook`. The legacy alias will be removed in jQuery 4.0.0
 

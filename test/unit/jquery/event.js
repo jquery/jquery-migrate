@@ -1,59 +1,6 @@
 
 QUnit.module( "event" );
 
-QUnit.test( "error() event method", function( assert ) {
-	assert.expect( 2 );
-
-	expectWarning( assert, "jQuery.fn.error()", function() {
-		jQuery( "<img />" )
-			.error( function() {
-				assert.ok( true, "Triggered error event" );
-			} )
-			.error()
-			.off( "error" )
-			.error()
-			.remove();
-	} );
-} );
-
-QUnit.test( "load() and unload() event methods", function( assert ) {
-	assert.expect( jQuery.ajax ? 5 : 4 );
-
-	expectWarning( assert, "jQuery.fn.load()", function() {
-		jQuery( "<img />" )
-			.load( function() {
-				assert.ok( true, "Triggered load event" );
-			} )
-			.load()
-			.off( "load" )
-			.load()
-			.remove();
-	} );
-
-	expectWarning( assert, "jQuery.fn.unload()", function() {
-		jQuery( "<img />" )
-			.unload( function() {
-				assert.ok( true, "Triggered unload event" );
-			} )
-			.unload()
-			.off( "unload" )
-			.unload()
-			.remove();
-	} );
-
-	if ( jQuery.ajax ) {
-		expectNoWarning( assert, "ajax load", function() {
-			var start = assert.async();
-			jQuery( "<div id=load138></div>" )
-				.appendTo( "#qunit-fixture" )
-				.load( "not-found.file", function() {
-					jQuery( "#load138" ).remove();
-					start();
-				} );
-		} );
-	}
-} );
-
 QUnit.test( ".bind() and .unbind()", function( assert ) {
 	assert.expect( 3 );
 
@@ -128,59 +75,6 @@ QUnit.test( "Event aliases", function( assert ) {
 		).trigger( "mouseenter" ).trigger( "mouseleave" );
 	} );
 } );
-
-QUnit.test( "custom ready", function( assert ) {
-	assert.expect( 2 );
-
-	jQuery( "#qunit-fixture" ).append( "<div id='foo'>bar</div>" );
-
-	expectNoWarning( assert, "Custom ready event not on document", 1, function() {
-		jQuery( "#foo" ).on( "ready", function() {
-			assert.ok( true, "custom ready event was triggered" );
-		} )
-		.trigger( "ready" )
-		.off( "ready" );
-	} );
-} );
-
-TestManager.runIframeTest( "document ready", "event-ready.html",
-	function( assert, jQuery ) {
-		assert.expect( 1 );
-
-		assert.equal( jQuery.migrateWarnings.length, 1, "warnings: " +
-			JSON.stringify( jQuery.migrateWarnings ) );
-	} );
-
-TestManager.runIframeTest( "jQuery.event.props.concat", "event-props-concat.html",
-	function( assert, jQuery, _window, _document, _log, props ) {
-		assert.expect( 3 );
-
-		var warns = JSON.stringify( jQuery.migrateWarnings );
-
-		assert.equal( jQuery.migrateWarnings.length, 1, "one warning" );
-		assert.ok( warns.indexOf( "props.concat" ) >= 0, "warnings: " + warns );
-		assert.equal( props[ 0 ], "TESTING", "used the empty props" );
-	} );
-
-// Do this as iframe because there is no way to undo prop addition
-TestManager.runIframeTest( "jQuery.event.props", "event-props.html",
-	function( assert, jQuery, window, document, log, test1, test2 ) {
-		assert.expect( 2 );
-
-		assert.ok( test1 && test2, "props were processed" );
-		assert.equal( jQuery.migrateWarnings.length, 2, "warnings: " +
-			JSON.stringify( jQuery.migrateWarnings ) );
-	} );
-
-// Do this as iframe because there is no way to undo prop addition
-TestManager.runIframeTest( "jQuery.event.fixHooks", "event-fixHooks.html",
-	function( assert, jQuery, window, document, log, test1, test2 ) {
-		assert.expect( 2 );
-
-		assert.ok( test1 && test2, "hooks were processed" );
-		assert.equal( jQuery.migrateWarnings.length, 2, "warnings: " +
-			JSON.stringify( jQuery.migrateWarnings ) );
-	} );
 
 TestManager.runIframeTest( "Load within a ready handler", "event-lateload.html",
 	function( assert, jQuery ) {

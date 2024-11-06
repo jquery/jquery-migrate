@@ -79,7 +79,7 @@ Object.defineProperty( jQuery.Deferred, "getStackHook", {
 	get: function() {
 		if ( jQuery.migrateIsPatchEnabled( "deferred-getStackHook" ) ) {
 			migrateWarn( "deferred-getStackHook",
-				"jQuery.Deferred.getStackHook is deprecated; " +
+				"jQuery.Deferred.getStackHook is deprecated and removed; " +
 				"use jQuery.Deferred.getErrorHook" );
 			return jQuery.Deferred.getErrorHook;
 		} else {
@@ -89,7 +89,7 @@ Object.defineProperty( jQuery.Deferred, "getStackHook", {
 	set: function( newValue ) {
 		if ( jQuery.migrateIsPatchEnabled( "deferred-getStackHook" ) ) {
 			migrateWarn( "deferred-getStackHook",
-				"jQuery.Deferred.getStackHook is deprecated; " +
+				"jQuery.Deferred.getStackHook is deprecated and removed; " +
 					"use jQuery.Deferred.getErrorHook" );
 			jQuery.Deferred.getErrorHook = newValue;
 		} else {

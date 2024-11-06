@@ -1,12 +1,10 @@
 import { migratePatchFunc, migrateWarn } from "../main.js";
 
-var oldRemoveAttr = jQuery.fn.removeAttr,
-	oldJQueryAttr = jQuery.attr,
+var oldJQueryAttr = jQuery.attr,
 	oldToggleClass = jQuery.fn.toggleClass,
 	booleans = "checked|selected|async|autofocus|autoplay|controls|defer|" +
 		"disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",
 	rbooleans = new RegExp( "^(?:" + booleans + ")$", "i" ),
-	rmatchNonSpace = /\S+/g,
 
 	// Some formerly boolean attributes gained new values with special meaning.
 	// Skip the old boolean attr logic for those values.
@@ -92,34 +90,6 @@ migratePatchFunc( jQuery, "attr", function( elem, name, value ) {
 	return oldJQueryAttr.apply( this, arguments );
 }, "attr-false" );
 
-migratePatchFunc( jQuery.fn, "removeAttr", function( name ) {
-	var self = this,
-		patchNeeded = false;
-
-	jQuery.each( name.match( rmatchNonSpace ), function( _i, attr ) {
-		if ( rbooleans.test( attr ) ) {
-
-			// Only warn if at least a single node had the property set to
-			// something else than `false`. Otherwise, this Migrate patch
-			// doesn't influence the behavior and there's no need to set or warn.
-			self.each( function() {
-				if ( jQuery( this ).prop( attr ) !== false ) {
-					patchNeeded = true;
-					return false;
-				}
-			} );
-		}
-
-		if ( patchNeeded ) {
-			migrateWarn( "removeAttr-bool",
-				"jQuery.fn.removeAttr no longer sets boolean properties: " + attr );
-			self.prop( attr, false );
-		}
-	} );
-
-	return oldRemoveAttr.apply( this, arguments );
-}, "removeAttr-bool" );
-
 migratePatchFunc( jQuery.fn, "toggleClass", function( state ) {
 
 	// Only deprecating no-args or single boolean arg
@@ -128,7 +98,7 @@ migratePatchFunc( jQuery.fn, "toggleClass", function( state ) {
 		return oldToggleClass.apply( this, arguments );
 	}
 
-	migrateWarn( "toggleClass-bool", "jQuery.fn.toggleClass( boolean ) is deprecated" );
+	migrateWarn( "toggleClass-bool", "jQuery.fn.toggleClass( boolean ) is deprecated and removed" );
 
 	// Toggle entire class name of each element
 	return this.each( function() {

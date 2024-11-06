@@ -12,37 +12,31 @@ var arr = [],
 	// to avoid O(N^2) behavior when the engine would try matching "\s+$" at each space position.
 	rtrim = /^[\s\uFEFF\xA0]+|([^\s\uFEFF\xA0])[\s\uFEFF\xA0]+$/g;
 
-// The number of elements contained in the matched element set
-migratePatchAndWarnFunc( jQuery.fn, "size", function() {
-	return this.length;
-}, "size",
-"jQuery.fn.size() is deprecated and removed; use the .length property" );
-
 migratePatchAndWarnFunc( jQuery, "parseJSON", function() {
 	return JSON.parse.apply( null, arguments );
 }, "parseJSON",
-"jQuery.parseJSON is deprecated; use JSON.parse" );
+"jQuery.parseJSON is deprecated and removed; use JSON.parse" );
 
 migratePatchAndWarnFunc( jQuery, "holdReady", jQuery.holdReady,
 	"holdReady", "jQuery.holdReady is deprecated" );
 
 migratePatchAndWarnFunc( jQuery, "unique", jQuery.uniqueSort,
-	"unique", "jQuery.unique is deprecated; use jQuery.uniqueSort" );
+	"unique", "jQuery.unique() is deprecated and removed; use jQuery.uniqueSort()" );
 
 migratePatchAndWarnFunc( jQuery, "trim", function( text ) {
 	return text == null ?
 		"" :
 		( text + "" ).replace( rtrim, "$1" );
 }, "trim",
-"jQuery.trim is deprecated; use String.prototype.trim" );
+"jQuery.trim() is deprecated and removed; use String.prototype.trim" );
 
 migratePatchAndWarnFunc( jQuery, "nodeName", function( elem, name ) {
 	return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
 }, "nodeName",
-"jQuery.nodeName is deprecated" );
+"jQuery.nodeName() is deprecated and removed" );
 
 migratePatchAndWarnFunc( jQuery, "isArray", Array.isArray, "isArray",
-	"jQuery.isArray is deprecated; use Array.isArray"
+	"jQuery.isArray() is deprecated and removed; use Array.isArray()"
 );
 
 migratePatchAndWarnFunc( jQuery, "isNumeric",
@@ -59,7 +53,7 @@ migratePatchAndWarnFunc( jQuery, "isNumeric",
 			// subtraction forces infinities to NaN
 			!isNaN( obj - parseFloat( obj ) );
 	}, "isNumeric",
-	"jQuery.isNumeric() is deprecated"
+	"jQuery.isNumeric() is deprecated and removed"
 );
 
 // Populate the class2type map
@@ -78,18 +72,18 @@ migratePatchAndWarnFunc( jQuery, "type", function( obj ) {
 		class2type[ Object.prototype.toString.call( obj ) ] || "object" :
 		typeof obj;
 }, "type",
-"jQuery.type is deprecated" );
+"jQuery.type() is deprecated abd removed" );
 
 migratePatchAndWarnFunc( jQuery, "isFunction", function( obj ) {
 	return typeof obj === "function";
 }, "isFunction",
-"jQuery.isFunction() is deprecated" );
+"jQuery.isFunction() is deprecated and removed" );
 
 migratePatchAndWarnFunc( jQuery, "isWindow",
 	function( obj ) {
 		return obj != null && obj === obj.window;
 	}, "isWindow",
-	"jQuery.isWindow() is deprecated"
+	"jQuery.isWindow() is deprecated and removed"
 );
 
 // Bind a function to a context, optionally partially applying any
