@@ -106,13 +106,13 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 ### \[boolean-attributes\] JQMIGRATE: Boolean attribute 'NAME' value is different from its lowercased name
 ### \[boolean-attributes\] JQMIGRATE: Boolean attribute 'NAME' value is not set to its lowercased name
 
-**Cause**: Prior to jQuery 4.0, when calling `.attr( name, value )` with any non-`false` non-`null` `value`, jQuery would actually set it to `name`. Similarly, regardless of the actual value, `.attr( name )` used to return `name` lowercased. jQuery 4.0 removes this special behavior.
+**Cause**: When calling `.attr( name, value )` with any non-`false` non-`null` `value`, jQuery would actually set it to `name`. Similarly, regardless of the actual value, `.attr( name )` used to return `name` lowercased. This behavior is deprecated.
 
 **Solution**: Always set boolean attributes to their names, whether when using jQuery (`.attr( name, name )`), native APIs (`.setAttribute( name, name )`) or directly in HTML (`<input checked="checked">`).
 
 ### \[attr-false\] JQMIGRATE: Setting the non-ARIA non-boolean attribute 'NAME' to false
 
-**Cause**: Prior to jQuery 4.0, calling `.attr( name, false )` was only removing the attribute when `name` was a boolean attribute; otherwise, it was setting the attribute value to `"false"`. In jQuery 4.x, it will remove any non-ARIA attribute.
+**Cause**: Calling `.attr( name, false )` only removes the attribute when `name` is a boolean attribute; otherwise, it sets the attribute value to `"false"`. This behavior is deprecated for non-ARIA attributes.
 
 **Solution**: If you want to set the value of an attribute to `"false"`, wrap it in quotes: `.attr( name, "false" )`.
 
