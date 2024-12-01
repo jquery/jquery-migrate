@@ -3,10 +3,6 @@
 export const jquery = [
 	"dev",
 	"min",
-	"git",
-	"git.min",
-	"git.slim",
-	"git.slim.min",
 	"3.x-git",
 	"3.x-git.min",
 	"3.x-git.slim",

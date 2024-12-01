@@ -47,7 +47,6 @@ jobs:
           npm run pretest
           npm run test:unit -- -b ${{ matrix.BROWSER }} -h \
             --jquery-migrate ${{ matrix.MIGRATE_VERSION }} \
-            --jquery git --jquery git.min --jquery git.slim --jquery git.slim.min \
             --jquery 3.x-git --jquery 3.x-git.min --jquery 3.x-git.slim --jquery 3.x-git.slim.min \
             --jquery 3.7.1 --jquery 3.7.1.slim \
             --jquery 3.6.4 --jquery 3.5.1 --jquery 3.4.1 \
@@ -84,7 +83,6 @@ jobs:
         run: |
           npm run test:ie -- ^
             --jquery-migrate ${{ env.MIGRATE_VERSION }} ^
-            --jquery git --jquery git.min --jquery git.slim --jquery git.slim.min ^
             --jquery 3.x-git --jquery 3.x-git.min --jquery 3.x-git.slim --jquery 3.x-git.slim.min ^
             --jquery 3.7.1 --jquery 3.7.1.slim ^
             --jquery 3.6.4 --jquery 3.5.1 --jquery 3.4.1 ^
@@ -120,7 +118,6 @@ jobs:
         run: |
           npm run test:safari -- \
             --jquery-migrate ${{ env.MIGRATE_VERSION }} \
-            --jquery git --jquery git.min --jquery git.slim --jquery git.slim.min \
             --jquery 3.x-git --jquery 3.x-git.min --jquery 3.x-git.slim --jquery 3.x-git.slim.min \
             --jquery 3.7.1 --jquery 3.7.1.slim \
             --jquery 3.6.4 --jquery 3.5.1 --jquery 3.4.1 \

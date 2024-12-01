@@ -3,7 +3,7 @@
 export const jqueryMigrate = [
 	"dev",
 	"min",
-	"git",
+	"3.x-git",
 	"3.4.1",
 	"3.4.0",
 	"3.3.2",

@@ -10,10 +10,10 @@ if ( !window.console || !window.console.log ) {
 	return;
 }
 
-// Need jQuery 3.x-4.x and no older Migrate loaded
+// Need jQuery 3.x and no older Migrate loaded
 if ( !jQuery || !jQueryVersionSince( "3.0.0" ) ||
-		jQueryVersionSince( "5.0.0" ) ) {
-	window.console.log( "JQMIGRATE: jQuery 3.x-4.x REQUIRED" );
+		jQueryVersionSince( "4.0.0" ) ) {
+	window.console.log( "JQMIGRATE: jQuery 3.x REQUIRED" );
 }
 if ( jQuery.migrateWarnings ) {
 	window.console.log( "JQMIGRATE: Migrate plugin loaded multiple times" );
