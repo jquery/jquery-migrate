@@ -42,7 +42,7 @@ export async function run( {
 		modules = allModules;
 	}
 	if ( !jquerys.length ) {
-		jquerys = [ "3.x-git.min" ];
+		jquerys = [ "git.min" ];
 	}
 	if ( !jqueryMigrates.length ) {
 		jqueryMigrates = [ "min" ];

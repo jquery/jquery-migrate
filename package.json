@@ -3,7 +3,7 @@
 	"title": "jQuery Migrate",
 	"description": "Migrate older jQuery code to jQuery 3.0+",
 	"main": "dist/jquery-migrate.js",
-	"version": "3.5.3-pre",
+	"version": "4.0.0-pre",
 	"type": "module",
 	"homepage": "https://github.com/jquery/jquery-migrate",
 	"author": {
@@ -34,7 +34,7 @@
 		"test": "npm run test:node_smoke_tests && npm run test:browser"
 	},
 	"peerDependencies": {
-		"jquery": ">=3 <4"
+		"jquery": ">=4 <5"
 	},
 	"devDependencies": {
 		"@types/selenium-webdriver": "4.1.22",
@@ -52,7 +52,7 @@
 		"express-body-parser-error-handler": "1.0.7",
 		"globals": "15.3.0",
 		"husky": "9.0.11",
-		"jquery": "3.7.1",
+		"jquery": "4.0.0-beta.2",
 		"jsdom": "24.1.0",
 		"native-promise-only": "0.8.1",
 		"qunit": "2.21.0",
