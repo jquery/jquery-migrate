@@ -64,8 +64,6 @@ jobs:
       - name: Test
         run: |
           npm run test:unit -- \
+            -c jtr-git.yml \
             -v --browserstack "${{ matrix.BROWSER }}" \
-            --jquery-migrate dev --jquery-migrate min \
-            --jquery git --jquery git.min --jquery git.slim --jquery git.slim.min \
             --run-id ${{ github.run_id }} \
-            --retries 3 --hard-retries 1

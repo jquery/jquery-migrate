@@ -1,0 +1,14 @@
+version: 1
+
+flags:
+	jquery:
+		- git
+		- git.min
+		- git.slim
+		- git.slim.min
+	jquery-migrate:
+		- dev
+		- min
+
+retries: 2
+hard-retries: 1
