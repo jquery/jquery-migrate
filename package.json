@@ -25,12 +25,12 @@
 		"prepare": "husky",
 		"pretest": "npm run npmcopy && npm run build && npm run lint",
 		"start": "npm run npmcopy && node build/tasks/build-watch.js",
-		"test:browser": "npm run pretest && npm run test:unit -- -b chrome -b firefox -h",
+		"test:browser": "npm run pretest && npm run test:unit -- -b chrome -b firefox --headless",
 		"test:ie": "npm run pretest && npm run test:unit -- -v -b ie",
 		"test:node_smoke_tests": "npm run pretest && node test/node_smoke_tests/smoke_tests.cjs",
 		"test:safari": "npm run pretest && npm run test:unit -- -v -b safari",
 		"test:server": "jtr serve",
-		"test:unit": "jtr run",
+		"test:unit": "jtr",
 		"test": "npm run test:node_smoke_tests && npm run test:browser"
 	},
 	"peerDependencies": {
