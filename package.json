@@ -46,7 +46,7 @@
 		"globals": "15.3.0",
 		"husky": "9.0.11",
 		"jquery": "3.7.1",
-		"jquery-test-runner": "github:timmywil/jquery-test-runner#f812ccae",
+		"jquery-test-runner": "0.1.0",
 		"jsdom": "24.1.0",
 		"native-promise-only": "0.8.1",
 		"qunit": "2.21.0",
