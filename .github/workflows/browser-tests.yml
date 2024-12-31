@@ -108,4 +108,4 @@ jobs:
       - name: Run tests
         run: |
           npm run test:safari -- -c jtr-local.yml \
-            --jquery-migrate ${{ env.MIGRATE_VERSION }}
+            -f plugin=${{ env.MIGRATE_VERSION }}

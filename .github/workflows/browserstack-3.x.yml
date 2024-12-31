@@ -3,7 +3,7 @@ name: Browserstack (Core 3.x)
 on:
   push:
     branches:
-      - jtr
+      - main
   # Once a week every Tuesday
   schedule:
     - cron: "12 2 * * 2"
