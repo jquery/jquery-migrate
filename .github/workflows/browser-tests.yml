@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - jtr
 
 env:
   NODE_VERSION: 20.x
@@ -45,10 +45,9 @@ jobs:
       - name: Run tests
         run: |
           npm run pretest
-          npm run test:unit -- \
+          npm run test:unit -- -c jtr-local.yml \
             --headless -b ${{ matrix.BROWSER }} \
-            -c jtr-local.yml \
-            --jquery-migrate ${{ matrix.MIGRATE_VERSION }} \
+            --jquery-migrate ${{ matrix.MIGRATE_VERSION }}
 
   ie:
     runs-on: windows-latest
@@ -78,8 +77,7 @@ jobs:
       - name: Run tests
         shell: cmd
         run: |
-          npm run test:ie -- `
-            -c jtr-local.yml `
+          npm run test:ie -- -c jtr-local.yml `
             --jquery-migrate ${{ env.MIGRATE_VERSION }}
 
   safari:
@@ -109,6 +107,5 @@ jobs:
 
       - name: Run tests
         run: |
-          npm run test:safari -- \
-            -c jtr-local.yml \
-            --jquery-migrate ${{ env.MIGRATE_VERSION }} \
+          npm run test:safari -- -c jtr-local.yml \
+            --jquery-migrate ${{ env.MIGRATE_VERSION }}

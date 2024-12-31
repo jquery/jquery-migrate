@@ -3,7 +3,7 @@ name: Browserstack (Core 3.x)
 on:
   push:
     branches:
-      - main
+      - jtr
   # Once a week every Tuesday
   schedule:
     - cron: "12 2 * * 2"
@@ -79,7 +79,6 @@ jobs:
 
       - name: Test
         run: |
-          npm run test:unit -- \
-            -c jtr-3.x.yml \
-            -v --browserstack "${{ matrix.BROWSER }}" \
+          npm run test:unit -- -v -c jtr-3.x.yml \
+            --browserstack "${{ matrix.BROWSER }}" \
             --run-id ${{ github.run_id }} \

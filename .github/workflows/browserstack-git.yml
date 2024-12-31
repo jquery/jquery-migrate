@@ -3,7 +3,7 @@ name: Browserstack (Core git)
 on:
   push:
     branches:
-      - main
+      - jtr
   # Once a week every Tuesday
   schedule:
     - cron: "42 1 * * 2"
@@ -63,7 +63,6 @@ jobs:
 
       - name: Test
         run: |
-          npm run test:unit -- \
-            -c jtr-git.yml \
-            -v --browserstack "${{ matrix.BROWSER }}" \
+          npm run test:unit -- -v -c jtr-git.yml \
+            --browserstack "${{ matrix.BROWSER }}" \
             --run-id ${{ github.run_id }} \
