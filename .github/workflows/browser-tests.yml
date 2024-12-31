@@ -46,8 +46,7 @@ jobs:
         run: |
           npm run pretest
           npm run test:unit -- -c jtr-local.yml \
-            --headless -b ${{ matrix.BROWSER }} \
-            --jquery-migrate ${{ matrix.MIGRATE_VERSION }}
+            --headless -b ${{ matrix.BROWSER }} -f plugin=${{ matrix.MIGRATE_VERSION }}
 
   ie:
     runs-on: windows-latest
@@ -76,9 +75,7 @@ jobs:
 
       - name: Run tests
         shell: cmd
-        run: |
-          npm run test:ie -- -c jtr-local.yml `
-            --jquery-migrate ${{ env.MIGRATE_VERSION }}
+        run: npm run test:ie -- -c jtr-local.yml -f plugin=${{ env.MIGRATE_VERSION }}
 
   safari:
     runs-on: macos-latest
@@ -106,6 +103,4 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: |
-          npm run test:safari -- -c jtr-local.yml \
-            -f plugin=${{ env.MIGRATE_VERSION }}
+        run: npm run test:safari -- -c jtr-local.yml -f plugin=${{ env.MIGRATE_VERSION }}
