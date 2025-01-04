@@ -3,7 +3,7 @@ name: Filestash
 on:
   push:
     branches:
-      - main
+      - 3.x-stable
 
 permissions:
   contents: read # to fetch code (actions/checkout)

@@ -78,16 +78,16 @@ Change directory to the newly created dir `jquery-migrate/`:
 $ cd jquery-migrate
 ```
 
-Add the jQuery Migrate `main` as a remote (e.g. `upstream`):
+Add the jQuery Migrate `3.x-stable` as a remote (e.g. `upstream`):
 
 ```bash
 $ git remote add upstream git@github.com:jquery/jquery-migrate.git
 ```
 
-Get in the habit of pulling in the "upstream" main to stay up to date as jQuery Migrate receives new commits:
+Get in the habit of pulling in the "upstream" `3.x-stable` to stay up to date as jQuery Migrate receives new commits:
 
 ```bash
-$ git pull upstream main
+$ git pull upstream 3.x-stable
 ```
 
 Install the necessary dependencies:
