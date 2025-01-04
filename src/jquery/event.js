@@ -114,15 +114,25 @@ jQuery.event.special.ready = {
 	}
 };
 
-migratePatchAndWarnFunc( jQuery.fn, "bind", jQuery.fn.bind,
-	"pre-on-methods", "jQuery.fn.bind() is deprecated" );
-migratePatchAndWarnFunc( jQuery.fn, "unbind", jQuery.fn.unbind,
-	"pre-on-methods", "jQuery.fn.unbind() is deprecated" );
-migratePatchAndWarnFunc( jQuery.fn, "delegate", jQuery.fn.delegate,
-	"pre-on-methods", "jQuery.fn.delegate() is deprecated" );
-migratePatchAndWarnFunc( jQuery.fn, "undelegate", jQuery.fn.undelegate,
-	"pre-on-methods", "jQuery.fn.undelegate() is deprecated" );
-
+// Support: jQuery <3.2.0 only
+// jQuery 3.0.x & 3.1.x used to not include the deprecated module in the slim build.
+// To maintain compatibility with those versions, we need to reimplement APIs
+// deprecated in them.
+// See https://github.com/jquery/jquery/blob/3.1.1/src/deprecated.js
+migratePatchAndWarnFunc( jQuery.fn, "bind", function( types, data, fn ) {
+	return this.on( types, null, data, fn );
+}, "pre-on-methods", "jQuery.fn.bind() is deprecated" );
+migratePatchAndWarnFunc( jQuery.fn, "unbind", function( types, fn ) {
+	return this.off( types, null, fn );
+}, "pre-on-methods", "jQuery.fn.unbind() is deprecated" );
+migratePatchAndWarnFunc( jQuery.fn, "delegate", function( selector, types, data, fn ) {
+	return this.on( types, selector, data, fn );
+}, "pre-on-methods", "jQuery.fn.delegate() is deprecated" );
+migratePatchAndWarnFunc( jQuery.fn, "undelegate", function( selector, types, fn ) {
+	return arguments.length === 1 ?
+		this.off( selector, "**" ) :
+		this.off( types, selector || "**", fn );
+}, "pre-on-methods", "jQuery.fn.undelegate() is deprecated" );
 migratePatchAndWarnFunc( jQuery.fn, "hover", function( fnOver, fnOut ) {
 	return this.on( "mouseenter", fnOver ).on( "mouseleave", fnOut || fnOver );
 }, "pre-on-methods", "jQuery.fn.hover() is deprecated" );
