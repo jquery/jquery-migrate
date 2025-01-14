@@ -7,7 +7,7 @@ on:
       - main
 
 env:
-  NODE_VERSION: 20.x
+  NODE_VERSION: 22.x
 
 jobs:
   test:
@@ -45,14 +45,8 @@ jobs:
       - name: Run tests
         run: |
           npm run pretest
-          npm run test:unit -- -b ${{ matrix.BROWSER }} -h \
-            --jquery-migrate ${{ matrix.MIGRATE_VERSION }} \
-            --jquery git --jquery git.min --jquery git.slim --jquery git.slim.min \
-            --jquery 3.x-git --jquery 3.x-git.min --jquery 3.x-git.slim --jquery 3.x-git.slim.min \
-            --jquery 3.7.1 --jquery 3.7.1.slim \
-            --jquery 3.6.4 --jquery 3.5.1 --jquery 3.4.1 \
-            --jquery 3.3.1 --jquery 3.2.1 --jquery 3.1.1 --jquery 3.0.0 \
-            --retries 1
+          npm run test:unit -- -c jtr-local.yml \
+            --headless -b ${{ matrix.BROWSER }} -f plugin=${{ matrix.MIGRATE_VERSION }}
 
   ie:
     runs-on: windows-latest
@@ -81,15 +75,7 @@ jobs:
 
       - name: Run tests
         shell: cmd
-        run: |
-          npm run test:ie -- ^
-            --jquery-migrate ${{ env.MIGRATE_VERSION }} ^
-            --jquery git --jquery git.min --jquery git.slim --jquery git.slim.min ^
-            --jquery 3.x-git --jquery 3.x-git.min --jquery 3.x-git.slim --jquery 3.x-git.slim.min ^
-            --jquery 3.7.1 --jquery 3.7.1.slim ^
-            --jquery 3.6.4 --jquery 3.5.1 --jquery 3.4.1 ^
-            --jquery 3.3.1 --jquery 3.2.1 --jquery 3.1.1 --jquery 3.0.0 ^
-            --retries 1
+        run: npm run test:ie -- -c jtr-local.yml -f plugin=${{ env.MIGRATE_VERSION }}
 
   safari:
     runs-on: macos-latest
@@ -117,12 +103,4 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: |
-          npm run test:safari -- \
-            --jquery-migrate ${{ env.MIGRATE_VERSION }} \
-            --jquery git --jquery git.min --jquery git.slim --jquery git.slim.min \
-            --jquery 3.x-git --jquery 3.x-git.min --jquery 3.x-git.slim --jquery 3.x-git.slim.min \
-            --jquery 3.7.1 --jquery 3.7.1.slim \
-            --jquery 3.6.4 --jquery 3.5.1 --jquery 3.4.1 \
-            --jquery 3.3.1 --jquery 3.2.1 --jquery 3.1.1 --jquery 3.0.0 \
-            --retries 1
+        run: npm run test:safari -- -c jtr-local.yml -f plugin=${{ env.MIGRATE_VERSION }}

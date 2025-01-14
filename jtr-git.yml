@@ -1,0 +1,14 @@
+version: 1
+
+runs:
+  jquery:
+    - git
+    - git.min
+    - git.slim
+    - git.slim.min
+  plugin:
+    - dev
+    - min
+
+retries: 2
+hard-retries: 1

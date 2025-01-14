@@ -244,8 +244,6 @@
 TestManager.init( {
 	"jquery": {
 		urlTag: "jquery",
-
-		// Keep in sync with test/runner/jquery.js
 		choices: [
 			"dev",
 			"min",
@@ -277,8 +275,6 @@ TestManager.init( {
 	},
 	"jquery-migrate": {
 		urlTag: "plugin",
-
-		// Keep in sync with test/runner/jquery-migrate.js
 		choices: [
 			"dev",
 			"min",

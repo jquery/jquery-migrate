@@ -15,7 +15,7 @@ jobs:
     env:
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-      NODE_VERSION: 20.x
+      NODE_VERSION: 22.x
     name: ${{ matrix.BROWSER }}
     concurrency:
       group: ${{ matrix.BROWSER }} - ${{ github.sha }}
@@ -79,13 +79,6 @@ jobs:
 
       - name: Test
         run: |
-          npm run test:unit -- \
-            -v --browserstack "${{ matrix.BROWSER }}" \
-            --jquery-migrate dev --jquery-migrate min \
-            --jquery 3.x-git --jquery 3.x-git.min --jquery 3.x-git.slim --jquery 3.x-git.slim.min \
-            --jquery 3.7.1 --jquery 3.7.1.slim --jquery 3.6.4 --jquery 3.6.4.slim \
-            --jquery 3.5.1 --jquery 3.5.1.slim --jquery 3.4.1 --jquery 3.4.1.slim \
-            --jquery 3.3.1 --jquery 3.3.1.slim --jquery 3.2.1 --jquery 3.2.1.slim \
-            --jquery 3.1.1 --jquery 3.1.1.slim --jquery 3.0.0 --jquery 3.0.0.slim \
+          npm run test:unit -- -v -c jtr-3.x.yml \
+            --browserstack "${{ matrix.BROWSER }}" \
             --run-id ${{ github.run_id }} \
-            --retries 3 --hard-retries 1
