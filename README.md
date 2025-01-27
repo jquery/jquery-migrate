@@ -18,7 +18,7 @@ The following table indicates which jQuery Migrate versions can be used with whi
 | 3.x            | 3.x                    |
 | 4.x            | 4.x                    |
 
-Each jQuery Migrate version supports the same browsers that the jQuery version used with it.
+Each jQuery Migrate version supports the same browsers that the jQuery version used with it. See the [jQuery Browser Support page](https://jquery.com/browser-support/) for more information.
 
 ## Usage
 
