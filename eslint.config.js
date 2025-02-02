@@ -99,8 +99,8 @@ export default [
 				QUnit: false,
 				sinon: false,
 				url: false,
-				expectWarning: false,
-				expectNoWarning: false,
+				expectMessage: false,
+				expectNoMessage: false,
 				compareVersions: false,
 				jQueryVersionSince: false,
 				startIframeTest: false,
@@ -132,8 +132,8 @@ export default [
 				url: true,
 				compareVersions: true,
 				jQueryVersionSince: false,
-				expectWarning: true,
-				expectNoWarning: true,
+				expectMessage: true,
+				expectNoMessage: true,
 				startIframeTest: true,
 				TestManager: true
 			}

@@ -8,7 +8,7 @@
 	 *	dev			Uncompressed development version: source files in the project /dist dir
 	 *	esmodules	Non-combined dev version: source files from the project /src dir
 	 *	min			Minified version in the project /dist dir
-	 *	VER			Version from code.jquery.com, e.g.: git, 1.8.2.min or 1.7rc1
+	 *	VER			Version from code.jquery.com, e.g.: git, 4.0.0.min or 4.0.0-beta.2
 	 *	else		Full or relative path to be used for script src
 	 */
 	loadProject: function( projectName, defaultVersion, isSelf ) {
@@ -28,8 +28,7 @@
 			file = projectRoot + "/dist/" + projectName + ".js";
 		} else if ( version === "min" ) {
 			file = projectRoot + "/dist/" + projectName + ".min.js";
-		} else if ( version.indexOf( "git" ) === 0 ||
-			version.indexOf( "3.x-git" ) === 0 ) {
+		} else if ( version.indexOf( "git" ) === 0 ) {
 			file = "https://releases.jquery.com/git/" + projectName + "-" + version + ".js";
 		} else if ( /^[\w\.\-]+$/.test( version ) ) {
 			file = "https://code.jquery.com/" + projectName + "-" + version + ".js";
@@ -63,15 +62,11 @@
 				"unit/jquery/ajax.js",
 				"unit/jquery/attributes.js",
 				"unit/jquery/css.js",
-				"unit/jquery/data.js",
 				"unit/jquery/deferred.js",
 				"unit/jquery/effects.js",
 				"unit/jquery/event.js",
 				"unit/jquery/manipulation.js",
-				"unit/jquery/offset.js",
-				"unit/jquery/selector.js",
-				"unit/jquery/serialize.js",
-				"unit/jquery/traversing.js"
+				"unit/jquery/selector.js"
 			];
 
 		testFiles.forEach( function( testFile ) {
@@ -188,20 +183,20 @@
 		};
 
 		QUnit.begin( function() {
-			originalDeduplicateWarnings = jQuery.migrateDeduplicateWarnings;
+			originalDeduplicateWarnings = jQuery.migrateDeduplicateMessages;
 		} );
 
 		QUnit.testStart( function( details ) {
 
-			// If only the first warning is reported, tests using `expectWarning`
+			// If only the first warning is reported, tests using `expectMessage`
 			// with multiple function calls would pass even if some of them didn't
 			// warn. Because of that, by default don't deduplicate warnings in tests.
-			if ( details.name !== "jQuery.migrateDeduplicateWarnings" ) {
-				jQuery.migrateDeduplicateWarnings = false;
+			if ( details.name !== "jQuery.migrateDeduplicateMessages" ) {
+				jQuery.migrateDeduplicateMessages = false;
 			} else {
 
 				// When testing this API, we want to start with its default value.
-				jQuery.migrateDeduplicateWarnings = originalDeduplicateWarnings;
+				jQuery.migrateDeduplicateMessages = originalDeduplicateWarnings;
 			}
 
 			if ( jQuery.migrateDisablePatches ) {
@@ -233,10 +228,7 @@
 				}
 
 				// Re-disable patches disabled by default
-				jQuery.migrateDisablePatches( "self-closed-tags" );
-				if ( jQueryVersionSince( "4.0.0" ) ) {
-					jQuery.migrateDisablePatches( "jsonp-promotion" );
-				}
+				jQuery.migrateDisablePatches( "self-closed-tags", "jsonp-promotion" );
 			}
 		} );
 	}
@@ -251,26 +243,8 @@ TestManager.init( {
 			"git.min",
 			"git.slim",
 			"git.slim.min",
-			"3.x-git",
-			"3.x-git.min",
-			"3.x-git.slim",
-			"3.x-git.slim.min",
-			"3.7.1",
-			"3.7.1.slim",
-			"3.6.4",
-			"3.6.4.slim",
-			"3.5.1",
-			"3.5.1.slim",
-			"3.4.1",
-			"3.4.1.slim",
-			"3.3.1",
-			"3.3.1.slim",
-			"3.2.1",
-			"3.2.1.slim",
-			"3.1.1",
-			"3.1.1.slim",
-			"3.0.0",
-			"3.0.0.slim"
+			"4.0.0-beta.2",
+			"4.0.0-beta.2.slim"
 		]
 	},
 	"jquery-migrate": {
@@ -279,15 +253,6 @@ TestManager.init( {
 			"dev",
 			"min",
 			"git",
-			"3.4.1",
-			"3.4.0",
-			"3.3.2",
-			"3.3.1",
-			"3.3.0",
-			"3.2.0",
-			"3.1.0",
-			"3.0.1",
-			"3.0.0",
 			"esmodules"
 		]
 	}

@@ -24,25 +24,25 @@ QUnit.test( "compareVersions and jQueryVersionSince", function( assert ) {
 	assert.equal( jQueryVersionSince( jQuery.fn.jquery ), true, "since - equal" );
 } );
 
-QUnit.test( "jQuery.migrateDeduplicateWarnings", function( assert ) {
+QUnit.test( "jQuery.migrateDeduplicateMessages", function( assert ) {
 	assert.expect( 3 );
 
-	var origValue = jQuery.migrateDeduplicateWarnings;
+	var origValue = jQuery.migrateDeduplicateMessages;
 	assert.strictEqual( origValue, true, "true by default" );
 
-	jQuery.migrateDeduplicateWarnings = true;
-	expectWarning( assert, "jQuery.migrateDeduplicateWarnings === true", 1, function() {
-		jQuery( "#" );
-		jQuery( "#" );
+	jQuery.migrateDeduplicateMessages = true;
+	expectMessage( assert, "jQuery.migrateDeduplicateMessages === true", 1, function() {
+		jQuery.trim( " a " );
+		jQuery.trim( "a" );
 	} );
 
-	jQuery.migrateDeduplicateWarnings = false;
-	expectWarning( assert, "jQuery.migrateDeduplicateWarnings === false", 2, function() {
-		jQuery( "#" );
-		jQuery( "#" );
+	jQuery.migrateDeduplicateMessages = false;
+	expectMessage( assert, "jQuery.migrateDeduplicateMessages === false", 2, function() {
+		jQuery.trim( " a " );
+		jQuery.trim( "a" );
 	} );
 
-	jQuery.migrateDeduplicateWarnings = origValue;
+	jQuery.migrateDeduplicateMessages = origValue;
 } );
 
 QUnit.test( "disabling/enabling patches", function( assert ) {
@@ -56,46 +56,46 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 	// existing warnings. If the ones we rely on here get removed,
 	// replace them with ones that still exist.
 
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "size" ),
-		true, "patch enabled by default (size)" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "parseJSON" ),
-		true, "patch enabled by default (parseJSON)" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "toggleClass-bool" ),
-		true, "patch enabled by default (toggleClass-bool)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "pre-on-methods" ),
+		true, "patch enabled by default (pre-on-methods)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "proxy" ),
+		true, "patch enabled by default (proxy)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
+		true, "patch enabled by default (shorthand-deprecated-v3)" );
 
-	expectWarning( assert, "size (default)", function() {
-		jQuery().size();
+	expectMessage( assert, "pre-on-methods (default)", function() {
+		jQuery().bind();
 	} );
-	expectWarning( assert, "parseJSON (default)", function() {
-		jQuery.parseJSON( "{}" );
+	expectMessage( assert, "proxy (default)", function() {
+		jQuery.proxy( jQuery.noop );
 	} );
-	expectWarning( assert, "toggleClass-bool (default)", function() {
-		elem.toggleClass();
-	} );
-
-	jQuery.migrateDisablePatches( "size", "parseJSON" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "size" ),
-		false, "patch disabled (size)" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "parseJSON" ),
-		false, "patch disabled (parseJSON)" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "toggleClass-bool" ),
-		true, "patch still enabled (toggleClass)" );
-
-	expectNoWarning( assert, "size (disabled)", function() {
-		jQuery().size();
-	} );
-	expectNoWarning( assert, "parseJSON (disabled)", function() {
-		jQuery.parseJSON( "{}" );
-	} );
-	expectWarning( assert, "toggleClass-bool (still enabled)", function() {
-		elem.toggleClass();
+	expectMessage( assert, "shorthand-deprecated-v3 (default)", function() {
+		jQuery().click();
 	} );
 
-	jQuery.migrateDisablePatches( "toggleClass-bool" );
-	assert.strictEqual( jQuery.migrateIsPatchEnabled( "toggleClass-bool" ),
-		false, "patch disabled (toggleClass)" );
+	jQuery.migrateDisablePatches( "pre-on-methods", "proxy" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "pre-on-methods" ),
+		false, "patch disabled (pre-on-methods)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "proxy" ),
+		false, "patch disabled (proxy)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
+		true, "patch still enabled (shorthand-deprecated-v3)" );
 
-	expectNoWarning( assert, "toggleClass-bool (disabled)", function() {
-		elem.toggleClass();
+	expectNoMessage( assert, "pre-on-methods (default)", function() {
+		jQuery().bind();
+	} );
+	expectNoMessage( assert, "proxy (default)", function() {
+		jQuery.proxy( jQuery.noop );
+	} );
+	expectMessage( assert, "shorthand-deprecated-v3 (default)", function() {
+		jQuery().click();
+	} );
+
+	jQuery.migrateDisablePatches( "shorthand-deprecated-v3" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
+		false, "patch disabled (shorthand-deprecated-v3)" );
+
+	expectNoMessage( assert, "shorthand-deprecated-v3 (disabled)", function() {
+		jQuery().click();
 	} );
 } );
