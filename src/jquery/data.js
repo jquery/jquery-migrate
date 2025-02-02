@@ -1,44 +1,86 @@
 import { migratePatchFunc, migrateWarn } from "../main.js";
-import { camelCase } from "../utils.js";
 
-var origData = jQuery.data;
+function patchDataProto( original, options ) {
+	var i,
+		apiName = options.apiName,
+		isInstanceMethod = options.isInstanceMethod,
 
-migratePatchFunc( jQuery, "data", function( elem, name, value ) {
-	var curData, sameKeys, key;
+		// `Object.prototype` keys are not enumerable so list the
+		// official ones here. An alternative would be wrapping
+		// data objects with a Proxy but that creates additional issues
+		// like breaking object identity on subsequent calls.
+		objProtoKeys = [
+			"__proto__",
+			"__defineGetter__",
+			"__defineSetter__",
+			"__lookupGetter__",
+			"__lookupSetter__",
+			"hasOwnProperty",
+			"isPrototypeOf",
+			"propertyIsEnumerable",
+			"toLocaleString",
+			"toString",
+			"valueOf"
+		],
 
-	// Name can be an object, and each entry in the object is meant to be set as data
-	if ( name && typeof name === "object" && arguments.length === 2 ) {
+		// Use a null prototype at the beginning so that we can define our
+		// `__proto__` getter & setter. We'll reset the prototype afterwards.
+		intermediateDataObj = Object.create( null );
 
-		curData = jQuery.hasData( elem ) && origData.call( this, elem );
-		sameKeys = {};
-		for ( key in name ) {
-			if ( key !== camelCase( key ) ) {
-				migrateWarn( "data-camelCase",
-					"jQuery.data() always sets/gets camelCased names: " + key );
-				curData[ key ] = name[ key ];
-			} else {
-				sameKeys[ key ] = name[ key ];
-			}
-		}
-
-		origData.call( this, elem, sameKeys );
-
-		return name;
+	for ( i = 0; i < objProtoKeys.length; i++ ) {
+		( function( key ) {
+			Object.defineProperty( intermediateDataObj, key, {
+				get: function() {
+					migrateWarn( "data-null-proto",
+						"Accessing properties from " + apiName +
+						" inherited from Object.prototype is removed" );
+					return ( key + "__cache" ) in intermediateDataObj ?
+						intermediateDataObj[ key + "__cache" ] :
+						Object.prototype[ key ];
+				},
+				set: function( value ) {
+					migrateWarn( "data-null-proto",
+						"Setting properties from " + apiName +
+						" inherited from Object.prototype is removed" );
+					intermediateDataObj[ key + "__cache" ] = value;
+				}
+			} );
+		} )( objProtoKeys[ i ] );
 	}
 
-	// If the name is transformed, look for the un-transformed name in the data object
-	if ( name && typeof name === "string" && name !== camelCase( name ) ) {
+	Object.setPrototypeOf( intermediateDataObj, Object.prototype );
 
-		curData = jQuery.hasData( elem ) && origData.call( this, elem );
-		if ( curData && name in curData ) {
-			migrateWarn( "data-camelCase",
-				"jQuery.data() always sets/gets camelCased names: " + name );
-			if ( arguments.length > 2 ) {
-				curData[ name ] = value;
-			}
-			return curData[ name ];
+	return function jQueryDataProtoPatched() {
+		var result = original.apply( this, arguments );
+
+		if ( arguments.length !== ( isInstanceMethod ? 0 : 1 ) || result === undefined ) {
+			return result;
 		}
-	}
 
-	return origData.apply( this, arguments );
-}, "data-camelCase" );
+		// Insert an additional object in the prototype chain between `result`
+		// and `Object.prototype`; that intermediate object proxies properties
+		// to `Object.prototype`, warning about their usage first.
+		Object.setPrototypeOf( result, intermediateDataObj );
+
+		return result;
+	};
+}
+
+// Yes, we are patching jQuery.data twice; here & above. This is necessary
+// so that each of the two patches can be independently disabled.
+migratePatchFunc( jQuery, "data",
+	patchDataProto( jQuery.data, {
+		apiName: "jQuery.data()",
+		isPrivateData: false,
+		isInstanceMethod: false
+	} ),
+	"data-null-proto" );
+migratePatchFunc( jQuery.fn, "data",
+	patchDataProto( jQuery.fn.data, {
+		apiName: "jQuery.fn.data()",
+		isPrivateData: true,
+		isInstanceMethod: true
+	} ),
+	"data-null-proto" );
+
+// TODO entry in warnings.md
