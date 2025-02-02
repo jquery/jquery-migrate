@@ -96,13 +96,9 @@ jQuery.each( ( "blur focus focusin focusout resize scroll click dblclick " +
 function( _i, name ) {
 
 	// Handle event binding
-	migratePatchAndWarnFunc( jQuery.fn, name, function( data, fn ) {
-		return arguments.length > 0 ?
-			this.on( name, null, data, fn ) :
-			this.trigger( name );
-	},
-	"shorthand-deprecated-v3",
-	"jQuery.fn." + name + "() event shorthand is deprecated" );
+	migratePatchAndWarnFunc( jQuery.fn, name, jQuery.fn[ name ], "shorthand-deprecated-v3",
+		"DEPRECATED: jQuery.fn." + name + "() event shorthand" );
+
 } );
 
 // Trigger "ready" event only once, on document ready
@@ -118,6 +114,11 @@ jQuery.event.special.ready = {
 	}
 };
 
+// Support: jQuery <3.2.0 only
+// jQuery 3.0.x & 3.1.x used to not include the deprecated module in the slim build.
+// To maintain compatibility with those versions, we need to reimplement APIs
+// deprecated in them.
+// See https://github.com/jquery/jquery/blob/3.1.1/src/deprecated.js
 migratePatchAndWarnFunc( jQuery.fn, "bind", function( types, data, fn ) {
 	return this.on( types, null, data, fn );
 }, "pre-on-methods", "jQuery.fn.bind() is deprecated" );
