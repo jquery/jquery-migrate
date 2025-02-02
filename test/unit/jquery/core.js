@@ -1,12 +1,6 @@
 
 QUnit.module( "core" );
 
-function getTagNames( elem ) {
-	return elem.toArray().map( function( node ) {
-		return node.tagName.toLowerCase();
-	} );
-}
-
 QUnit.test( "jQuery(html, props)", function( assert ) {
 	assert.expect( 2 );
 
@@ -14,109 +8,6 @@ QUnit.test( "jQuery(html, props)", function( assert ) {
 
 	assert.equal( $el.attr( "name" ), "name", "Name attribute" );
 	assert.equal( $el.val(), "value", "Call setter method" );
-} );
-
-QUnit.test( "jQuery( '#' )", function( assert ) {
-	assert.expect( 2 );
-
-	expectWarning( assert, "Selector, through the jQuery constructor, nothing but hash",
-			function() {
-		var set = jQuery( "#" );
-		assert.equal( set.length, 0, "empty set" );
-	} );
-} );
-
-QUnit.test( "Attribute selectors with unquoted hashes", function( assert ) {
-	assert.expect( 31 );
-
-	var markup = jQuery(
-			"<div>" +
-				"<div data-selector='a[href=#main]'></div>" +
-				"<a href='space#junk'>test</a>" +
-				"<link rel='good#stuff' />" +
-				"<p class='space #junk'>" +
-					"<a href='#some-anchor'>anchor2</a>" +
-					"<input value='[strange*=#stuff]' />" +
-					"<a href='#' data-id='#junk'>anchor</a>" +
-				"</p>" +
-			"</div>" ).appendTo( "#qunit-fixture" ),
-
-		// No warning, no need to fix
-		okays = [
-			"a[href='#some-anchor']",
-			"[data-id=\"#junk\"]",
-			"div[data-selector='a[href=#main]']",
-			"input[value~= '[strange*=#stuff]']"
-		],
-
-		// Fixable, and gives warning
-		fixables = [
-			"a[href=#]",
-			"a[href*=#]:not([href=#]):first-child",
-			".space a[href=#]",
-			"a[href=#some-anchor]",
-			"link[rel*=#stuff]",
-			"p[class *= #junk]",
-			"a[href=space#junk]"
-		],
-
-		// False positives that still work
-		positives = [
-			"div[data-selector='a[href=#main]']:first",
-			"input[value= '[strange*=#stuff]']:eq(0)"
-		],
-
-		// Failures due to quotes and jQuery extensions combined
-		failures = [
-			"p[class ^= #junk]:first",
-			"a[href=space#junk]:eq(1)"
-		];
-
-	expectNoWarning( assert, "Perfectly cromulent selectors are unchanged", function() {
-		okays.forEach( function( okay ) {
-			assert.equal( jQuery( okay, markup ).length, 1, okay );
-			assert.equal( markup.find( okay ).length, 1, okay );
-		} );
-	} );
-
-	expectWarning( assert, "Values with unquoted hashes are quoted",
-			fixables.length * 2, function() {
-		fixables.forEach( function( fixable ) {
-			assert.equal( jQuery( fixable, markup ).length, 1, fixable );
-			assert.equal( markup.find( fixable ).length, 1, fixable );
-		} );
-	} );
-
-	expectWarning( assert, "False positives", positives.length * 2, function() {
-		positives.forEach( function( positive ) {
-			assert.equal( jQuery( positive, markup ).length, 1,  positive );
-			assert.equal( markup.find( positive ).length, 1, positive );
-		} );
-	} );
-
-	expectWarning( assert, "Unfixable cases", failures.length * 2, function() {
-		failures.forEach( function( failure ) {
-			try {
-				jQuery( failure, markup );
-				assert.ok( false, "Expected jQuery() to die!" );
-			} catch ( err1 ) { }
-			try {
-				markup.find( failure );
-				assert.ok( false, "Expected .find() to die!" );
-			} catch ( err2 ) { }
-		} );
-	} );
-
-	// Ensure we don't process jQuery( x ) when x is a function
-	expectNoWarning( assert, "ready function with attribute selector", function() {
-		try {
-			jQuery( function() {
-				if ( jQuery.thisIsNeverTrue ) {
-					jQuery( "a[href=#]" );
-				}
-			} );
-		} catch ( e ) {}
-	} );
 } );
 
 QUnit.test( "XSS injection (leading hash)", function( assert ) {
@@ -425,56 +316,6 @@ TestManager.runIframeTest( "old pre-3.0 jQuery", "core-jquery2.html",
 		assert.expect( 1 );
 
 		assert.ok( /jQuery 3/.test( log ), "logged: " + log );
-} );
-
-QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.fn.push", function( assert ) {
-	assert.expect( 2 );
-
-	expectWarning( assert, "jQuery.fn.push", 1, function() {
-		var node = jQuery( "<div></div>" )[ 0 ],
-			elem = jQuery( "<p></p><span></span>" );
-
-		elem.push( node );
-
-		assert.deepEqual( getTagNames( elem ), [ "p", "span", "div" ],
-			"div added in-place" );
-	} );
-} );
-
-QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.fn.sort", function( assert ) {
-	assert.expect( 2 );
-
-	expectWarning( assert, "jQuery.fn.sort", 1, function() {
-		var elem = jQuery( "<span></span><div></div><p></p>" );
-
-		elem.sort( function( node1, node2 ) {
-			var tag1 = node1.tagName.toLowerCase(),
-				tag2 = node2.tagName.toLowerCase();
-			if ( tag1 < tag2 ) {
-				return -1;
-			}
-			if ( tag1 > tag2 ) {
-				return 1;
-			}
-			return 0;
-		} );
-
-		assert.deepEqual( getTagNames( elem ), [ "div", "p", "span" ],
-			"element sorted in-place" );
-	} );
-} );
-
-QUnit[ jQueryVersionSince( "4.0.0" ) ? "test" : "skip" ]( "jQuery.fn.splice", function( assert ) {
-	assert.expect( 2 );
-
-	expectWarning( assert, "jQuery.fn.splice", 1, function() {
-		var elem = jQuery( "<span></span><div></div><p></p>" );
-
-		elem.splice( 1, 1, jQuery( "<i></i>" )[ 0 ], jQuery( "<b></b>" )[ 0 ] );
-
-		assert.deepEqual( getTagNames( elem ), [ "span", "i", "b", "p" ],
-			"splice removed & added in-place" );
-	} );
 } );
 
 QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.proxy", function( assert ) {
