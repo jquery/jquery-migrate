@@ -39,16 +39,12 @@ QUnit.test( "jQuery.Deferred.getStackHook - getter", function( assert ) {
 
 	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
 
-	expectWarning( assert, "jQuery.Deferred.getStackHook - getter",
-
-		// The getter only warns in jQuery 4+ as jQuery 3.x reads it internally.
-		jQueryVersionSince( "4.0.0" ) ? 1 : 0,
-		function() {
+	expectMessage( assert, "jQuery.Deferred.getStackHook - getter", 1, function() {
 		assert.strictEqual( jQuery.Deferred.getStackHook, jQuery.Deferred.getErrorHook,
 			"getStackHook mirrors getErrorHook (getter)" );
 	} );
 
-	expectNoWarning( assert, "asyncHook reported in jQuery.Deferred.exceptionHook", function() {
+	expectNoMessage( assert, "asyncHook reported in jQuery.Deferred.exceptionHook", function() {
 		jQuery
 			.when()
 			.then( function() {
@@ -70,7 +66,7 @@ QUnit.test( "jQuery.Deferred.getStackHook - getter, no getErrorHook", function( 
 
 	var done = assert.async();
 
-	expectNoWarning( assert, "No Migrate warning in a regular `then`", function() {
+	expectNoMessage( assert, "No Migrate warning in a regular `then`", function() {
 		jQuery
 			.when()
 			.then( function() {
@@ -87,14 +83,14 @@ QUnit.test( "jQuery.Deferred.getStackHook - setter", function( assert ) {
 
 	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
 
-	expectWarning( assert, "jQuery.Deferred.getStackHook - setter", 1, function() {
+	expectMessage( assert, "jQuery.Deferred.getStackHook - setter", 1, function() {
 		var mockFn = function() {};
 		jQuery.Deferred.getStackHook = mockFn;
 		assert.strictEqual( jQuery.Deferred.getErrorHook, mockFn,
 			"getStackHook mirrors getErrorHook (setter)" );
 	} );
 
-	expectWarning( assert, "asyncHook from jQuery.Deferred.getStackHook reported",
+	expectMessage( assert, "asyncHook from jQuery.Deferred.getStackHook reported",
 			1, function() {
 		jQuery.Deferred.getStackHook = function() {
 
@@ -123,11 +119,7 @@ QUnit.test( "jQuery.Deferred.getStackHook - setter", function( assert ) {
 	} );
 } );
 
-// jQuery.Deferred.getErrorHook was introduced in jQuery 3.7.0 and this test
-// depends on it.
-QUnit[
-	jQueryVersionSince( "3.7.0" ) ? "test" : "skip"
-]( "jQuery.Deferred.getStackHook - disabled patch, getter", function( assert ) {
+QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, getter", function( assert ) {
 	assert.expect( 5 );
 
 	var exceptionHookSpy,
@@ -150,12 +142,12 @@ QUnit[
 
 	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
 
-	expectNoWarning( assert, "jQuery.Deferred.getStackHook - getter", function() {
+	expectNoMessage( assert, "jQuery.Deferred.getStackHook - getter", function() {
 		assert.strictEqual( jQuery.Deferred.getStackHook, undefined,
 			"getStackHook does not mirror getErrorHook (getter)" );
 	} );
 
-	expectNoWarning( assert, "asyncHook reported in jQuery.Deferred.exceptionHook", function() {
+	expectNoMessage( assert, "asyncHook reported in jQuery.Deferred.exceptionHook", function() {
 		jQuery
 			.when()
 			.then( function() {
@@ -173,7 +165,7 @@ QUnit[
 } );
 
 QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, setter", function( assert ) {
-	assert.expect( jQueryVersionSince( "4.0.0" ) ? 4 : 5 );
+	assert.expect( 4 );
 
 	var exceptionHookSpy,
 		done = assert.async();
@@ -195,14 +187,14 @@ QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, setter", function( a
 
 	exceptionHookSpy = this.sandbox.spy( jQuery.Deferred, "exceptionHook" );
 
-	expectNoWarning( assert, "jQuery.Deferred.getStackHook - setter", function() {
+	expectNoMessage( assert, "jQuery.Deferred.getStackHook - setter", function() {
 		var mockFn = function() {};
 		jQuery.Deferred.getStackHook = mockFn;
 		assert.strictEqual( jQuery.Deferred.getErrorHook, getErrorHook,
 			"getStackHook does not mirror getErrorHook (setter)" );
 	} );
 
-	expectNoWarning( assert, "asyncHook from jQuery.Deferred.getStackHook reported", function() {
+	expectNoMessage( assert, "asyncHook from jQuery.Deferred.getStackHook reported", function() {
 			jQuery.Deferred.getErrorHook = undefined;
 			jQuery.Deferred.getStackHook = function() {
 
@@ -222,16 +214,8 @@ QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, setter", function( a
 			.catch( function() {
 				var asyncError = exceptionHookSpy.lastCall.args[ 1 ];
 
-				if ( jQueryVersionSince( "4.0.0" ) ) {
-					assert.strictEqual( asyncError, undefined,
-						"Error not passed to exceptionHook" );
-				} else {
-					assert.ok( asyncError instanceof Error,
-						"Error passed to exceptionHook (instance)" );
-					assert.strictEqual( asyncError.message,
-						"Different exception in jQuery.Deferred",
-						"Error passed to exceptionHook (message)" );
-				}
+				assert.strictEqual( asyncError, undefined,
+					"Error not passed to exceptionHook" );
 
 				done();
 			} );
@@ -244,7 +228,7 @@ QUnit.test( "jQuery.Deferred.getStackHook - disabled patch, getter + setter inte
 
 	jQuery.migrateDisablePatches( "deferred-getStackHook" );
 
-	expectNoWarning( assert, "jQuery.Deferred.getStackHook - setter & getter", function() {
+	expectNoMessage( assert, "jQuery.Deferred.getStackHook - setter & getter", function() {
 		var mockFn = function() {};
 		assert.strictEqual( jQuery.Deferred.getStackHook, undefined,
 			"getStackHook is `undefined` by default" );
@@ -265,12 +249,12 @@ QUnit.test( ".pipe() warnings", function( assert ) {
 	}
 
 	// Deferred
-	expectWarning( assert, "pipe", function() {
+	expectMessage( assert, "pipe", function() {
 		d.pipe( checkValue );
 	} );
 
 	// Deferred's promise object
-	expectWarning( assert, "pipe", function() {
+	expectMessage( assert, "pipe", function() {
 		p.pipe( checkValue );
 	} );
 

@@ -3,9 +3,6 @@
 <head>
 	<meta charset="utf-8">
 	<title>jQuery Migrate Test Suite</title>
-	<!-- // Support: IE <= 10 only -->
-	<!-- Ensure IE doesn't fall back into oldIE modes -->
-	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 
 	<!-- QUnit -->
 	<link rel="stylesheet" href="../external/qunit/qunit.css" media="screen">
@@ -21,7 +18,7 @@
 	<!-- Load a jQuery and jquery-migrate plugin file based on URL -->
 	<script src="data/testinit.js"></script>
 	<script>
-		TestManager.loadProject( "jquery", "3.x-git.min" );
+		TestManager.loadProject( "jquery", "git.min" );
 		// Close this script tag so file will load
 	</script>
 	<script>

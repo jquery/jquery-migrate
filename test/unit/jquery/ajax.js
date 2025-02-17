@@ -3,38 +3,11 @@ if ( jQuery.ajax ) {
 
 QUnit.module( "ajax" );
 
-QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
-	assert.expect( 3 );
-
-	var done = assert.async();
-
-	expectWarning( assert, ".success(), .error(), .complete() calls", 3, function() {
-
-		return jQuery.ajax( url( "not-found.404" ) )
-			.success( jQuery.noop )
-			.error( function( jQXHR ) {
-
-				// Local file errors returns 0, pretend it's a 404
-				assert.equal( jQXHR.status || 404, 404, "ajax error" );
-			} )
-			.complete( function() {
-				assert.ok( true, "ajax complete" );
-			} ).catch( jQuery.noop );
-	} ).then( function() {
-		done();
-	} );
-
-} );
-
 [ " - Same Domain", " - Cross Domain" ].forEach( function( label, crossDomain ) {
 	function runTests( options ) {
 		var forceEnablePatch = ( options || {} ).forceEnablePatch || false;
 
-		// Support: IE <10 only
-		// IE 9 doesn't support CORS, skip cross-domain tests there.
-		QUnit[
-			document.documentMode < 10 && crossDomain ? "skip" : "test"
-		]( "jQuery.ajax() JSON-to-JSONP auto-promotion" + label + (
+		QUnit.test( "jQuery.ajax() JSON-to-JSONP auto-promotion" + label + (
 			forceEnablePatch ? ", patch force-enabled" : ""
 		), function( assert ) {
 
@@ -45,11 +18,10 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 			}
 
 			var done = assert.async(),
-				patchEnabled = forceEnablePatch || !jQueryVersionSince( "4.0.0" ),
 				tests = [
 					function() {
 						var testName = "dataType: \"json\"";
-						return expectNoWarning( assert, testName, function() {
+						return expectNoMessage( assert, testName, function() {
 							return jQuery.ajax( {
 								url: url( "null.json" ),
 								context: { testName: testName },
@@ -66,7 +38,8 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 
 					function() {
 						var testName = "dataType: \"json\", URL callback";
-						return expectWarning( assert, testName, patchEnabled ? 1 : 0, function() {
+						return expectMessage( assert, testName, forceEnablePatch ? 1 : 0,
+								function() {
 							return jQuery.ajax( {
 								url: url( "jsonpScript.js?callback=?" ),
 								context: { testName: testName },
@@ -74,16 +47,17 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 								dataType: "json",
 								jsonpCallback: "customJsonpCallback"
 							} ).then( function() {
-								assert.ok( patchEnabled, this.testName + " (success)" );
+								assert.ok( forceEnablePatch, this.testName + " (success)" );
 							} ).catch( function() {
-								assert.ok( !patchEnabled, this.testName + " (failure)" );
+								assert.ok( !forceEnablePatch, this.testName + " (failure)" );
 							} );
 						} );
 					},
 
 					function() {
 						var testName = "dataType: \"json\", data callback";
-						return expectWarning( assert, testName, patchEnabled ? 1 : 0, function() {
+						return expectMessage( assert, testName, forceEnablePatch ? 1 : 0,
+								function() {
 							return jQuery.ajax( {
 								url: url( "jsonpScript.js" ),
 								context: { testName: testName },
@@ -92,16 +66,16 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 								dataType: "json",
 								jsonpCallback: "customJsonpCallback"
 							} ).then( function() {
-								assert.ok( patchEnabled, this.testName + " (success)" );
+								assert.ok( forceEnablePatch, this.testName + " (success)" );
 							} ).catch( function() {
-								assert.ok( !patchEnabled, this.testName + " (failure)" );
+								assert.ok( !forceEnablePatch, this.testName + " (failure)" );
 							} );
 						} );
 					},
 
 					function() {
 						var testName = "dataType: \"jsonp\", URL callback";
-						return expectNoWarning( assert, testName, function() {
+						return expectNoMessage( assert, testName, function() {
 							return jQuery.ajax( {
 								url: url( "jsonpScript.js?callback=?" ),
 								context: { testName: testName },
@@ -118,7 +92,7 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 
 					function() {
 						var testName = "dataType: \"jsonp\", data callback";
-						return expectNoWarning( assert, testName, function() {
+						return expectNoMessage( assert, testName, function() {
 							return jQuery.ajax( {
 								url: url( "jsonpScript.js" ),
 								context: { testName: testName },
@@ -153,15 +127,10 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 		} );
 	}
 
-	if ( jQueryVersionSince( "4.0.0" ) ) {
-
-		// In jQuery 4+, this behavior is disabled by default for security
-		// reasons, re-enable for this test, but test default behavior as well.
-		runTests( { forceEnablePatch: true } );
-		runTests( { forceEnablePatch: false } );
-	} else {
-		runTests();
-	}
+	// In jQuery 4+, this behavior is disabled by default for security
+	// reasons, re-enable for this test, but test default behavior as well.
+	runTests( { forceEnablePatch: true } );
+	runTests( { forceEnablePatch: false } );
 } );
 
 TestManager.runIframeTest(

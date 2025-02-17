@@ -1,4 +1,4 @@
-name: Browserstack (Core git)
+name: Browserstack
 
 on:
   push:
@@ -63,6 +63,6 @@ jobs:
 
       - name: Test
         run: |
-          npm run test:unit -- -v -c jtr-git.yml \
+          npm run test:unit -- -v -c jtr-ci.yml \
             --browserstack "${{ matrix.BROWSER }}" \
             --run-id ${{ github.run_id }} \

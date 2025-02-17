@@ -60,19 +60,19 @@ function testSelector( assert, message, selector, expectedIds ) {
 QUnit.test( "jQuery.expr.pseudos aliases", function( assert ) {
 	assert.expect( 7 );
 
-	expectWarning( assert, "jQuery.expr.filters", function() {
+	expectMessage( assert, "jQuery.expr.filters", function() {
 		jQuery.expr.filters.mazda = function( elem ) {
 			return elem.style.zoom === "3";
 		};
 	} );
 
-	expectWarning( assert, "jQuery.expr[':']", function() {
+	expectMessage( assert, "jQuery.expr[':']", function() {
 		jQuery.expr[ ":" ].marginal = function( elem ) {
 			return parseInt( elem.style.marginLeftWidth ) > 20;
 		};
 	} );
 
-	expectNoWarning( assert, "jQuery.expr.pseudos", function() {
+	expectNoMessage( assert, "jQuery.expr.pseudos", function() {
 		var fixture = jQuery( "#qunit-fixture" ).prepend( "<p>hello</p>" );
 
 		assert.ok( jQuery.expr.pseudos.mazda, "filters assigned" );
@@ -88,7 +88,7 @@ QUnit.test( "jQuery.expr.pseudos aliases", function( assert ) {
 QUnit.test( "custom pseudos", function( assert ) {
 	assert.expect( 7 );
 
-	expectNoWarning( assert, "custom pseudos", function() {
+	expectNoMessage( assert, "custom pseudos", function() {
 		try {
 			jQuery.expr.pseudos.foundation = jQuery.expr.pseudos.root;
 			assert.deepEqual(
@@ -189,13 +189,11 @@ QUnit.test( "custom pseudos", function( assert ) {
 	} );
 } );
 
-QUnit[
-	jQueryVersionSince( "3.7.0" ) ? "test" : "skip"
-]( "backwards-compatible custom pseudos", function( assert ) {
+QUnit.test( "backwards-compatible custom pseudos", function( assert ) {
 	assert.expect( 7 );
 
 	var expectWarningWithProxy = typeof Proxy !== "undefined" ?
-		expectWarning :
+		expectMessage :
 		function( _assert, _title, fn ) {
 			fn();
 			assert.ok( true, "No Proxy => warnings not expected" );
@@ -210,7 +208,7 @@ QUnit[
 					.indexOf( ( match[ 3 ] || "" ).toLowerCase() ) > -1;
 			};
 		} );
-		expectWarning( assert, "Custom element filter with argument - getter", function() {
+		expectMessage( assert, "Custom element filter with argument - getter", function() {
 			testSelector(
 				assert,
 				"Custom element filter with argument",
@@ -229,7 +227,7 @@ QUnit[
 				return elements.slice( 0, count );
 			};
 		} );
-		expectWarning( assert, "Custom setFilter pseudo - getter", function() {
+		expectMessage( assert, "Custom setFilter pseudo - getter", function() {
 
 			// Using TAG as the first token here forces this setMatcher into a fail state
 			// Where the descendent combinator was lost

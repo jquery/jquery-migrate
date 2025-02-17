@@ -5,11 +5,6 @@
  * Load this file immediately after jQuery, before jQuery Migrate
  */
 
-// Support: IE9 only (no console at times)
-if ( !window.console ) {
-	window.console = {};
-}
-
 // Capture output so the test in the parent window can inspect it, and so the
 // initialization for the iframe doesn't show another Migrate startup header.
 var logOutput = "";
