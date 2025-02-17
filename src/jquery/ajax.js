@@ -43,7 +43,7 @@ jQuery.ajaxSetup( {
 // Register this prefilter before the jQuery one. Otherwise, a promoted
 // request is transformed into one with the script dataType, and we can't
 // catch it anymore.
-// jQuery <4 already contains this prefixer; don't duplicate the whole logic,
+// jQuery <4 already contains this prefilter; don't duplicate the whole logic,
 // but only enough to know when to warn.
 jQuery.ajaxPrefilter( "+json", function( s ) {
 
