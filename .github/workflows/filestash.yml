@@ -3,7 +3,7 @@ name: Filestash
 on:
   push:
     branches:
-      - main
+      - 3.x-stable
 
 permissions:
   contents: read # to fetch code (actions/checkout)
@@ -47,5 +47,5 @@ jobs:
 
       - name: Upload to Filestash
         run: |
-          rsync dist/jquery-migrate.js filestash@"${{ secrets.FILESTASH_SERVER }}":jquery-migrate-git.js
-          rsync dist/jquery-migrate.min.js filestash@"${{ secrets.FILESTASH_SERVER }}":jquery-migrate-git.min.js
+          rsync dist/jquery-migrate.js filestash@"${{ secrets.FILESTASH_SERVER }}":jquery-migrate-3.x-git.js
+          rsync dist/jquery-migrate.min.js filestash@"${{ secrets.FILESTASH_SERVER }}":jquery-migrate-3.x-git.min.js

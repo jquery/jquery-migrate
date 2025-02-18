@@ -47,7 +47,7 @@ Make sure you have reproduced the bug with all browser extensions and add-ons di
 
 ### Try the latest version of jQuery Migrate
 
-Bugs in old versions of jQuery Migrate may have already been fixed. In order to avoid reporting known issues, make sure you are always testing against the [latest build](https://releases.jquery.com/git/jquery-migrate-git.js). We cannot fix bugs in older released files, if a bug has been fixed in a subsequent version of jQuery Migrate the site should upgrade.
+Bugs in old versions of jQuery Migrate may have already been fixed. In order to avoid reporting known issues, make sure you are always testing against the [latest build](https://releases.jquery.com/git/jquery-migrate-3.x-git.js). We cannot fix bugs in older released files, if a bug has been fixed in a subsequent version of jQuery Migrate the site should upgrade.
 
 ### Simplify the test case
 
@@ -78,16 +78,16 @@ Change directory to the newly created dir `jquery-migrate/`:
 $ cd jquery-migrate
 ```
 
-Add the jQuery Migrate `main` as a remote (e.g. `upstream`):
+Add the jQuery Migrate `3.x-stable` as a remote (e.g. `upstream`):
 
 ```bash
 $ git remote add upstream git@github.com:jquery/jquery-migrate.git
 ```
 
-Get in the habit of pulling in the "upstream" main to stay up to date as jQuery Migrate receives new commits:
+Get in the habit of pulling in the "upstream" `3.x-stable` to stay up to date as jQuery Migrate receives new commits:
 
 ```bash
-$ git pull upstream main
+$ git pull upstream 3.x-stable
 ```
 
 Install the necessary dependencies:

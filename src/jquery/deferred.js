@@ -3,7 +3,6 @@ import {
 	migratePatchAndWarnFunc,
 	migrateWarn
 } from "../main.js";
-import { jQueryVersionSince } from "../compareVersions.js";
 
 // Support jQuery slim which excludes the deferred module in jQuery 4.0+
 if ( jQuery.Deferred ) {
@@ -80,13 +79,8 @@ Object.defineProperty( jQuery.Deferred, "getStackHook", {
 	get: function() {
 		if ( jQuery.migrateIsPatchEnabled( "deferred-getStackHook" ) ) {
 
-			// jQuery 3.x checks `getStackHook` if `getErrorHook` missing;
-			// don't warn on the getter there.
-			if ( jQueryVersionSince( "4.0.0" ) ) {
-				migrateWarn( "deferred-getStackHook",
-					"jQuery.Deferred.getStackHook is deprecated; " +
-					"use jQuery.Deferred.getErrorHook" );
-			}
+			// jQuery 3.x checks `getStackHook` if `getErrorHook` is missing,
+			// so don't warn on the getter.
 			return jQuery.Deferred.getErrorHook;
 		} else {
 			return unpatchedGetStackHookValue;

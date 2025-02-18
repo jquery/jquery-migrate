@@ -27,141 +27,121 @@ QUnit.test( "jQuery.ajax() deprecations on jqXHR", function( assert ) {
 } );
 
 [ " - Same Domain", " - Cross Domain" ].forEach( function( label, crossDomain ) {
-	function runTests( options ) {
-		var forceEnablePatch = ( options || {} ).forceEnablePatch || false;
 
-		// Support: IE <10 only
-		// IE 9 doesn't support CORS, skip cross-domain tests there.
-		QUnit[
-			document.documentMode < 10 && crossDomain ? "skip" : "test"
-		]( "jQuery.ajax() JSON-to-JSONP auto-promotion" + label + (
-			forceEnablePatch ? ", patch force-enabled" : ""
-		), function( assert ) {
+	// Support: IE <10 only
+	// IE 9 doesn't support CORS, skip cross-domain tests there.
+	QUnit[
+		document.documentMode < 10 && crossDomain ? "skip" : "test"
+	]( "jQuery.ajax() JSON-to-JSONP auto-promotion" + label, function( assert ) {
 
-			assert.expect( 10 );
+		assert.expect( 10 );
 
-			if ( forceEnablePatch ) {
-				jQuery.migrateEnablePatches( "jsonp-promotion" );
-			}
-
-			var done = assert.async(),
-				patchEnabled = forceEnablePatch || !jQueryVersionSince( "4.0.0" ),
-				tests = [
-					function() {
-						var testName = "dataType: \"json\"";
-						return expectNoWarning( assert, testName, function() {
-							return jQuery.ajax( {
-								url: url( "null.json" ),
-								context: { testName: testName },
-								crossDomain: crossDomain,
-								dataType: "json",
-								jsonpCallback: "customJsonpCallback"
-							} ).then( function() {
-								assert.ok( true, this.testName + " (success)" );
-							} ).catch( function() {
-								assert.ok( false, this.testName + " (failure)" );
-							} );
+		var done = assert.async(),
+			tests = [
+				function() {
+					var testName = "dataType: \"json\"";
+					return expectNoWarning( assert, testName, function() {
+						return jQuery.ajax( {
+							url: url( "null.json" ),
+							context: { testName: testName },
+							crossDomain: crossDomain,
+							dataType: "json",
+							jsonpCallback: "customJsonpCallback"
+						} ).then( function() {
+							assert.ok( true, this.testName + " (success)" );
+						} ).catch( function() {
+							assert.ok( false, this.testName + " (failure)" );
 						} );
-					},
+					} );
+				},
 
-					function() {
-						var testName = "dataType: \"json\", URL callback";
-						return expectWarning( assert, testName, patchEnabled ? 1 : 0, function() {
-							return jQuery.ajax( {
-								url: url( "jsonpScript.js?callback=?" ),
-								context: { testName: testName },
-								crossDomain: crossDomain,
-								dataType: "json",
-								jsonpCallback: "customJsonpCallback"
-							} ).then( function() {
-								assert.ok( patchEnabled, this.testName + " (success)" );
-							} ).catch( function() {
-								assert.ok( !patchEnabled, this.testName + " (failure)" );
-							} );
+				function() {
+					var testName = "dataType: \"json\", URL callback";
+					return expectWarning( assert, testName, 1, function() {
+						return jQuery.ajax( {
+							url: url( "jsonpScript.js?callback=?" ),
+							context: { testName: testName },
+							crossDomain: crossDomain,
+							dataType: "json",
+							jsonpCallback: "customJsonpCallback"
+						} ).then( function() {
+							assert.ok( true, this.testName + " (success)" );
+						} ).catch( function() {
+							assert.ok( false, this.testName + " (failure)" );
 						} );
-					},
+					} );
+				},
 
-					function() {
-						var testName = "dataType: \"json\", data callback";
-						return expectWarning( assert, testName, patchEnabled ? 1 : 0, function() {
-							return jQuery.ajax( {
-								url: url( "jsonpScript.js" ),
-								context: { testName: testName },
-								crossDomain: crossDomain,
-								data: "callback=?",
-								dataType: "json",
-								jsonpCallback: "customJsonpCallback"
-							} ).then( function() {
-								assert.ok( patchEnabled, this.testName + " (success)" );
-							} ).catch( function() {
-								assert.ok( !patchEnabled, this.testName + " (failure)" );
-							} );
+				function() {
+					var testName = "dataType: \"json\", data callback";
+					return expectWarning( assert, testName, 1, function() {
+						return jQuery.ajax( {
+							url: url( "jsonpScript.js" ),
+							context: { testName: testName },
+							crossDomain: crossDomain,
+							data: "callback=?",
+							dataType: "json",
+							jsonpCallback: "customJsonpCallback"
+						} ).then( function() {
+							assert.ok( true, this.testName + " (success)" );
+						} ).catch( function() {
+							assert.ok( false, this.testName + " (failure)" );
 						} );
-					},
+					} );
+				},
 
-					function() {
-						var testName = "dataType: \"jsonp\", URL callback";
-						return expectNoWarning( assert, testName, function() {
-							return jQuery.ajax( {
-								url: url( "jsonpScript.js?callback=?" ),
-								context: { testName: testName },
-								crossDomain: crossDomain,
-								dataType: "jsonp",
-								jsonpCallback: "customJsonpCallback"
-							} ).then( function() {
-								assert.ok( true, this.testName + " (success)" );
-							} ).catch( function() {
-								assert.ok( false, this.testName + " (failure)" );
-							} );
+				function() {
+					var testName = "dataType: \"jsonp\", URL callback";
+					return expectNoWarning( assert, testName, function() {
+						return jQuery.ajax( {
+							url: url( "jsonpScript.js?callback=?" ),
+							context: { testName: testName },
+							crossDomain: crossDomain,
+							dataType: "jsonp",
+							jsonpCallback: "customJsonpCallback"
+						} ).then( function() {
+							assert.ok( true, this.testName + " (success)" );
+						} ).catch( function() {
+							assert.ok( false, this.testName + " (failure)" );
 						} );
-					},
+					} );
+				},
 
-					function() {
-						var testName = "dataType: \"jsonp\", data callback";
-						return expectNoWarning( assert, testName, function() {
-							return jQuery.ajax( {
-								url: url( "jsonpScript.js" ),
-								context: { testName: testName },
-								crossDomain: crossDomain,
-								data: "callback=?",
-								dataType: "jsonp",
-								jsonpCallback: "customJsonpCallback"
-							} ).then( function() {
-								assert.ok( true, this.testName + " (success)" );
-							} ).catch( function() {
-								assert.ok( false, this.testName + " (failure)" );
-							} );
+				function() {
+					var testName = "dataType: \"jsonp\", data callback";
+					return expectNoWarning( assert, testName, function() {
+						return jQuery.ajax( {
+							url: url( "jsonpScript.js" ),
+							context: { testName: testName },
+							crossDomain: crossDomain,
+							data: "callback=?",
+							dataType: "jsonp",
+							jsonpCallback: "customJsonpCallback"
+						} ).then( function() {
+							assert.ok( true, this.testName + " (success)" );
+						} ).catch( function() {
+							assert.ok( false, this.testName + " (failure)" );
 						} );
-					}
-				];
+					} );
+				}
+			];
 
-			// Invoke tests sequentially as they're async and early tests could get warnings
-			// from later ones.
-			function run( tests ) {
-				var test = tests[ 0 ];
-				return test().then( function() {
-					if ( tests.length > 1 ) {
-						return run( tests.slice( 1 ) );
-					}
-				} );
-			}
+		// Invoke tests sequentially as they're async and early tests could get warnings
+		// from later ones.
+		function run( tests ) {
+			var test = tests[ 0 ];
+			return test().then( function() {
+				if ( tests.length > 1 ) {
+					return run( tests.slice( 1 ) );
+				}
+			} );
+		}
 
-			run( tests )
-				.then( function() {
-					done();
-				} );
-		} );
-	}
-
-	if ( jQueryVersionSince( "4.0.0" ) ) {
-
-		// In jQuery 4+, this behavior is disabled by default for security
-		// reasons, re-enable for this test, but test default behavior as well.
-		runTests( { forceEnablePatch: true } );
-		runTests( { forceEnablePatch: false } );
-	} else {
-		runTests();
-	}
+		run( tests )
+			.then( function() {
+				done();
+			} );
+	} );
 } );
 
 TestManager.runIframeTest(
