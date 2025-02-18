@@ -40,7 +40,7 @@
 		"chalk": "5.4.1",
 		"commitplease": "3.2.0",
 		"enquirer": "2.4.1",
-		"eslint": "8.57.0",
+		"eslint": "8.57.1",
 		"eslint-config-jquery": "3.0.2",
 		"eslint-plugin-import": "2.31.0",
 		"globals": "15.15.0",
@@ -51,8 +51,8 @@
 		"native-promise-only": "0.8.1",
 		"qunit": "2.24.1",
 		"rollup": "4.34.8",
-		"sinon": "7.5.0",
-		"uglify-js": "3.9.4"
+		"sinon": "9.2.4",
+		"uglify-js": "3.19.3"
 	},
 	"keywords": [
 		"jquery",

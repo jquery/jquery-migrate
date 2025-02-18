@@ -32,6 +32,7 @@ export async function minify( { dir, filename, version } ) {
 			[ filename ]: contents
 		},
 		{
+			ie: true,
 			compress: {
 				hoist_funs: false,
 				loops: false
