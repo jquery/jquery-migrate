@@ -144,6 +144,15 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Always pass string values to `.css()`, and explicitly add units where required. For example, use `$.css("line-height", "2")` to specify 200% of the current line height or `$.css("line-height", "2px")` to specify pixels. When the numeric value is in a variable, ensure the value is converted to string, e.g. `$.css("line-height", String(height))` and `$.css("line-height", height+"px")`.
 
+### \[data-null-proto\] Accessing properties from jQuery.data() inherited from Object.prototype is removed
+### \[data-null-proto\] Setting properties from jQuery.data() inherited from Object.prototype is removed
+### \[data-null-proto\] Accessing properties from jQuery.fn.data() inherited from Object.prototype is removed
+### \[data-null-proto\] Setting properties from jQuery.fn.data() inherited from Object.prototype is removed
+
+**Cause:** As of jQuery 4.0.0, data objects no longer inherit from `Object.prototype`. This includes properties like `__proto__` or `hasOwnProperty`.
+
+**Solution:** Don't use properties inherited from `Object.prototype` on data objects. Instead of `jQuery.data( node ).hasOwnProperty( "foo" )` use `Object.hasOwn( jQuery.data( node ), "foo" )` or, if you need to support older browsers like IE 11, use `Object.prototype.hasOwnProperty.call( jQuery.data( node ), "foo" )`.
+
 ### \[self-closed-tags\] JQMIGRATE: HTML tags must be properly nested and closed: _(HTML string)_
 
 **Cause:** jQuery 3.5.0 changed the way it processes HTML strings. Previously, jQuery would attempt to fix self-closed tags like `<i class="test" />` that the HTML5 specification says are not self-closed, turning it into `<i class="test"></i>`. This processing can create a [security problem](https://nvd.nist.gov/vuln/detail/CVE-2020-11022) with malicious strings, so the functionality had to be removed.
