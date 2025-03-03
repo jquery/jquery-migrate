@@ -97,6 +97,15 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Either 1) Always use the `.data()` API to set or get data items, 2) Always use camelCase names when also setting properties directly on jQuery's data object, or 3) Always set properties directly on the data object without using the API call to set or get data by name. Never mix direct access to the data object and API calls with kebab case names.
 
+### \[data-null-proto\] Accessing properties from jQuery.data() inherited from Object.prototype is deprecated
+### \[data-null-proto\] Setting properties from jQuery.data() inherited from Object.prototype is deprecated
+### \[data-null-proto\] Accessing properties from jQuery.fn.data() inherited from Object.prototype is deprecated
+### \[data-null-proto\] Setting properties from jQuery.fn.data() inherited from Object.prototype is deprecated
+
+**Cause:** Accessing or setting properties on data objects inherited from `Object.prototype` is deprecated. This includes properties like `__proto__` or `hasOwnProperty`.
+
+**Solution:** Don't use properties inherited from `Object.prototype` on data objects. Instead of `jQuery.data( node ).hasOwnProperty( "foo" )` use `Object.hasOwn( jQuery.data( node ), "foo" )` or, if you need to support older browsers like IE 11, use `Object.prototype.hasOwnProperty.call( jQuery.data( node ), "foo" )`.
+
 ### \[removeAttr-bool\] JQMIGRATE: jQuery.fn.removeAttr no longer sets boolean properties
 
 **Cause**: Prior to jQuery 3.0, using `.removeAttr()` on a boolean attribute such as `checked`, `selected`, or `readonly` would also set the corresponding named *property* to `false`. This behavior was required for ancient versions of Internet Explorer but is not correct for modern browsers because the attribute represents the initial value and the property represents the current (dynamic) value.
