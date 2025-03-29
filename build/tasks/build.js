@@ -22,6 +22,33 @@ async function readJSON( filename ) {
 	return JSON.parse( await read( filename ) );
 }
 
+async function getOutputRollupOptions( {
+	esm = false
+} = {} ) {
+	const wrapperFilePath = path.join( "src", `wrapper${
+		esm ? "-esm" : ""
+	}.js` );
+
+	const wrapperSource = await read( wrapperFilePath );
+
+	// Catch `// @CODE` and subsequent comment lines event if they don't start
+	// in the first column.
+	const wrapper = wrapperSource.split(
+		/[\x20\t]*\/\/ @CODE\n(?:[\x20\t]*\/\/[^\n]+\n)*/
+	);
+
+	return {
+
+		// The ESM format is not actually used as we strip it during the
+		// build, inserting our own wrappers; it's just that it doesn't
+		// generate any extra wrappers so there's nothing for us to remove.
+		format: "esm",
+
+		intro: wrapper[ 0 ].replace( /\n*$/, "" ),
+		outro: wrapper[ 1 ].replace( /^\n*/, "" )
+	};
+}
+
 async function writeCompiled( { code, dir, filename, version } ) {
 	const compiledContents = code
 
@@ -34,12 +61,12 @@ async function writeCompiled( { code, dir, filename, version } ) {
 
 	await writeFile( path.join( dir, filename ), compiledContents );
 	console.log( `[${ getTimestamp() }] ${ filename } v${ version } created.` );
-	await minify( { dir, filename, version } );
 }
 
 export async function build( {
 	dir = "dist",
 	filename = "jquery-migrate.js",
+	esm = false,
 	watch = false,
 	version
 } = {} ) {
@@ -59,24 +86,8 @@ export async function build( {
 		}`;
 	}
 
-	// Catch `// @CODE` and subsequent comment lines event if they don't start
-	// in the first column.
-	const wrapperSrc = await read( "src/wrapper.js" );
-	const wrapper = wrapperSrc.split(
-		/[\x20\t]*\/\/ @CODE\n(?:[\x20\t]*\/\/[^\n]+\n)*/
-	);
-
 	const inputRollupOptions = {};
-	const outputRollupOptions = {
-
-		// The ESM format is not actually used as we strip it during
-		// the build; it's just that it doesn't generate any extra
-		// wrappers so there's nothing for us to remove.
-		format: "esm",
-
-		intro: wrapper[ 0 ].replace( /\n*$/, "" ),
-		outro: wrapper[ 1 ].replace( /^\n*/, "" )
-	};
+	const outputRollupOptions = await getOutputRollupOptions( { esm } );
 	const src = "src/migrate.js";
 
 	inputRollupOptions.input = path.resolve( src );
@@ -122,9 +133,33 @@ export async function build( {
 		} = await bundle.generate( outputRollupOptions );
 
 		await writeCompiled( { code, dir, filename, version } );
+		await minify( { dir, filename, version } );
+	}
+}
 
+export async function buildDefaultFiles( {
+	version = process.env.VERSION,
+	watch
+} = {} ) {
+	await Promise.all( [
+		build( { version, watch } ),
+		build( {
+			dir: "dist-module",
+			filename: "jquery-migrate.module.js",
+			esm: true,
+			version,
+			watch
+		} )
+	] );
+
+	if ( watch ) {
+		console.log( "Watching files..." );
+	} else {
 		return compareSize( {
-			files: [ "dist/jquery-migrate.min.js" ]
+			files: [
+				"dist/jquery-migrate.min.js",
+				"dist-module/jquery-migrate.module.min.js"
+			]
 		} );
 	}
 }
