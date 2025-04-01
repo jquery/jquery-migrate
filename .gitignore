@@ -11,9 +11,16 @@ CDN
 .eslintcache
 
 # Ignore built files in `dist` folder
-# Leave package.json
+# Leave the package.json and wrappers
 /dist/*
 !/dist/package.json
+!/dist/wrappers
+
+# Ignore built files in `dist-module` folder
+# Leave the package.json and wrappers
+/dist-module/*
+!/dist-module/package.json
+!/dist-module/wrappers
 
 /external
 /node_modules

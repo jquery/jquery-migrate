@@ -5,14 +5,12 @@ console.log( "Running Node.js smoke tests..." );
 const assert = require( "node:assert/strict" );
 const { JSDOM } = require( "jsdom" );
 
-const { window } = new JSDOM( `<!DOCTYPE html><title>$</title>` );
+const { window } = new JSDOM( "<!DOCTYPE html><title>$</title>" );
 
 // Set the window global.
 globalThis.window = window;
 
-// Require jQuery Migrate. Since Migrate doesn't specify exports,
-// `require( "jquery-migrate" )` won't work here.
-const $ = require( "../.." );
+const $ = require( "jquery-migrate" );
 
 assert( /^jQuery/.test( $.expando ),
 	"jQuery.expando was not detected, the jQuery bootstrap process has failed" );

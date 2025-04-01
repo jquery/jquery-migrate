@@ -2,9 +2,21 @@
 	"name": "jquery-migrate",
 	"title": "jQuery Migrate",
 	"description": "Migrate older jQuery code to jQuery 4.x",
-	"main": "dist/jquery-migrate.js",
 	"version": "4.0.0-pre",
 	"type": "module",
+	"exports": {
+		"node": {
+			"import": "./dist-module/wrappers/jquery-migrate.node-module-wrapper.js",
+			"default": "./dist/jquery-migrate.js"
+		},
+		"module": {
+			"import": "./dist-module/jquery-migrate.module.js",
+			"default": "./dist/wrappers/jquery-migrate.bundler-require-wrapper.js"
+		},
+		"import": "./dist-module/jquery-migrate.module.js",
+		"default": "./dist/jquery-migrate.js"
+	},
+	"main": "dist/jquery-migrate.js",
 	"homepage": "https://github.com/jquery/jquery-migrate",
 	"author": {
 		"name": "OpenJS Foundation and other contributors",
@@ -19,24 +31,32 @@
 	},
 	"license": "MIT",
 	"scripts": {
-		"build": "node build/tasks/build-default.js",
+		"build": "node ./build/command.js",
+		"build:all": "node --input-type=module -e \"import { buildDefaultFiles } from './build/tasks/build.js'; buildDefaultFiles()\"",
+		"build:clean": "rimraf --glob dist/*.{js,map} --glob dist-module/*.{js,map}",
+		"build:main": "node --input-type=module -e \"import { build } from './build/tasks/build.js'; build()\"",
 		"lint": "eslint --cache .",
 		"npmcopy": "node build/tasks/npmcopy.js",
 		"prepare": "husky",
-		"pretest": "npm run npmcopy && npm run build && npm run lint",
-		"start": "npm run npmcopy && node build/tasks/build-watch.js",
-		"test:browser": "npm run pretest && npm run test:unit -- -b chrome -b firefox --headless",
-		"test:ie": "npm run pretest && npm run test:unit -- -v -b ie",
-		"test:node_smoke_tests": "npm run pretest && node test/node_smoke_tests/smoke_tests.cjs",
-		"test:safari": "npm run pretest && npm run test:unit -- -v -b safari",
+		"pretest": "npm run npmcopy",
+		"start": "node --input-type=module -e \"import { buildDefaultFiles } from './build/tasks/build.js'; buildDefaultFiles({ watch: true })\"",
+		"test:browser": "npm run pretest && npm run build:all && npm run test:unit -- -b chrome -b firefox --headless",
+		"test:browserless": "npm run pretest && npm run build:all && node test/bundler_smoke_tests/run-jsdom-tests.js && node test/node_smoke_tests/node_smoke_tests.cjs",
+		"test:ie": "npm run pretest && npm run build:all && npm run test:unit -- -v -b ie",
+		"test:bundlers": "npm run pretest && npm run build:all && node test/bundler_smoke_tests/run-jsdom-tests.js",
+		"test:node_smoke_tests": "npm run pretest && npm run build:all && node test/node_smoke_tests/node_smoke_tests.cjs",
+		"test:safari": "npm run pretest && npm run build:all && npm run test:unit -- -v -b safari",
 		"test:server": "jtr serve",
+		"test:esm": "npm run pretest && npm run build:main && npm run test:unit -- -f plugin=esmodules --headless ",
 		"test:unit": "jtr",
-		"test": "npm run test:node_smoke_tests && npm run test:browser"
+		"test": "npm run build:all && npm run lint && npm run test:browserless && npm run test:browser && npm run test:esm"
 	},
 	"peerDependencies": {
 		"jquery": ">=4 <5"
 	},
 	"devDependencies": {
+		"@rollup/plugin-commonjs": "28.0.3",
+		"@rollup/plugin-node-resolve": "16.0.1",
 		"chalk": "5.4.1",
 		"commitplease": "3.2.0",
 		"enquirer": "2.4.1",
@@ -52,7 +72,9 @@
 		"qunit": "2.24.1",
 		"rollup": "4.34.8",
 		"sinon": "9.2.4",
-		"uglify-js": "3.19.3"
+		"uglify-js": "3.19.3",
+		"webpack": "5.98.0",
+		"yargs": "^17.7.2"
 	},
 	"keywords": [
 		"jquery",
