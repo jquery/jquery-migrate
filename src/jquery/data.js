@@ -1,9 +1,10 @@
 import { migratePatchFunc, migrateWarn } from "../main.js";
-import { camelCase } from "../utils.js";
+import { camelCase, patchProto } from "../utils.js";
 
 var rmultiDash = /[A-Z]/g,
 	rnothtmlwhite = /[^\x20\t\r\n\f]+/g,
-	origJQueryData = jQuery.data;
+	origJQueryData = jQuery.data,
+	origJQueryPrivateData = jQuery._data;
 
 function unCamelCase( str ) {
 	return str.replace( rmultiDash, "-$&" ).toLowerCase();
@@ -11,7 +12,9 @@ function unCamelCase( str ) {
 
 function patchDataCamelCase( origData, options ) {
 	var apiName = options.apiName,
-		isInstanceMethod = options.isInstanceMethod;
+		isPrivateData = options.isPrivateData,
+		isInstanceMethod = options.isInstanceMethod,
+		origJQueryStaticData = isPrivateData ? origJQueryPrivateData : origJQueryData;
 
 	function objectSetter( elem, obj ) {
 		var curData, key;
@@ -23,7 +26,7 @@ function patchDataCamelCase( origData, options ) {
 
 			// Don't use the instance method here to avoid `data-*` attributes
 			// detection this early.
-			curData = origJQueryData( elem );
+			curData = origJQueryStaticData( elem );
 
 			for ( key in obj ) {
 				if ( key !== camelCase( key ) ) {
@@ -56,7 +59,7 @@ function patchDataCamelCase( origData, options ) {
 
 			// Don't use the instance method here to avoid `data-*` attributes
 			// detection this early.
-			curData = origJQueryData( elem );
+			curData = origJQueryStaticData( elem );
 
 			if ( curData && name in curData ) {
 				migrateWarn( "data-camelCase",
@@ -66,7 +69,7 @@ function patchDataCamelCase( origData, options ) {
 				curData[ name ] = value;
 			}
 
-			origJQueryData( elem, name, value );
+			origJQueryStaticData( elem, name, value );
 
 			// Since the "set" path can have two possible entry points
 			// return the expected data based on which path was taken.
@@ -124,7 +127,7 @@ function patchDataCamelCase( origData, options ) {
 
 			// Don't use the instance method here to avoid `data-*` attributes
 			// detection this early.
-			curData = origJQueryData( elem );
+			curData = origJQueryStaticData( elem );
 
 			if ( curData && name in curData ) {
 				migrateWarn( "data-camelCase",
@@ -139,11 +142,13 @@ function patchDataCamelCase( origData, options ) {
 }
 
 function patchRemoveDataCamelCase( origRemoveData, options ) {
-	var isInstanceMethod = options.isInstanceMethod;
+	var isPrivateData = options.isPrivateData,
+		isInstanceMethod = options.isInstanceMethod,
+		origJQueryStaticData = isPrivateData ? origJQueryPrivateData : origJQueryData;
 
 	function remove( elem, keys ) {
 		var i, singleKey, unCamelCasedKeys,
-			curData = jQuery.data( elem );
+			curData = origJQueryStaticData( elem );
 
 		if ( keys === undefined ) {
 			origRemoveData( elem );
@@ -223,104 +228,64 @@ function patchRemoveDataCamelCase( origRemoveData, options ) {
 migratePatchFunc( jQuery, "data",
 	patchDataCamelCase( jQuery.data, {
 		apiName: "jQuery.data()",
+		isPrivateData: false,
+		isInstanceMethod: false
+	} ),
+	"data-camelCase" );
+migratePatchFunc( jQuery, "_data",
+	patchDataCamelCase( jQuery._data, {
+		apiName: "jQuery._data()",
+		isPrivateData: true,
 		isInstanceMethod: false
 	} ),
 	"data-camelCase" );
 migratePatchFunc( jQuery.fn, "data",
 	patchDataCamelCase( jQuery.fn.data, {
 		apiName: "jQuery.fn.data()",
+		isPrivateData: false,
 		isInstanceMethod: true
 	} ),
 	"data-camelCase" );
 
 migratePatchFunc( jQuery, "removeData",
 	patchRemoveDataCamelCase( jQuery.removeData, {
+		isPrivateData: false,
 		isInstanceMethod: false
 	} ),
 	"data-camelCase" );
-
+migratePatchFunc( jQuery, "_removeData",
+	patchRemoveDataCamelCase( jQuery._removeData, {
+		isPrivateData: true,
+		isInstanceMethod: false
+	} ),
+	"data-camelCase" );
 migratePatchFunc( jQuery.fn, "removeData",
 
 	// No, it's not a typo - we're intentionally passing
 	// the static method here as we need something working on
 	// a single element.
 	patchRemoveDataCamelCase( jQuery.removeData, {
+		isPrivateData: false,
 		isInstanceMethod: true
 	} ),
 	"data-camelCase" );
 
-
 function patchDataProto( original, options ) {
-
-	// Support: IE 9 - 10 only, iOS 7 - 8 only
-	// Older IE doesn't have a way to change an existing prototype.
-	// Just return the original method there.
-	// Older WebKit supports `__proto__` but not `Object.setPrototypeOf`.
-	// To avoid complicating code, don't patch the API there either.
-	if ( !Object.setPrototypeOf ) {
-		return original;
-	}
-
-	var i,
+	var warningId = options.warningId,
 		apiName = options.apiName,
-		isInstanceMethod = options.isInstanceMethod,
+		isInstanceMethod = options.isInstanceMethod;
 
-		// `Object.prototype` keys are not enumerable so list the
-		// official ones here. An alternative would be wrapping
-		// data objects with a Proxy but that creates additional issues
-		// like breaking object identity on subsequent calls.
-		objProtoKeys = [
-			"__proto__",
-			"__defineGetter__",
-			"__defineSetter__",
-			"__lookupGetter__",
-			"__lookupSetter__",
-			"hasOwnProperty",
-			"isPrototypeOf",
-			"propertyIsEnumerable",
-			"toLocaleString",
-			"toString",
-			"valueOf"
-		],
-
-		// Use a null prototype at the beginning so that we can define our
-		// `__proto__` getter & setter. We'll reset the prototype afterwards.
-		intermediateDataObj = Object.create( null );
-
-	for ( i = 0; i < objProtoKeys.length; i++ ) {
-		( function( key ) {
-			Object.defineProperty( intermediateDataObj, key, {
-				get: function() {
-					migrateWarn( "data-null-proto",
-						"Accessing properties from " + apiName +
-						" inherited from Object.prototype is deprecated" );
-					return ( key + "__cache" ) in intermediateDataObj ?
-						intermediateDataObj[ key + "__cache" ] :
-						Object.prototype[ key ];
-				},
-				set: function( value ) {
-					migrateWarn( "data-null-proto",
-						"Setting properties from " + apiName +
-						" inherited from Object.prototype is deprecated" );
-					intermediateDataObj[ key + "__cache" ] = value;
-				}
-			} );
-		} )( objProtoKeys[ i ] );
-	}
-
-	Object.setPrototypeOf( intermediateDataObj, Object.prototype );
-
-	return function jQueryDataProtoPatched() {
+	return function apiWithProtoPatched() {
 		var result = original.apply( this, arguments );
 
 		if ( arguments.length !== ( isInstanceMethod ? 0 : 1 ) || result === undefined ) {
 			return result;
 		}
 
-		// Insert an additional object in the prototype chain between `result`
-		// and `Object.prototype`; that intermediate object proxies properties
-		// to `Object.prototype`, warning about their usage first.
-		Object.setPrototypeOf( result, intermediateDataObj );
+		patchProto( result, {
+			warningId: warningId,
+			apiName: apiName
+		} );
 
 		return result;
 	};
@@ -330,15 +295,22 @@ function patchDataProto( original, options ) {
 // so that each of the two patches can be independently disabled.
 migratePatchFunc( jQuery, "data",
 	patchDataProto( jQuery.data, {
+		warningId: "data-null-proto",
 		apiName: "jQuery.data()",
-		isPrivateData: false,
+		isInstanceMethod: false
+	} ),
+	"data-null-proto" );
+migratePatchFunc( jQuery, "_data",
+	patchDataProto( jQuery._data, {
+		warningId: "data-null-proto",
+		apiName: "jQuery._data()",
 		isInstanceMethod: false
 	} ),
 	"data-null-proto" );
 migratePatchFunc( jQuery.fn, "data",
 	patchDataProto( jQuery.fn.data, {
+		warningId: "data-null-proto",
 		apiName: "jQuery.fn.data()",
-		isPrivateData: true,
 		isInstanceMethod: true
 	} ),
 	"data-null-proto" );
