@@ -1,6 +1,12 @@
 
 QUnit.module( "core" );
 
+function getTagNames( elem ) {
+	return elem.toArray().map( function( node ) {
+		return node.tagName.toLowerCase();
+	} );
+}
+
 QUnit.test( "jQuery(html, props)", function( assert ) {
 	assert.expect( 2 );
 
@@ -317,6 +323,57 @@ TestManager.runIframeTest( "old pre-3.0 jQuery", "core-jquery2.html",
 
 		assert.ok( /jQuery 3/.test( log ), "logged: " + log );
 } );
+
+QUnit[ jQueryVersionSince( "3.7.0" ) ? "test" : "skip" ]( "jQuery.fn.push", function( assert ) {
+	assert.expect( 2 );
+
+	expectWarning( assert, "jQuery.fn.push", 1, function() {
+		var node = jQuery( "<div></div>" )[ 0 ],
+			elem = jQuery( "<p></p><span></span>" );
+
+		elem.push( node );
+
+		assert.deepEqual( getTagNames( elem ), [ "p", "span", "div" ],
+			"div added in-place" );
+	} );
+} );
+
+QUnit[ jQueryVersionSince( "3.7.0" ) ? "test" : "skip" ]( "jQuery.fn.sort", function( assert ) {
+	assert.expect( 2 );
+
+	expectWarning( assert, "jQuery.fn.sort", 1, function() {
+		var elem = jQuery( "<span></span><div></div><p></p>" );
+
+		elem.sort( function( node1, node2 ) {
+			var tag1 = node1.tagName.toLowerCase(),
+				tag2 = node2.tagName.toLowerCase();
+			if ( tag1 < tag2 ) {
+				return -1;
+			}
+			if ( tag1 > tag2 ) {
+				return 1;
+			}
+			return 0;
+		} );
+
+		assert.deepEqual( getTagNames( elem ), [ "div", "p", "span" ],
+			"element sorted in-place" );
+	} );
+} );
+
+QUnit[ jQueryVersionSince( "3.7.0" ) ? "test" : "skip" ]( "jQuery.fn.splice", function( assert ) {
+	assert.expect( 2 );
+
+	expectWarning( assert, "jQuery.fn.splice", 1, function() {
+		var elem = jQuery( "<span></span><div></div><p></p>" );
+
+		elem.splice( 1, 1, jQuery( "<i></i>" )[ 0 ], jQuery( "<b></b>" )[ 0 ] );
+
+		assert.deepEqual( getTagNames( elem ), [ "span", "i", "b", "p" ],
+			"splice removed & added in-place" );
+	} );
+} );
+
 
 QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.proxy", function( assert ) {
 	assert.expect( 10 );

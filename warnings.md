@@ -46,6 +46,14 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Put a [valid doctype](http://www.w3.org/QA/2002/04/valid-dtd-list.html) in the document and ensure that the document is rendering in standards mode. The simplest valid doctype is the HTML5 one, which we highly recommend: `<!doctype html>` . The jQuery Migrate plugin does not attempt to fix issues related to quirks mode.
 
+### \[push\] JQMIGRATE: jQuery.fn.push() is deprecated; use .add or convert to an array
+### \[sort\] JQMIGRATE: jQuery.fn.sort() is deprecated; convert to an array before sorting
+### \[splice\] JQMIGRATE: jQuery.fn.splice() is deprecated; use .slice() or .not() with .eq()
+
+**Cause**: jQuery adds the Array `push`, `sort` & `splice` methods to the jQuery prototype. They behave differently to other jQuery APIs - they modify the jQuery collections in place, they don't play nice with APIs like `.end()`, they were also never documented.
+
+**Solution**: Replace `.push( node )` with `.add( node )`, `.splice( index )` with `.not( elem.eq( index ) )`. In more complex cases, call `.toArray()` first, manipulate the resulting array and convert back to the jQuery object by passing the resulting array to `$()`.
+
 ### \[jqXHR-methods\] JQMIGRATE: jQXHR.success is deprecated and removed
 ### \[jqXHR-methods\] JQMIGRATE: jQXHR.error is deprecated and removed
 ### \[jqXHR-methods\] JQMIGRATE: jQXHR.complete is deprecated and removed
