@@ -2,7 +2,11 @@ import { jQueryVersionSince } from "../compareVersions.js";
 import { migratePatchAndWarnFunc } from "../main.js";
 import "../disablePatches.js";
 
-var class2type = {},
+var arr = [],
+	push = arr.push,
+	sort = arr.sort,
+	splice = arr.splice,
+	class2type = {},
 
 	// Require that the "whitespace run" starts from a non-whitespace
 	// to avoid O(N^2) behavior when the engine would try matching "\s+$" at each space position.
@@ -117,4 +121,13 @@ if ( jQueryVersionSince( "3.3.0" ) ) {
 	migratePatchAndWarnFunc( jQuery, "proxy", jQuery.proxy,
 		"proxy", "DEPRECATED: jQuery.proxy()" );
 
+}
+
+if ( jQueryVersionSince( "3.7.0" ) ) {
+	migratePatchAndWarnFunc( jQuery.fn, "push", push, "push",
+		"jQuery.fn.push() is deprecated; use .add() or convert to an array" );
+	migratePatchAndWarnFunc( jQuery.fn, "sort", sort, "sort",
+		"jQuery.fn.sort() is deprecated; convert to an array before sorting" );
+	migratePatchAndWarnFunc( jQuery.fn, "splice", splice, "splice",
+		"jQuery.fn.splice() is deprecated; use .slice() or .not() with .eq()" );
 }
