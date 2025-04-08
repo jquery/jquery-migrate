@@ -1,4 +1,4 @@
-import { migrateWarnProp, migratePatchAndWarnFunc, migratePatchAndInfoFunc } from "../main.js";
+import { migratePatchAndWarnFunc, migratePatchAndInfoFunc } from "../main.js";
 import "../disablePatches.js";
 
 var arr = [],
@@ -92,9 +92,9 @@ migratePatchAndWarnFunc( jQuery, "isWindow",
 migratePatchAndInfoFunc( jQuery, "proxy", jQuery.proxy,
 	"proxy", "jQuery.proxy() is deprecated" );
 
-migrateWarnProp( jQuery.fn, "push", push, "push",
+migratePatchAndWarnFunc( jQuery.fn, "push", push, "push",
 	"jQuery.fn.push() is removed; use .add() or convert to an array" );
-migrateWarnProp( jQuery.fn, "sort", sort, "sort",
+migratePatchAndWarnFunc( jQuery.fn, "sort", sort, "sort",
 	"jQuery.fn.sort() is removed; convert to an array before sorting" );
-migrateWarnProp( jQuery.fn, "splice", splice, "splice",
+migratePatchAndWarnFunc( jQuery.fn, "splice", splice, "splice",
 	"jQuery.fn.splice() is removed; use .slice() or .not() with .eq()" );
