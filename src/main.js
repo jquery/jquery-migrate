@@ -70,38 +70,71 @@ export function migrateInfo( code, msg ) {
 	migrateMessageInternal( code, msg, "info" );
 }
 
-function migrateMessagePropInternal(
+function migratePatchPropInternal(
 	obj, prop, value, code, msg, migrateMessageFn
 ) {
+	var orig = obj[ prop ];
 	Object.defineProperty( obj, prop, {
 		configurable: true,
 		enumerable: true,
+
 		get: function() {
-			migrateMessageFn( code, msg );
-			return value;
+			if ( jQuery.migrateIsPatchEnabled( code ) ) {
+
+				// If `msg` not provided, do not message; more sophisticated
+				// messaging logic is most likely embedded in `value`.
+				if ( msg ) {
+					migrateMessageFn( code, msg );
+				}
+
+				return value;
+			}
+
+			return orig;
 		},
+
 		set: function( newValue ) {
-			migrateMessageFn( code, msg );
-			value = newValue;
+			if ( jQuery.migrateIsPatchEnabled( code ) ) {
+
+				// See the comment in the getter.
+				if ( msg ) {
+					migrateMessageFn( code, msg );
+				}
+			}
+
+			// If a new value was set, apply it regardless if
+			// the patch is later disabled or not.
+			orig = value = newValue;
 		}
 	} );
 }
 
 export function migrateWarnProp( obj, prop, value, code, msg ) {
-	migrateMessagePropInternal( obj, prop, value, code, msg, migrateWarn );
+	if ( !msg ) {
+		throw new Error( "No warning message provided" );
+	}
+	migratePatchPropInternal( obj, prop, value, code, msg, migrateWarn );
 }
 
 export function migrateInfoProp( obj, prop, value, code, msg ) {
-	migrateMessagePropInternal( obj, prop, value, code, msg, migrateInfo );
+	if ( !msg ) {
+		throw new Error( "No warning message provided" );
+	}
+	migratePatchPropInternal( obj, prop, value, code, msg, migrateInfo );
 }
 
-function migrateMessageFuncInternal(
+export function migratePatchProp( obj, prop, value, code ) {
+	migratePatchPropInternal( obj, prop, value, code );
+}
+
+// The value of the "Func" APIs is that for method we want to allow
+// checking for the method existence without triggering a warning.
+// For other deprecated properties, we do need to warn on access.
+function migratePatchFuncInternal(
 	obj, prop, newFunc, code, msg, migrateMessageFn
 ) {
-	var finalFunc,
-		origFunc = obj[ prop ];
 
-	obj[ prop ] = function() {
+	function wrappedNewFunc() {
 
 		// If `msg` not provided, do not warn; more sophisticated warnings
 		// logic is most likely embedded in `newFunc`, in that case here
@@ -111,34 +144,28 @@ function migrateMessageFuncInternal(
 			migrateMessageFn( code, msg );
 		}
 
-		// Since patches can be disabled & enabled dynamically, we
-		// need to decide which implementation to run on each invocation.
-		finalFunc = jQuery.migrateIsPatchEnabled( code ) ?
-			newFunc :
+		return newFunc.apply( this, arguments );
+	}
 
-			// The function may not have existed originally so we need a fallback.
-			( origFunc || jQuery.noop );
-
-		return finalFunc.apply( this, arguments );
-	};
+	migratePatchPropInternal( obj, prop, wrappedNewFunc, code );
 }
 
 export function migratePatchAndWarnFunc( obj, prop, newFunc, code, msg ) {
 	if ( !msg ) {
 		throw new Error( "No warning message provided" );
 	}
-	return migrateMessageFuncInternal( obj, prop, newFunc, code, msg, migrateWarn );
+	return migratePatchFuncInternal( obj, prop, newFunc, code, msg, migrateWarn );
 }
 
 export function migratePatchAndInfoFunc( obj, prop, newFunc, code, msg ) {
 	if ( !msg ) {
 		throw new Error( "No info message provided" );
 	}
-	return migrateMessageFuncInternal( obj, prop, newFunc, code, msg, migrateInfo );
+	return migratePatchFuncInternal( obj, prop, newFunc, code, msg, migrateInfo );
 }
 
 export function migratePatchFunc( obj, prop, newFunc, code ) {
-	return migrateMessageFuncInternal( obj, prop, newFunc, code );
+	return migratePatchFuncInternal( obj, prop, newFunc, code );
 }
 
 if ( window.document.compatMode === "BackCompat" ) {
