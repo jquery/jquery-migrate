@@ -1,9 +1,11 @@
 import {
 	migrateWarn,
 	migratePatchAndInfoFunc,
-	migratePatchFunc
+	migratePatchFunc,
+	migratePatchProp
 } from "../main.js";
 import "../disablePatches.js";
+import { patchProto } from "../utils.js";
 
 var oldEventAdd = jQuery.event.add;
 
@@ -41,3 +43,10 @@ migratePatchAndInfoFunc( jQuery.fn, "undelegate", jQuery.fn.undelegate,
 
 migratePatchAndInfoFunc( jQuery.fn, "hover", jQuery.fn.hover,
 	"hover", "jQuery.fn.hover() is deprecated" );
+
+migratePatchProp( jQuery.event, "special",
+	patchProto( jQuery.extend( Object.create( null ), jQuery.event.special ), {
+		warningId: "event-special-null-proto",
+		apiName: "jQuery.event.special"
+	} ),
+	"event-special-null-proto" );
