@@ -12,7 +12,13 @@ export default [
 	},
 
 	{
-		files: [ "eslint.config.js", "build/**" ],
+		files: [
+			"eslint.config.js",
+			".release-it.cjs",
+			"build/**",
+			"test/node_smoke_tests/**",
+			"test/bundler_smoke_tests/**/*"
+		],
 		languageOptions: {
 			ecmaVersion: "latest",
 			globals: {
@@ -61,17 +67,43 @@ export default [
 	},
 
 	{
+		files: [
+			"src/wrapper.js",
+			"src/wrapper-esm.js",
+			"src/wrapper-factory.js",
+			"src/wrapper-factory-esm.js"
+		],
+		languageOptions: {
+			globals: {
+				jQuery: false
+			}
+		},
+		rules: {
+			"no-unused-vars": "off",
+			indent: [
+				"error",
+				"tab",
+				{
+
+					// This makes it so code within the wrapper is not indented.
+					ignoredNodes: [
+						"Program > FunctionDeclaration > *"
+					]
+				}
+			]
+		}
+	},
+
+	{
 		files: [ "src/wrapper.js" ],
 		languageOptions: {
 			sourceType: "script",
 			globals: {
-				jQuery: false,
 				define: false,
 				module: false
 			}
 		},
 		rules: {
-			"no-unused-vars": "off",
 			indent: [
 				"error",
 				"tab",
@@ -202,6 +234,22 @@ export default [
 		languageOptions: {
 			ecmaVersion: 5,
 			sourceType: "script"
+		}
+	},
+
+	{
+		files: [ "dist-module/**" ],
+		languageOptions: {
+			ecmaVersion: 2015,
+			sourceType: "module"
+		}
+	},
+
+	{
+		files: [ "dist/wrappers/*.js" ],
+		languageOptions: {
+			ecmaVersion: 2015,
+			sourceType: "commonjs"
 		}
 	}
 ];
