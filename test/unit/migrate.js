@@ -46,7 +46,7 @@ QUnit.test( "jQuery.migrateDeduplicateMessages", function( assert ) {
 } );
 
 QUnit.test( "disabling/enabling patches", function( assert ) {
-	assert.expect( 14 );
+	assert.expect( 27 );
 
 	var elem = jQuery( "<div></div>" );
 
@@ -62,6 +62,10 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 		true, "patch enabled by default (proxy)" );
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
 		true, "patch enabled by default (shorthand-deprecated-v3)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "push" ),
+		true, "patch enabled by default (push)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "isArray" ),
+		true, "patch enabled by default (isArray)" );
 
 	expectMessage( assert, "pre-on-methods (default)", function() {
 		jQuery().bind();
@@ -72,23 +76,46 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 	expectMessage( assert, "shorthand-deprecated-v3 (default)", function() {
 		jQuery().click();
 	} );
+	expectMessage( assert, "push (default)", function() {
+		jQuery().push();
+	} );
+	expectMessage( assert, "isArray (default)", function() {
+		jQuery.isArray();
+	} );
 
-	jQuery.migrateDisablePatches( "pre-on-methods", "proxy" );
+	expectNoMessage( assert, "push access without calling (default)", function() {
+		assert.strictEqual( typeof jQuery().push, "function",
+			"access check doesn't trigger a message (push)" );
+	} );
+	expectNoMessage( assert, "isArray access without calling (default)", function() {
+		assert.strictEqual( typeof jQuery.isArray, "function",
+			"access check doesn't trigger a message (isArray)" );
+	} );
+
+	jQuery.migrateDisablePatches( "pre-on-methods", "proxy", "push", "isArray" );
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "pre-on-methods" ),
 		false, "patch disabled (pre-on-methods)" );
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "proxy" ),
 		false, "patch disabled (proxy)" );
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
 		true, "patch still enabled (shorthand-deprecated-v3)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "push" ),
+		false, "patch disabled (push)" );
 
-	expectNoMessage( assert, "pre-on-methods (default)", function() {
+	expectNoMessage( assert, "pre-on-methods (disabled)", function() {
 		jQuery().bind();
 	} );
-	expectNoMessage( assert, "proxy (default)", function() {
+	expectNoMessage( assert, "proxy (disabled)", function() {
 		jQuery.proxy( jQuery.noop );
 	} );
-	expectMessage( assert, "shorthand-deprecated-v3 (default)", function() {
+	expectMessage( assert, "shorthand-deprecated-v3 (not disabled)", function() {
 		jQuery().click();
+	} );
+	expectNoMessage( assert, "push (disabled)", function() {
+		assert.strictEqual( jQuery().push, undefined, "`push` patch no longer defined" );
+	} );
+	expectNoMessage( assert, "isArray (disabled)", function() {
+		assert.strictEqual( jQuery.isArray, undefined, "`jQuery.isArray` patch no longer defined" );
 	} );
 
 	jQuery.migrateDisablePatches( "shorthand-deprecated-v3" );
