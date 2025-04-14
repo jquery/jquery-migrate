@@ -93,3 +93,25 @@ QUnit.test( "jQuery.event.global", function( assert ) {
 		assert.deepEqual( jQuery.event.global, {}, "is an empty object" );
 	} );
 } );
+
+QUnit.test( "jQuery.event.special: properties from Object.prototype", function( assert ) {
+	assert.expect( 4 );
+
+	try {
+		expectNoMessage( assert, "Regular properties", function() {
+			jQuery.event.special.fakeevent = {};
+
+			// eslint-disable-next-line no-unused-expressions
+			jQuery.event.special.fakeevent;
+		} );
+
+		expectMessage( assert, "Properties from Object.prototype", 2, function() {
+			assert.ok( jQuery.event.special.hasOwnProperty( "fakeevent" ),
+				"hasOwnProperty works (property present)" );
+			assert.ok( !jQuery.event.special.hasOwnProperty( "fakeevent2" ),
+				"hasOwnProperty works (property missing)" );
+		} );
+	} finally {
+		delete jQuery.event.special.fakeevent;
+	}
+} );
