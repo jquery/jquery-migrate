@@ -43,7 +43,11 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm run test:browser -- -f plugin=${{ matrix.MIGRATE_VERSION }}
+        run: |
+            npm run pretest
+            npm run build:all
+            npm run test:unit -- -c jtr-local.yml \
+              --headless -b ${{ matrix.BROWSER }} -f plugin=${{ matrix.MIGRATE_VERSION }}
 
   ie:
     runs-on: windows-latest
