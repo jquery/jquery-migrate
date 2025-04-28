@@ -48,9 +48,13 @@ Object.defineProperty( jQuery.Deferred, "getStackHook", {
 	},
 	set: function( newValue ) {
 		if ( jQuery.migrateIsPatchEnabled( "deferred-getStackHook" ) ) {
-			migrateWarn( "deferred-getStackHook",
-				"jQuery.Deferred.getStackHook is removed; use jQuery.Deferred.getErrorHook" );
-			jQuery.Deferred.getErrorHook = newValue;
+
+			// Only warn if `getErrorHook` wasn't set to the same value first.
+			if ( jQuery.Deferred.getErrorHook !== newValue ) {
+				migrateWarn( "deferred-getStackHook",
+					"jQuery.Deferred.getStackHook is removed; use jQuery.Deferred.getErrorHook" );
+				jQuery.Deferred.getErrorHook = newValue;
+			}
 		} else {
 			unpatchedGetStackHookValue = newValue;
 		}
