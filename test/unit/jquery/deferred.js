@@ -77,7 +77,7 @@ QUnit.test( "jQuery.Deferred.getStackHook - getter, no getErrorHook", function( 
 } );
 
 QUnit.test( "jQuery.Deferred.getStackHook - setter", function( assert ) {
-	assert.expect( 5 );
+	assert.expect( 6 );
 
 	var exceptionHookSpy,
 		done = assert.async();
@@ -89,6 +89,11 @@ QUnit.test( "jQuery.Deferred.getStackHook - setter", function( assert ) {
 		jQuery.Deferred.getStackHook = mockFn;
 		assert.strictEqual( jQuery.Deferred.getErrorHook, mockFn,
 			"getStackHook mirrors getErrorHook (setter)" );
+	} );
+
+	expectNoWarning( assert, "jQuery.Deferred.getStackHook - setter", 1, function() {
+		var mockFn = function() {};
+		jQuery.Deferred.getStackHook = jQuery.Deferred.getErrorHook = mockFn;
 	} );
 
 	expectWarning( assert, "asyncHook from jQuery.Deferred.getStackHook reported",
