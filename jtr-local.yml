@@ -1,6 +1,6 @@
 version: 1
 
-flags:
+runs:
   jquery:
     - 3.x-git
     - 3.x-git.min
