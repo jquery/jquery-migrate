@@ -46,7 +46,7 @@ QUnit.test( "jQuery.migrateDeduplicateMessages", function( assert ) {
 } );
 
 QUnit.test( "disabling/enabling patches", function( assert ) {
-	assert.expect( 27 );
+	assert.expect( 32 );
 
 	var elem = jQuery( "<div></div>" );
 
@@ -56,16 +56,27 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 	// existing warnings. If the ones we rely on here get removed,
 	// replace them with ones that still exist.
 
+	// A few APIs that are not slated for removal to make these tests more stable:
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "pre-on-methods" ),
 		true, "patch enabled by default (pre-on-methods)" );
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "proxy" ),
 		true, "patch enabled by default (proxy)" );
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "shorthand-deprecated-v3" ),
 		true, "patch enabled by default (shorthand-deprecated-v3)" );
+
+	// APIs patched via `migratePatchAndWarnFunc` or `migratePatchAndInfoFunc`;
+	// we're testing that:
+	// * they don't warn on access but only when called
+	// * they don't exist (access evaluates to `undefined`) if patch is disabled
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "push" ),
 		true, "patch enabled by default (push)" );
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "isArray" ),
 		true, "patch enabled by default (isArray)" );
+
+	// APIs patched via `migrateWarnProp` or `migrateInfoProp`; we're testing that:
+	// * they don't exist (access evaluates to `undefined`) if patch is disabled
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "event-global" ),
+		true, "patch enabled by default (event-global)" );
 
 	expectMessage( assert, "pre-on-methods (default)", function() {
 		jQuery().bind();
@@ -82,6 +93,11 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 	expectMessage( assert, "isArray (default)", function() {
 		jQuery.isArray();
 	} );
+	expectMessage( assert, "event-global (default)", function() {
+
+		// eslint-disable-next-line no-unused-expressions
+		jQuery.event.global;
+	} );
 
 	expectNoMessage( assert, "push access without calling (default)", function() {
 		assert.strictEqual( typeof jQuery().push, "function",
@@ -92,7 +108,7 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 			"access check doesn't trigger a message (isArray)" );
 	} );
 
-	jQuery.migrateDisablePatches( "pre-on-methods", "proxy", "push", "isArray" );
+	jQuery.migrateDisablePatches( "pre-on-methods", "proxy", "push", "isArray", "event-global" );
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "pre-on-methods" ),
 		false, "patch disabled (pre-on-methods)" );
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "proxy" ),
@@ -101,6 +117,8 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 		true, "patch still enabled (shorthand-deprecated-v3)" );
 	assert.strictEqual( jQuery.migrateIsPatchEnabled( "push" ),
 		false, "patch disabled (push)" );
+	assert.strictEqual( jQuery.migrateIsPatchEnabled( "event-global" ),
+		false, "patch disabled (event-global)" );
 
 	expectNoMessage( assert, "pre-on-methods (disabled)", function() {
 		jQuery().bind();
@@ -112,10 +130,14 @@ QUnit.test( "disabling/enabling patches", function( assert ) {
 		jQuery().click();
 	} );
 	expectNoMessage( assert, "push (disabled)", function() {
-		assert.strictEqual( jQuery().push, undefined, "`push` patch no longer defined" );
+		assert.strictEqual( jQuery().push, undefined, "`jQuery.fn.push` no longer defined" );
 	} );
 	expectNoMessage( assert, "isArray (disabled)", function() {
-		assert.strictEqual( jQuery.isArray, undefined, "`jQuery.isArray` patch no longer defined" );
+		assert.strictEqual( jQuery.isArray, undefined, "`jQuery.isArray` no longer defined" );
+	} );
+	expectNoMessage( assert, "event-global (disabled)", function() {
+		assert.strictEqual( jQuery.event.global, undefined,
+			"`jQuery.event.global` no longer defined" );
 	} );
 
 	jQuery.migrateDisablePatches( "shorthand-deprecated-v3" );

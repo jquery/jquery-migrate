@@ -84,3 +84,12 @@ TestManager.runIframeTest( "Load within a ready handler", "event-lateload.html",
 			JSON.stringify( jQuery.migrateMessages ) );
 		assert.ok( /load/.test( jQuery.migrateMessages[ 0 ] ), "message ok" );
 	} );
+
+QUnit.test( "jQuery.event.global", function( assert ) {
+	assert.expect( 3 );
+
+	expectMessage( assert, "jQuery.event.global", 2, function() {
+		assert.ok( jQuery.isPlainObject( jQuery.event.global ), "is a plain object" );
+		assert.deepEqual( jQuery.event.global, {}, "is an empty object" );
+	} );
+} );

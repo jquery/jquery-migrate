@@ -171,6 +171,12 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Rename all usage of `jQuery.Deferred.getStackHook` to `jQuery.Deferred.getErrorHook`. If you previously assigned a function returning an error stack to `jQuery.Deferred.getStackHook` or `jQuery.Deferred.getErrorHook`, change it to return a full error object. If you aim to still support jQuery <3.7, assign the hook to `jQuery.Deferred.getErrorHook` first and only later to `jQuery.Deferred.getStackHook` to avoid a Migrate warning.
 
+### \[event-global\] JQMIGRATE: jQuery.Deferred.getStackHook is removed; use jQuery.Deferred.getErrorHook
+
+**Cause:** `jQuery.event.global` was an object with keys being event names for which event listeners have ever been added. Originally, it was needed for performance reasons and to fix memory leaks in old IE, but since jQuery 1.9.0, the library has only been recording the events, but it was not using that information anywhere. jQuery 4.0.0 removes the API.
+
+**Solution:** Remove all usage of `jQuery.event.global`; it's unlikely any existing usage is needed.
+
 
 ## Deprecated APIs
 
