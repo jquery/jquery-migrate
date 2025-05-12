@@ -1,5 +1,6 @@
 import {
 	migrateWarn,
+	migrateWarnProp,
 	migratePatchAndInfoFunc,
 	migratePatchFunc
 } from "../main.js";
@@ -41,3 +42,6 @@ migratePatchAndInfoFunc( jQuery.fn, "undelegate", jQuery.fn.undelegate,
 
 migratePatchAndInfoFunc( jQuery.fn, "hover", jQuery.fn.hover,
 	"hover", "jQuery.fn.hover() is deprecated" );
+
+migrateWarnProp( jQuery.event, "global", {}, "event-global",
+	"jQuery.event.global is removed" );
