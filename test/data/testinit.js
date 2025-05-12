@@ -8,7 +8,7 @@
 	 *	dev			Uncompressed development version: source files in the project /dist dir
 	 *	esmodules	Non-combined dev version: source files from the project /src dir
 	 *	min			Minified version in the project /dist dir
-	 *	VER			Version from code.jquery.com, e.g.: git, 4.0.0.min or 4.0.0-beta.2
+	 *	VER			Version from code.jquery.com, e.g.: git, 4.0.0.min or 4.0.0-rc.1
 	 *	else		Full or relative path to be used for script src
 	 */
 	loadProject: function( projectName, defaultVersion, isSelf ) {
@@ -244,8 +244,8 @@ TestManager.init( {
 			"git.min",
 			"git.slim",
 			"git.slim.min",
-			"4.0.0-beta.2",
-			"4.0.0-beta.2.slim"
+			"4.0.0-rc.1",
+			"4.0.0-rc.1.slim"
 		]
 	},
 	"jquery-migrate": {

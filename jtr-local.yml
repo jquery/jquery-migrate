@@ -6,7 +6,7 @@ runs:
     - git.min
     - git.slim
     - git.slim.min
-    - 4.0.0-beta.2
-    - 4.0.0-beta.2.slim
+    - 4.0.0-rc.1
+    - 4.0.0-rc.1.slim
 
 retries: 1
