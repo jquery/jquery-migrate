@@ -5,6 +5,7 @@ import {
 	migrateWarnProp
 } from "../main.js";
 import "../disablePatches.js";
+import { patchProto } from "../utils.js";
 
 var oldLoad = jQuery.fn.load,
 	oldEventAdd = jQuery.event.add,
@@ -136,3 +137,11 @@ migratePatchAndWarnFunc( jQuery.fn, "undelegate", function( selector, types, fn 
 migratePatchAndWarnFunc( jQuery.fn, "hover", function( fnOver, fnOut ) {
 	return this.on( "mouseenter", fnOver ).on( "mouseleave", fnOut || fnOver );
 }, "pre-on-methods", "jQuery.fn.hover() is deprecated" );
+
+// We can apply the patch unconditionally here as in the `3.x` line the API
+// inherits from `Object.prototype` even without a patch and `migrateWarn`
+// inside `patchProto` will already silence warnings if the patch gets disabled.
+patchProto( jQuery.event.special, {
+	warningId: "event-special-null-proto",
+	apiName: "jQuery.event.special"
+} );
