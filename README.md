@@ -1,6 +1,6 @@
 ![CI Status](https://github.com/jquery/jquery-migrate/actions/workflows/node.js.yml/badge.svg?branch=main)
 
-#### NOTE: To upgrade to jQuery 3.0, you first need version 1.12.x or 2.2.x. If you're using an older version, first upgrade to one of these versions using [jQuery Migrate 1.x](https://github.com/jquery/jquery-migrate/tree/1.x-stable#readme), to resolve any compatibility issues. For more information about the changes made in jQuery 3.0, see the [upgrade guide](https://jquery.com/upgrade-guide/3.0/) and [blog post](https://blog.jquery.com/2016/06/09/jquery-3-0-final-released/).
+#### NOTE: To upgrade to jQuery 4.x, you first need version 3.x. If you're using an older version, first upgrade to jQuery 3.x using [jQuery Migrate 3.x](https://github.com/jquery/jquery-migrate/tree/3.x-stable#readme), to resolve any compatibility issues. For more information about the changes made in jQuery 4.0, see the [upgrade guide](https://jquery.com/upgrade-guide/4.0/) and [blog post](https://blog.jquery.com/2025/08/11/jquery-4-0-0-release-candidate-1/).
 
 # jQuery Migrate
 Upgrading libraries such as jQuery can be a lot of work, when breaking changes have been introduced. jQuery Migrate makes this easier, by restoring the APIs that were removed, and additionally shows warnings in the browser console (development version of jQuery Migrate only) when removed and/or deprecated APIs are used.
@@ -25,8 +25,8 @@ Each jQuery Migrate version supports the same browsers that the jQuery version u
 In your web page, load this plugin *after* the script tag for jQuery, for example:
 
 ```html
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://code.jquery.com/jquery-migrate-3.5.2.js"></script>
+<script src="https://code.jquery.com/jquery-4.0.0-rc.1.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-4.0.0-beta.1.js"></script>
 ```
 
 ## Download
