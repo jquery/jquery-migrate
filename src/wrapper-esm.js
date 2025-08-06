@@ -1,6 +1,8 @@
 /*!
  * jQuery Migrate - v@VERSION - @DATE
  * Copyright OpenJS Foundation and other contributors
+ * Released under the MIT license
+ * https://jquery.com/license/
  */
 import $ from "jquery";
 
