@@ -125,7 +125,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Cause**: When calling `.attr( name, value )` with any non-`false` non-`null` `value`, jQuery would actually set it to `name`. Similarly, regardless of the actual value, `.attr( name )` used to return `name` lowercased. This behavior is deprecated.
 
-**Solution**: Always set boolean attributes to their names, whether when using jQuery (`.attr( name, name )`), native APIs (`.setAttribute( name, name )`) or directly in HTML (`<input checked="checked">`).
+**Solution**: Always set boolean attributes to their names, whether when using jQuery (`.attr( name, name )`), native APIs (`.setAttribute( name, name )`) or directly in HTML (`<input checked="checked">`). Avoid using the `.attr( name )` getter on boolean attributes, `.prop( name )` is preferred.
 
 ### \[attr-false\] JQMIGRATE: Setting the non-ARIA non-boolean attribute 'NAME' to false
 
