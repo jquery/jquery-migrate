@@ -52,7 +52,7 @@
 		"test": "npm run build:all && npm run lint && npm run test:browserless && npm run test:browser && npm run test:esm"
 	},
 	"peerDependencies": {
-		"jquery": ">=4 <5"
+		"jquery": ">=4.0.0-beta.2 <5"
 	},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "28.0.3",
