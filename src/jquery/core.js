@@ -7,6 +7,10 @@ var arr = [],
 	splice = arr.splice,
 	class2type = {},
 
+	// Matches dashed string for camelizing
+	rmsPrefix = /^-ms-/,
+	rdashAlpha = /-([a-z])/g,
+
 	// Require that the "whitespace run" starts from a non-whitespace
 	// to avoid O(N^2) behavior when the engine would try matching "\s+$" at each space position.
 	rtrim = /^[\s\uFEFF\xA0]+|([^\s\uFEFF\xA0])[\s\uFEFF\xA0]+$/g;
@@ -83,6 +87,26 @@ migratePatchAndWarnFunc( jQuery, "isWindow",
 		return obj != null && obj === obj.window;
 	}, "isWindow",
 	"jQuery.isWindow() is removed"
+);
+
+migratePatchAndWarnFunc( jQuery, "now", Date.now, "now",
+	"jQuery.now() is removed; use Date.now()"
+);
+
+// Used by camelCase as callback to replace()
+function fcamelCase( _all, letter ) {
+	return letter.toUpperCase();
+}
+
+migratePatchAndWarnFunc( jQuery, "camelCase",
+	function( string ) {
+
+		// Convert dashed to camelCase; used by the css and data modules
+		// Support: IE <=9 - 11, Edge 12 - 15
+		// Microsoft forgot to hump their vendor prefix (trac-9572)
+		return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
+	}, "camelCase",
+	"jQuery.camelCase() is removed"
 );
 
 // Bind a function to a context, optionally partially applying any
