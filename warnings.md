@@ -64,7 +64,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### \[shorthand-removed-v3\] JQMIGRATE: jQuery.fn.error() is deprecated
 
-**Cause:** The `$().error()` method was used to attach an "error" event to an element but has been removed in 1.9 to reduce confusion with the `$.error()` method which is unrelated and has not been deprecated. It also serves to discourage the temptation to use `$(window).error()` which does not work because `window.onerror` does not follow standard event handler conventions. The `$().error()` method was removed in jQuery 3.0.
+**Cause:** The `$().error()` method was used to attach an "error" event to an element but has been deprecated in 1.9 to reduce confusion with the `$.error()` method which is unrelated and has not been deprecated. It also serves to discourage the temptation to use `$(window).error()` which does not work because `window.onerror` does not follow standard event handler conventions. The `$().error()` method was removed in jQuery 3.0.
 
 **Solution:** Change any use of `$().error(fn)` to `$().on("error", fn)`.
 
@@ -147,7 +147,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### \[swap\] JQMIGRATE: jQuery.swap() is undocumented and deprecated
 
-**Cause**: The `jQuery.swap()` method temporarily exchanges a set of CSS properties. It was never documented as part of jQuery's public API and should not be used because it can cause performance problems due to forced layout. This method has been removed in jQuery 3.0.
+**Cause**: The `jQuery.swap()` method temporarily exchanges a set of CSS properties. It was never documented as part of jQuery's public API and should not be used because it can cause performance problems due to forced layout. This method has been removed in jQuery 1.12/2.2.
 
 **Solution**: Rework the code to avoid calling `jQuery.swap()`, or explicitly set and restore the properties you need to change.
 
