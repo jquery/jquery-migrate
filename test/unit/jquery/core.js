@@ -199,6 +199,35 @@ QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.isWindow", fun
 	} );
 } );
 
+QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.now", function( assert ) {
+	assert.expect( 2 );
+
+	expectWarning( assert, "now", 1, function() {
+		assert.ok( typeof jQuery.now() === "number", "jQuery.now is a function" );
+	} );
+} );
+
+QUnit[ jQueryVersionSince( "3.3.0" ) ? "test" : "skip" ]( "jQuery.camelCase()", function( assert ) {
+
+	var tests = {
+		"foo-bar": "fooBar",
+		"foo-bar-baz": "fooBarBaz",
+		"girl-u-want": "girlUWant",
+		"the-4th-dimension": "the-4thDimension",
+		"-o-tannenbaum": "OTannenbaum",
+		"-moz-illa": "MozIlla",
+		"-ms-take": "msTake"
+	};
+
+	assert.expect( 8 );
+
+	expectWarning( assert, "now", 7, function() {
+		jQuery.each( tests, function( key, val ) {
+			assert.equal( jQuery.camelCase( key ), val, "Converts: " + key + " => " + val );
+		} );
+	} );
+} );
+
 QUnit.test( "jQuery.unique", function( assert ) {
 	assert.expect( 2 );
 

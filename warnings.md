@@ -99,6 +99,18 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution**: Replace any use of `.size()` with `.length`.
 
+### \[now\] JQMIGRATE: jQuery.now() is deprecated; use Date.now
+
+**Cause:** The `jQuery.now()` method was a simple alias for `Date.now()`, which is now supported in all browsers supported by jQuery 3.0.
+
+**Solution:** Replace any calls to `jQuery.now()` with `Date.now()`.
+
+### \[camelCase\] JQMIGRATE: jQuery.camelCase() is deprecated
+
+**Cause:** The `jQuery.camelCase()` method was a utility to convert dashed strings like `"background-color"` into camel-cased strings like `"backgroundColor"`. This method was never documented and is now deprecated.
+
+**Solution:** If you need this functionality, you can implement it yourself.
+
 ### \[data-camelCase\] JQMIGRATE: jQuery.data() always sets/gets camelCased names
 
 **Cause:** The page is attempting to set or get a jQuery data item using kebab case, e.g. `my-data`, when a `my-data` item has been set directly on the jQuery data object. jQuery 3.0 always exclusively uses camel case, e.g., `myData`, when it accesses data items via the `.data()` API and does not find kebab case data in that object.
