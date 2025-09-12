@@ -92,7 +92,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### \[unique\] JQMIGRATE: jQuery.unique() is removed; use jQuery.uniqueSort()
 
-**Cause**: The fact that `jQuery.unique` sorted its results in DOM order was surprising to many who did not read the documentation carefully. As of jQuery 3.0 this function is being renamed to make it clear. As of jQuery 4.0, the old alias no longer exists.
+**Cause**: The fact that `jQuery.unique` sorted its results in DOM order was surprising to many who did not read the documentation carefully. The function was renamed in jQuery 3.0 to make it clear. As of jQuery 4.0, the old alias no longer exists.
 
 **Solution**: Replace all uses of `jQuery.unique` with `jQuery.uniqueSort` which is the same function with a better name.
 
@@ -134,7 +134,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### \[trim\] JQMIGRATE: jQuery.trim() is removed; use String.prototype.trim
 
-**Cause:** Older versions of IE & Android Browser didn't implement a method to `trim` strings so jQuery provided a cross-browser implementation. The browsers supported by jQuery 3.0 all provide a standard method for this purpose.
+**Cause:** Older versions of IE & Android Browser didn't implement a method to `trim` strings so jQuery provided a cross-browser implementation. The browsers supported by jQuery 4.x all provide a standard method for this purpose.
 
 **Solution:** Replace any calls to `jQuery.trim( text )` with `text.trim()` if you know `text` is a string; otherwise, you can replace it with `String.prototype.trim.call( text == null ? "" : text )`.
 
@@ -171,7 +171,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Rename all usage of `jQuery.Deferred.getStackHook` to `jQuery.Deferred.getErrorHook`. If you previously assigned a function returning an error stack to `jQuery.Deferred.getStackHook` or `jQuery.Deferred.getErrorHook`, change it to return a full error object. If you aim to still support jQuery <3.7, assign the hook to `jQuery.Deferred.getErrorHook` first and only later to `jQuery.Deferred.getStackHook` to avoid a Migrate warning.
 
-### \[event-global\] JQMIGRATE: jQuery.Deferred.getStackHook is removed; use jQuery.Deferred.getErrorHook
+### \[event-global\] JQMIGRATE: jQuery.event.global is removed
 
 **Cause:** `jQuery.event.global` was an object with keys being event names for which event listeners have ever been added. Originally, it was needed for performance reasons and to fix memory leaks in old IE, but since jQuery 1.9.0, the library has only been recording the events, but it was not using that information anywhere. jQuery 4.0.0 removes the API.
 
@@ -198,7 +198,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 ### \[expr-pre-pseudos\] JQMIGRATE: jQuery.expr\[':'\] is deprecated; use jQuery.expr.pseudos
 ### \[expr-pre-pseudos\] JQMIGRATE: jQuery.expr.filters is deprecated; use jQuery.expr.pseudos
 
-**Cause:** The standard way to add new custom selectors through jQuery is `jQuery.expr.pseudos`. These two other aliases are deprecated, although they still work as of jQuery 3.0.
+**Cause:** The standard way to add new custom selectors through jQuery is `jQuery.expr.pseudos`. These two other aliases are deprecated, although they still work as of jQuery 4.0.
 
 **Solution:** Rename any of the older usage to `jQuery.expr.pseudos`. The functionality is identical.
 
