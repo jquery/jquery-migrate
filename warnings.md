@@ -148,7 +148,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Cause:** The `jQuery.camelCase()` method was a utility to convert dashed strings like `"background-color"` into camel-cased strings like `"backgroundColor"`. This method was never documented and is removed as of jQuery 4.0.
 
-**Solution:** If you need this functionality, you can implement it yourself.
+**Solution:** Use a custom utility.
 
 ### \[css-number\] JQMIGRATE: Auto-appending 'px' to number-typed values for jQuery.fn.css( _(property name)_, value ) is removed
 
