@@ -114,6 +114,14 @@ if ( jQueryVersionSince( "3.3.0" ) ) {
 		"jQuery.isWindow() is deprecated"
 	);
 
+	migratePatchAndWarnFunc( jQuery, "now", Date.now, "now",
+		"jQuery.now() is deprecated; use Date.now()"
+	);
+
+	migratePatchAndWarnFunc( jQuery, "camelCase", jQuery.camelCase, "camelCase",
+		"jQuery.camelCase() is deprecated"
+	);
+
 	// Bind a function to a context, optionally partially applying any
 	// arguments.
 	// jQuery.proxy is deprecated to promote standards (specifically Function#bind)
