@@ -138,6 +138,18 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 **Solution:** Replace any calls to `jQuery.trim( text )` with `text.trim()` if you know `text` is a string; otherwise, you can replace it with `String.prototype.trim.call( text == null ? "" : text )`.
 
+### \[now\] JQMIGRATE: jQuery.now() is removed; use Date.now
+
+**Cause:** The `jQuery.now()` method was a simple alias for `Date.now()`, which is now supported in all browsers supported by jQuery 4.0.
+
+**Solution:** Replace any calls to `jQuery.now()` with `Date.now()`.
+
+### \[camelCase\] JQMIGRATE: jQuery.camelCase() is removed
+
+**Cause:** The `jQuery.camelCase()` method was a utility to convert dashed strings like `"background-color"` into camel-cased strings like `"backgroundColor"`. This method was never documented and is removed as of jQuery 4.0.
+
+**Solution:** Use a custom utility.
+
 ### \[css-number\] JQMIGRATE: Auto-appending 'px' to number-typed values for jQuery.fn.css( _(property name)_, value ) is removed
 
 **Cause:** In past versions, when a number-typed value was passed to `.css()` jQuery converted it to a string and added `"px"` to the end. As the CSS standard has evolved, an increasingly large set of CSS properties now accept values that are unitless numbers, where this behavior is incorrect. It has become impractical to manage these exceptions in the `jQuery.cssNumber` object. In addition, some CSS properties like `line-height` can accept both a bare number `2` or a pixel value `2px`. jQuery cannot know the correct way to interpret `$.css("line-height", 2)` and currently treats it as `"2px"`.
