@@ -28,13 +28,13 @@ window.console.log( "JQMIGRATE: Migrate is installed" +
 
 var warnedAbout = {};
 
-// By default each warning is only reported once.
+// By default, each warning is only reported once.
 jQuery.migrateDeduplicateWarnings = true;
 
 // List of warnings already given; public read only
 jQuery.migrateWarnings = [];
 
-// Set to false to disable traces that appear with warnings
+// Set to `false` to disable traces that appear with warnings
 if ( jQuery.migrateTrace === undefined ) {
 	jQuery.migrateTrace = true;
 }

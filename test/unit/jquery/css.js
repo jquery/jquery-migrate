@@ -147,7 +147,7 @@ QUnit[
 	} );
 
 	// z-index is tested explicitly as raw jQuery 4.0 will not have `jQuery.cssNumber`
-	// so iterating over it won't find anything and we'd like to ensure number values
+	// so iterating over it won't find anything, and we'd like to ensure number values
 	// are not warned against for safe CSS props like z-index (gh-438).
 	expectNoWarning( assert, "z-index", function() {
 		jQuery( "<div />" ).css( "z-index", 1 );

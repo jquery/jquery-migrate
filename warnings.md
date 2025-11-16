@@ -29,14 +29,14 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### \[selector-empty-id\] JQMIGRATE: jQuery( '#' ) is not a valid selector
 
-**Cause:** Selectors consisting of just `#` are not valid CSS syntax so `jQuery( '#' )` is an invalid call but it used to return an empty jQuery object before jQuery 3.0. In later versions this selector throws an error.
+**Cause:** Selectors consisting of just `#` are not valid CSS syntax so `jQuery( '#' )` is an invalid call, but it used to return an empty jQuery object before jQuery 3.0. In later versions this selector throws an error.
 
 **Solution**: Don't call `jQuery` with just `"#"`. If you construct your ID selector dynamically, make sure the string appended to `"#"` is not empty.
 
 ### \[selector-hash\] JQMIGRATE: Attribute selector with '#' must be quoted
 ### \[selector-hash\] JQMIGRATE: Attribute selector with '#' was not fixed
 
-**Cause:** Selectors such as `a[href=#main]` are not valid CSS syntax because the value contains special characters that are not quoted. Until jQuery 1.11.3/2.1.4 this was accepted, but the behavior is non-standard and was never documented. In later versions this selector throws an error. *In some cases with complex selectors, Migrate may not attempt a repair.* In those cases a fatal error will be logged on the console and you will need to fix the selector manually.
+**Cause:** Selectors such as `a[href=#main]` are not valid CSS syntax because the value contains special characters that are not quoted. Until jQuery 1.11.3/2.1.4 this was accepted, but the behavior is non-standard and was never documented. In later versions this selector throws an error. *In some cases with complex selectors, Migrate may not attempt a repair.* In those cases a fatal error will be logged on the console, and you will need to fix the selector manually.
 
 **Solution**: Put quotes around any attribute values that have special characters, e.g. `a[href="#main"]`. The warning message contains the selector that caused the problem, use that to find the selector in the source files.
 
@@ -50,7 +50,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 ### \[sort\] JQMIGRATE: jQuery.fn.sort() is deprecated; convert to an array before sorting
 ### \[splice\] JQMIGRATE: jQuery.fn.splice() is deprecated; use .slice() or .not() with .eq()
 
-**Cause**: jQuery adds the Array `push`, `sort` & `splice` methods to the jQuery prototype. They behave differently to other jQuery APIs - they modify the jQuery collections in place, they don't play nice with APIs like `.end()`, they were also never documented.
+**Cause**: jQuery adds the Array `push`, `sort` & `splice` methods to the jQuery prototype. They behave differently to other jQuery APIs - they modify the jQuery collections in place, they don't play nice with APIs like `.end()`, they were also never documented. These methods will be removed in jQuery 4.0.
 
 **Solution**: Replace `.push( node )` with `.add( node )`, `.splice( index )` with `.not( elem.eq( index ) )`. In more complex cases, call `.toArray()` first, manipulate the resulting array and convert back to the jQuery object by passing the resulting array to `$()`.
 
@@ -83,7 +83,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### \[fx-interval\] JQMIGRATE: jQuery.fx.interval is deprecated
 
-**Cause**: As of jQuery 3.0 the `jQuery.fx.interval` property can be used to change the animation interval _only_ on browsers that do not support the `window.requestAnimationFrame()` method. That is currently only Internet Explorer 9 and the Android Browser. Once support is dropped for these browsers, the property will serve no purpose and it will be removed.
+**Cause**: As of jQuery 3.0 the `jQuery.fx.interval` property can be used to change the animation interval _only_ on browsers that do not support the `window.requestAnimationFrame()` method. That is currently only Internet Explorer 9 and the Android Browser. jQuery 4.0 will not support these browsers and will therefore remove this API.
 
 **Solution**: Find and remove code that changes or uses `jQuery.fx.interval`. If the value is being used by code in your page or a plugin, the code may be making assumptions that are no longer valid. The default value of `jQuery.fx.interval` is `13` (milliseconds), which could be used instead of accessing this property.
 
@@ -101,13 +101,13 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### \[now\] JQMIGRATE: jQuery.now() is deprecated; use Date.now
 
-**Cause:** The `jQuery.now()` method was a simple alias for `Date.now()`, which is now supported in all browsers supported by jQuery 3.0.
+**Cause:** The `jQuery.now()` method was a simple alias for `Date.now()`, which is now supported in all browsers supported by jQuery 3.0. This API will be removed in jQuery 4.0.
 
 **Solution:** Replace any calls to `jQuery.now()` with `Date.now()`.
 
 ### \[camelCase\] JQMIGRATE: jQuery.camelCase() is deprecated
 
-**Cause:** The `jQuery.camelCase()` method was a utility to convert dashed strings like `"background-color"` into camel-cased strings like `"backgroundColor"`. This method was never documented and is now deprecated.
+**Cause:** The `jQuery.camelCase()` method was a utility to convert dashed strings like `"background-color"` into camel-cased strings like `"backgroundColor"`. This method was never documented and is now deprecated; it will be removed in jQuery 4.0.
 
 **Solution:** Use a custom utility.
 
@@ -122,7 +122,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 ### \[data-null-proto\] Accessing properties from jQuery.fn.data() inherited from Object.prototype is deprecated
 ### \[data-null-proto\] Setting properties from jQuery.fn.data() inherited from Object.prototype is deprecated
 
-**Cause:** Accessing or setting properties on data objects inherited from `Object.prototype` is deprecated. This includes properties like `__proto__` or `hasOwnProperty`.
+**Cause:** Accessing or setting properties on data objects inherited from `Object.prototype` is deprecated. This includes properties like `__proto__` or `hasOwnProperty`. This behavior will be removed in jQuery 4.0.
 
 **Solution:** Don't use properties inherited from `Object.prototype` on data objects. Instead of `jQuery.data( node ).hasOwnProperty( "foo" )` use `Object.hasOwn( jQuery.data( node ), "foo" )` or, if you need to support older browsers like IE 11, use `Object.prototype.hasOwnProperty.call( jQuery.data( node ), "foo" )`.
 
@@ -135,13 +135,13 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 ### \[boolean-attributes\] JQMIGRATE: Boolean attribute 'NAME' value is different from its lowercased name
 ### \[boolean-attributes\] JQMIGRATE: Boolean attribute 'NAME' value is not set to its lowercased name
 
-**Cause**: When calling `.attr( name, value )` with any non-`false` non-`null` `value`, jQuery would actually set it to `name`. Similarly, regardless of the actual value, `.attr( name )` used to return `name` lowercased. This behavior is deprecated.
+**Cause**: When calling `.attr( name, value )` with any non-`false` non-`null` `value`, jQuery would actually set it to `name`. Similarly, regardless of the actual value, `.attr( name )` used to return `name` lowercased. This behavior is deprecated and will be removed in jQuery 4.0.
 
 **Solution**: Always set boolean attributes to their names, whether when using jQuery (`.attr( name, name )`), native APIs (`.setAttribute( name, name )`) or directly in HTML (`<input checked="checked">`). Avoid using the `.attr( name )` getter on boolean attributes, `.prop( name )` is preferred.
 
 ### \[attr-false\] JQMIGRATE: Setting the non-ARIA non-boolean attribute 'NAME' to false
 
-**Cause**: Calling `.attr( name, false )` only removes the attribute when `name` is a boolean attribute; otherwise, it sets the attribute value to `"false"`. This behavior is deprecated for non-ARIA attributes.
+**Cause**: Calling `.attr( name, false )` only removes the attribute when `name` is a boolean attribute; otherwise, it sets the attribute value to `"false"`. This behavior is deprecated for non-ARIA attributes and will be removed in jQuery 4.0.
 
 **Solution**: If you want to set the value of an attribute to `"false"`, wrap it in quotes: `.attr( name, "false" )`.
 
@@ -204,25 +204,25 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 ### \[parseJSON\] JQMIGRATE: jQuery.parseJSON is deprecated; use JSON.parse
 
-**Cause**: The `jQuery.parseJSON` method in recent jQuery is identical to the native `JSON.parse`. As of jQuery 3.0 `jQuery.parseJSON` is deprecated.
+**Cause**: The `jQuery.parseJSON` method in recent jQuery is identical to the native `JSON.parse`. As of jQuery 3.0 `jQuery.parseJSON` is deprecated; it will be removed in jQuery 4.0.
 
 **Solution**: Replace any use of `jQuery.parseJSON` with `JSON.parse`.
 
 ### \[isNumeric\] JQMIGRATE: jQuery.isNumeric() is deprecated
 
-**Cause**: This method was used by jQuery to determine if certain string arguments could be converted to numbers, but the name led people to apply their own interpretations to what the method means. As a result, it often doesn't meet the needs of specific cases. For example, a 25-character string of only digits is technically a valid number, but JavaScript cannot represent it accurately. The string `"0x251D"` is a valid hexadecimal number but may not be acceptable numeric input to a web form.
+**Cause**: This method was used by jQuery to determine if certain string arguments could be converted to numbers, but the name led people to apply their own interpretations to what the method means. As a result, it often doesn't meet the needs of specific cases. For example, a 25-character string of only digits is technically a valid number, but JavaScript cannot represent it accurately. The string `"0x251D"` is a valid hexadecimal number but may not be acceptable numeric input to a web form. This API will be removed in jQuery 4.0.
 
 **Solution**: Use a test for being numeric that makes sense for the specific situation. For example, instead of `jQuery.isNumeric(string)`, use `isNan(parseFloat(string))` if a floating point number is expected, or `string.test(/^[0-9]{1,8}$/)` if a sequence of 1 to 8 digits is expected.
 
 ### \[type\] JQMIGRATE: jQuery.type() is deprecated
 
-**Cause**: This method returns a string that indicates the type of the argument, for example `"number"` or `"function"`. However, as the JavaScript language evolves this method has become problematic because new language constructs might require this function to either return a new string (potentially breaking existing code) or somehow map new constructs into existing strings (again, potentially breaking existing code). Examples of new recent JavaScript features include asynchronous functions, class constructors, `Symbol`s, or functions that act as iterators.
+**Cause**: This method returns a string that indicates the type of the argument, for example `"number"` or `"function"`. However, as the JavaScript language evolves this method has become problematic because new language constructs might require this function to either return a new string (potentially breaking existing code) or somehow map new constructs into existing strings (again, potentially breaking existing code). Examples of new recent JavaScript features include asynchronous functions, class constructors, `Symbol`s, or functions that act as iterators. This API will be removed in jQuery 4.0.
 
 **Solution**: Review code that uses `jQuery.type()` and use a type check that is appropriate for the situation. For example. if the code expects a plain function, check for `typeof arg === "function"`.
 
 ### \[unique\] JQMIGRATE: jQuery.unique is deprecated; use jQuery.uniqueSort
 
-**Cause**: The fact that `jQuery.unique` sorted its results in DOM order was surprising to many who did not read the documentation carefully. As of jQuery 3.0 this function is being renamed to make it clear.
+**Cause**: The fact that `jQuery.unique` sorted its results in DOM order was surprising to many who did not read the documentation carefully. As of jQuery 3.0 this function is being renamed to make it clear; the old alias will be removed in jQuery 4.0.
 
 **Solution**: Replace all uses of `jQuery.unique` with `jQuery.uniqueSort` which is the same function with a better name.
 
@@ -235,7 +235,7 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 ### \[toggleClass-bool\] JQMIGRATE: jQuery.fn.toggleClass( \[ boolean \] ) is deprecated
 
-**Cause:** Calling `.toggleClass()` with no arguments, or with a single Boolean `true` or `false` argument, has been deprecated. Its behavior was poorly documented, but essentially the method saved away the current `class` value in a data item when the class was removed and restored the saved value when it was toggled back. If you do not believe you are specificially trying to use this form of the method, it is possible you are accidentally doing so via an inadvertent undefined value, as `.toggleClass( undefined )` toggles all classes.
+**Cause:** Calling `.toggleClass()` with no arguments, or with a single Boolean `true` or `false` argument, has been deprecated. Its behavior was poorly documented, but essentially the method saved away the current `class` value in a data item when the class was removed and restored the saved value when it was toggled back. If you do not believe you are specifically trying to use this form of the method, it is possible you are accidentally doing so via an inadvertent undefined value, as `.toggleClass( undefined )` toggles all classes. This signature will be removed in jQuery 4.0.
 
 **Solution:** If this functionality is still needed, save the current full `.attr( "class" )` value in a data item and restore it when required.
 
@@ -246,6 +246,14 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 **Cause:** The code on the page has used the `jQuery.event.props` or `jQuery.event.fixHooks` data structures. These were used in previous versions to affect the properties that are copied from the native event to the jQuery event each time an event is delivered, but they had the potential to create performance issues. Versions of jQuery Mobile before 1.5 make use of this API and require jQuery Migrate to run properly.
 
 **Solution:** The most popular use of these data structures are to add properties for touch or pointer events, and those properties are now supported by default with a newer high-performance approach in jQuery 3.0 that only retrieves the properties on first access. If you are using jQuery Mobile, check the [jquerymobile.com](https://jquerymobile.com) site for updates. If you are using plugins such as [pointerTouch](https://github.com/timmywil/jquery.event.pointertouch) or [touchHooks](https://github.com/aarongloege/jquery.touchHooks), simply remove them as they are no longer needed.
+
+### \[event-global\] JQMIGRATE: jQuery.event.global is deprecated
+
+### \[event-global\] JQMIGRATE: jQuery.event.global is removed
+
+**Cause:** `jQuery.event.global` was an object with keys being event names for which event listeners have ever been added. Originally, it was needed for performance reasons and to fix memory leaks in old IE, but since jQuery 1.9.0, the library has only been recording the events, but it was not using that information anywhere. jQuery 4.0.0 will remove the API.
+
+**Solution:** Remove all usage of `jQuery.event.global`; it's unlikely any existing usage is needed.
 
 ### \[load-after-event\] JQMIGRATE: jQuery(window).on('load'...) called after load event occurred
 
@@ -261,13 +269,13 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 ### \[isFunction\] JQMIGRATE: jQuery.isFunction() is deprecated
 
-**Cause:** This method returns `true` if its argument is thought to be a function. It was created to work around bugs in `typeof` implementations in legacy browsers.
+**Cause:** This method returns `true` if its argument is thought to be a function. It was created to work around bugs in `typeof` implementations in legacy browsers. This method will be removed in jQuery 4.0.
 
 **Solution:** Replace any use of `jQuery.isFunction( x )` with `typeof x === "function"`.
 
 ### \[isWindow\] JQMIGRATE: jQuery.isWindow() is deprecated
 
-**Cause:** This method returns `true` if its argument is thought to be a `window` element. It was created for internal use and is not a reliable way of detecting `window` for public needs.
+**Cause:** This method returns `true` if its argument is thought to be a `window` element. It was created for internal use and is not a reliable way of detecting `window` for public needs. This method will be removed in jQuery 4.0.
 
 **Solution:** Remove any use of `jQuery.isWindow()` from code. If it is truly needed it can be replaced with a check for `obj != null && obj === obj.window` which was the test used inside this method.
 
@@ -291,31 +299,31 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 ### \[nodeName\] JQMIGRATE: jQuery.nodeName() is deprecated
 
-**Cause:** This public but never-documented method has been deprecated as of jQuery 3.2.0.
+**Cause:** This public but never-documented method has been deprecated as of jQuery 3.2.0. It will be removed in jQuery 4.0.
 
 **Solution:** Replace calls such as `jQuery.nodeName( elem, "div" )` with a test such as `elem.nodeName.toLowerCase() === "div"`.
 
 ### \[cssProps\] JQMIGRATE: jQuery.cssProps is deprecated
 
-**Cause:** The `jQuery.cssProps` property is a public but undocumented object that allows CSS properties with one name to be mapped into another name. It was used for legacy browsers like IE8 that used non-standard names. This object is no longer used inside jQuery since all supported browsers now use the standard CSS property names.
+**Cause:** The `jQuery.cssProps` property is a public but undocumented object that allows CSS properties with one name to be mapped into another name. It was used for legacy browsers like IE8 that used non-standard names. This object is no longer used inside jQuery since all supported browsers now use the standard CSS property names. It will be removed in jQuery 4.0.
 
 **Solution:** Remove any uses of `jQuery.cssProps` in application code.
 
 ### \[isArray\] JQMIGRATE: jQuery.isArray is deprecated; use Array.isArray
 
-**Cause:** Older versions of JavaScript made it difficult to determine if a particular object was a true Array, so jQuery provided a cross-browser function to do the work. The browsers supported by jQuery 3.0 all provide a standard method for this purpose.
+**Cause:** Older versions of JavaScript made it difficult to determine if a particular object was a true Array, so jQuery provided a cross-browser function to do the work. The browsers supported by jQuery 3.0 all provide a standard method for this purpose. This API will be removed in jQuery 4.0.
 
 **Solution:** Replace any calls to `jQuery.isArray` with `Array.isArray`.
 
 ### \[trim\] JQMIGRATE: jQuery.trim is deprecated; use String.prototype.trim
 
-**Cause:** Older versions of IE & Android Browser didn't implement a method to `trim` strings so jQuery provided a cross-browser implementation. The browsers supported by jQuery 3.0 all provide a standard method for this purpose.
+**Cause:** Older versions of IE & Android Browser didn't implement a method to `trim` strings so jQuery provided a cross-browser implementation. The browsers supported by jQuery 3.0 all provide a standard method for this purpose. This API will be removed in jQuery 4.0.
 
 **Solution:** Replace any calls to `jQuery.trim( text )` with `text.trim()` if you know `text` is a string; otherwise, you can replace it with `String.prototype.trim.call( text == null ? "" : text )`.
 
 ### \[css-number\] JQMIGRATE: Number-typed values are deprecated for jQuery.fn.css( _(property name)_, value )
 
-**Cause:** In past versions, when a number-typed value was passed to `.css()` jQuery converted it to a string and added `"px"` to the end. As the CSS standard has evolved, an increasingly large set of CSS properties now accept values that are unitless numbers, where this behavior is incorrect. It has become impractical to manage these exceptions in the `jQuery.cssNumber` object. In addition, some CSS properties like `line-height` can accept both a bare number `2` or a pixel value `2px`. jQuery cannot know the correct way to interpret `$.css("line-height", 2)` and currently treats it as `"2px"`.
+**Cause:** In past versions, when a number-typed value was passed to `.css()` jQuery converted it to a string and added `"px"` to the end. As the CSS standard has evolved, an increasingly large set of CSS properties now accept values that are unitless numbers, where this behavior is incorrect. It has become impractical to manage these exceptions in the `jQuery.cssNumber` object. In addition, some CSS properties like `line-height` can accept both a bare number `2` or a pixel value `2px`. jQuery cannot know the correct way to interpret `$.css("line-height", 2)` and currently treats it as `"2px"`. With some exceptions, this behavior will be removed in jQuery 4.0.
 
 **Solution:** Always pass string values to `.css()`, and explicitly add units where required. For example, use `$.css("line-height", "2")` to specify 200% of the current line height or `$.css("line-height", "2px")` to specify pixels. When the numeric value is in a variable, ensure the value is converted to string, e.g. `$.css("line-height", String(height))` and `$.css("line-height", height+"px")`.
 
@@ -333,12 +341,12 @@ See jQuery-ui [commit](https://github.com/jquery/jquery-ui/commit/c0093b599fcd58
 
 ### \[jsonp-promotion\] JQMIGRATE: JSON-to-JSONP auto-promotion is deprecated
 
-**Cause:** `jQuery.ajax` calls with `dataType: 'json'` with a provided callback are automatically converted by jQuery to JSONP requests unless the options also specify `jsonp: false`. Auto-promoting JSON requests to JSONP introduces a security risk as the developer may be unaware they're not just downloading data but executing code from a remote domain. This auto-promoting behavior is deprecated and will be removed in jQuery 4.0.0.
+**Cause:** `jQuery.ajax` calls with `dataType: 'json'` with a provided callback are automatically converted by jQuery to JSONP requests unless the options also specify `jsonp: false`. Auto-promoting JSON requests to JSONP introduces a security risk as the developer may be unaware they're not just downloading data but executing code from a remote domain. This auto-promoting behavior is deprecated and will be removed in jQuery 4.0.
 
 **Solution:** To trigger a JSONP request, specify the `dataType: "jsonp"` option.
 
 ### \[deferred-getStackHook\] JQMIGRATE: jQuery.Deferred.getStackHook is deprecated; use jQuery.Deferred.getErrorHook
 
-**Cause:** `jQuery.Deferred.getStackHook` was originally created to pass the stack trace from before an async barrier to report when a user error (like calling a non-existing function) causes a promise to be rejected. However, passing a stack trace doesn't take source maps into account, so we started advising to pass the whole error object. To make it clearer, we also renamed the API to `jQuery.Deferred.getErrorHook`. The legacy alias will be removed in jQuery 4.0.0.
+**Cause:** `jQuery.Deferred.getStackHook` was originally created to pass the stack trace from before an async barrier to report when a user error (like calling a non-existing function) causes a promise to be rejected. However, passing a stack trace doesn't take source maps into account, so we started advising to pass the whole error object. To make it clearer, we also renamed the API to `jQuery.Deferred.getErrorHook`. The legacy alias will be removed in jQuery 4.0.
 
 **Solution:** Rename all usage of `jQuery.Deferred.getStackHook` to `jQuery.Deferred.getErrorHook`. If you previously assigned a function returning an error stack to `jQuery.Deferred.getStackHook` or `jQuery.Deferred.getErrorHook`, change it to return a full error object. If you aim to still support jQuery <3.7, assign the hook to `jQuery.Deferred.getErrorHook` first and only later to `jQuery.Deferred.getStackHook` to avoid a Migrate warning.

@@ -6,8 +6,8 @@ export function camelCase( string ) {
 	} );
 }
 
-// Insert an additional object in the prototype chain between `objrvy`
-// and `Object.prototype`; that intermediate object proxies properties
+// Make `object` inherit from `Object.prototype` via an additional object
+// in between; that intermediate object proxies properties
 // to `Object.prototype`, warning about their usage first.
 export function patchProto( object, options ) {
 
