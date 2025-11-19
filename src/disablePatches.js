@@ -3,7 +3,7 @@
 var disabledPatches = Object.create( null );
 
 // Don't apply patches for specified codes. Helpful for code bases
-// where some Migrate warnings have been addressed and it's desirable
+// where some Migrate warnings have been addressed, and it's desirable
 // to avoid needless patches or false positives.
 jQuery.migrateDisablePatches = function() {
 	var i;

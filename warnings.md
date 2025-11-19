@@ -47,7 +47,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### \[fx-interval\] JQMIGRATE: jQuery.fx.interval is removed
 
-**Cause**: As of jQuery 4.0, the `jQuery.fx.interval` property is no longer consulted and it's no longer possible to change the animation interval on browsers that do not support the `window.requestAnimationFrame()` method.
+**Cause**: As of jQuery 4.0, the `jQuery.fx.interval` property is no longer consulted, and it's no longer possible to change the animation interval on browsers that do not support the `window.requestAnimationFrame()` method.
 
 **Solution**: Find and remove code that changes or uses `jQuery.fx.interval`. If the value is being used by code in your page or a plugin, the code may be making assumptions that are no longer valid. The default value of `jQuery.fx.interval` is `13` (milliseconds), which could be used instead of accessing this property.
 
@@ -98,7 +98,7 @@ This is _not_ a warning, but a console log message the plugin shows when it firs
 
 ### \[toggleClass-bool\] JQMIGRATE: `jQuery.fn.toggleClass( \[ boolean \] ) is removed`
 
-**Cause:** Calling `.toggleClass()` with no arguments, or with a single Boolean `true` or `false` argument, has been deprecated. Its behavior was poorly documented, but essentially the method saved away the current `class` value in a data item when the class was removed and restored the saved value when it was toggled back. If you do not believe you are specificially trying to use this form of the method, it is possible you are accidentally doing so via an inadvertent undefined value, as `.toggleClass( undefined )` toggles all classes.
+**Cause:** Calling `.toggleClass()` with no arguments, or with a single Boolean `true` or `false` argument, has been deprecated. Its behavior was poorly documented, but essentially the method saved away the current `class` value in a data item when the class was removed and restored the saved value when it was toggled back. If you do not believe you are specifically trying to use this form of the method, it is possible you are accidentally doing so via an inadvertent undefined value, as `.toggleClass( undefined )` toggles all classes.
 
 **Solution:** If this functionality is still needed, save the current full `.attr( "class" )` value in a data item and restore it when required.
 

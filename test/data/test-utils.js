@@ -17,15 +17,18 @@ window.expectMessage = function expectMessage( assert, name, expected, fn ) {
 		if ( expected === 0 ) {
 			assert.deepEqual( jQuery.migrateMessages, [], name + ": did not message" );
 
-		// Simple numeric equality assertion for messages matching an explicit count
+		// Simple numeric equality assertion for messages matching an explicit
+		// count
 		} else if ( expected && jQuery.migrateMessages.length === expected ) {
 			assert.equal( jQuery.migrateMessages.length, expected, name + ": messaged" );
 
-		// Simple ok assertion when we saw at least one message and weren't looking for an explict count
+		// Simple ok assertion when we saw at least one message and weren't
+		// looking for an explicit count
 		} else if ( !expected && jQuery.migrateMessages.length ) {
 			assert.ok( true, name + ": messaged" );
 
-		// Failure; use deepEqual to show the messages that *were* generated and the expectation
+		// Failure; use deepEqual to show the messages that *were* generated
+		// and the expectation
 		} else {
 			assert.deepEqual( jQuery.migrateMessages,
 				"<messages: " + ( expected || "1+" ) + ">", name + ": messaged"
