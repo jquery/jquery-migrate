@@ -18,7 +18,6 @@ var releaseVersion,
 	nextVersion,
 	isBeta,
 	pkg,
-	pkgLock,
 
 	prompt = enquirer.prompt,
 
@@ -31,7 +30,6 @@ var releaseVersion,
 
 	readmeFile = "README.md",
 	packageFile = "package.json",
-	packageLockFile = "package-lock.json",
 	versionFile = path.join( "src", "version.js" ),
 
 	releaseDir = "CDN",
@@ -101,9 +99,6 @@ function initialize( next ) {
 		die( "No " + packageFile + " in this directory" );
 	}
 	pkg = JSON.parse( fs.readFileSync( packageFile, "utf8" ) );
-	if ( ( fs.existsSync || path.existsSync )( packageFile ) ) {
-		pkgLock = JSON.parse( fs.readFileSync( packageLockFile, "utf8" ) );
-	}
 
 	status( "Current version is " + pkg.version + "; generating release " + releaseVersion );
 	version = rsemver.exec( pkg.version );
@@ -152,9 +147,7 @@ function tagReleaseVersion( next ) {
 function updateVersions( next ) {
 	updateSourceVersion( releaseVersion );
 	updateReadmeVersion( releaseVersion );
-	updatePackageVersion( releaseVersion );
-	updatePackageLockVersion( releaseVersion );
-	next();
+	updatePackageVersion( releaseVersion, undefined, next );
 }
 
 async function buildRelease( next ) {
@@ -217,10 +210,12 @@ async function publishToNPM( next ) {
 
 function setNextVersion( next ) {
 	updateSourceVersion( nextVersion );
-	updatePackageVersion( nextVersion, "main" );
-	updatePackageLockVersion( nextVersion );
-	git( [ "commit", "-a", "--no-verify", "-m", "Updating the source version to " + nextVersion ],
-		next );
+	updatePackageVersion( nextVersion, "main", function() {
+		git(
+			[ "commit", "-a", "--no-verify",
+				"-m", "Updating the source version to " + nextVersion ],
+			next );
+	} );
 }
 
 function pushToRemote( next ) {
@@ -251,21 +246,22 @@ function steps() {
 	} )();
 }
 
-function updatePackageVersion( ver, blobVer ) {
+function updatePackageVersion( ver, blobVer, next ) {
 	status( "Updating " + packageFile + " version to " + ver );
 	blobVer = blobVer || ver;
-	pkg.version = ver;
 	pkg.author.url = setBlobVersion( pkg.author.url, blobVer );
 	writeJsonSync( packageFile, pkg );
-}
-
-function updatePackageLockVersion( ver ) {
-	status( "Updating " + packageLockFile + " version to " + ver );
-	pkgLock.version = ver;
-	if ( pkgLock?.packages[ "" ].version ) {
-		pkgLock.packages[ "" ].version = ver;
-	}
-	writeJsonSync( packageLockFile, pkgLock );
+	child.execFile( "npm", [
+		"version",
+		ver,
+		"--no-git-tag-version"
+	], function( error, stdout ) {
+		if ( error ) {
+			throw error;
+		}
+		console.log( stdout );
+		next();
+	} );
 }
 
 function updateSourceVersion( ver ) {
