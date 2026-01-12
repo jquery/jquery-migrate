@@ -52,10 +52,11 @@ steps(
 );
 
 function initialize( next ) {
+	var param;
 
 	// -d dryrun mode, no commands are executed at all
-	if ( process.argv[ 2 ] === "-d" ) {
-		process.argv.shift();
+	if ( process.argv.includes( "-d" ) ) {
+		process.argv.splice( process.argv.indexOf( "-d" ), 1 );
 		dryrun = true;
 		console.warn( "=== DRY RUN MODE ===" );
 	}
@@ -63,14 +64,18 @@ function initialize( next ) {
 	// -r skip remote mode, no remote commands are executed
 	// (git push, npm publish, cdn copy)
 	// Reset with `git reset --hard HEAD~2 && git tag -d (version) && npm run build`
-	if ( process.argv[ 2 ] === "-r" ) {
-		process.argv.shift();
+	if ( process.argv.includes( "-r" ) ) {
+		process.argv.splice( process.argv.indexOf( "-r" ), 1 );
 		skipRemote = true;
 		console.warn( "=== SKIPREMOTE MODE ===" );
 	}
 
-	if ( process.argv[ 2 ] && process.argv[ 2 ][ 0 ] === "-" ) {
-		die( "Unrecognized parameter: " + process.argv[ 2 ] );
+	param = process.argv.find( function( arg ) {
+		return arg[ 0 ] === "-";
+	} );
+
+	if ( param ) {
+		die( "Unrecognized parameter: " + param );
 	}
 
 	// First arg should be the version number being released; this is a proper subset
