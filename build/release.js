@@ -69,6 +69,10 @@ function initialize( next ) {
 		console.warn( "=== SKIPREMOTE MODE ===" );
 	}
 
+	if ( process.argv[ 2 ] && process.argv[ 2 ][ 0 ] === "-" ) {
+		die( "Unrecognized parameter: " + process.argv[ 2 ] );
+	}
+
 	// First arg should be the version number being released; this is a proper subset
 	// of a full semver, see https://github.com/mojombo/semver/issues/32
 	// Examples: 1.0.1, 1.0.1-pre, 1.0.1-rc1, 1.0.1-rc1.1
@@ -283,7 +287,7 @@ function updateReadmeVersion() {
 	} else {
 		status( "Updating " + readmeFile );
 		readme = readme.replace(
-			/jquery-migrate-\d+\.\d+\.\d+(?:-\w+)?/g,
+			/jquery-migrate-\d+\.\d+\.\d+(?:-\w+\.\d+)?/g,
 			"jquery-migrate-" + releaseVersion
 		);
 		if ( !dryrun ) {
