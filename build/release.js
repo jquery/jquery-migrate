@@ -52,10 +52,11 @@ steps(
 );
 
 function initialize( next ) {
+	var param;
 
 	// -d dryrun mode, no commands are executed at all
-	if ( process.argv[ 2 ] === "-d" ) {
-		process.argv.shift();
+	if ( process.argv.includes( "-d" ) ) {
+		process.argv.splice( process.argv.indexOf( "-d" ), 1 );
 		dryrun = true;
 		console.warn( "=== DRY RUN MODE ===" );
 	}
@@ -63,10 +64,18 @@ function initialize( next ) {
 	// -r skip remote mode, no remote commands are executed
 	// (git push, npm publish, cdn copy)
 	// Reset with `git reset --hard HEAD~2 && git tag -d (version) && npm run build`
-	if ( process.argv[ 2 ] === "-r" ) {
-		process.argv.shift();
+	if ( process.argv.includes( "-r" ) ) {
+		process.argv.splice( process.argv.indexOf( "-r" ), 1 );
 		skipRemote = true;
 		console.warn( "=== SKIPREMOTE MODE ===" );
+	}
+
+	param = process.argv.find( function( arg ) {
+		return arg[ 0 ] === "-";
+	} );
+
+	if ( param ) {
+		die( "Unrecognized parameter: " + param );
 	}
 
 	// First arg should be the version number being released; this is a proper subset
@@ -147,8 +156,7 @@ function tagReleaseVersion( next ) {
 function updateVersions( next ) {
 	updateSourceVersion( releaseVersion );
 	updateReadmeVersion( releaseVersion );
-	updatePackageVersion( releaseVersion );
-	next();
+	updatePackageVersion( releaseVersion, undefined, next );
 }
 
 async function buildRelease( next ) {
@@ -211,9 +219,12 @@ async function publishToNPM( next ) {
 
 function setNextVersion( next ) {
 	updateSourceVersion( nextVersion );
-	updatePackageVersion( nextVersion, "main" );
-	git( [ "commit", "-a", "--no-verify", "-m", "Updating the source version to " + nextVersion ],
-		next );
+	updatePackageVersion( nextVersion, "main", function() {
+		git(
+			[ "commit", "-a", "--no-verify",
+				"-m", "Updating the source version to " + nextVersion ],
+			next );
+	} );
 }
 
 function pushToRemote( next ) {
@@ -244,12 +255,22 @@ function steps() {
 	} )();
 }
 
-function updatePackageVersion( ver, blobVer ) {
+function updatePackageVersion( ver, blobVer, next ) {
 	status( "Updating " + packageFile + " version to " + ver );
 	blobVer = blobVer || ver;
-	pkg.version = ver;
 	pkg.author.url = setBlobVersion( pkg.author.url, blobVer );
 	writeJsonSync( packageFile, pkg );
+	child.execFile( "npm", [
+		"version",
+		ver,
+		"--no-git-tag-version"
+	], function( error, stdout ) {
+		if ( error ) {
+			throw error;
+		}
+		console.log( stdout );
+		next();
+	} );
 }
 
 function updateSourceVersion( ver ) {
@@ -271,7 +292,7 @@ function updateReadmeVersion() {
 	} else {
 		status( "Updating " + readmeFile );
 		readme = readme.replace(
-			/jquery-migrate-\d+\.\d+\.\d+(?:-\w+)?/g,
+			/jquery-migrate-\d+\.\d+\.\d+(?:-\w+\.\d+)?/g,
 			"jquery-migrate-" + releaseVersion
 		);
 		if ( !dryrun ) {
