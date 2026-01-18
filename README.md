@@ -25,7 +25,7 @@ Each jQuery Migrate version supports the same browsers that the jQuery version u
 In your web page, load this plugin *after* the script tag for jQuery, for example:
 
 ```html
-<script src="https://code.jquery.com/jquery-4.0.0-rc.1.js"></script>
+<script src="https://code.jquery.com/jquery-4.0.0.js"></script>
 <script src="https://code.jquery.com/jquery-migrate-4.0.0-beta.1.js"></script>
 ```
 

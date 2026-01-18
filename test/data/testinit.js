@@ -244,8 +244,8 @@ TestManager.init( {
 			"git.min",
 			"git.slim",
 			"git.slim.min",
-			"4.0.0-rc.1",
-			"4.0.0-rc.1.slim"
+			"4.0.0",
+			"4.0.0.slim"
 		]
 	},
 	"jquery-migrate": {
