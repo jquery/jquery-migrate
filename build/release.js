@@ -314,7 +314,7 @@ function writeJsonSync( fname, json ) {
 }
 
 function fixMinRef( oldText ) {
-	var mapRef = new RegExp( "^//# sourceMappingURL=jquery-migrate.min.map\\n?", "m" );
+	var mapRef = new RegExp( "^//# sourceMappingURL=jquery-migrate\\..*\\.map\\n?", "m" );
 
 	// Remove the ref for now rather than try to fix it
 	var newText = oldText.replace( mapRef, "" );
@@ -333,7 +333,14 @@ function fixMapRef( oldText, newFile ) {
 
 	// This file isn't published, not sure the best way to deal with that
 	sources[ 0 ] = "migratemute.js";
-	sources[ 1 ] = newFile.replace( /\.map$/, ".js" );
+	sources[ 1 ] = newFile.replace( /\.min\.map$/, ".js" );
+
+	// Path to the minified file for which this is the map.
+	// The minified file is originally created from a versionless file,
+	// so this field needs to be regenerated to contain the version
+	// if `newFile` contains it.
+	mapJSON.file = newFile.replace( /\.min\.map$/, ".min.js" );
+
 	return JSON.stringify( mapJSON );
 }
 
