@@ -12,7 +12,7 @@ import child from "node:child_process";
 import path from "node:path";
 import chalk from "chalk";
 import enquirer from "enquirer";
-import { build } from "./tasks/build.js";
+import { buildDefaultFiles } from "./tasks/build.js";
 
 var releaseVersion,
 	nextVersion,
@@ -33,7 +33,8 @@ var releaseVersion,
 	versionFile = path.join( "src", "version.js" ),
 
 	releaseDir = "CDN",
-	distDir = "dist";
+	distDir = "dist",
+	distModuleDir = "dist-module";
 
 steps(
 	initialize,
@@ -160,7 +161,7 @@ function updateVersions( next ) {
 }
 
 async function buildRelease( next ) {
-	await build( { version: releaseVersion } );
+	await buildDefaultFiles( { version: releaseVersion } );
 	next();
 }
 
@@ -174,11 +175,16 @@ function makeReleaseCopies( next ) {
 	var releaseFiles = {
 		"jquery-migrate-VER.js": passThrough,
 		"jquery-migrate-VER.min.js": fixMinRef,
-		"jquery-migrate-VER.min.map": fixMapRef
+		"jquery-migrate-VER.min.map": fixMapRef,
+		"jquery-migrate-VER.module.js": passThrough,
+		"jquery-migrate-VER.module.min.js": fixMinRef,
+		"jquery-migrate-VER.module.min.map": fixMapRef
 	};
 	Object.keys( releaseFiles ).forEach( function( key ) {
 		var distFile = key.replace( /-VER/g, "" ),
-			distPath = path.join( distDir, distFile ),
+			distPath = distFile.includes( ".module." ) ?
+				path.join( distModuleDir, distFile ) :
+				path.join( distDir, distFile ),
 			releaseFile = key.replace( /VER/g, releaseVersion ),
 			releasePath = path.join( releaseDir, releaseFile );
 
@@ -314,7 +320,7 @@ function writeJsonSync( fname, json ) {
 }
 
 function fixMinRef( oldText ) {
-	var mapRef = new RegExp( "^//# sourceMappingURL=jquery-migrate.min.map\\n?", "m" );
+	var mapRef = new RegExp( "^//# sourceMappingURL=jquery-migrate\\..*\\.map\\n?", "m" );
 
 	// Remove the ref for now rather than try to fix it
 	var newText = oldText.replace( mapRef, "" );
@@ -327,13 +333,21 @@ function fixMinRef( oldText ) {
 function fixMapRef( oldText, newFile ) {
 	var mapJSON = JSON.parse( oldText );
 	var sources = mapJSON.sources;
-	if ( sources.join() !== "../src/migratemute.js,jquery-migrate.js" ) {
+	if ( sources.join() !== "../src/migratemute.js,jquery-migrate.js" &&
+		sources.join() !== "../src/migratemute.js,jquery-migrate.module.js" ) {
 		throw Error( "fixMapRef: Unexpected sources entry: " + sources );
 	}
 
 	// This file isn't published, not sure the best way to deal with that
 	sources[ 0 ] = "migratemute.js";
-	sources[ 1 ] = newFile.replace( /\.map$/, ".js" );
+	sources[ 1 ] = newFile.replace( /\.min\.map$/, ".js" );
+
+	// Path to the minified file for which this is the map.
+	// The minified file is originally created from a versionless file,
+	// so this field needs to be regenerated to contain the version
+	// if `newFile` contains it.
+	mapJSON.file = newFile.replace( /\.min\.map$/, ".min.js" );
+
 	return JSON.stringify( mapJSON );
 }
 
