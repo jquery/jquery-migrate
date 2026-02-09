@@ -73,7 +73,7 @@
 		"rollup": "4.53.2",
 		"sinon": "9.2.4",
 		"uglify-js": "3.19.3",
-		"webpack": "5.103.0",
+		"webpack": "5.104.1",
 		"yargs": "18.0.0"
 	},
 	"keywords": [
