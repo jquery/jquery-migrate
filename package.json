@@ -70,7 +70,7 @@
 		"jsdom": "27.2.0",
 		"native-promise-only": "0.8.1",
 		"qunit": "2.24.2",
-		"rollup": "4.53.2",
+		"rollup": "4.59.0",
 		"sinon": "9.2.4",
 		"uglify-js": "3.19.3",
 		"webpack": "5.104.1",
