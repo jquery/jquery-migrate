@@ -50,7 +50,7 @@
 		"jsdom": "27.2.0",
 		"native-promise-only": "0.8.1",
 		"qunit": "2.24.2",
-		"rollup": "4.53.2",
+		"rollup": "4.59.0",
 		"sinon": "7.5.0",
 		"uglify-js": "3.9.4"
 	},
