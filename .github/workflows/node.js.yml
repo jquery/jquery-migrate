@@ -5,6 +5,9 @@ on:
   push:
     branches-ignore: "dependabot/**"
 
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 env:
   NODE_VERSION: 22.x
 
