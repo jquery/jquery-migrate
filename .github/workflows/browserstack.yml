@@ -8,6 +8,9 @@ on:
   schedule:
     - cron: "42 1 * * 2"
 
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   test:
     runs-on: ubuntu-latest

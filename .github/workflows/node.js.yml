@@ -5,6 +5,9 @@ on:
   push:
     branches-ignore: "dependabot/**"
 
+permissions:
+  contents: read # to fetch code (actions/checkout)
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
