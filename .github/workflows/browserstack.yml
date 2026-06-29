@@ -74,19 +74,6 @@ jobs:
 
           - '_:iPad Air 13 2025_iOS_26'
           - '_:iPad Air 13 2025_iOS_18'
-
-          # iOS 10 is a tier 4 device as of January 2025 and its availability
-          # is poor, leading to frequent test timeouts. Skip testing on it.
-          # See https://www.browserstack.com/device-tiers
-          # - '__iOS_10'
-
-          # Versions below are not officially supported by BrowserStack as
-          # they use emulators instead of real devices. We include them as
-          # long as they still work.
-          - '__iOS_9'
-          - '__iOS_8'
-          # iOS 7 emulators no longer work properly
-          # - '__iOS_7'
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
