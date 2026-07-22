@@ -63,17 +63,17 @@
 		"eslint": "8.57.1",
 		"eslint-config-jquery": "3.0.2",
 		"eslint-plugin-import": "2.32.0",
-		"globals": "17.6.0",
+		"globals": "17.7.0",
 		"husky": "9.1.7",
 		"jquery": "4.0.0",
-		"jquery-test-runner": "0.3.0",
+		"jquery-test-runner": "0.3.1",
 		"jsdom": "29.1.1",
 		"native-promise-only": "0.8.1",
 		"qunit": "2.26.0",
 		"rollup": "4.62.2",
 		"sinon": "9.2.4",
 		"uglify-js": "3.19.3",
-		"webpack": "5.107.2",
+		"webpack": "5.108.4",
 		"yargs": "18.0.0"
 	},
 	"keywords": [
@@ -109,5 +109,8 @@
 			"Traversing",
 			"Wrap"
 		]
+	},
+	"allowScripts": {
+		"commitplease@3.2.0": true
 	}
 }
